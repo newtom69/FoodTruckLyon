@@ -1,0 +1,38 @@
+﻿@using FoodTruck.Models
+@using System.Globalization
+
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Commande";
+}
+
+@if (ViewBag.pasDePanier)
+{
+    <h4>Vous ne pouvez pas commander si votre panier est vide.</h4>
+    <h4>Venez le remplir en <a href="/Article">découvrant notre carte.</a></h4>
+}
+@if (ViewBag.pasDeClient)
+{
+    <h4>Votre panier est enregistré, mais vous ne pouvez pas commander si vous n'êtes pas identifié.</h4>
+    <h4>Vous pouvez utiliser les liens <a href="/Utilisateur/Connexion">&laquo;&nbsp;Connexion&nbsp;&raquo;</a> ou <a href="/Utilisateur/Creation">&laquo;&nbsp;Création de compte&nbsp;&raquo;.</a></h4>
+}
+@if (!ViewBag.pasDePanier && !ViewBag.pasDeClient)
+{
+    <h3>Commande confirmée. Merci !</h3>
+
+    <td>
+        <h4>Voici le détail de votre commande passée le @ViewBag.laCommande.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</h4>
+        <p>Date de la livraison&nbsp;: le @ViewBag.laCommande.DateLivraison.ToString("dd/MM/yyyy HH:mm").</p>
+        <p>Mode de livraison&nbsp;: @ViewBag.laCommande.ModeLivraison</p>
+
+        <div>
+            <ul>
+                @foreach (var article in ViewBag.laCommande.listeArticles)
+                {
+                    double prixTotalArticle = article.Prix * article.Quantite;
+                    <li> @article.Quantite&nbsp;x&nbsp;@article.Nom&nbsp;:&nbsp;@prixTotalArticle.ToString("C2", new CultureInfo("fr-FR"))</li>
+                }
+            </ul>
+            <h4>Total : @ViewBag.laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR")).</h4>
+        </div>
+    </td>
+}

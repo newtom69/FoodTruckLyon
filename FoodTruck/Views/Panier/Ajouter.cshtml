@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Panier";
+}
+
+<h2>Panier</h2>
+@{int i = 0;
+}
+@foreach (var article in ViewBag.Panier.listeArticles)
+{
+    <ul>
+        <li>@article.Nom</li>
+        <li>@article.Image</li>
+        <li>@article.Description</li>
+        <li>@article.Prix</li>
+        <li>@article.Grammage</li>
+        <li>@article.Litrage</li>
+        <li><a href="/Panier/Retirer/@i">Retirer du panier</a></li>
+    </ul>
+    i++;
+
+}

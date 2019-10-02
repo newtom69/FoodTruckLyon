@@ -1,0 +1,39 @@
+﻿@using System.Globalization
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Panier";
+}
+
+<aside id="panierValide">
+    <h3>Panier</h3>
+    <div class="listePanier">
+        @{int i = 0;
+        }
+        @foreach (var article in ViewBag.Panier.listeArticles)
+        {
+            double prixTotalArticle = article.Prix * article.Quantite;
+            <div>
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+                @article.Quantite
+                <span>x </span><a href="/Article/Details/@article.Id">
+                    @article.Nom
+                </a>
+            </div>
+            <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Id">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
+            <p class="sousTotal">@prixTotalArticle.ToString("C2", new CultureInfo("fr-FR"))</p>
+            <hr />
+
+            i++;
+        }
+    </div>
+    <hr />
+</aside>
+
+@if (i == 0)
+{
+    <h4>Votre panier est vide. Venez <a href="/Article">découvrir notre carte.</a></h4>
+}
+else
+{
+    <h3 class="total">Total : @ViewBag.Panier.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
+    <h3 class="total"><a class="validerPanier" href="/Commande">Commander</a></h3>
+}

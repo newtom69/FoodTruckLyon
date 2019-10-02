@@ -1,0 +1,29 @@
+﻿@using System.Globalization
+@{
+    ViewBag.Title = "FoodTruck-Lyon";
+}
+
+
+<h3><a href="../Article">Voir notre carte</a></h3>
+<hr/>
+<h3>un produit star :</h3>
+<section id="bestsellers">
+    @{
+        var article = ViewBag.Articles.listeArticles[0];
+    
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a href="/Panier/Ajouter/@article.Id" class="ajoutPanier">
+                <p class="ajoutPanier">Ajouter au panier</p>
+            </a>
+        </div>
+    }
+</section>
+

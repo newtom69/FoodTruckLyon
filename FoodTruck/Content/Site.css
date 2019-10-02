@@ -1,0 +1,505 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+a {
+    color: #452B1A;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 180px;
+    padding-top: 150px;
+    position: relative;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-inverse {
+    background-color: #452B1A;
+}
+
+.navbar-brand > img.logo-only {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+@media (max-width: 768px)
+{
+    .navbar-brand > img.logo-full {
+        display: none;
+    }
+
+    .navbar-brand > img.logo-only {
+        display: block;
+        height: 52px;
+    }
+    .navbar-brand {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        height: 67px !important;
+        border-radius: 42px !important;
+        padding: 2px;
+    }
+
+    .body-content {
+        padding-top: 48px;
+    }
+}
+
+.navbar-nav > li > a {
+    font-size: 20px;
+    color: #95BE27 !important;
+}
+
+.navbar-brand {
+    background-color: white;
+    height: 180px;
+    border: solid 1px white;
+    border-radius: 180px;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+    color: #fff;
+    background-color: white;
+}
+
+#client {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.carouselContainer {
+    width: 632px;
+    margin: auto;
+}
+
+.carousel-indicators li {
+    border-color: black;
+}
+
+.carousel-control-prev {
+    left: 0;
+}
+
+.carousel-control-next {
+    right: 0;
+}
+
+.carousel-control-next, .carousel-control-prev {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 15%;
+    color: #fff;
+    text-align: center;
+    opacity: .5;
+}
+
+section#bestsellers, section.notreCarte {
+    display: flex;
+    justify-content: space-around;
+}
+
+section#bestsellers img, section.notreCarte img {
+    height: 200px;
+}
+
+section#bestsellers a, section.notreCarte a {
+    text-decoration: none;
+    width: 200px;
+}
+
+.familleNotreCarte {
+    margin-top: 0;
+}
+
+section.notreCarte {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+section.notreCarte > div {
+    width: 200px;
+}
+
+.detailArticle {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.detailArticle > div {
+    display: flex;
+}
+
+.detailArticle img {
+    margin-right: 20px;
+}
+
+.detailArticle h2 {
+    margin-top: 0;
+}
+
+.detailArticle a {
+    text-decoration: none;
+}
+
+.detailArticle .articleDescription {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+}
+
+.detailArticle p:last-child {
+    margin-left: 0 !important;
+    align-self: flex-end;    
+}
+
+.prix {
+    font-size: 3rem;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.ccheader {
+    margin: 0 auto;
+    padding: 2em;
+    text-align: center;
+}
+
+    .ccheader h1 {
+        margin: 0;
+        font-weight: 300;
+        font-size: 2.5em;
+        line-height: 1.3;
+    }
+
+.ccheader {
+    margin: 0 auto;
+    padding: 2em;
+    text-align: center;
+}
+
+    .ccheader h1 {
+        margin: 0;
+        font-weight: 300;
+        font-size: 2.5em;
+        line-height: 1.3;
+    }
+
+.ccform {
+    margin: 0 auto;
+    width: 800px;
+}
+
+.ccfield-prepend {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.ccform-addon {
+    color: #95BE27;
+    float: left;
+    padding: 8px;
+    width: 8%;
+    background: #FFFFFF;
+    text-align: center;
+}
+
+.ccformfield {
+    color: #000000;
+    background: #FFFFFF;
+    border: solid 1px #95BE27;
+    padding: 15.5px;
+    width: 91.9%;
+    display: block;
+    font-family: 'Lato',Arial,sans-serif;
+    font-size: 14px;
+}
+
+.ccformfield {
+    font-family: 'Lato',Arial,sans-serif;
+}
+
+.ccbtn {
+    display: block;
+    border: none;
+    background: #95BE27;
+    color: #FFFFFF;
+    padding: 12px 25px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    .ccbtn:hover {
+        background: #9FC92A;
+    }
+
+article#articleEquilibre {
+    margin: 0 auto;
+    width: 600px;
+}
+
+    article#articleEquilibre img {
+        margin-bottom: 20px;
+    }
+
+    article#articleEquilibre li {
+        list-style-type: none;
+    }
+
+        article#articleEquilibre li span {
+            font-weight: bold;
+        }
+
+        article#articleEquilibre li:last-child {
+            margin-top: 10px;
+        }
+
+    article#articleEquilibre p {
+        text-align: justify;
+    }
+
+        article#articleEquilibre p:last-child {
+            font-style: italic;
+            margin-top: 30px;
+        }
+
+    article#articleEquilibre a {
+        text-decoration: none;
+    }
+
+article#stationnement {
+    margin: 0 auto;
+    width: 800px;
+}
+
+article#stationnement section {
+    background-image: url("stationnement-dots.jpg");
+    display: flex;
+    align-items: flex-start;
+    width: 800px;
+    height: 470px;
+}
+
+article#stationnement aside {
+    background-color: white;
+    opacity: 0.75;
+    filter: alpha(opacity=75); /* IE8 et ancients */
+    padding: 1rem 1rem 0 1rem;
+}
+
+article#stationnement table {
+    margin-bottom: 15px;
+}
+
+article#stationnement table, tr, td {
+    border: solid 1px #95BE27;
+    padding: 0.3rem;
+    font-size: 1.5rem;  
+}
+
+.articleDescription a {
+    display: flex;
+    justify-content: space-between;
+}
+
+.articleDescription > a:first-child {
+    margin-top: 0.3rem;
+}
+
+.articleDescription p {
+    margin: 0 0 0.3rem;
+    font-size: 1.7rem;
+    word-wrap: break-word;
+}
+
+.articleDescription p:last-child {
+    margin-left: 0.5rem;
+}
+
+a.ajoutPanier {
+    display: flex;
+    justify-content: flex-end;
+}
+
+p.ajoutPanier {
+    background-color: #95BE27;
+    padding: 0.6rem;
+    border: solid 1px #95BE27;
+    border-radius: 1.5rem;
+}
+
+#panier {
+    position: fixed;
+    right: 10px;
+    top: 190px;
+    border: solid 1px #95BE27;
+    padding: 8px;
+    
+}
+
+#panierValide {
+    width: 350px;
+}
+
+#panierValide img {
+    height: 90px;
+}
+
+#panierValide .listePanier > div, .sousTotal {
+    font-size: large;
+}
+
+h3.total {
+    width: 350px;
+    text-align: right;
+}
+
+#panier .listePanier {
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+#panier h4 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: #452B1A
+}
+
+#panier hr, #panierValide hr {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-right: 5px;
+    border: 0;
+    border-top: 1px dashed #95BE27;
+}
+
+#panier hr:last-child, #panierValide .listePanier hr:last-child   {
+    border-top: none;
+}
+
+#panier .lienArticlePanier a, #panierValide .lienArticlePanier a {
+    color: #95BE27; 
+    text-decoration: none;
+    padding: 2px;
+    font-size: 1.2rem;
+}
+
+#panier > p, #panierValide > p {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1.6rem;
+}
+
+.sousTotal {
+    text-align: right;
+    margin-right: 5px;
+}
+
+.validerPanier {
+    display: flex;
+    justify-content: center;
+    background-color: #95BE27;
+    padding: 0.6rem;
+    border: solid 1px #95BE27;
+    border-radius: 1.5rem;
+}
+
+#choixAffichage form {
+    display: flex;
+    width: auto;
+}
+
+#choixAffichage select.ccformfield {
+    padding: 5px;
+    width: auto;
+    border-color: #9FC92A;
+}
+
+#choixAffichage .ccbtn {
+    margin-left: 5px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-weight: normal;
+}
+
+#choixAffichage label {
+    margin: 0;
+    font-weight: normal; 
+    display: flex;
+    align-items: center;
+}
+
+.ccform.connexion {
+    margin: 0;
+    width: 307px;
+}
+
+.ccform.contact {
+    margin: 0;
+    width: 400px;
+}
+
+.ccform.creationCompte {
+    width: 345px;
+}
+.ccform .ccfield-prepend {
+    display: flex;
+    width: auto;
+    justify-content: flex-end;
+}
+
+.connexion .ccform-addon, .contact .ccform-addon {
+    float: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    padding: 8px 13px;
+}
+
+.contact .ccform-addon.iconTextarea {
+    align-items: flex-start;
+}
+
+.contact .ccform-addon.iconTextarea i {
+    margin-top: 6px;
+}

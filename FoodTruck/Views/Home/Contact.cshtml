@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "FoodTruck-Lyon - Contactez-nous !";
+}
+<h2>@ViewBag.Title</h2>
+<h4>@ViewBag.Message</h4>
+<h4 class="messageContactForm">@ViewBag.MailEnvoye</h4>
+
+@using (Html.BeginForm("Contact", "Home",
+            new { ReturnUrl = ViewBag.ReturnUrl },
+            FormMethod.Post, new { @class = "ccform contact" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="ccfield-prepend">
+        <span class="ccform-addon"><i class="fa fa-user fa-2x"></i></span>
+        <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
+    </div>
+        <div class="ccfield-prepend">
+        <span class="ccform-addon"><i class="fa fa-user fa-2x"></i></span>
+        <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' required>
+    </div>         
+    <div class="ccfield-prepend">
+        <span class="ccform-addon"><i class="fa fa-envelope fa-2x"></i></span>
+        <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required>
+    </div>
+    <div class="ccfield-prepend">
+        <span class="ccform-addon iconTextarea"><i class="fa fa-comment fa-2x"></i></span>
+        <textarea class="ccformfield" name="comments" rows="8" placeholder="Message" maxlength='1000' required></textarea>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccbtn" type="submit" value="Envoyer">
+    </div>
+}

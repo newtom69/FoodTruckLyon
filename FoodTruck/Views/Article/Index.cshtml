@@ -1,0 +1,115 @@
+﻿@using System.Globalization
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Notre carte";
+}
+
+@if (ViewBag.articlesEntree.listeArticles.Count != 0)
+{
+    <hr />
+    <h2 class="familleNotreCarte">Entrées :</h2>
+}
+
+<section class="notreCarte">
+    @foreach (var article in ViewBag.articlesEntree.listeArticles)
+    {
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a class="ajoutPanier" href="/Panier/Ajouter/@article.Id"><p class="ajoutPanier">Ajouter au panier</p></a>
+        </div>
+    }
+</section>
+@if (ViewBag.articlesPlat.listeArticles.Count != 0)
+{
+    <hr />
+    <h2 class="familleNotreCarte">Plats :</h2>
+}
+<section class="notreCarte">
+    @foreach (var article in ViewBag.articlesPlat.listeArticles)
+    {
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a class="ajoutPanier" href="/Panier/Ajouter/@article.Id"><p class="ajoutPanier">Ajouter au panier</p></a>
+        </div>
+    }
+</section>
+@if (ViewBag.articlesDessert.listeArticles.Count != 0)
+{
+    <hr />
+    <h2 class="familleNotreCarte">Desserts :</h2>
+}
+<section class="notreCarte">
+    @foreach (var article in ViewBag.articlesDessert.listeArticles)
+    {
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a class="ajoutPanier" href="/Panier/Ajouter/@article.Id"><p class="ajoutPanier">Ajouter au panier</p></a>
+        </div>
+    }
+</section>
+@if (ViewBag.articlesBoissonFraiche.listeArticles.Count != 0)
+{
+    <hr />
+    <h2 class="familleNotreCarte">Boissons fraiches :</h2>
+}
+<section class="notreCarte">
+    @foreach (var article in ViewBag.articlesBoissonFraiche.listeArticles)
+    {
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a class="ajoutPanier" href="/Panier/Ajouter/@article.Id"><p class="ajoutPanier">Ajouter au panier</p></a>
+        </div>
+    }
+</section>
+@if (ViewBag.articlesBoissonChaude.listeArticles.Count != 0)
+{
+    <hr />
+    <h2 class="familleNotreCarte">Boissons chaudes :</h2>
+}
+<section class="notreCarte">
+
+    @foreach (var article in ViewBag.articlesBoissonChaude.listeArticles)
+    {
+        <div>
+            <a href="/Article/Details/@article.Id">
+                <img src="/Content/@article.Image" alt="@article.Nom" />
+            </a>
+            <div class="articleDescription">
+                <a href="/Article/Details/@article.Id">
+                    <p>@article.Nom</p>
+                    <p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                </a>
+            </div>
+            <a class="ajoutPanier" href="/Panier/Ajouter/@article.Id">
+                <p class="ajoutPanier">Ajouter au panier</p>
+            </a>
+        </div>
+    }
+</section>

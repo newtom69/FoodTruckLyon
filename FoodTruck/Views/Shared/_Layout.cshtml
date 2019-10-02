@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img src="/Content/logo.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-full">
+                    <img src="/Content/logo-only.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-only">
+                </a>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                    <li>@Html.ActionLink("A propos", "Index", "APropos")</li>
+                    <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Panier", "Index", "Panier")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <section id="client">
+        @if (ViewBag.lUtilisateur != null)
+        {
+            <p>Bienvenue <a href="/Utilisateur/Detail/@ViewBag.lUtilisateur.Id">@ViewBag.lUtilisateur.Prenom @ViewBag.lUtilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
+        }
+        else
+        {
+            <p><a href="/Utilisateur/Connexion/">Connexion</a> - <a href="/Utilisateur/Creation/">Création de compte</a></p>
+        }
+        </section>
+
+        @RenderBody()
+
+        @if (ViewBag.Panier != null && ViewBag.Panier.PrixTotal != 0 && !ViewBag.PanierAbsent)
+    {
+        <aside id="panier">
+            <h4>Panier</h4>
+            <div class="listePanier">
+                @{int i = 0;
+                }
+                @foreach (var article in ViewBag.Panier.listeArticles)
+            {
+                double prixTotalArticle = article.Prix * article.Quantite;
+                <div>
+                    @article.Quantite
+                    <span>x </span><a href="/Article/Details/@article.Id">
+                        @article.Nom
+                    </a>
+                </div>
+                <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Id">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
+                <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
+                <hr />
+
+            i++;
+        }
+            </div>
+            <hr />
+            <p>Total : @ViewBag.Panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>
+            <a class="validerPanier" href="/Panier">Valider votre panier</a>
+        </aside>
+}
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - <a href="mailto:info@foodtruck-lyon.com">FoodTruck-Lyon.fr</a></p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@model FoodTruck.Models.Utilisateur
+
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Connexion";
+}
+<h2>Connexion</h2>
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
+@if (ViewBag.lUlilisateur != null)
+{
+    <ul>
+        <li>@ViewBag.lUtilisateur.Nom</li>
+        <li>@ViewBag.lUtilisateur.Prenom </li>
+        <li>@ViewBag.lUtilisateur.Email</li>
+        <li>@ViewBag.lUtilisateur.Telephone</li>
+    </ul>
+}
+<h4>Saisissez vos identifiants :</h4>
+@if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
+{
+    <p>Mauvais Email ou mot de passe. Veuillez réessayer s'il vous plait.</p>
+}
+@using (Html.BeginForm("Connexion", "Utilisateur",
+    new { ReturnUrl = ViewBag.ReturnUrl },
+    FormMethod.Post, new { @class = "ccform connexion" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="ccfield-prepend">
+        <span class="ccform-addon"><i class="fa fa-envelope fa-2x"></i></span>
+        <input class="ccformfield" name="Email" type="email" placeholder="Email" required>
+    </div>
+    <div class="ccfield-prepend">
+        <span class="ccform-addon"><i class="fa fa-key fa-2x"></i></span>
+        <input class="ccformfield" name="Mdp" type="password" placeholder="Mot de passe" required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccbtn" type="submit" value="Connexion">
+    </div>
+}
