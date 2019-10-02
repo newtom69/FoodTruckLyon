@@ -8,9 +8,9 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: none;
-}
+    a:hover {
+        text-decoration: none;
+    }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -49,8 +49,8 @@ textarea {
         right: 0;
     }
 }
-@media (max-width: 768px)
-{
+
+@media (max-width: 768px) {
     .navbar-brand > img.logo-full {
         display: none;
     }
@@ -59,6 +59,7 @@ textarea {
         display: block;
         height: 52px;
     }
+
     .navbar-brand {
         margin-top: 8px;
         margin-bottom: 8px;
@@ -135,14 +136,14 @@ section#bestsellers, section.notreCarte {
     justify-content: space-around;
 }
 
-section#bestsellers img, section.notreCarte img {
-    height: 200px;
-}
+    section#bestsellers img, section.notreCarte img {
+        height: 200px;
+    }
 
-section#bestsellers a, section.notreCarte a {
-    text-decoration: none;
-    width: 200px;
-}
+    section#bestsellers a, section.notreCarte a {
+        text-decoration: none;
+        width: 200px;
+    }
 
 .familleNotreCarte {
     margin-top: 0;
@@ -153,41 +154,41 @@ section.notreCarte {
     justify-content: space-between;
 }
 
-section.notreCarte > div {
-    width: 200px;
-}
+    section.notreCarte > div {
+        width: 200px;
+    }
 
 .detailArticle {
     max-width: 700px;
     margin: 0 auto;
 }
 
-.detailArticle > div {
-    display: flex;
-}
+    .detailArticle > div {
+        display: flex;
+    }
 
-.detailArticle img {
-    margin-right: 20px;
-}
+    .detailArticle img {
+        margin-right: 20px;
+    }
 
-.detailArticle h2 {
-    margin-top: 0;
-}
+    .detailArticle h2 {
+        margin-top: 0;
+    }
 
-.detailArticle a {
-    text-decoration: none;
-}
+    .detailArticle a {
+        text-decoration: none;
+    }
 
-.detailArticle .articleDescription {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-}
+    .detailArticle .articleDescription {
+        display: flex;
+        flex-flow: column nowrap;
+        flex-grow: 1;
+    }
 
-.detailArticle p:last-child {
-    margin-left: 0 !important;
-    align-self: flex-end;    
-}
+    .detailArticle p:last-child {
+        margin-left: 0 !important;
+        align-self: flex-end;
+    }
 
 .prix {
     font-size: 3rem;
@@ -272,38 +273,34 @@ section.notreCarte > div {
         background: #9FC92A;
     }
 
-article#articleEquilibre {
+article#articleAPropos {
     margin: 0 auto;
     width: 600px;
 }
 
-    article#articleEquilibre img {
+    article#articleAPropos img {
         margin-bottom: 20px;
     }
 
-    article#articleEquilibre li {
-        list-style-type: none;
+    article#articleAPropos li {
+        list-style-type: square;
     }
 
-        article#articleEquilibre li span {
+        article#articleAPropos li span {
             font-weight: bold;
         }
 
-        article#articleEquilibre li:last-child {
-            margin-top: 10px;
-        }
-
-    article#articleEquilibre p {
+    article#articleAPropos p {
         text-align: justify;
     }
 
-        article#articleEquilibre p:last-child {
+        article#articleAPropos p:last-child {
             font-style: italic;
             margin-top: 30px;
         }
 
-    article#articleEquilibre a {
-        text-decoration: none;
+    article#articleAPropos a {
+        text-decoration: underline;
     }
 
 article#stationnement {
@@ -311,30 +308,30 @@ article#stationnement {
     width: 800px;
 }
 
-article#stationnement section {
-    background-image: url("stationnement-dots.jpg");
-    display: flex;
-    align-items: flex-start;
-    width: 800px;
-    height: 470px;
-}
+    article#stationnement section {
+        background-image: url("stationnement-dots.jpg");
+        display: flex;
+        align-items: flex-start;
+        width: 800px;
+        height: 470px;
+    }
 
-article#stationnement aside {
-    background-color: white;
-    opacity: 0.75;
-    filter: alpha(opacity=75); /* IE8 et ancients */
-    padding: 1rem 1rem 0 1rem;
-}
+    article#stationnement aside {
+        background-color: white;
+        opacity: 0.75;
+        filter: alpha(opacity=75); /* IE8 et ancients */
+        padding: 1rem 1rem 0 1rem;
+    }
 
-article#stationnement table {
-    margin-bottom: 15px;
-}
+    article#stationnement table {
+        margin-bottom: 15px;
+    }
 
-article#stationnement table, tr, td {
-    border: solid 1px #95BE27;
-    padding: 0.3rem;
-    font-size: 1.5rem;  
-}
+    article#stationnement table, tr, td {
+        border: solid 1px #95BE27;
+        padding: 0.3rem;
+        font-size: 1.5rem;
+    }
 
 .articleDescription a {
     display: flex;
@@ -351,9 +348,9 @@ article#stationnement table, tr, td {
     word-wrap: break-word;
 }
 
-.articleDescription p:last-child {
-    margin-left: 0.5rem;
-}
+    .articleDescription p:last-child {
+        margin-left: 0.5rem;
+    }
 
 a.ajoutPanier {
     display: flex;
@@ -373,20 +370,19 @@ p.ajoutPanier {
     top: 190px;
     border: solid 1px #95BE27;
     padding: 8px;
-    
 }
 
 #panierValide {
     width: 350px;
 }
 
-#panierValide img {
-    height: 90px;
-}
+    #panierValide img {
+        height: 90px;
+    }
 
-#panierValide .listePanier > div, .sousTotal {
-    font-size: large;
-}
+    #panierValide .listePanier > div, .sousTotal {
+        font-size: large;
+    }
 
 h3.total {
     width: 350px;
@@ -412,12 +408,12 @@ h3.total {
     border-top: 1px dashed #95BE27;
 }
 
-#panier hr:last-child, #panierValide .listePanier hr:last-child   {
-    border-top: none;
-}
+    #panier hr:last-child, #panierValide .listePanier hr:last-child {
+        border-top: none;
+    }
 
 #panier .lienArticlePanier a, #panierValide .lienArticlePanier a {
-    color: #95BE27; 
+    color: #95BE27;
     text-decoration: none;
     padding: 2px;
     font-size: 1.2rem;
@@ -463,7 +459,7 @@ h3.total {
 
 #choixAffichage label {
     margin: 0;
-    font-weight: normal; 
+    font-weight: normal;
     display: flex;
     align-items: center;
 }
@@ -481,6 +477,7 @@ h3.total {
 .ccform.creationCompte {
     width: 345px;
 }
+
 .ccform .ccfield-prepend {
     display: flex;
     width: auto;
@@ -496,10 +493,10 @@ h3.total {
     padding: 8px 13px;
 }
 
-.contact .ccform-addon.iconTextarea {
-    align-items: flex-start;
-}
+    .contact .ccform-addon.iconTextarea {
+        align-items: flex-start;
+    }
 
-.contact .ccform-addon.iconTextarea i {
-    margin-top: 6px;
-}
+        .contact .ccform-addon.iconTextarea i {
+            margin-top: 6px;
+        }
