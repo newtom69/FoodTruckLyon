@@ -161,6 +161,7 @@
     <Content Include="Content\CrepeNutella.jpg" />
     <Content Include="Content\Evian50cl.jpg" />
     <Content Include="Content\Expresso.jpg" />
+    <Content Include="Content\food-truck.jpg" />
     <Content Include="Content\hotdog.jpg" />
     <Content Include="Content\IceTea33cl.jpg" />
     <Content Include="Content\lasagne.jpg" />
@@ -179,8 +180,6 @@
     <Content Include="Content\SaladeDeFruits.jpg" />
     <Content Include="Content\saladeVegan.jpg" />
     <Content Include="Content\saladeVeganXP.jpg" />
-    <Content Include="Content\slide-article.jpg" />
-    <Content Include="Content\slide-stationnement.jpg" />
     <Content Include="Content\stationnement-dots.jpg" />
     <Content Include="Content\TheNoir.jpg" />
     <Content Include="Content\TheVert.jpg" />
@@ -192,7 +191,6 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Content\logo.png.old" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
