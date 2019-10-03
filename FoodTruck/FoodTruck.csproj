@@ -146,7 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ArizonaGreenTea50cl.jpg" />
-    <Content Include="Content\article.jpg" />
+    <Content Include="Content\asp-net-mvc.jpg" />
     <Content Include="Content\BenNJerry.jpg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -251,6 +251,7 @@
     <None Include="Views\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
