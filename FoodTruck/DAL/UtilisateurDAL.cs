@@ -10,12 +10,6 @@ namespace FoodTruck.DAL
 {
     public class UtilisateurDAL
     {
-        public Utilisateur Connexion(int id)
-        {
-            Utilisateur lUtilisateur = new Utilisateur();
-            return lUtilisateur;
-        }
-
         public Utilisateur Connexion(string Email, string Mdp)
         {
             string mdpHash;

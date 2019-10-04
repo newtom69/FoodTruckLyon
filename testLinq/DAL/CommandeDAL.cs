@@ -36,9 +36,7 @@ namespace testLinq.DAL
                 cmdArt.Quantite = quantite;
                 cmdArt.PrixTotal = prixTotal;
                 db.Commande_Article.Add(cmdArt);
-                //db.SaveChanges();
             }
-
             db.SaveChanges();
         }
     }
