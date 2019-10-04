@@ -26,10 +26,38 @@ namespace testLinq.DAL
             return lUtilisateur;
         }
 
-
-
-
-
+        public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
+        {
+            string mdpHash;
+            using (SHA256 Hash = SHA256.Create())
+                mdpHash = GetHash(Hash, mdp);
+            
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                int id = (from user in db.Utilisateur
+                          where user.Email == email
+                          select user.Id).FirstOrDefault();
+                if (id != 0)
+                {
+                    Utilisateur lUtilisateur = new Utilisateur { Id = 0 };
+                    return lUtilisateur;
+                }
+                else
+                {
+                    Utilisateur lUtilisateur = new Utilisateur
+                    {
+                        Email = email,
+                        Mdp = mdp,
+                        Nom = nom,
+                        Prenom = prenom,
+                        Telephone = telephone
+                    };
+                    db.Utilisateur.Add(lUtilisateur);
+                    db.SaveChanges();
+                    return Connexion(email, mdp);
+                }
+            }
+        }
 
         private static string GetHash(HashAlgorithm hashAlgorithm, string input)
         {
