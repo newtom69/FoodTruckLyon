@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Image" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prix" Type="float" Nullable="false" />
+          <Property Name="FamilleId" Type="int" Nullable="false" />
+          <Property Name="NombreVendus" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Allergenes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Grammage" Type="int" Nullable="false" />
+          <Property Name="Litrage" Type="int" Nullable="false" />
+          <Property Name="DansCarte" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UtilisateurId" Type="int" Nullable="false" />
+          <Property Name="DateCommande" Type="datetime" Nullable="false" />
+          <Property Name="DateLivraison" Type="datetime" Nullable="false" />
+          <Property Name="ModeLivraison" Type="nchar" MaxLength="17" Nullable="false" />
+          <Property Name="PrixTotal" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Commande_Article">
+          <Key>
+            <PropertyRef Name="CommandeId" />
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="CommandeId" Type="int" Nullable="false" />
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="PrixTotal" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FamilleArticle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="14" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Panier">
+          <Key>
+            <PropertyRef Name="UtilisateurId" />
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="UtilisateurId" Type="int" Nullable="false" />
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="PrixTotal" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="Mdp" Type="nchar" MaxLength="64" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Telephone" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Visite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdresseIp" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="DateTimeVisite" Type="datetime" />
+          <Property Name="Url" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="UtilisateurId" Type="int" />
+          <Property Name="UrlOrigine" Type="nchar" MaxLength="200" />
+          <Property Name="Navigateur" Type="nchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK_Article_FamilleArticle">
+          <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilleArticle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="FamilleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Article_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Article_Commande">
+          <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
+          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="CommandeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visite_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="Visite" Type="Self.Visite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visite">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="foodtruckModelStoreContainer">
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
+            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Article_Article" Association="Self.FK_Commande_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Article_Commande" Association="Self.FK_Commande_Article_Commande">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Utilisateur_Article_Article" Association="Self.FK_Utilisateur_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Panier" EntitySet="Panier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Utilisateur_Article_Utilisateur" Association="Self.FK_Utilisateur_Article_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Panier" EntitySet="Panier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visite_Utilisateur" Association="Self.FK_Visite_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Visite" EntitySet="Visite" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="foodtruckModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Prix" Type="Double" Nullable="false" />
+          <Property Name="FamilleId" Type="Int32" Nullable="false" />
+          <Property Name="NombreVendus" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Allergenes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Grammage" Type="Int32" Nullable="false" />
+          <Property Name="Litrage" Type="Int32" Nullable="false" />
+          <Property Name="DansCarte" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FamilleArticle" Relationship="Self.FK_Article_FamilleArticle" FromRole="Article" ToRole="FamilleArticle" />
+          <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Article" ToRole="Commande_Article" />
+          <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Article" ToRole="Panier" />
+        </EntityType>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
+          <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateLivraison" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModeLivraison" Type="String" MaxLength="17" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PrixTotal" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
+        </EntityType>
+        <EntityType Name="Commande_Article">
+          <Key>
+            <PropertyRef Name="CommandeId" />
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="CommandeId" Type="Int32" Nullable="false" />
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="PrixTotal" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Commande_Article" ToRole="Article" />
+          <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande_Article" ToRole="Commande" />
+        </EntityType>
+        <EntityType Name="FamilleArticle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="14" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Panier">
+          <Key>
+            <PropertyRef Name="UtilisateurId" />
+            <PropertyRef Name="ArticleId" />
+          </Key>
+          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="PrixTotal" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Panier" ToRole="Article" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Panier" ToRole="Utilisateur" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Mdp" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Telephone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
+          <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
+          <NavigationProperty Name="Visite" Relationship="Self.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
+        </EntityType>
+        <EntityType Name="Visite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdresseIp" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DateTimeVisite" Type="DateTime" Precision="3" />
+          <Property Name="Url" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UtilisateurId" Type="Int32" />
+          <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Navigateur" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
+        </EntityType>
+        <Association Name="FK_Article_FamilleArticle">
+          <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilleArticle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="FamilleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Article_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Article_Commande">
+          <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
+          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="CommandeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visite_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="Visite" Type="Self.Visite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visite">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="foodtruckEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Article" EntityType="Self.Article" />
+          <EntitySet Name="Commande" EntityType="Self.Commande" />
+          <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" />
+          <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" />
+          <EntitySet Name="Panier" EntityType="Self.Panier" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
+          <EntitySet Name="Visite" EntityType="Self.Visite" />
+          <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
+            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Article_Article" Association="Self.FK_Commande_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Utilisateur_Article_Article" Association="Self.FK_Utilisateur_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Panier" EntitySet="Panier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Article_Commande" Association="Self.FK_Commande_Article_Commande">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Utilisateur_Article_Utilisateur" Association="Self.FK_Utilisateur_Article_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Panier" EntitySet="Panier" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Visite_Utilisateur" Association="Self.FK_Visite_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Visite" EntitySet="Visite" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="foodtruckModelStoreContainer" CdmEntityContainer="foodtruckEntities">
+          <EntitySetMapping Name="Article">
+            <EntityTypeMapping TypeName="foodtruckModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="FamilleId" ColumnName="FamilleId" />
+                <ScalarProperty Name="NombreVendus" ColumnName="NombreVendus" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Allergenes" ColumnName="Allergenes" />
+                <ScalarProperty Name="Grammage" ColumnName="Grammage" />
+                <ScalarProperty Name="Litrage" ColumnName="Litrage" />
+                <ScalarProperty Name="DansCarte" ColumnName="DansCarte" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commande">
+            <EntityTypeMapping TypeName="foodtruckModel.Commande">
+              <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
+                <ScalarProperty Name="DateLivraison" ColumnName="DateLivraison" />
+                <ScalarProperty Name="ModeLivraison" ColumnName="ModeLivraison" />
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commande_Article">
+            <EntityTypeMapping TypeName="foodtruckModel.Commande_Article">
+              <MappingFragment StoreEntitySet="Commande_Article">
+                <ScalarProperty Name="CommandeId" ColumnName="CommandeId" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FamilleArticle">
+            <EntityTypeMapping TypeName="foodtruckModel.FamilleArticle">
+              <MappingFragment StoreEntitySet="FamilleArticle">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Panier">
+            <EntityTypeMapping TypeName="foodtruckModel.Panier">
+              <MappingFragment StoreEntitySet="Panier">
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilisateur">
+            <EntityTypeMapping TypeName="foodtruckModel.Utilisateur">
+              <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Mdp" ColumnName="Mdp" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visite">
+            <EntityTypeMapping TypeName="foodtruckModel.Visite">
+              <MappingFragment StoreEntitySet="Visite">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AdresseIp" ColumnName="AdresseIp" />
+                <ScalarProperty Name="DateTimeVisite" ColumnName="DateTimeVisite" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="UrlOrigine" ColumnName="UrlOrigine" />
+                <ScalarProperty Name="Navigateur" ColumnName="Navigateur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

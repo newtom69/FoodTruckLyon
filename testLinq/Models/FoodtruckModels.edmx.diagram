@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="25d5a71a6a44407c871dcff717bf94f1" Name="Diagram1">
+        <EntityTypeShape EntityType="foodtruckModel.Article" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.Commande" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.Commande_Article" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.FamilleArticle" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.Panier" Width="1.5" PointX="6" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.Utilisateur" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodtruckModel.Visite" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <AssociationConnector Association="foodtruckModel.FK_Article_FamilleArticle" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Commande_Article_Article" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Utilisateur_Article_Article" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Commande_Article_Commande" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Commande_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Utilisateur_Article_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="foodtruckModel.FK_Visite_Utilisateur" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
