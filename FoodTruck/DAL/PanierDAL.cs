@@ -110,7 +110,7 @@ namespace FoodTruck.DAL
         }
 
         //Ajouter dans listeArticles les articles du PanierDAL
-        public void Lister(int idUtilisateur)
+        public void Lister()
         {
             using (SqlConnection connection = new SqlConnection())
             {
@@ -124,7 +124,7 @@ namespace FoodTruck.DAL
                         " SELECT UtilisateurId, ArticleId, Quantite, PrixTotal, Image, Nom" +
                         " FROM Panier" +
                         " inner join Article on Article.Id = ArticleId"+
-                       $" WHERE UtilisateurId = {idUtilisateur}";
+                       $" WHERE UtilisateurId = {UtilisateurId}";
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

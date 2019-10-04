@@ -161,7 +161,7 @@ namespace FoodTruck.Controllers
             if (lUtilisateur != null && lUtilisateur.Id != 0)
             {
                 PanierDAL lePanierDal = new PanierDAL(lUtilisateur.Id);
-                lePanierDal.Lister(lUtilisateur.Id);
+                lePanierDal.Lister();
                 Panier lePanier;
                 if (this.Session["MonPanier"] == null)
                     lePanier = new Panier();
