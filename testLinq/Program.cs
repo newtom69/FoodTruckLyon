@@ -7,16 +7,13 @@ using testLinq.Models;
 
 namespace testLinq
 {
-
-
     class Program
     {
         static void Main(string[] args)
         {
-
             foodtruckEntities db = new foodtruckEntities();
 
-
+            #region ArticleDAL
             //public Article Details(int id)
             {
                 int id = 5;
@@ -37,10 +34,9 @@ namespace testLinq
                 larticle.NombreVendus += nbre;
                 db.SaveChanges();
             }
-            //***************
-            //ArticleDAL done
-            //***************
+            #endregion
 
+            #region ArticlesDAL
             //public void ListerRandom(int nombreRetour, int nombreTop)
             {
                 int nombreTop = 10;
@@ -57,7 +53,6 @@ namespace testLinq
             }
 
             //public void Lister(int nombreMax, int familleId)
-
             {
                 int nombreMax = 0;
                 int familleId = 3;
@@ -69,18 +64,10 @@ namespace testLinq
                                           .Take(nombreMax)
                                           .ToList();
             }
-            //*******************
-            // articlesDAL done
-            //*******************
+            #endregion
 
 
 
-            // Création de notre client
-            //client cli = new client()
-            //{
-            //    nom = "Dupont";
-            //prenom = "Jean";
-            //adresse = "160 rue Solferino 59000 Lille"
 
         }
     }
