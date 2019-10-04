@@ -57,6 +57,7 @@
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
+    <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
