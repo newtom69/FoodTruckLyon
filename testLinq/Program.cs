@@ -44,9 +44,8 @@ namespace testLinq
             //var createOK = utilisateurDAL.Creation("toto@tooooooo.com", "mdp", "nom", "prenom", "0610101010");
             //var createKO = utilisateurDAL.Creation("toto@tooooooo.com", "mdp", "nom", "prenom", "0610101010");
 
+
         }
-
-
     }
 }
 
