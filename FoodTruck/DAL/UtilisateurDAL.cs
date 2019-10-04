@@ -73,8 +73,7 @@ namespace FoodTruck.DAL
 
                     if (command.ExecuteScalar() != null)
                     {
-                        lUtilisateur.Id = 0;
-                        return lUtilisateur;
+                        return null;
                     }
 
                 }

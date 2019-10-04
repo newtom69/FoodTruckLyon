@@ -37,17 +37,12 @@ namespace testLinq.DAL
                 int id = (from user in db.Utilisateur
                           where user.Email == email
                           select user.Id).FirstOrDefault();
-                if (id != 0)
-                {
-                    Utilisateur lUtilisateur = new Utilisateur { Id = 0 };
-                    return lUtilisateur;
-                }
-                else
+                if (id == 0)
                 {
                     Utilisateur lUtilisateur = new Utilisateur
                     {
                         Email = email,
-                        Mdp = mdp,
+                        Mdp = mdpHash,
                         Nom = nom,
                         Prenom = prenom,
                         Telephone = telephone
@@ -55,6 +50,10 @@ namespace testLinq.DAL
                     db.Utilisateur.Add(lUtilisateur);
                     db.SaveChanges();
                     return Connexion(email, mdp);
+                }
+                else
+                {
+                    return null;
                 }
             }
         }

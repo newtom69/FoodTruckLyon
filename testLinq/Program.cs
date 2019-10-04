@@ -27,17 +27,22 @@ namespace testLinq
             //CommandeDAL cmdDAL = new CommandeDAL();
             //cmdDAL.Ajouter(laCommande);
 
-            int utilisateurId = 37;
-            ArticleDAL articleDAL = new ArticleDAL();
-            Article larticle = articleDAL.Details(1);
-            PanierDAL panierDAL = new PanierDAL(utilisateurId);
+            //int utilisateurId = 37;
+            //ArticleDAL articleDAL = new ArticleDAL();
+            //Article larticle = articleDAL.Details(1);
+            //PanierDAL panierDAL = new PanierDAL(utilisateurId);
 
-            panierDAL.Lister();
-            panierDAL.ModifierQuantite(larticle, 1);
-            panierDAL.Supprimer(larticle);
-            panierDAL.Ajouter(larticle);
-            panierDAL.Supprimer();
+            //panierDAL.Lister();
+            //panierDAL.ModifierQuantite(larticle, 1);
+            //panierDAL.Supprimer(larticle);
+            //panierDAL.Ajouter(larticle);
+            //panierDAL.Supprimer();
 
+            //UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+
+            //var conKO = utilisateurDAL.Connexion("tvuille@yahoo.fr", "gsdfrgbs");
+            //var createOK = utilisateurDAL.Creation("toto@tooooooo.com", "mdp", "nom", "prenom", "0610101010");
+            //var createKO = utilisateurDAL.Creation("toto@tooooooo.com", "mdp", "nom", "prenom", "0610101010");
 
         }
 

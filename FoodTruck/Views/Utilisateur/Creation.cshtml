@@ -16,6 +16,13 @@
     {
         <p><font color="red">Mauvais choix de mots de passe. Veuillez réessayer s'il vous plait (>8 caractères et identiques).</font></p>
     }
+    if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
+    {
+        <p><font color="red">Compte déjà existant. Veuillez saisir une autre adresse mail ou vous <a href="/Utilisateur/Connexion">connecter</a>.</font></p>
+    }
+
+
+
     <div class="ccfield-prepend">
         <span class="ccform-addon"><i class="fa fa-envelope fa-2x"></i></span>
         @if (ViewBag.Email != null)
@@ -67,7 +74,7 @@
         {
             <input class="ccformfield" name="Telephone" type="tel" placeholder="Téléphone" maxlength='10' required>
         }
-        
+
     </div>
     <div class="ccfield-prepend">
         <input class="ccbtn" type="submit" value="Creation">

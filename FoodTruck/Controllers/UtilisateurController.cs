@@ -138,14 +138,17 @@ namespace FoodTruck.Controllers
             }
             this.Session["Utilisateur"] = lUtilisateur;
             ViewBag.lUtilisateur = lUtilisateur;
-            if (lUtilisateur.Id != 0)
+            if (lUtilisateur != null)
             {
                 return RedirectToAction($"./Detail/{lUtilisateur.Id}");
             }
-            this.Session["Utilisateur"] = null;
-            ViewBag.lUtilisateur = null;
-            ViewBag.MauvaisEmailMdp = true;
-            return View();
+            else
+            {
+                this.Session["Utilisateur"] = null;
+                ViewBag.lUtilisateur = null;
+                ViewBag.MauvaisEmailMdp = true;
+                return View();
+            }
         }
 
         bool VerifMdp(string mdp1, string mdp2)
