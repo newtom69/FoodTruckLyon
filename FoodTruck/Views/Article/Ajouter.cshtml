@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Ajouter article au catalogue";
+}
+<div class="detailArticle">
+    <div>
+
+        @if (ViewBag.DroitPAge)
+        {
+            <p class="grow">
+                vous pouvez ajouter un article au catalogue
+            </p>
+        }
+        else
+        {
+            <p class="grow">
+                vous ne pouvez pas ajouter un article au catalogue !
+            </p>
+        }
+
+    </div>
+</div>

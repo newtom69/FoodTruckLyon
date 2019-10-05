@@ -72,5 +72,75 @@ namespace FoodTruck.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Ajouter()
+        {
+            bool droitPage = VerifierDroit();
+
+
+
+            //TEST
+            Article lArticle = new Article
+            {
+                Nom = "Nom Test",
+                Description = "test ajout produit",
+                Image = "ImageTest.jpg",
+                Prix = 2.5,
+                Grammage = 150,
+                DansCarte = true,
+                Allergenes = "Gluten",
+                FamilleId = 1
+            };
+            Ajouter(lArticle);
+            // Fin TEST
+
+
+            ViewBag.DroitPage = droitPage;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Ajouter(Article lArticle)
+        {
+            bool droitPage = VerifierDroit();
+            
+            if(droitPage)
+            {
+                ArticleDAL articleDAL = new ArticleDAL();
+                articleDAL.AjouterArticleEnBase(lArticle);
+                //TODO
+
+            }
+
+            ViewBag.DroitPage = droitPage;
+            return View();
+        }
+
+
+
+
+
+
+        private bool VerifierDroit()
+        {
+            bool droitPage;
+            Utilisateur lUtilisateur;
+            if (Session["Utilisateur"] != null)
+            {
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
+                ViewBag.lUtilisateur = lUtilisateur;
+                if (lUtilisateur.AdminArticle || lUtilisateur.AdminTotal)
+                    droitPage = true;
+                else
+                    droitPage = false;
+            }
+            else
+            {
+                droitPage = false;
+            }
+
+            return droitPage;
+        }
     }
 }

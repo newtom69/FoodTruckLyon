@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FoodTruck.Models;
 
 namespace FoodTruck.DAL
@@ -25,6 +26,15 @@ namespace FoodTruck.DAL
                                     where article.Id == id
                                     select article).FirstOrDefault();
                 larticle.NombreVendus += nbre;
+                db.SaveChanges();
+            }
+        }
+
+        internal void AjouterArticleEnBase(Article lArticle)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                db.Article.Add(lArticle);
                 db.SaveChanges();
             }
         }
