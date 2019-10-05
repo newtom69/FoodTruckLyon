@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Article">
           <Key>
             <PropertyRef Name="Id" />
@@ -69,6 +69,10 @@
           <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Telephone" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="AdminCommande" Type="bit" Nullable="false" />
+          <Property Name="AdminUtilisateur" Type="bit" Nullable="false" />
+          <Property Name="AdminArticle" Type="bit" Nullable="false" />
+          <Property Name="AdminTotal" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -203,8 +207,7 @@
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="foodtruckModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -285,6 +288,10 @@
           <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
           <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
           <NavigationProperty Name="Visite" Relationship="Self.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
+          <Property Name="AdminCommande" Type="Boolean" Nullable="false" />
+          <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
+          <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
+          <Property Name="AdminTotal" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -486,6 +493,10 @@
           <EntitySetMapping Name="Utilisateur">
             <EntityTypeMapping TypeName="foodtruckModel.Utilisateur">
               <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="AdminTotal" ColumnName="AdminTotal" />
+                <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
+                <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />
+                <ScalarProperty Name="AdminCommande" ColumnName="AdminCommande" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Mdp" ColumnName="Mdp" />
