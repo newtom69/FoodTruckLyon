@@ -10,6 +10,7 @@ namespace FoodTruck.Controllers
     public class CommandeController : Controller
     {
         // GET: Commande
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
@@ -50,7 +51,7 @@ namespace FoodTruck.Controllers
             }
 
             CommandeDAL laCommandeDal = new CommandeDAL();
-            laCommandeDal.Ajouter(laCommande);
+            laCommandeDal.Ajouter(laCommande, lePanier.ListeArticlesUI);
             
             Mail(lUtilisateur, laCommande, lePanier);
 
@@ -61,6 +62,7 @@ namespace FoodTruck.Controllers
 
             return View();
         }
+
 
         public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierUI lePanier)
         {

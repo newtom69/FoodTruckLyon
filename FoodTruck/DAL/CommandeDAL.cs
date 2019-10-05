@@ -6,7 +6,7 @@ namespace FoodTruck.DAL
 {
     class CommandeDAL
     {
-        public void Ajouter(Commande laCommande)
+        public void Ajouter(Commande laCommande, List<ArticleUI> listeArticlesUI)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -17,15 +17,9 @@ namespace FoodTruck.DAL
                                   orderby cmd.Id descending
                                   select cmd.Id).FirstOrDefault();
 
-                List<Article> listeArticles = new List<Article>(); //TODO
-                ArticleDAL articleDAL = new ArticleDAL();
-                listeArticles.Add(articleDAL.Details(5));
-                listeArticles.Add(articleDAL.Details(1));
-                listeArticles.Add(articleDAL.Details(3));
-
-                foreach (var article in listeArticles)
+                foreach (var article in listeArticlesUI)
                 {
-                    int quantite = 1; //= article.Quantite; //TODO
+                    int quantite = article.Quantite;
                     double prixTotal = (article.Prix * quantite);
 
                     Commande_Article cmdArt = new Commande_Article();

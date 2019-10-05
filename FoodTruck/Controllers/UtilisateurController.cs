@@ -6,6 +6,7 @@ namespace FoodTruck.Controllers
 {
     public class UtilisateurController : Controller
     {
+        [HttpGet]
         public ActionResult Connexion()
         {
             ViewBag.PanierAbsent = false;
@@ -56,6 +57,7 @@ namespace FoodTruck.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Deconnexion()
         {
             ViewBag.PanierAbsent = true;
@@ -64,29 +66,7 @@ namespace FoodTruck.Controllers
             return View();
         }
 
-        //public ActionResult Detail(int id)
-        //{
-        //    ViewBag.PanierAbsent = false;
-        //    PanierUI lePanier;
-        //    if (this.Session["Panier"] == null) lePanier = new PanierUI();
-        //    else lePanier = (PanierUI)this.Session["Panier"];
-        //    this.Session["Panier"] = lePanier;
-        //    ViewBag.Panier = lePanier;
-
-        //    Utilisateur lUtilisateur;
-
-        //    if (this.Session["Utilisateur"] == null)
-        //        return View();
-        //    else
-        //    {
-        //        lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
-        //    }
-        //    this.Session["Utilisateur"] = lUtilisateur;
-        //    ViewBag.lUtilisateur = lUtilisateur;
-
-        //    return View();
-        //}
-
+        [HttpGet]
         public ActionResult Creation()
         {
             ViewBag.PanierAbsent = false;

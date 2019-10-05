@@ -8,6 +8,7 @@ namespace FoodTruck.Controllers
     public class PanierController : Controller
     {
         // GET: Panier
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = true;
@@ -36,6 +37,7 @@ namespace FoodTruck.Controllers
         }
 
         // GET: Panier/Ajouter/5
+        [HttpGet]
         public ActionResult Ajouter(int Id)
         {
             bool sauvPanier = false;
@@ -92,6 +94,7 @@ namespace FoodTruck.Controllers
         }
 
         // GET: Panier/Retirer/0
+        [HttpGet]
         public ActionResult Retirer(int id)
         {
             bool sauvPanier = false;

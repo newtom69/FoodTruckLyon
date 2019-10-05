@@ -191,6 +191,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\ArizonaGreenTea50cl.jpg" />
     <Content Include="Content\Images\asp-net-mvc.jpg" />
+    <Content Include="Content\Images\avant-après.png" />
     <Content Include="Content\Images\BenNJerry.jpg" />
     <Content Include="Content\Images\CaféLong.jpg" />
     <Content Include="Content\Images\cheeseburger.jpg" />

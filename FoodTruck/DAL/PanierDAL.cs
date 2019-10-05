@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FoodTruck.Models;
 
@@ -20,10 +21,9 @@ namespace FoodTruck.DAL
             {
                 ArticleId = lArticle.Id,
                 UtilisateurId = UtilisateurId,
-                Quantite = 1
-            };
-            lePanier.PrixTotal = lArticle.Prix * lePanier.Quantite;
-
+                Quantite = 1,
+                PrixTotal = lArticle.Prix
+        };
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.Panier.Add(lePanier);
@@ -40,7 +40,7 @@ namespace FoodTruck.DAL
                                    where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
                                    select panier).FirstOrDefault();
                 lePanier.Quantite += quantite;
-                lePanier.PrixTotal += quantite * lArticle.Prix;
+                lePanier.PrixTotal = Math.Round(lePanier.PrixTotal + quantite * lArticle.Prix, 2);
                 db.SaveChanges();
             }
         }

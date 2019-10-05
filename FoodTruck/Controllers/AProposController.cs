@@ -5,6 +5,7 @@ namespace FoodTruck.Controllers
 {
     public class AProposController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
@@ -24,7 +25,7 @@ namespace FoodTruck.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public ActionResult Stationnement()
         {
             ViewBag.PanierAbsent = false;

@@ -9,6 +9,7 @@ namespace FoodTruck.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
@@ -38,6 +39,7 @@ namespace FoodTruck.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Contact()
         {
             ViewBag.PanierAbsent = false;
