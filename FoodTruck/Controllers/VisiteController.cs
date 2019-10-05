@@ -18,7 +18,15 @@ namespace FoodTruck.Controllers
             string UrlOrigine="";
             if (System.Web.HttpContext.Current.Request.UrlReferrer!=null)
                 UrlOrigine = System.Web.HttpContext.Current.Request.UrlReferrer.ToString();
-            Visite laVisite = new Visite(url, DateTime.Now, adresseIP, lUtilisateurId, navigateur, UrlOrigine);
+            Visite laVisite = new Visite
+            {
+                Url = url,
+                DateTimeVisite = DateTime.Now,
+                AdresseIp = adresseIP,
+                UtilisateurId = lUtilisateurId,
+                Navigateur = navigateur,
+                UrlOrigine = UrlOrigine
+            };
             VisiteDAL laVisiteDAL = new VisiteDAL(laVisite);
         }
     }

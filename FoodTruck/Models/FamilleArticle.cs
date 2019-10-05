@@ -12,14 +12,18 @@ namespace FoodTruck.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Panier
+    public partial class FamilleArticle
     {
-        public int UtilisateurId { get; set; }
-        public int ArticleId { get; set; }
-        public int Quantite { get; set; }
-        public double PrixTotal { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FamilleArticle()
+        {
+            this.Article = new HashSet<Article>();
+        }
     
-        public virtual Article Article { get; set; }
-        public virtual Utilisateur Utilisateur { get; set; }
+        public int Id { get; set; }
+        public string Nom { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Article> Article { get; set; }
     }
 }

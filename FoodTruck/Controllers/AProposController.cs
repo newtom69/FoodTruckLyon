@@ -12,10 +12,10 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
@@ -32,10 +32,10 @@ namespace FoodTruck.Controllers
         public ActionResult Stationnement()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
             Utilisateur lUtilisateur;
             if (this.Session["Utilisateur"] != null)

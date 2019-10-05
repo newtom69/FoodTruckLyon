@@ -10,13 +10,13 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
@@ -24,80 +24,77 @@ namespace FoodTruck.Controllers
             }
 
             ArticlesDAL articlesEntree = new ArticlesDAL();
-            articlesEntree.Lister(0, 1);
-            ViewBag.articlesEntree = articlesEntree;
+            ViewBag.articlesEntree = articlesEntree.Lister(0, 1);
 
             ArticlesDAL articlesPlat = new ArticlesDAL();
-            articlesPlat.Lister(0, 2);
-            ViewBag.articlesPlat = articlesPlat;
+            ViewBag.articlesPlat = articlesPlat.Lister(0, 2);
 
             ArticlesDAL articlesDessert = new ArticlesDAL();
-            articlesDessert.Lister(0, 3);
-            ViewBag.articlesDessert = articlesDessert;
+            ViewBag.articlesDessert = articlesDessert.Lister(0, 3);
 
             ArticlesDAL articlesBoissonFraiche = new ArticlesDAL();
-            articlesBoissonFraiche.Lister(0, 4);
-            ViewBag.articlesBoissonFraiche = articlesBoissonFraiche;
+            ViewBag.articlesBoissonFraiche = articlesBoissonFraiche.Lister(0, 4);
 
             ArticlesDAL articlesBoissonChaude = new ArticlesDAL();
-            articlesBoissonChaude.Lister(0, 5);
-            ViewBag.articlesBoissonChaude = articlesBoissonChaude;
+            ViewBag.articlesBoissonChaude = articlesBoissonChaude.Lister(0, 5);
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(string strJour, string strTypeRepas)
-        {
-            ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
-            ViewBag.Panier = lePanier;
+        //public ActionResult Index(string strJour, string strTypeRepas)
+        //{
+        //    ViewBag.PanierAbsent = false;
+        //    PanierUI lePanier;
+        //    if (this.Session["Panier"] == null) lePanier = new PanierUI();
+        //    else lePanier = (PanierUI)this.Session["Panier"];
+        //    this.Session["Panier"] = lePanier;
+        //    ViewBag.Panier = lePanier;
             
-            Utilisateur lUtilisateur;
-            if (this.Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
-            }
+        //    Utilisateur lUtilisateur;
+        //    if (this.Session["Utilisateur"] != null)
+        //    {
+        //        lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+        //        ViewBag.lUtilisateur = lUtilisateur;
+        //    }
 
-            ArticlesDAL articlesEntree = new ArticlesDAL();
-            articlesEntree.Lister(0, 1);
-            ViewBag.articlesEntree = articlesEntree;
+        //    ArticlesDAL articlesEntree = new ArticlesDAL();
+        //    articlesEntree.Lister(0, 1);
+        //    ViewBag.articlesEntree = articlesEntree;
 
-            ArticlesDAL articlesPlat = new ArticlesDAL();
-            articlesPlat.Lister(0, 2);
-            ViewBag.articlesPlat = articlesPlat;
+        //    ArticlesDAL articlesPlat = new ArticlesDAL();
+        //    articlesPlat.Lister(0, 2);
+        //    ViewBag.articlesPlat = articlesPlat;
 
-            ArticlesDAL articlesDessert = new ArticlesDAL();
-            articlesDessert.Lister(0, 3);
-            ViewBag.articlesDessert = articlesDessert;
+        //    ArticlesDAL articlesDessert = new ArticlesDAL();
+        //    articlesDessert.Lister(0, 3);
+        //    ViewBag.articlesDessert = articlesDessert;
 
-            ArticlesDAL articlesBoissonFraiche = new ArticlesDAL();
-            articlesBoissonFraiche.Lister(0, 4);
-            ViewBag.articlesBoissonFraiche = articlesBoissonFraiche;
+        //    ArticlesDAL articlesBoissonFraiche = new ArticlesDAL();
+        //    articlesBoissonFraiche.Lister(0, 4);
+        //    ViewBag.articlesBoissonFraiche = articlesBoissonFraiche;
 
-            ArticlesDAL articlesBoissonChaude = new ArticlesDAL();
-            articlesBoissonChaude.Lister(0, 5);
-            ViewBag.articlesBoissonChaude = articlesBoissonChaude;
+        //    ArticlesDAL articlesBoissonChaude = new ArticlesDAL();
+        //    articlesBoissonChaude.Lister(0, 5);
+        //    ViewBag.articlesBoissonChaude = articlesBoissonChaude;
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         // GET: Article/Details/5
         public ActionResult Details(int id)
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
@@ -107,9 +104,8 @@ namespace FoodTruck.Controllers
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
-            Article articleCourant = new Article();
             ArticleDAL lArticleDAL = new ArticleDAL();
-            articleCourant = lArticleDAL.Details(id);
+            Article articleCourant = lArticleDAL.Details(id);
             ViewBag.articleCourant = articleCourant;
 
             return View();

@@ -8,7 +8,7 @@
     <div class="listePanier">
         @{int i = 0;
         }
-        @foreach (var article in ViewBag.Panier.listeArticles)
+        @foreach (var article in ViewBag.Panier.ListeArticlesUI)
         {
             double prixTotalArticle = article.Prix * article.Quantite;
             <div>

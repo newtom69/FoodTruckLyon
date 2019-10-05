@@ -12,43 +12,44 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null)
-                lePanier = new Panier();
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null)
+                lePanier = new PanierUI();
             else
-                lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+                lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             ArticlesDAL articles = new ArticlesDAL();
-            articles.ListerRandom(3, 7);
-            ViewBag.Articles = articles;
+            ViewBag.Articles = articles.ListerRandom(3, 7);
 
 
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
             return View();
         }
-  
+
         public ActionResult Contact()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null)
-                lePanier = new Panier();
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null)
+                lePanier = new PanierUI();
             else
-                lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+                lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
@@ -60,8 +61,10 @@ namespace FoodTruck.Controllers
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
             ViewBag.MailEnvoye = "";
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
 
             return View();
         }
@@ -88,30 +91,32 @@ namespace FoodTruck.Controllers
 
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress("info@foodtruck-lyon.com");
-                message.To.Add(email);
-                message.Subject = "Message à partir du formulaire de contact";
+                using (MailMessage message = new MailMessage { From = new MailAddress("info@foodtruck-lyon.com") })
+                {
+                    message.To.Add(email);
+                    message.Subject = "Message à partir du formulaire de contact";
 
-                StringBuilder mastringbuilder = new StringBuilder();
+                    StringBuilder mastringbuilder = new StringBuilder();
 
-                mastringbuilder.Append(
-                    "<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-                mastringbuilder.Append(
-                    "<meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"><title>Mail du site</title></head><body><h3>De : ");
-                mastringbuilder.Append(prenomOk + " " + nomOk);
-                mastringbuilder.Append("</h3><h3>Message : </h3><p>");
-                mastringbuilder.Append(commentsOk);
-                mastringbuilder.Append("<br/>");
-                mastringbuilder.Append("<br/>Ceci est une copie du message envoyé à votre FoodTruck. Vous recevrez bientôt une réponse. Merci");
-                mastringbuilder.Append("</p></body></html>");
+                    mastringbuilder.Append(
+                        "<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+                    mastringbuilder.Append(
+                        "<meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"><title>Mail du site</title></head><body><h3>De : ");
+                    mastringbuilder.Append(prenomOk + " " + nomOk);
+                    mastringbuilder.Append("</h3><h3>Message : </h3><p>");
+                    mastringbuilder.Append(commentsOk);
+                    mastringbuilder.Append("<br/>");
+                    mastringbuilder.Append("<br/>Ceci est une copie du message envoyé à votre FoodTruck. Vous recevrez bientôt une réponse. Merci");
+                    mastringbuilder.Append("</p></body></html>");
 
-                message.Body = mastringbuilder.ToString();
-                message.IsBodyHtml = true;
+                    message.Body = mastringbuilder.ToString();
+                    message.IsBodyHtml = true;
 
-                SmtpClient client = new SmtpClient();
-                client.EnableSsl = true;
-                client.Send(message);
+                    using (SmtpClient client = new SmtpClient { EnableSsl = true })
+                    {
+                        client.Send(message);
+                    }
+                }
                 ViewBag.MailEnvoye = "Votre message a bien été envoyé.";
                 ViewBag.Message = "";
             }
@@ -122,8 +127,10 @@ namespace FoodTruck.Controllers
             }
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(email);
+                MailMessage message = new MailMessage
+                {
+                    From = new MailAddress(email)
+                };
                 message.To.Add("info@foodtruck-lyon.com");
                 message.Subject = "Message à partir du formulaire de contact";
 
@@ -142,9 +149,10 @@ namespace FoodTruck.Controllers
                 message.Body = mastringbuilder.ToString();
                 message.IsBodyHtml = true;
 
-                SmtpClient client = new SmtpClient();
-                client.EnableSsl = true;
-                client.Send(message);
+                using (SmtpClient client = new SmtpClient { EnableSsl = true })
+                {
+                    client.Send(message);
+                }
                 ViewBag.MailEnvoye = "Votre message a bien été envoyé.";
                 ViewBag.Message = "";
             }

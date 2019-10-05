@@ -13,10 +13,10 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             if (this.Session["Utilisateur"] == null)
@@ -29,17 +29,16 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion(string Email, string Mdp)
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             if (this.Session["Utilisateur"] == null)
             {
-                lUtilisateur = new Utilisateur();
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
             }
@@ -65,40 +64,40 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = true;
             this.Session["Utilisateur"] = null;
-            this.Session["MonPanier"] = null;
+            this.Session["Panier"] = null;
             return View();
         }
 
-        public ActionResult Detail(int id)
-        {
-            ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
-            ViewBag.Panier = lePanier;
+        //public ActionResult Detail(int id)
+        //{
+        //    ViewBag.PanierAbsent = false;
+        //    PanierUI lePanier;
+        //    if (this.Session["Panier"] == null) lePanier = new PanierUI();
+        //    else lePanier = (PanierUI)this.Session["Panier"];
+        //    this.Session["Panier"] = lePanier;
+        //    ViewBag.Panier = lePanier;
 
-            Utilisateur lUtilisateur;
+        //    Utilisateur lUtilisateur;
 
-            if (this.Session["Utilisateur"] == null)
-                return View();
-            else
-            {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
-            }
-            this.Session["Utilisateur"] = lUtilisateur;
-            ViewBag.lUtilisateur = lUtilisateur;
+        //    if (this.Session["Utilisateur"] == null)
+        //        return View();
+        //    else
+        //    {
+        //        lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+        //    }
+        //    this.Session["Utilisateur"] = lUtilisateur;
+        //    ViewBag.lUtilisateur = lUtilisateur;
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public ActionResult Creation()
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             return View();
@@ -108,19 +107,17 @@ namespace FoodTruck.Controllers
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
             ViewBag.PanierAbsent = false;
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null) lePanier = new Panier();
-            else lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             if (this.Session["Utilisateur"] == null)
             {
-                lUtilisateur = new Utilisateur();
                 lUtilisateurDAL = new UtilisateurDAL();
-
                 if (!VerifMdp(Mdp, Mdp2))
                 {
                     ViewBag.MdpIncorrect = true;
@@ -164,46 +161,42 @@ namespace FoodTruck.Controllers
             if (lUtilisateur != null && lUtilisateur.Id != 0)
             {
                 PanierDAL lePanierDal = new PanierDAL(lUtilisateur.Id);
-                lePanierDal.Lister();
-                Panier lePanier;
-                if (this.Session["MonPanier"] == null)
-                    lePanier = new Panier();
+
+                PanierUI panierUI;
+                if (Session["Panier"] == null)
+                    panierUI = new PanierUI();
                 else
-                    lePanier = (Panier)this.Session["MonPanier"];
+                    panierUI = (PanierUI)Session["Panier"];
 
-                // boucle sur panier local
-                foreach (var lArticle in lePanier.listeArticles)
+                foreach(ArticleUI lArticleUI in panierUI.ListeArticlesUI)
                 {
-                    var t = lePanierDal.listeArticles.Find(art => art.Id == lArticle.Id);
-                    if (t == null)
-                        lePanierDal.Ajouter(lArticle);
+                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticleUI.Id);
+                    if(panier == null)
+                        lePanierDal.Ajouter(lArticleUI);
                     else
-                        lePanierDal.ModifierQuantite(lArticle, 1);
+                        lePanierDal.ModifierQuantite(lArticleUI, 1);
                 }
 
-                foreach (var lArticle in lePanierDal.listeArticles)
+                panierUI = new PanierUI();
+                foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
                 {
-                    var t = lePanier.listeArticles.Find(art => art.Id == lArticle.Id);
-                    if (t == null)
+                    panierUI.PrixTotal += lePanier.PrixTotal;
+                    ArticleUI article = panierUI.ListeArticlesUI.Find(art => art.Id == lePanier.ArticleId);
+                    if (article != null)
                     {
-                        lePanier.listeArticles.Add(lArticle);
-                        lePanier.PrixTotal += lArticle.Prix * lArticle.Quantite;
+                        article.Quantite++;
                     }
                     else
                     {
-                        t.Quantite += lArticle.Quantite;
-                        lePanier.PrixTotal += lArticle.Prix * lArticle.Quantite;
+                        ArticleDAL articleDAL = new ArticleDAL();
+                        panierUI.ListeArticlesUI.Add(new ArticleUI(articleDAL.Details(lePanier.ArticleId),lePanier.Quantite));
                     }
                 }
 
-                Session["MonPanier"] = lePanier;
+                Session["Panier"] = panierUI;
                 return true;
             }
-
             return false;
-
         }
-
-      
-    }
+     }
 }

@@ -1,148 +1,104 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
+using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
-    public class PanierDAL
+    class PanierDAL
     {
-        public int UtilisateurId;
-        public List<Article> listeArticles { get; set; }
-
+        public int UtilisateurId { get; set; }
 
         public PanierDAL(int utilisateurId)
         {
             UtilisateurId = utilisateurId;
         }
 
-        //Ajouter un article au panier en base d'un utilisateur
+        ///Ajouter un article au panier en base d'un utilisateur
         public void Ajouter(Article lArticle)
         {
-            int articleId = lArticle.Id;
-            string prixTotal = lArticle.Prix.ToString(CultureInfo.InvariantCulture);
-
-            using (SqlConnection connection = new SqlConnection())
+            Panier lePanier = new Panier
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
+                ArticleId = lArticle.Id,
+                UtilisateurId = UtilisateurId,
+                Quantite = 1
+            };
+            lePanier.PrixTotal = lArticle.Prix * lePanier.Quantite;
 
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                       " INSERT into Panier"+
-                       " (UtilisateurId, ArticleId, Quantite, PrixTotal)" +
-                      $" VALUES({UtilisateurId}, {articleId}, 1, {prixTotal})";
-
-                    command.ExecuteNonQuery();
-                }
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                db.Panier.Add(lePanier);
+                db.SaveChanges();
             }
         }
 
-        // augmenter d'1 la quantité d'un article du panier en base d'un utilisateur
+        ///Modifier la quantité d'un article du panier en base d'un utilisateur
         public void ModifierQuantite(Article lArticle, int quantite)
         {
-            int articleId = lArticle.Id;
-            string articlePrix = lArticle.Prix.ToString(CultureInfo.InvariantCulture);
-
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
-                
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                        " UPDATE  Panier" +
-                       $" SET Quantite = Quantite + {quantite}, PrixTotal = round(PrixTotal + {quantite}*{articlePrix},2)" +
-                       $" WHERE UtilisateurId = {UtilisateurId} and ArticleId = {articleId}";
-
-                    command.ExecuteNonQuery();
-                }
+                Panier lePanier = (from panier in db.Panier
+                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
+                                   select panier).FirstOrDefault();
+                lePanier.Quantite += quantite;
+                lePanier.PrixTotal += quantite * lArticle.Prix;
+                db.SaveChanges();
             }
         }
 
-        // Supprimer l'article du panier en base de l'utilisateur
+        /// Supprimer l'article du panier en base de l'utilisateur
         public void Supprimer(Article lArticle)
         {
-            int articleId = lArticle.Id;
-           
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
+                Panier lePanier = (from panier in db.Panier
+                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
+                                   select panier).FirstOrDefault();
 
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                        " DELETE from Panier" +
-                        $" WHERE UtilisateurId={UtilisateurId} and ArticleId = {articleId}";
-                    
-                    command.ExecuteNonQuery();
-                }
+                db.Panier.Remove(lePanier);
+                db.SaveChanges();
             }
         }
 
-        // Supprimer le panier en base de l'utilisateur
+        /// Supprimer le panier en base de l'utilisateur
         public void Supprimer()
         {
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
+                var lePanier = from panier in db.Panier
+                               where panier.UtilisateurId == UtilisateurId
+                               select panier;
 
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                        " DELETE from Panier" +
-                        $" WHERE UtilisateurId={UtilisateurId}";
-
-                    command.ExecuteNonQuery();
-                }
+                db.Panier.RemoveRange(lePanier);
+                db.SaveChanges();
             }
         }
 
-        //Ajouter dans listeArticles les articles du PanierDAL
-        public void Lister()
+        public List<Panier> ListerPanierUtilisateur()
         {
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
-
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = 
-                        " SELECT UtilisateurId, ArticleId, Quantite, PrixTotal, Image, Nom" +
-                        " FROM Panier" +
-                        " inner join Article on Article.Id = ArticleId"+
-                       $" WHERE UtilisateurId = {UtilisateurId}";
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        listeArticles = new List<Article>();
-                        while (reader.Read())
-                        {
-                            Article articleEnCours = new Article();
-                            articleEnCours.Id = (int)reader["ArticleId"];
-                            articleEnCours.Quantite = (int)reader["Quantite"];
-                            double prix = ((double)reader["PrixTotal"]) / articleEnCours.Quantite;
-                            articleEnCours.Prix = Math.Round(prix, 2);
-                            articleEnCours.Image = (string)reader["Image"];
-                            articleEnCours.Nom = (string)reader["Nom"];
-                            listeArticles.Add(articleEnCours);
-                        }
-                    }
-                }
+                List<Panier> paniers = (from panier in db.Panier
+                                        join article in db.Article on panier.ArticleId equals article.Id
+                                        where panier.UtilisateurId == UtilisateurId
+                                        select panier).ToList();
+                return paniers;
             }
         }
+
+        public List<Article> ListerArticlesPanierUtilisateur()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Article> articles = (from panier in db.Panier
+                                        join article in db.Article on panier.ArticleId equals article.Id
+                                        where panier.UtilisateurId == UtilisateurId
+                                        select article).ToList();
+                return articles;
+            }
+        }
+
     }
 }

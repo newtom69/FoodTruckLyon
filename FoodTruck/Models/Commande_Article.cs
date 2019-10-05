@@ -12,14 +12,14 @@ namespace FoodTruck.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Panier
+    public partial class Commande_Article
     {
-        public int UtilisateurId { get; set; }
+        public int CommandeId { get; set; }
         public int ArticleId { get; set; }
         public int Quantite { get; set; }
         public double PrixTotal { get; set; }
     
         public virtual Article Article { get; set; }
-        public virtual Utilisateur Utilisateur { get; set; }
+        public virtual Commande Commande { get; set; }
     }
 }
