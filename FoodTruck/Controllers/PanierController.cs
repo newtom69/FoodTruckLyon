@@ -1,9 +1,6 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -11,36 +8,40 @@ namespace FoodTruck.Controllers
     public class PanierController : Controller
     {
         // GET: Panier
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = true;
 
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null)
-                lePanier = new Panier();
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null)
+                lePanier = new PanierUI();
             else
-                lePanier = (Panier)this.Session["MonPanier"];
-            this.Session["MonPanier"] = lePanier;
+                lePanier = (PanierUI)this.Session["Panier"];
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
 
             return View();
         }
 
         // GET: Panier/Ajouter/5
+        [HttpGet]
         public ActionResult Ajouter(int Id)
         {
             bool sauvPanier = false;
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
@@ -48,21 +49,21 @@ namespace FoodTruck.Controllers
                 sauvPanier = true;
             }
 
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null)
-                lePanier = new Panier();
+            PanierUI lePanier;
+            if (this.Session["Panier"] == null)
+                lePanier = new PanierUI();
             else
-                lePanier = (Panier)this.Session["MonPanier"];
+                lePanier = (PanierUI)this.Session["Panier"];
 
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(Id);
             PanierDAL lePanierDAL;
 
-            var t = lePanier.listeArticles.Find(art => art.Id == lArticle.Id);
-            if (t == null)
+            ArticleUI artcl = lePanier.ListeArticlesUI.Find(art => art.Id == lArticle.Id);
+            if (artcl == null)
             {
-                lArticle.Quantite = 1;
-                lePanier.listeArticles.Add(lArticle);
+                ArticleUI articleUI = new ArticleUI(lArticle);
+                lePanier.ListeArticlesUI.Add(articleUI);
                 if (sauvPanier)
                 {
                     lePanierDAL = new PanierDAL(lUtilisateur.Id);
@@ -71,29 +72,33 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                t.Quantite++;
+                artcl.Quantite++;
                 if (sauvPanier)
                 {
-                    lePanierDAL= new PanierDAL(lUtilisateur.Id);
-                    lePanierDAL.ModifierQuantite(lArticle,1);
+                    lePanierDAL = new PanierDAL(lUtilisateur.Id);
+                    lePanierDAL.ModifierQuantite(lArticle, 1);
                 }
             }
 
+
             lePanier.PrixTotal += lArticle.Prix;
-            this.Session["MonPanier"] = lePanier;
+            this.Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
 
             return RedirectToAction("../Article");
         }
 
         // GET: Panier/Retirer/0
+        [HttpGet]
         public ActionResult Retirer(int id)
         {
             bool sauvPanier = false;
-            Utilisateur lUtilisateur=null;
+            Utilisateur lUtilisateur = null;
             if (this.Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
@@ -101,20 +106,20 @@ namespace FoodTruck.Controllers
                 sauvPanier = true;
             }
 
-            Panier lePanier;
-            if (this.Session["MonPanier"] == null)
-                lePanier = new Panier();
+            PanierUI panierUI;
+            if (this.Session["Panier"] == null)
+                panierUI = new PanierUI();
             else
-                lePanier = (Panier)this.Session["MonPanier"];
+                panierUI = (PanierUI)Session["Panier"];
 
             ArticleDAL lArticleDAL = new ArticleDAL();
-            Article lArticle = lArticleDAL.Details(lePanier.listeArticles[id].Id);
+            Article lArticle = lArticleDAL.Details(panierUI.ListeArticlesUI[id].Id);
             PanierDAL lePanierDAL;
-            lePanier.PrixTotal -= lArticle.Prix;
+            panierUI.PrixTotal = Math.Round(panierUI.PrixTotal - lArticle.Prix, 2);
 
-            if (lePanier.listeArticles[id].Quantite > 1)
+            if (panierUI.ListeArticlesUI[id].Quantite > 1)
             {
-                lePanier.listeArticles[id].Quantite--;
+                panierUI.ListeArticlesUI[id].Quantite--;
                 if (sauvPanier)
                 {
                     lePanierDAL = new PanierDAL(lUtilisateur.Id);
@@ -123,19 +128,21 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                lePanier.listeArticles.RemoveAt(id);
+                panierUI.ListeArticlesUI.RemoveAt(id);
                 if (sauvPanier)
                 {
                     lePanierDAL = new PanierDAL(lUtilisateur.Id);
                     lePanierDAL.Supprimer(lArticle);
                 }
             }
-                
-            this.Session["MonPanier"] = lePanier;
-            ViewBag.Panier = lePanier;
 
-            VisiteController visite = new VisiteController();
-            visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            this.Session["Panier"] = panierUI;
+            ViewBag.Panier = panierUI;
+
+            using (VisiteController visite = new VisiteController())
+            {
+                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            }
 
             return RedirectToAction("../Article");
         }

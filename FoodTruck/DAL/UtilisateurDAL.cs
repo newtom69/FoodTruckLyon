@@ -1,101 +1,57 @@
-﻿using FoodTruck.Models;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Diagnostics.Eventing.Reader;
+﻿using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Mvc;
+using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
-    public class UtilisateurDAL
+    class UtilisateurDAL
     {
-        public Utilisateur Connexion(int id)
-        {
-            Utilisateur lUtilisateur = new Utilisateur();
-            return lUtilisateur;
-        }
-
-        public Utilisateur Connexion(string Email, string Mdp)
+        public Utilisateur Connexion(string email, string mdp)
         {
             string mdpHash;
-
             using (SHA256 Hash = SHA256.Create())
-                mdpHash = GetHash(Hash, Mdp);
+                mdpHash = GetHash(Hash, mdp);
 
             Utilisateur lUtilisateur = new Utilisateur();
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
-
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                        " Select Id, Nom, Prenom, Telephone, Email, Mdp" +
-                        " From Utilisateur" +
-                       $" WHERE Email = '{Email}' and Mdp = '{mdpHash}'";
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            lUtilisateur.Id = (int)reader["Id"];
-                            lUtilisateur.Nom = reader["Nom"].ToString();
-                            lUtilisateur.Prenom = reader["Prenom"].ToString();
-                            lUtilisateur.Telephone = reader["Telephone"].ToString();
-                            lUtilisateur.Email = reader["Email"].ToString();
-                            lUtilisateur.Mdp = reader["Mdp"].ToString();
-                        }
-                    }
-                }
+                lUtilisateur = (from user in db.Utilisateur
+                                where user.Email == email && user.Mdp == mdpHash
+                                select user).FirstOrDefault();
             }
-
             return lUtilisateur;
         }
 
-
-        public Utilisateur Creation(string Email, string Mdp, string Nom, string Prenom, string Telephone)
+        public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
         {
             string mdpHash;
-
             using (SHA256 Hash = SHA256.Create())
-                mdpHash = GetHash(Hash, Mdp);
-
-            Utilisateur lUtilisateur = new Utilisateur();
-            using (SqlConnection connection = new SqlConnection())
+                mdpHash = GetHash(Hash, mdp);
+            
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
-
-                using (SqlCommand command = connection.CreateCommand())
+                int id = (from user in db.Utilisateur
+                          where user.Email == email
+                          select user.Id).FirstOrDefault();
+                if (id == 0)
                 {
-                    command.CommandText =
-                        " SELECT Id" +
-                        " FROM Utilisateur" +
-                        $" WHERE EMail='{Email}'";
-
-                    if (command.ExecuteScalar() != null)
+                    Utilisateur lUtilisateur = new Utilisateur
                     {
-                        lUtilisateur.Id = 0;
-                        return lUtilisateur;
-                    }
-
+                        Email = email,
+                        Mdp = mdpHash,
+                        Nom = nom,
+                        Prenom = prenom,
+                        Telephone = telephone
+                    };
+                    db.Utilisateur.Add(lUtilisateur);
+                    db.SaveChanges();
+                    return Connexion(email, mdp);
                 }
-
-                using (SqlCommand command = connection.CreateCommand())
+                else
                 {
-                    command.CommandText =
-                        " insert into Utilisateur" +
-                        " (Email, Mdp, Nom, Prenom, Telephone) " +
-                        $" values('{Email}', '{mdpHash}', '{Nom}', '{Prenom}', '{Telephone}')";
-
-                    command.ExecuteNonQuery();
+                    return null;
                 }
-
-                return Connexion(Email, Mdp);
             }
         }
 
@@ -110,6 +66,5 @@ namespace FoodTruck.DAL
 
             return sBuilder.ToString();
         }
-
     }
 }

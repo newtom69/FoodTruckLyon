@@ -5,12 +5,8 @@ using System.Web;
 
 namespace FoodTruck.Models
 {
-    public enum TypeRepas
+    public class PanierUI : Panier
     {
-        Aucun = 0,
-        PetitDejeuner = 1,
-        Dejeuner,
-        Gouter,
-        Diner
+        public List<ArticleUI> ListeArticlesUI = new List<ArticleUI>();
     }
 }

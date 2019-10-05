@@ -3,14 +3,14 @@
     ViewBag.Title = "FoodTruck-Lyon - Notre carte";
 }
 
-@if (ViewBag.articlesEntree.listeArticles.Count != 0)
+@if (ViewBag.articlesEntree.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Entrées :</h2>
 }
 
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesEntree.listeArticles)
+    @foreach (var article in ViewBag.articlesEntree)
     {
         <div>
             <a href="/Article/Details/@article.Id">
@@ -25,13 +25,13 @@
         </div>
     }
 </section>
-@if (ViewBag.articlesPlat.listeArticles.Count != 0)
+@if (ViewBag.articlesPlat.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Plats :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesPlat.listeArticles)
+    @foreach (var article in ViewBag.articlesPlat)
     {
         <div>
             <a href="/Article/Details/@article.Id">
@@ -46,13 +46,13 @@
         </div>
     }
 </section>
-@if (ViewBag.articlesDessert.listeArticles.Count != 0)
+@if (ViewBag.articlesDessert.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Desserts :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesDessert.listeArticles)
+    @foreach (var article in ViewBag.articlesDessert)
     {
         <div>
             <a href="/Article/Details/@article.Id">
@@ -67,13 +67,13 @@
         </div>
     }
 </section>
-@if (ViewBag.articlesBoissonFraiche.listeArticles.Count != 0)
+@if (ViewBag.articlesBoissonFraiche.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Boissons fraiches :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesBoissonFraiche.listeArticles)
+    @foreach (var article in ViewBag.articlesBoissonFraiche)
     {
         <div>
             <a href="/Article/Details/@article.Id">
@@ -88,14 +88,14 @@
         </div>
     }
 </section>
-@if (ViewBag.articlesBoissonChaude.listeArticles.Count != 0)
+@if (ViewBag.articlesBoissonChaude.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Boissons chaudes :</h2>
 }
 <section class="notreCarte">
 
-    @foreach (var article in ViewBag.articlesBoissonChaude.listeArticles)
+    @foreach (var article in ViewBag.articlesBoissonChaude)
     {
         <div>
             <a href="/Article/Details/@article.Id">

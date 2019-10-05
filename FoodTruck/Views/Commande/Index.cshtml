@@ -18,21 +18,9 @@
 @if (!ViewBag.pasDePanier && !ViewBag.pasDeClient)
 {
     <h3>Commande confirmée. Merci !</h3>
-
     <td>
-        <h4>Voici le détail de votre commande passée le @ViewBag.laCommande.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</h4>
+        <p>Votre commande a été passée le @ViewBag.laCommande.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</p>
         <p>Date de la livraison&nbsp;: le @ViewBag.laCommande.DateLivraison.ToString("dd/MM/yyyy HH:mm").</p>
         <p>Mode de livraison&nbsp;: @ViewBag.laCommande.ModeLivraison</p>
-
-        <div>
-            <ul>
-                @foreach (var article in ViewBag.laCommande.listeArticles)
-                {
-                    double prixTotalArticle = article.Prix * article.Quantite;
-                    <li> @article.Quantite&nbsp;x&nbsp;@article.Nom&nbsp;:&nbsp;@prixTotalArticle.ToString("C2", new CultureInfo("fr-FR"))</li>
-                }
-            </ul>
-            <h4>Total : @ViewBag.laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR")).</h4>
-        </div>
     </td>
 }

@@ -1,58 +1,35 @@
-﻿using FoodTruck.Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
-    public class CommandeDAL
+    class CommandeDAL
     {
-        public string strPrixTotal { get; set; }
-
-        public void Ajouter(Commande laCommande)
+        public void Ajouter(Commande laCommande, List<ArticleUI> listeArticlesUI)
         {
-            using (SqlConnection connection = new SqlConnection())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
-                ConnectionStringSettings connex = ConfigurationManager.ConnectionStrings["ServeurTestUser"];
-                connection.ConnectionString = connex.ConnectionString;
-                connection.Open();
-                strPrixTotal = laCommande.PrixTotal.ToString(CultureInfo.InvariantCulture);
-                string stringDateCommande = laCommande.DateCommande.ToString("yyyy-MM-dd HH:mm:ss");
-                string stringDateLivraison = laCommande.DateLivraison.ToString("yyyy-MM-dd HH:mm:ss");
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "INSERT INTO Commande " +
-                    "(UtilisateurId, DateCommande, DateLivraison, ModeLivraison, PrixTotal) " +
-                    "VALUES " +
-                   $"('{laCommande.UtilisateurId}','{stringDateCommande}','{stringDateLivraison}','{laCommande.ModeLivraison}','{strPrixTotal}')";
+                db.Commande.Add(laCommande);
+                db.SaveChanges();
+                int idCommande = (from cmd in db.Commande
+                                  where cmd.UtilisateurId == laCommande.UtilisateurId
+                                  orderby cmd.Id descending
+                                  select cmd.Id).FirstOrDefault();
 
-                    command.ExecuteNonQuery();
-                }
-                using (SqlCommand command = connection.CreateCommand())
+                foreach (var article in listeArticlesUI)
                 {
-                    command.CommandText = $"SELECT TOP 1 Id FROM Commande WHERE UtilisateurId={laCommande.UtilisateurId} ORDER BY Id DESC";
-                    laCommande.Id = (int)command.ExecuteScalar();
-                }
-
-                foreach (var article in laCommande.listeArticles)
-                {
-                    int articleId = article.Id;
-                    double articlePrix = article.Prix;
                     int quantite = article.Quantite;
-                    using (SqlCommand command = connection.CreateCommand())
-                    {
-                        string strArticlePrixTotal = (articlePrix * quantite).ToString(CultureInfo.InvariantCulture);
-                        command.CommandText = "insert into Commande_Article " +
-                            "(CommandeId, ArticleId, Quantite, PrixTotal) " +
-                            $"values({laCommande.Id}, {articleId}, {quantite}, {strArticlePrixTotal})";
+                    double prixTotal = (article.Prix * quantite);
 
-                        command.ExecuteNonQuery();
-                    }
+                    Commande_Article cmdArt = new Commande_Article();
+                    cmdArt.CommandeId = idCommande;
+                    cmdArt.ArticleId = article.Id;
+                    cmdArt.Quantite = quantite;
+                    cmdArt.PrixTotal = prixTotal;
+                    db.Commande_Article.Add(cmdArt);
                 }
+                db.SaveChanges();
             }
         }
     }

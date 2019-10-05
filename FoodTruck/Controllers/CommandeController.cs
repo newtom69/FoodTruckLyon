@@ -1,8 +1,5 @@
 ﻿using FoodTruck.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using FoodTruck.DAL;
 using System.Net.Mail;
@@ -13,29 +10,29 @@ namespace FoodTruck.Controllers
     public class CommandeController : Controller
     {
         // GET: Commande
+        [HttpGet]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
             ViewBag.pasDePanier = false;
             ViewBag.pasDeClient = false;
 
-            if (this.Session["MonPanier"] == null)
+            if (Session["Panier"] == null)
             {
                 ViewBag.pasDePanier = true;
                 return View();
             }
 
-            Panier lePanier = (Panier) this.Session["MonPanier"];
+            PanierUI lePanier = (PanierUI)Session["Panier"];
 
-            if (this.Session["Utilisateur"] == null)
+            if (Session["Utilisateur"] == null)
             {
                 ViewBag.pasDeClient = true;
                 return View();
             }
 
-            Utilisateur lUtilisateur = (Utilisateur) this.Session["Utilisateur"];
+            Utilisateur lUtilisateur = (Utilisateur)Session["Utilisateur"];
             ViewBag.lUtilisateur = lUtilisateur;
-
 
             Commande laCommande = new Commande
             {
@@ -43,26 +40,23 @@ namespace FoodTruck.Controllers
                 DateCommande = DateTime.Now,
                 ModeLivraison = "à notre Foodtruck",
                 DateLivraison = DateTime.Now.AddMinutes(45), //TODO
-                listeArticles = lePanier.listeArticles,
                 PrixTotal = 0
             };
 
-            foreach (Article article in lePanier.listeArticles)
+            foreach (ArticleUI article in lePanier.ListeArticlesUI)
             {
                 laCommande.PrixTotal += article.Prix * article.Quantite;
                 ArticleDAL larticleDAL = new ArticleDAL();
-                larticleDAL.AugmenterQuantiteVendue(article.Id, article.Quantite);
+                larticleDAL.AugmenterQuantiteVendue(article.Id, 1);
             }
 
             CommandeDAL laCommandeDal = new CommandeDAL();
-            laCommandeDal.Ajouter(laCommande);
+            laCommandeDal.Ajouter(laCommande, lePanier.ListeArticlesUI);
             
             Mail(lUtilisateur, laCommande, lePanier);
 
-            Session["MaCommande"] = laCommande;
             ViewBag.laCommande = laCommande;
-            lePanier = new Panier();
-            Session["MonPanier"] = null;
+            Session["Panier"] = null;
             PanierDAL lePanierDAL = new PanierDAL(lUtilisateur.Id);
             lePanierDAL.Supprimer();
 
@@ -70,10 +64,11 @@ namespace FoodTruck.Controllers
         }
 
 
-        public void Mail(Utilisateur lUtilisateur, Commande laCommande, Panier lePanier)
+        public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierUI lePanier)
         {
+
             string lesArticlesDansLeMail = "";
-            foreach (Article article in lePanier.listeArticles)
+            foreach (ArticleUI article in lePanier.ListeArticlesUI)
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Nom + " = " +
                                          (article.Quantite * article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
@@ -87,15 +82,21 @@ namespace FoodTruck.Controllers
 
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress("info@foodtruck-lyon.com");
+                MailMessage message = new MailMessage
+                {
+                    From = new MailAddress("info@foodtruck-lyon.com")
+                };
                 message.To.Add("info@foodtruck-lyon.com");
                 message.Subject = "Nouvelle commande";
                 message.Body = $"Nouvelle commande d'un client. Merci de lui préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
 
-                SmtpClient client = new SmtpClient();
-                client.EnableSsl = true;
-                client.Send(message);
+                using (SmtpClient client = new SmtpClient
+                {
+                    EnableSsl = true
+                })
+                {
+                    client.Send(message);
+                }
             }
             catch (Exception)
             {
@@ -105,17 +106,20 @@ namespace FoodTruck.Controllers
 
             try
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress("info@foodtruck-lyon.com");
+                MailMessage message = new MailMessage
+                {
+                    From = new MailAddress("info@foodtruck-lyon.com")
+                };
                 message.To.Add(emailClient);
                 message.Subject = " Nouvelle commande FoodTruck-Lyon prise en compte";
                 message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
                                $"\nMerci de votre confiance\n\n" +
                                "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
 
-                SmtpClient client = new SmtpClient();
-                client.EnableSsl = true;
-                client.Send(message);
+                using (SmtpClient client = new SmtpClient { EnableSsl = true })
+                {
+                    client.Send(message);
+                }
             }
             catch (Exception)
             {
