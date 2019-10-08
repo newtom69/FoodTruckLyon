@@ -296,9 +296,7 @@
     <Content Include="Views\Article\Details.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Commande\Index.cshtml" />
-    <Content Include="Views\Panier\Ajouter.cshtml" />
     <Content Include="Views\Panier\Index.cshtml" />
-    <Content Include="Views\Panier\Retirer.cshtml" />
     <Content Include="Views\Utilisateur\Connexion.cshtml" />
     <Content Include="Views\Utilisateur\Creation.cshtml" />
     <Content Include="Views\Utilisateur\Deconnexion.cshtml" />
