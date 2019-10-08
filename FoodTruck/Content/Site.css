@@ -204,9 +204,15 @@ section.notreCarte {
         flex-grow: 1;
     }
 
-    .detailArticle p:last-child {
+    /*.detailArticle p:last-child {
         margin-left: 0 !important;
         align-self: flex-end;
+    }*/
+
+    .detailArticle .prix_submit {
+        margin-left: 0 !important;
+        align-self: flex-end;
+
     }
 
 .prix {
@@ -383,6 +389,14 @@ p.ajoutPanier {
     border-radius: 1.5rem;
 }
 
+button.ajoutPanier {
+    background-color: #95BE27;
+    padding: 0.6rem;
+    border: solid 1px #95BE27;
+    border-radius: 1.5rem;
+}
+
+
 #panier {
     position: fixed;
     right: 10px;
@@ -523,5 +537,5 @@ h3.total {
 .messageErreur {
     color: red;
     margin: 20px;
-    font-size:large;
-} 
+    font-size: large;
+}

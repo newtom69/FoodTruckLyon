@@ -37,25 +37,21 @@ else
                         <i>Valeur nutritionnelle :</i> @Model.Litrage&nbsp; ml
                     </p>
                 }
-                <p><span class="prix">@Model.Prix.ToString("C2", new CultureInfo("fr-FR"))</span></p>
+            <p class="prix_submit">
+                <span class="prix">@Model.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
+                @if (Model.DansCarte)
+                {
+                    using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                    {
+                        <input name="@Model.Nom" value="@Model.Nom" hidden>
+                        <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                    }
+                }
+            </p>
             </div>
         </div>
-        @if (Model.DansCarte)
-        {
-            <a class="ajoutPanier" href="/Panier/Ajouter/@Model.Nom"><p class="ajoutPanier">Ajouter au panier</p></a>
 
+           
 
-
-
-
-
-
-
-
-
-
-
-
-        }
     </div>
 }
