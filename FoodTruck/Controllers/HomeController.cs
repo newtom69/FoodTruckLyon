@@ -32,10 +32,7 @@ namespace FoodTruck.Controllers
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
-            using (VisiteController visite = new VisiteController())
-            {
-                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            }
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             return View();
         }
 
@@ -63,11 +60,7 @@ namespace FoodTruck.Controllers
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
             ViewBag.MailEnvoye = "";
 
-            using (VisiteController visite = new VisiteController())
-            {
-                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            }
-
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             return View();
         }
 
@@ -81,6 +74,10 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateur = (Utilisateur) Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
+            }
+            else
+            {
+                lUtilisateur = new Utilisateur();
             }
 
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
@@ -163,6 +160,8 @@ namespace FoodTruck.Controllers
                 Response.StatusCode = 400;
                 ViewBag.MailEnvoye = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
             }
+            
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
 
             return View();
         }

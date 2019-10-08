@@ -54,6 +54,8 @@ namespace FoodTruck.Controllers
             Session["Utilisateur"] = null;
             ViewBag.lUtilisateur = null;
             ViewBag.MauvaisEmailMdp = true;
+
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             return View();
         }
 
@@ -111,6 +113,7 @@ namespace FoodTruck.Controllers
             }
             Session["Utilisateur"] = lUtilisateur;
             ViewBag.lUtilisateur = lUtilisateur;
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             if (lUtilisateur != null)
             {
                 return RedirectToAction($"./Detail/{lUtilisateur.Id}");

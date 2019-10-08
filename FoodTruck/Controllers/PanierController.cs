@@ -28,11 +28,7 @@ namespace FoodTruck.Controllers
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            using (VisiteController visite = new VisiteController())
-            {
-                visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            }
-
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             return View();
         }
    
@@ -88,10 +84,7 @@ namespace FoodTruck.Controllers
                 Session["Panier"] = lePanier;
                 ViewBag.Panier = lePanier;
 
-                using (VisiteController visite = new VisiteController())
-                {
-                    visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-                }
+                VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
                 return RedirectToAction("../Article");
             }
         }
@@ -148,11 +141,7 @@ namespace FoodTruck.Controllers
                 Session["Panier"] = panierUI;
                 ViewBag.Panier = panierUI;
 
-                using (VisiteController visite = new VisiteController())
-                {
-                    visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-                }
-
+                VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
                 return RedirectToAction("../Article");
             }
         }

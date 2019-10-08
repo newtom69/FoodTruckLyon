@@ -59,6 +59,8 @@ namespace FoodTruck.Controllers
             Session["Panier"] = null;
             PanierDAL lePanierDAL = new PanierDAL(lUtilisateur.Id);
             lePanierDAL.Supprimer();
+            
+            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
 
             return View();
         }

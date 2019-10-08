@@ -134,7 +134,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\UtilisateurController.cs" />
-    <Compile Include="Controllers\VisiteController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\ArticlesDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
