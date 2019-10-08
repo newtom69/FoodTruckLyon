@@ -14,11 +14,11 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null)
+            if (Session["Panier"] == null)
                 lePanier = new PanierUI();
             else
-                lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+                lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             ArticlesDAL articles = new ArticlesDAL();
@@ -26,9 +26,9 @@ namespace FoodTruck.Controllers
 
 
             Utilisateur lUtilisateur = null;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
@@ -44,17 +44,17 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null)
+            if (Session["Panier"] == null)
                 lePanier = new PanierUI();
             else
-                lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+                lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur = null;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
@@ -77,9 +77,9 @@ namespace FoodTruck.Controllers
             ViewBag.PanierAbsent = false;
 
             Utilisateur lUtilisateur;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur) this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur) Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 

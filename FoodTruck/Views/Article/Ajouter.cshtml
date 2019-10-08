@@ -1,23 +1,74 @@
 ﻿@using System.Globalization
-
 @{
     ViewBag.Title = "FoodTruck-Lyon - Ajouter article au catalogue";
 }
 <div class="detailArticle">
-    <div>
-
-        @if (ViewBag.DroitPAge)
+    @if (!(bool)TempData["DroitPage"])
+    {
+        <div><p class="grow">Vous ne pouvez pas ajouter d'article au catalogue !</p></div>
+    }
+    else
+    {
+        <h2>Ajouter un article au catalogue</h2>
+        if ((string)TempData["Erreur"] != "")
         {
-            <p class="grow">
-                vous pouvez ajouter un article au catalogue
-            </p>
+            <p><font color="red">@TempData["Erreur"]</font></p>
         }
-        else
-        {
-            <p class="grow">
-                vous ne pouvez pas ajouter un article au catalogue !
-            </p>
-        }
+        @*@Html.ValidationMessage("uploadError")*@
+        <div>
+            @using (Html.BeginForm("Ajouter", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
+            {
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="Nom" type="text" placeholder="Nom" maxlength='30' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="Description" type="text" placeholder="Description" maxlength='500' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-euro  fa-2x"></i></span>
+                    <input class="ccformfield" name="Prix" type="number" step="0.01" placeholder="Prix" maxlength='8' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="Grammage" type="number" placeholder="Grammage" maxlength='8' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="Litrage" type="number" step="10" placeholder="Litrage" maxlength='8' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="Allergenes" type="text" placeholder="Allergènes" maxlength='10' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <input class="ccformfield" name="FamilleId" type="text" placeholder="Famille" maxlength='10' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
+                    <div class="ccformfield">
+                        Visible dans la carte
+                        <input name="DansCarte" type="checkbox" value="true" checked>
+                        <input name="DansCarte" type="hidden" value="false">
+                    </div>
+                </div>
+                <div class="ccfield-prepend">
+                    <span class="ccform-addon"><i class="glyphicon-camera fa-2x"></i></span>
+                    <input class="ccformfield" name="Image" type="file" accept="image/*" placeholder="Image" maxlength='10' required>
+                </div>
 
-    </div>
+                <div class="ccfield-prepend">
+                    <input class="ccbtn" type="submit" value="Ajouter">
+                </div>
+
+            }
+
+        </div>
+
+
+    }
+
+
 </div>

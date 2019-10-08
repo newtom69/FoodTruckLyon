@@ -3,27 +3,35 @@
 @{
     ViewBag.Title = "FoodTruck-Lyon - Détail produit";
 }
-<div class="detailArticle">
-    <div>
-        <img src="/Content/Images/@ViewBag.articleCourant.Image" alt="@ViewBag.articleCourant.Nom" />
-        <div class="articleDescription">
-            <h2>@ViewBag.articleCourant.Nom</h2>
-            <h4>@ViewBag.articleCourant.Description</h4>
-            <p><i>Liste des allergènes&nbsp;:</i> @ViewBag.articleCourant.Allergenes</p>
-            @if (ViewBag.articleCourant.Grammage != 0)
-            {
-                <p class="grow">
-                    <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Grammage&nbsp; g
-                </p>
-            }
-            @if (ViewBag.articleCourant.Litrage != 0)
-            {
-                <p class="grow">
-                    <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Litrage&nbsp; ml
-                </p>
-            }
-            <p><span class="prix">@ViewBag.articleCourant.Prix.ToString("C2", new CultureInfo("fr-FR"))</span></p>
+
+@if (!(bool)TempData["ArticleOk"])
+{
+    <p>Article non trouvé !</p>
+}
+else
+{
+    <div class="detailArticle">
+        <div>
+            <img src="/Content/Images/@ViewBag.articleCourant.Image" alt="@ViewBag.articleCourant.Nom" />
+            <div class="articleDescription">
+                <h2>@ViewBag.articleCourant.Nom</h2>
+                <h4>@ViewBag.articleCourant.Description</h4>
+                <p><i>Liste des allergènes&nbsp;:</i> @ViewBag.articleCourant.Allergenes</p>
+                @if (ViewBag.articleCourant.Grammage != 0)
+                {
+                    <p class="grow">
+                        <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Grammage&nbsp; g
+                    </p>
+                }
+                @if (ViewBag.articleCourant.Litrage != 0)
+                {
+                    <p class="grow">
+                        <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Litrage&nbsp; ml
+                    </p>
+                }
+                <p><span class="prix">@ViewBag.articleCourant.Prix.ToString("C2", new CultureInfo("fr-FR"))</span></p>
+            </div>
         </div>
+        <a class="ajoutPanier" href="/Panier/Ajouter/@ViewBag.articleCourant.Nom"><p class="ajoutPanier">Ajouter au panier</p></a>
     </div>
-    <a class="ajoutPanier" href="/Panier/Ajouter/@ViewBag.articleCourant.Id"><p class="ajoutPanier">Ajouter au panier</p></a>
-</div>
+}

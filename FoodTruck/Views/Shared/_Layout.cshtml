@@ -62,11 +62,11 @@
                 double prixTotalArticle = article.Prix * article.Quantite;
                 <div>
                     @article.Quantite
-                    <span>x </span><a href="/Article/Details/@article.Id">
+                    <span>x </span><a href="/Article/@article.Nom">
                         @article.Nom
                     </a>
                 </div>
-                <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Id">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
+                <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Nom">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
                 <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
                 <hr />
 

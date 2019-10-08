@@ -13,11 +13,30 @@ namespace FoodTruck
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+            routes.MapRoute("PanierIndex", "Panier/Index",
+            defaults: new { controller = "Panier", action = "Index" });
+
+            routes.MapRoute("PanierRetirer", "Panier/Retirer/{id}",
+            defaults: new { controller = "Panier", action = "Retirer" });
+
+            routes.MapRoute("ArticleDirect", "Article/{nom}",
+            defaults: new { controller = "Article", action = "Details" });
+
+            routes.MapRoute("PanierAjoutArticleDirect", "Panier/{nom}",
+            defaults: new { controller = "Panier", action = "Ajouter" });
+
+            routes.MapRoute("Articles", "Article/{action}/{nom}",
+            defaults: new { controller = "Article", action = "Index", nom = UrlParameter.Optional });
+
+            routes.MapRoute("Panier", "Panier/{action}/{nom}",
+            defaults: new { controller = "Panier", action = "Ajouter" });
+
+            routes.MapRoute("Default", "{controller}/{action}/{id}",
+            defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+
+
+
+
         }
     }
 }

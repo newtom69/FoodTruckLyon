@@ -10,15 +10,15 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
@@ -30,14 +30,14 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
             Utilisateur lUtilisateur;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 

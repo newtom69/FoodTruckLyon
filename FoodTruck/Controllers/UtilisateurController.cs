@@ -11,12 +11,12 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
-            if (this.Session["Utilisateur"] == null)
+            if (Session["Utilisateur"] == null)
                 return View();
             else
                 return RedirectToAction("../");
@@ -27,23 +27,23 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (this.Session["Utilisateur"] == null)
+            if (Session["Utilisateur"] == null)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
             }
             else
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
             }
-            this.Session["Utilisateur"] = lUtilisateur;
+            Session["Utilisateur"] = lUtilisateur;
             ViewBag.lUtilisateur = lUtilisateur;
 
             if (SynchroniserPanier(lUtilisateur)) 
@@ -51,7 +51,7 @@ namespace FoodTruck.Controllers
                 return RedirectToAction("../");
             }
 
-            this.Session["Utilisateur"] = null;
+            Session["Utilisateur"] = null;
             ViewBag.lUtilisateur = null;
             ViewBag.MauvaisEmailMdp = true;
             return View();
@@ -61,8 +61,8 @@ namespace FoodTruck.Controllers
         public ActionResult Deconnexion()
         {
             ViewBag.PanierAbsent = true;
-            this.Session["Utilisateur"] = null;
-            this.Session["Panier"] = null;
+            Session["Utilisateur"] = null;
+            Session["Panier"] = null;
             return View();
         }
 
@@ -71,9 +71,9 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             return View();
@@ -84,14 +84,14 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (this.Session["Utilisateur"] == null)
+            if (Session["Utilisateur"] == null)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 if (!VerifMdp(Mdp, Mdp2))
@@ -107,9 +107,9 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
             }
-            this.Session["Utilisateur"] = lUtilisateur;
+            Session["Utilisateur"] = lUtilisateur;
             ViewBag.lUtilisateur = lUtilisateur;
             if (lUtilisateur != null)
             {
@@ -117,7 +117,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                this.Session["Utilisateur"] = null;
+                Session["Utilisateur"] = null;
                 ViewBag.lUtilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 return View();

@@ -12,15 +12,15 @@
         var article = ViewBag.Articles.listeArticles[0];
     
         <div>
-            <a href="/Article/Details/@article.Id">
+            <a href="/Article/@article.Nom">
                 <img src="/Content/Images/@article.Image" alt="@article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/Details/@article.Id">
+                <a href="/Article/@article.Nom">
                     <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            <a href="/Panier/Ajouter/@article.Id" class="ajoutPanier">
+            <a href="/Panier/Ajouter/@article.Nom" class="ajoutPanier">
                 <p class="ajoutPanier">Ajouter au panier</p>
             </a>
         </div>

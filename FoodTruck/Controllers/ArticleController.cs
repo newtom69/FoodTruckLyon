@@ -1,6 +1,9 @@
 ﻿using FoodTruck.Models;
 using System.Web.Mvc;
 using FoodTruck.DAL;
+using System;
+using System.Web;
+using System.IO;
 
 namespace FoodTruck.Controllers
 {
@@ -12,32 +15,24 @@ namespace FoodTruck.Controllers
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
             Utilisateur lUtilisateur = null;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
 
-            ArticlesDAL articlesEntree = new ArticlesDAL();
-            ViewBag.articlesEntree = articlesEntree.Lister(0, 1);
-
-            ArticlesDAL articlesPlat = new ArticlesDAL();
-            ViewBag.articlesPlat = articlesPlat.Lister(0, 2);
-
-            ArticlesDAL articlesDessert = new ArticlesDAL();
-            ViewBag.articlesDessert = articlesDessert.Lister(0, 3);
-
-            ArticlesDAL articlesBoissonFraiche = new ArticlesDAL();
-            ViewBag.articlesBoissonFraiche = articlesBoissonFraiche.Lister(0, 4);
-
-            ArticlesDAL articlesBoissonChaude = new ArticlesDAL();
-            ViewBag.articlesBoissonChaude = articlesBoissonChaude.Lister(0, 5);
+            ArticlesDAL articlesDAL = new ArticlesDAL();
+            ViewBag.articlesEntree = articlesDAL.Lister(0, 1);
+            ViewBag.articlesPlat = articlesDAL.Lister(0, 2);
+            ViewBag.articlesDessert = articlesDAL.Lister(0, 3);
+            ViewBag.articlesBoissonFraiche = articlesDAL.Lister(0, 4);
+            ViewBag.articlesBoissonChaude = articlesDAL.Lister(0, 5);
 
             using (VisiteController visite = new VisiteController())
             {
@@ -47,56 +42,40 @@ namespace FoodTruck.Controllers
             return View();
         }
 
-
-        // GET: Article/Details/5
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(string nom)
         {
             ViewBag.PanierAbsent = false;
             PanierUI lePanier;
-            if (this.Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)this.Session["Panier"];
-            this.Session["Panier"] = lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierUI();
+            else lePanier = (PanierUI)Session["Panier"];
+            Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
-
             Utilisateur lUtilisateur;
-            if (this.Session["Utilisateur"] != null)
+            if (Session["Utilisateur"] != null)
             {
-                lUtilisateur = (Utilisateur)this.Session["Utilisateur"];
+                lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
-
             ArticleDAL lArticleDAL = new ArticleDAL();
-            Article articleCourant = lArticleDAL.Details(id);
-            ViewBag.articleCourant = articleCourant;
-
+            Article articleCourant;
+            articleCourant = lArticleDAL.Details(nom);
+            if(articleCourant==null)
+            {
+                TempData["ArticleOk"] = false;
+            }
+            else
+            {
+                TempData["ArticleOk"] = true;
+                ViewBag.articleCourant = articleCourant;
+            }
             return View();
         }
-
         [HttpGet]
         public ActionResult Ajouter()
         {
             bool droitPage = VerifierDroit();
-
-
-
-            //TEST
-            Article lArticle = new Article
-            {
-                Nom = "Nom Test",
-                Description = "test ajout produit",
-                Image = "ImageTest.jpg",
-                Prix = 2.5,
-                Grammage = 150,
-                DansCarte = true,
-                Allergenes = "Gluten",
-                FamilleId = 1
-            };
-            Ajouter(lArticle);
-            // Fin TEST
-
-
-            ViewBag.DroitPage = droitPage;
+            TempData["DroitPage"] = droitPage;
             return View();
         }
 
@@ -104,23 +83,37 @@ namespace FoodTruck.Controllers
         public ActionResult Ajouter(Article lArticle)
         {
             bool droitPage = VerifierDroit();
-            
-            if(droitPage)
+            if (droitPage)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
-                articleDAL.AjouterArticleEnBase(lArticle);
-                //TODO
+                try
+                {
+                    articleDAL.AjouterArticleEnBase(lArticle);
 
+                    if(Request.Files.Count != 1 || Request.Files[0].ContentLength == 0 || Request.Files[0].ContentLength > 1024 * 1024 * 2)
+                    {
+                        ModelState.AddModelError("uploadError", "File's length is zero, or no files found");
+                    }
+                    else
+                    {
+                        // extract only the filename
+                        string fileName = Path.GetFileName(Request.Files[0].FileName);
+                        lArticle.Image += GetHashCode();
+                        string path = Path.Combine(Server.MapPath("~/Content/Images"), lArticle.Image);
+                        Request.Files[0].SaveAs(path);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["Erreur"] = ex.Message;
+                }
+
+                //TODO
             }
 
-            ViewBag.DroitPage = droitPage;
+            TempData["DroitPage"] = droitPage;
             return View();
         }
-
-
-
-
-
 
         private bool VerifierDroit()
         {
@@ -140,6 +133,9 @@ namespace FoodTruck.Controllers
                 droitPage = false;
             }
 
+#if DEBUG
+            return true;
+#endif
             return droitPage;
         }
     }

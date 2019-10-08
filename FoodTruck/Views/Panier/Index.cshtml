@@ -4,7 +4,7 @@
 }
 
 <aside id="panierValide">
-    <h3>Panier</h3>
+    <h3>Votre panier :</h3>
     <div class="listePanier">
         @{int i = 0;
         }
@@ -14,11 +14,11 @@
             <div>
                 <img src="/Content/Images/@article.Image" alt="@article.Nom" />
                 @article.Quantite
-                <span>x </span><a href="/Article/Details/@article.Id">
+                <span>x </span><a href="/Article/@article.Nom">
                     @article.Nom
                 </a>
             </div>
-            <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Id">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
+            <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Nom">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
             <p class="sousTotal">@prixTotalArticle.ToString("C2", new CultureInfo("fr-FR"))</p>
             <hr />
 
