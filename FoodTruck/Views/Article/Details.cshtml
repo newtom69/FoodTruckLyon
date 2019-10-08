@@ -8,14 +8,15 @@
 @if (!affichageArticle)
 {
     ViewBag.Title = "FoodTruck-Lyon - Erreur";
-    <p>Article non trouvé !</p>
+    <div class="messageErreur">Article non trouvé !</div>
 }
 else
 {
     ViewBag.Title = "FoodTruck-Lyon - " + Model.Nom;
     if (!Model.DansCarte)
     {
-        <p>L'article choisi n'est plus disponible dans votre foodtruck</p>
+        <div class="messageErreur">L'article choisi n'est plus disponible dans votre foodtruck</div>
+        ViewBag.Title += "- indisponible";
     }
     <div class="detailArticle">
         <div>

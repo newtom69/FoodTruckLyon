@@ -12,11 +12,11 @@
     @Html.AntiForgeryToken()
     if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
     {
-        <p><font color="red">Mauvais choix de mots de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</font></p>
+        <div class="messageErreur">Mauvais choix de mots de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
     }
     if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
     {
-        <p><font color="red">Compte déjà existant. Veuillez saisir une autre adresse mail ou vous <a href="/Utilisateur/Connexion">connecter</a>.</font></p>
+        <div class="messageErreur">Compte déjà existant. Veuillez saisir une autre adresse mail ou vous <a href="/Utilisateur/Connexion">connecter</a>.</div>
     }
 
     <div class="ccfield-prepend">

@@ -12,7 +12,7 @@
         <h2>Ajouter un article au catalogue</h2>
         if ((string)TempData["Erreur"] != "")
         {
-            <p><font color="red">@TempData["Erreur"]</font></p>
+            <div class="messageErreur">@TempData["Erreur"]</div>
         }
         @*@Html.ValidationMessage("uploadError")*@
         <div>
