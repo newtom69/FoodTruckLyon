@@ -19,6 +19,9 @@ namespace FoodTruck
             routes.MapRoute("PanierRetirer", "Panier/Retirer/{id}",
             defaults: new { controller = "Panier", action = "Retirer" });
 
+            routes.MapRoute("ArticleAjouterEnBase", "Article/AjouterEnBase/{id}",
+            defaults: new { controller = "Article", action = "AjouterEnBase", id = UrlParameter.Optional });
+
             routes.MapRoute("ArticleDirect", "Article/{nom}",
             defaults: new { controller = "Article", action = "Details" });
 
