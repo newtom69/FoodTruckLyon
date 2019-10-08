@@ -32,7 +32,7 @@ namespace FoodTruck.Controllers
             return View();
         }
    
-        [HttpGet]
+        //[HttpGet]
         public ActionResult Ajouter(string nom)
         {
             bool sauvPanier = false;

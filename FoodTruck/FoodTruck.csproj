@@ -303,7 +303,7 @@
     <Content Include="Views\Utilisateur\Creation.cshtml" />
     <Content Include="Views\Utilisateur\Deconnexion.cshtml" />
     <Content Include="Views\Utilisateur\Detail.cshtml" />
-    <Content Include="Views\Article\Ajouter.cshtml" />
+    <Content Include="Views\Article\AjouterEnBase.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
