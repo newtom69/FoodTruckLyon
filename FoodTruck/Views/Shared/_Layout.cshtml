@@ -58,20 +58,28 @@
                 @{int i = 0;
                 }
                 @foreach (var article in ViewBag.Panier.ListeArticlesUI)
-            {
-                double prixTotalArticle = article.Prix * article.Quantite;
-                <div>
-                    @article.Quantite
-                    <span>x </span><a href="/Article/@article.Nom">
-                        @article.Nom
-                    </a>
-                </div>
-                <div class="lienArticlePanier"><a href="/Panier/Ajouter/@article.Nom">Ajouter</a>&nbsp;<a href="/Panier/Retirer/@i">Retirer</a></div>
-                <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
-                <hr />
-
-            i++;
-        }
+                {
+                    double prixTotalArticle = article.Prix * article.Quantite;
+                    <div>
+                        @article.Quantite
+                        <span>x </span><a href="/Article/@article.Nom">
+                            @article.Nom
+                        </a>
+                    </div>
+                    using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                    {
+                        <input name="nom" value="@article.Nom" hidden>
+                        <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
+                    }
+                    using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                    {
+                        <input name="id" value="@i" hidden>
+                        <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
+                    }
+                    <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
+                    <hr />
+                    i++;
+                }
             </div>
             <hr />
             <p>Total : @ViewBag.Panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>

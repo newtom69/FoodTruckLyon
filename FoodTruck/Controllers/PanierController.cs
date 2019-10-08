@@ -89,7 +89,7 @@ namespace FoodTruck.Controllers
         }
 
         // GET: Panier/Retirer/0
-        [HttpGet]
+        [HttpPost]
         public ActionResult Retirer(int id)
         {
             bool sauvPanier = false;
