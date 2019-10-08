@@ -22,13 +22,14 @@ namespace FoodTruck.DAL
                 return articles;
             }
         }
-        public List<Article> Lister(int nombreMax, int familleId)
+
+        public List<Article> Lister(string nomFamille, int nombreMax=200)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                if (nombreMax == 0) nombreMax = 200;
                 List<Article> articles = (from article in db.Article
-                                          where article.DansCarte == true && article.FamilleId == familleId
+                                          join famille in db.FamilleArticle on  article.FamilleId equals famille.Id
+                                          where article.DansCarte == true && famille.Nom == nomFamille
                                           orderby article.Nom
                                           select article)
                                           .Take(nombreMax)

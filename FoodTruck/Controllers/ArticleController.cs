@@ -26,14 +26,12 @@ namespace FoodTruck.Controllers
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
-
             ArticlesDAL articlesDAL = new ArticlesDAL();
-            ViewBag.articlesEntree = articlesDAL.Lister(0, 1);
-            ViewBag.articlesPlat = articlesDAL.Lister(0, 2);
-            ViewBag.articlesDessert = articlesDAL.Lister(0, 3);
-            ViewBag.articlesBoissonFraiche = articlesDAL.Lister(0, 4);
-            ViewBag.articlesBoissonChaude = articlesDAL.Lister(0, 5);
-
+            ViewBag.articlesEntree = articlesDAL.Lister("Entrée");
+            ViewBag.articlesPlat = articlesDAL.Lister("Plat");
+            ViewBag.articlesDessert = articlesDAL.Lister("Dessert");
+            ViewBag.articlesBoissonFraiche = articlesDAL.Lister("Boisson Fraiche");
+            ViewBag.articlesBoissonChaude = articlesDAL.Lister("Boisson Chaude");
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             return View();
         }

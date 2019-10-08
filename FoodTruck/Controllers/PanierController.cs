@@ -7,7 +7,6 @@ namespace FoodTruck.Controllers
 {
     public class PanierController : Controller
     {
-        // GET: Panier
         [HttpGet]
         public ActionResult Index()
         {
@@ -88,7 +87,6 @@ namespace FoodTruck.Controllers
             }
         }
 
-        // GET: Panier/Retirer/0
         [HttpPost]
         public ActionResult Retirer(int id)
         {
