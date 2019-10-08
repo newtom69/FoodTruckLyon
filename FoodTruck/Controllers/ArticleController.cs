@@ -75,7 +75,7 @@ namespace FoodTruck.Controllers
             return View(articleCourant);
         }
         [HttpGet]
-        public ActionResult Ajouter()
+        public ActionResult AjouterEnBase()
         {
             bool droitPage = VerifierDroit();
             TempData["DroitPage"] = droitPage;
@@ -83,7 +83,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Ajouter(Article lArticle)
+        public ActionResult AjouterEnBase(Article lArticle)
         {
             bool droitPage = VerifierDroit();
             if (droitPage)
