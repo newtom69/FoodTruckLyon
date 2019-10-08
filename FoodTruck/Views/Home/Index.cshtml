@@ -6,10 +6,10 @@
 <div class="carouselContainer">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         @*<ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>*@
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>*@
         <div class="carousel-inner">
             <div class="item active">
                 <a href="/APropos/Stationnement">
@@ -21,7 +21,7 @@
 </div>
 
 <h3><a href="../Article">Voir notre carte</a></h3>
-<hr/>
+<hr />
 <h3>3 de nos produits stars !</h3>
 <section id="bestsellers">
     @foreach (var article in ViewBag.Articles)
@@ -35,9 +35,11 @@
                     <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            <a href="/Panier/Ajouter/@article.Nom" class="ajoutPanier">
-                <p class="ajoutPanier">Ajouter au panier</p>
-            </a>
+            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+            {
+                <input name="nom" value="@article.Nom" hidden>
+                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+            }
         </div>
     }
 </section>
