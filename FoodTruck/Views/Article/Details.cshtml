@@ -1,37 +1,47 @@
 ﻿@using System.Globalization
 
+
 @{
-    ViewBag.Title = "FoodTruck-Lyon - Détail produit";
+    bool affichageArticle = Model != null ? true : false;
 }
 
-@if (!(bool)TempData["ArticleOk"])
+@if (!affichageArticle)
 {
+    ViewBag.Title = "FoodTruck-Lyon - Erreur";
     <p>Article non trouvé !</p>
 }
 else
 {
+    ViewBag.Title = "FoodTruck-Lyon - " + Model.Nom;
+    if (!Model.DansCarte)
+    {
+        <p>L'article choisi n'est plus disponible dans votre foodtruck</p>
+    }
     <div class="detailArticle">
         <div>
-            <img src="/Content/Images/@ViewBag.articleCourant.Image" alt="@ViewBag.articleCourant.Nom" />
+            <img src="/Content/Images/@Model.Image" alt="@Model.Nom" />
             <div class="articleDescription">
-                <h2>@ViewBag.articleCourant.Nom</h2>
-                <h4>@ViewBag.articleCourant.Description</h4>
-                <p><i>Liste des allergènes&nbsp;:</i> @ViewBag.articleCourant.Allergenes</p>
-                @if (ViewBag.articleCourant.Grammage != 0)
+                <h2>@Model.Nom</h2>
+                <h4>@Model.Description</h4>
+                <p><i>Liste des allergènes&nbsp;:</i> @Model.Allergenes</p>
+                @if (Model.Grammage != 0)
                 {
                     <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Grammage&nbsp; g
+                        <i>Valeur nutritionnelle :</i> @Model.Grammage&nbsp; g
                     </p>
                 }
-                @if (ViewBag.articleCourant.Litrage != 0)
+                @if (Model.Litrage != 0)
                 {
                     <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @ViewBag.articleCourant.Litrage&nbsp; ml
+                        <i>Valeur nutritionnelle :</i> @Model.Litrage&nbsp; ml
                     </p>
                 }
-                <p><span class="prix">@ViewBag.articleCourant.Prix.ToString("C2", new CultureInfo("fr-FR"))</span></p>
+                <p><span class="prix">@Model.Prix.ToString("C2", new CultureInfo("fr-FR"))</span></p>
             </div>
         </div>
-        <a class="ajoutPanier" href="/Panier/Ajouter/@ViewBag.articleCourant.Nom"><p class="ajoutPanier">Ajouter au panier</p></a>
+        @if (Model.DansCarte)
+        {
+            <a class="ajoutPanier" href="/Panier/Ajouter/@Model.Nom"><p class="ajoutPanier">Ajouter au panier</p></a>
+        }
     </div>
 }

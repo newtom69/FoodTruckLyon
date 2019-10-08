@@ -34,12 +34,7 @@ namespace FoodTruck.Controllers
             ViewBag.articlesBoissonFraiche = articlesDAL.Lister(0, 4);
             ViewBag.articlesBoissonChaude = articlesDAL.Lister(0, 5);
 
-            //using (VisiteController visite = new VisiteController())
-            //{
-            //    visite.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            //}
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-
             return View();
         }
 
@@ -58,10 +53,7 @@ namespace FoodTruck.Controllers
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
-            else
-            {
-                lUtilisateur = new Utilisateur();
-            }
+            else lUtilisateur = new Utilisateur();
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
             articleCourant = lArticleDAL.Details(nom);
@@ -69,13 +61,18 @@ namespace FoodTruck.Controllers
             {
                 TempData["ArticleOk"] = false;
             }
-            else
+            else if(!articleCourant.DansCarte)
             {
                 TempData["ArticleOk"] = true;
-                ViewBag.articleCourant = articleCourant;
+                TempData["ArticleDansCarte"] = false;
+            }
+            else
+            {
+                TempData["ArticleDansCarte"] = true;
+                TempData["ArticleOk"] = true;
             }
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            return View();
+            return View(articleCourant);
         }
         [HttpGet]
         public ActionResult Ajouter()
