@@ -52,14 +52,13 @@ namespace FoodTruck.Controllers
 
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
-            if (lArticle == null)
+            if (lArticle == null || !lArticle.DansCarte)
             {
-                return RedirectToAction("../Article/Erreur404");
+                return RedirectToAction("/");
             }
             else
             {
                 PanierDAL lePanierDAL;
-
                 ArticleUI artcl = lePanier.ListeArticlesUI.Find(art => art.Id == lArticle.Id);
                 if (artcl == null)
                 {
