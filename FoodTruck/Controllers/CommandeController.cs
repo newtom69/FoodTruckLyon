@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using FoodTruck.DAL;
 using System.Net.Mail;
 using System.Globalization;
+using FoodTruck.ViewModels;
 
 namespace FoodTruck.Controllers
 {
@@ -23,7 +24,7 @@ namespace FoodTruck.Controllers
                 return View();
             }
 
-            PanierUI lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier = (PanierViewModel)Session["Panier"];
 
             if (Session["Utilisateur"] == null)
             {
@@ -43,15 +44,15 @@ namespace FoodTruck.Controllers
                 PrixTotal = 0
             };
 
-            foreach (ArticleUI article in lePanier.ListeArticlesUI)
+            foreach (ArticleDetailsViewModel article in lePanier.Articles)
             {
-                laCommande.PrixTotal += article.Prix * article.Quantite;
+                laCommande.PrixTotal += article.Article.Prix * article.Quantite;
                 ArticleDAL larticleDAL = new ArticleDAL();
-                larticleDAL.AugmenterQuantiteVendue(article.Id, 1);
+                larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
             }
 
             CommandeDAL laCommandeDal = new CommandeDAL();
-            laCommandeDal.Ajouter(laCommande, lePanier.ListeArticlesUI);
+            laCommandeDal.Ajouter(laCommande, lePanier.Articles);
             
             Mail(lUtilisateur, laCommande, lePanier);
 
@@ -66,13 +67,13 @@ namespace FoodTruck.Controllers
         }
 
 
-        public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierUI lePanier)
+        public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
         {
 
             string lesArticlesDansLeMail = "";
-            foreach (ArticleUI article in lePanier.ListeArticlesUI)
-                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Nom + " = " +
-                                         (article.Quantite * article.Prix).ToString("C2", new CultureInfo("fr-FR"));
+            foreach (ArticleDetailsViewModel article in panier.Articles)
+                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
+                                         (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
             string nomClient = lUtilisateur.Nom;
             string prenomClient = lUtilisateur.Prenom;

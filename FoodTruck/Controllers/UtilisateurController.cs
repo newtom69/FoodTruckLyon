@@ -1,5 +1,6 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using FoodTruck.ViewModels;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -10,9 +11,9 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -26,9 +27,9 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion(string Email, string Mdp)
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -72,9 +73,9 @@ namespace FoodTruck.Controllers
         public ActionResult Creation()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -85,9 +86,9 @@ namespace FoodTruck.Controllers
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -141,26 +142,26 @@ namespace FoodTruck.Controllers
             {
                 PanierDAL lePanierDal = new PanierDAL(lUtilisateur.Id);
 
-                PanierUI panierUI;
+                PanierViewModel panierUI;
                 if (Session["Panier"] == null)
-                    panierUI = new PanierUI();
+                    panierUI = new PanierViewModel();
                 else
-                    panierUI = (PanierUI)Session["Panier"];
+                    panierUI = (PanierViewModel)Session["Panier"];
 
-                foreach(ArticleUI lArticleUI in panierUI.ListeArticlesUI)
+                foreach(ArticleDetailsViewModel lArticle in panierUI.Articles)
                 {
-                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticleUI.Id);
+                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
                     if(panier == null)
-                        lePanierDal.Ajouter(lArticleUI);
+                        lePanierDal.Ajouter(lArticle.Article);
                     else
-                        lePanierDal.ModifierQuantite(lArticleUI, 1);
+                        lePanierDal.ModifierQuantite(lArticle.Article, 1);
                 }
 
-                panierUI = new PanierUI();
+                panierUI = new PanierViewModel();
                 foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
                 {
                     panierUI.PrixTotal += lePanier.PrixTotal;
-                    ArticleUI article = panierUI.ListeArticlesUI.Find(art => art.Id == lePanier.ArticleId);
+                    ArticleDetailsViewModel article = panierUI.Articles.Find(art => art.Article.Id == lePanier.ArticleId);
                     if (article != null)
                     {
                         article.Quantite++;
@@ -168,7 +169,7 @@ namespace FoodTruck.Controllers
                     else
                     {
                         ArticleDAL articleDAL = new ArticleDAL();
-                        panierUI.ListeArticlesUI.Add(new ArticleUI(articleDAL.Details(lePanier.ArticleId),lePanier.Quantite));
+                        panierUI.Articles.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
                     }
                 }
 

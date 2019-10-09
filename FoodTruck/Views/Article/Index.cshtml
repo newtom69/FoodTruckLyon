@@ -1,130 +1,133 @@
 ﻿@using System.Globalization
+@using FoodTruck.ViewModels
+@model ArticleIndexViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon - Notre carte";
 }
 
-@if (ViewBag.articlesEntree.Count != 0)
+@if (Model.ArticlesEntree.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Entrées :</h2>
 }
+@using FoodTruck.Extensions
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesEntree)
+    @foreach (var article in Model.ArticlesEntree)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>
     }
 </section>
-@if (ViewBag.articlesPlat.Count != 0)
+@if (Model.ArticlesPlat.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Plats :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesPlat)
+    @foreach (var article in Model.ArticlesPlat)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>
     }
 </section>
-@if (ViewBag.articlesDessert.Count != 0)
+@if (Model.ArticlesDessert.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Desserts :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesDessert)
+    @foreach (var article in Model.ArticlesDessert)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>
     }
 </section>
-@if (ViewBag.articlesBoissonFraiche.Count != 0)
+@if (Model.ArticlesBoissonFraiche.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Boissons fraiches :</h2>
 }
 <section class="notreCarte">
-    @foreach (var article in ViewBag.articlesBoissonFraiche)
+    @foreach (var article in Model.ArticlesBoissonFraiche)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>
     }
 </section>
-@if (ViewBag.articlesBoissonChaude.Count != 0)
+@if (Model.ArticlesBoissonChaude.Count != 0)
 {
     <hr />
     <h2 class="familleNotreCarte">Boissons chaudes :</h2>
 }
 <section class="notreCarte">
 
-    @foreach (var article in ViewBag.articlesBoissonChaude)
+    @foreach (var article in Model.ArticlesBoissonChaude)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p>
-                    <p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p>
+                    <p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>

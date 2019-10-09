@@ -1,5 +1,6 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using FoodTruck.ViewModels;
 using System;
 using System.Net.Mail;
 using System.Text;
@@ -13,17 +14,13 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
+            PanierViewModel lePanier;
             if (Session["Panier"] == null)
-                lePanier = new PanierUI();
+                lePanier = new PanierViewModel();
             else
-                lePanier = (PanierUI)Session["Panier"];
+                lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
-
-            ArticlesDAL articles = new ArticlesDAL();
-            ViewBag.Articles = articles.ListerRandom(3, 7);
-
 
             Utilisateur lUtilisateur = null;
             if (Session["Utilisateur"] != null)
@@ -33,18 +30,18 @@ namespace FoodTruck.Controllers
             }
 
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            return View();
+            return View(new HomeViewModel());
         }
 
         [HttpGet]
         public ActionResult Contact()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
+            PanierViewModel lePanier;
             if (Session["Panier"] == null)
-                lePanier = new PanierUI();
+                lePanier = new PanierViewModel();
             else
-                lePanier = (PanierUI)Session["Panier"];
+                lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 

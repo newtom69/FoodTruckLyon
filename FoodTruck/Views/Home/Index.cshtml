@@ -1,15 +1,12 @@
 ﻿@using System.Globalization
+@using FoodTruck.ViewModels
+@model HomeViewModel 
 @{
     ViewBag.Title = "FoodTruck-Lyon";
 }
 
 <div class="carouselContainer">
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        @*<ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>*@
         <div class="carousel-inner">
             <div class="item active">
                 <a href="/APropos/Stationnement">
@@ -24,20 +21,20 @@
 <hr />
 <h3>3 de nos produits stars !</h3>
 <section id="bestsellers">
-    @foreach (var article in ViewBag.Articles)
+    @foreach (var article in Model.ArticlesTopRandom)
     {
         <div>
-            <a href="/Article/@article.Nom">
-                <img src="/Content/Images/@article.Image" alt="@article.Nom" />
+            <a href="/Article/@article.NomPourUrl">
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
-                <a href="/Article/@article.Nom">
-                    <p>@article.Nom</p><p>@article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <a href="/Article/@article.NomPourUrl">
+                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutPanier" type="submit">Ajouter au panier</button>
             }
         </div>

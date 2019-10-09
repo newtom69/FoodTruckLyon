@@ -4,6 +4,8 @@ using FoodTruck.DAL;
 using System;
 using System.Web;
 using System.IO;
+using FoodTruck.Extensions;
+using FoodTruck.ViewModels;
 
 namespace FoodTruck.Controllers
 {
@@ -14,9 +16,9 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -26,23 +28,18 @@ namespace FoodTruck.Controllers
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
                 ViewBag.lUtilisateur = lUtilisateur;
             }
-            ArticlesDAL articlesDAL = new ArticlesDAL();
-            ViewBag.articlesEntree = articlesDAL.Lister("Entrée");
-            ViewBag.articlesPlat = articlesDAL.Lister("Plat");
-            ViewBag.articlesDessert = articlesDAL.Lister("Dessert");
-            ViewBag.articlesBoissonFraiche = articlesDAL.Lister("Boisson Fraiche");
-            ViewBag.articlesBoissonChaude = articlesDAL.Lister("Boisson Chaude");
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            return View();
+            return View(new ArticleIndexViewModel());
         }
 
         [HttpGet]
         public ActionResult Details(string nom)
         {
+            nom = nom.UrlVersNom();
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
             Utilisateur lUtilisateur;
@@ -70,7 +67,7 @@ namespace FoodTruck.Controllers
                 TempData["ArticleOk"] = true;
             }
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            return View(articleCourant);
+            return View(new ArticleDetailsViewModel(articleCourant));
         }
         [HttpGet]
         public ActionResult AjouterEnBase()
@@ -149,5 +146,7 @@ namespace FoodTruck.Controllers
 #endif
             return droitPage;
         }
+
+        
     }
 }

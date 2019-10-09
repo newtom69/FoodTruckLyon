@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
-
-
+@using FoodTruck.ViewModels
+@model ArticleDetailsViewModel
 @{
     bool affichageArticle = Model != null ? true : false;
 }
@@ -12,46 +12,43 @@
 }
 else
 {
-    ViewBag.Title = "FoodTruck-Lyon - " + Model.Nom;
-    if (!Model.DansCarte)
+    ViewBag.Title = "FoodTruck-Lyon - " + Model.Article.Nom;
+    if (!Model.Article.DansCarte)
     {
         <div class="messageErreur">L'article choisi n'est plus disponible dans votre foodtruck</div>
         ViewBag.Title += "- indisponible";
     }
     <div class="detailArticle">
         <div>
-            <img src="/Content/Images/@Model.Image" alt="@Model.Nom" />
+            <img src="/Content/Images/@Model.Article.Image" alt="@Model.Article.Nom" />
             <div class="articleDescription">
-                <h2>@Model.Nom</h2>
-                <h4>@Model.Description</h4>
-                <p><i>Liste des allergènes&nbsp;:</i> @Model.Allergenes</p>
-                @if (Model.Grammage != 0)
+                <h2>@Model.Article.Nom</h2>
+                <h4>@Model.Article.Description</h4>
+                <p><i>Liste des allergènes&nbsp;:</i> @Model.Article.Allergenes</p>
+                @if (Model.Article.Grammage != 0)
                 {
                     <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @Model.Grammage&nbsp; g
+                        <i>Valeur nutritionnelle :</i> @Model.Article.Grammage&nbsp; g
                     </p>
                 }
-                @if (Model.Litrage != 0)
+                @if (Model.Article.Litrage != 0)
                 {
                     <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @Model.Litrage&nbsp; ml
+                        <i>Valeur nutritionnelle :</i> @Model.Article.Litrage&nbsp; ml
                     </p>
                 }
-            <p class="prix_submit">
-                <span class="prix">@Model.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
-                @if (Model.DansCarte)
-                {
-                    using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                <p class="prix_submit">
+                    <span class="prix">@Model.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
+                    @if (Model.Article.DansCarte)
                     {
-                        <input name="nom" value="@Model.Nom" hidden>
-                        <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                        using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                        {
+                            <input name="nom" value="@Model.Article.Nom" hidden>
+                            <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                        }
                     }
-                }
-            </p>
+                </p>
             </div>
         </div>
-
-           
-
     </div>
 }

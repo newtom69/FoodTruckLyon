@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FoodTruck.Models;
+using FoodTruck.ViewModels;
 
 namespace FoodTruck.DAL
 {

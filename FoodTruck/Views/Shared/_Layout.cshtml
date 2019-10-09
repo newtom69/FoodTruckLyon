@@ -57,18 +57,18 @@
             <div class="listePanier">
                 @{int i = 0;
                 }
-                @foreach (var article in ViewBag.Panier.ListeArticlesUI)
+                @foreach (var article in ViewBag.Panier.Articles)
                 {
-                    double prixTotalArticle = article.Prix * article.Quantite;
+                    double prixTotalArticle = article.Article.Prix * article.Quantite;
                     <div>
                         @article.Quantite
-                        <span>x </span><a href="/Article/@article.Nom">
-                            @article.Nom
+                        <span>x </span><a href="/Article/@article.Article.Nom">
+                            @article.Article.Nom
                         </a>
                     </div>
                     using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
                     {
-                        <input name="nom" value="@article.Nom" hidden>
+                        <input name="nom" value="@article.Article.Nom" hidden>
                         <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
                     }
                     using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))

@@ -1,4 +1,7 @@
 ﻿@using System.Globalization
+@using FoodTruck.ViewModels
+@model PanierViewModel
+
 @{
     ViewBag.Title = "FoodTruck-Lyon - Panier";
 }
@@ -7,16 +10,16 @@
     <h3>Votre panier :</h3>
     <div class="listePanier">
         @{int i = 0;}
-        @foreach (var article in ViewBag.Panier.ListeArticlesUI)
+        @foreach (var article in Model.Articles)
         {
-            double prixTotalArticle = article.Prix * article.Quantite;
+            double prixTotalArticle = article.Article.Prix * article.Quantite;
             <div>
-                <img src="/Content/Images/@article.Image" alt="@article.Nom"/>
-                @article.Quantite<span>x </span><a href="/Article/@article.Nom">@article.Nom</a>
+                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                @article.Quantite<span>x </span><a href="/Article/@article.Article.Nom">@article.Article.Nom</a>
             </div>
             using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
             {
-                <input name="nom" value="@article.Nom" hidden>
+                <input name="nom" value="@article.Article.Nom" hidden>
                 <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
             }
             using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
@@ -39,6 +42,6 @@
 }
 else
 {
-    <h3 class="total">Total : @ViewBag.Panier.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
+    <h3 class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
     <h3 class="total"><a class="validerPanier" href="/Commande">Commander</a></h3>
 }

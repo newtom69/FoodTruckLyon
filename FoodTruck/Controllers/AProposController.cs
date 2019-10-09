@@ -1,4 +1,5 @@
 ﻿using FoodTruck.Models;
+using FoodTruck.ViewModels;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -9,9 +10,9 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 
@@ -29,9 +30,9 @@ namespace FoodTruck.Controllers
         public ActionResult Stationnement()
         {
             ViewBag.PanierAbsent = false;
-            PanierUI lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierUI();
-            else lePanier = (PanierUI)Session["Panier"];
+            PanierViewModel lePanier;
+            if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            else lePanier = (PanierViewModel)Session["Panier"];
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
             Utilisateur lUtilisateur;
