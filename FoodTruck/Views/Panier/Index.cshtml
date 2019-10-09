@@ -41,5 +41,12 @@
 else
 {
     <h3 class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
-    <h3 class="total"><a class="validerPanier" href="/Commande">Commander</a></h3>
+    <h3 class="total">
+        @using (Html.BeginForm("Index", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "validerPanier" }))
+        {
+            <input name="Commander" value="Commander" hidden>
+            <button class="validerPanier" type="submit">Commander</button>
+        }
+    </h3>
+
 }

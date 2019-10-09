@@ -398,7 +398,7 @@ button.ajoutSupprPanierTexte {
 }
 
 .listePanier .plus_moins {
-    float:left;
+    float: left;
 }
 
 
@@ -544,3 +544,34 @@ h3.total {
     margin: 20px;
     font-size: large;
 }
+
+a.tip {
+    border-bottom: 1px medium;
+    text-decoration: none;
+}
+
+    /*a.tip:hover {
+        cursor: help;
+        position: relative;
+    }
+
+    a.tip span {
+        display: none;
+        background-color: #95BE27;
+        padding: 0.6rem;
+        border: solid 1px #95BE27;
+        border-radius: 1.5rem;
+    }
+
+    a.tip:hover span {
+        border: 1px medium;
+        padding: 5px 20px 5px 5px;
+        display: block;
+        z-index: 100;
+        left: -25px;
+        bottom: 75px;
+        width: 120%;        
+        position: absolute;
+        text-decoration: none;
+        text-align: center;
+    }*/

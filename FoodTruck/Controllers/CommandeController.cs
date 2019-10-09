@@ -11,7 +11,7 @@ namespace FoodTruck.Controllers
     public class CommandeController : Controller
     {
         // GET: Commande
-        [HttpGet]
+        [HttpPost]
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
