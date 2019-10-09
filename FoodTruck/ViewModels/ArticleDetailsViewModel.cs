@@ -10,20 +10,16 @@ namespace FoodTruck.ViewModels
     public class ArticleDetailsViewModel
     {
         public int Quantite { get; set; }
+        public double PrixTotal { get; set; }
         public string NomPourUrl { get; set; }
         public Article Article { get; set; }
 
-        public ArticleDetailsViewModel(Article article)
-        {
-            Quantite = 1;
-            Article = article;
-            NomPourUrl = Article.Nom.NomVersUrl();
-        }
-        public ArticleDetailsViewModel(Article article, int quantite)
+        public ArticleDetailsViewModel(Article article, int quantite = 1)
         {
             Quantite = quantite;
+            PrixTotal = Math.Round(quantite * article.Prix, 2);
             Article = article;
-            NomPourUrl = Article.Nom.NomVersUrl();
+            NomPourUrl = Article.Nom.NomPourUrl();
         }
     }
 }

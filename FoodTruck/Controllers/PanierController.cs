@@ -73,6 +73,7 @@ namespace FoodTruck.Controllers
                 else
                 {
                     artcl.Quantite++;
+                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + artcl.Article.Prix, 2);
                     if (sauvPanier)
                     {
                         lePanierDAL = new PanierDAL(lUtilisateur.Id);
@@ -119,6 +120,7 @@ namespace FoodTruck.Controllers
                 if (panierViewModel.Articles[id].Quantite > 1)
                 {
                     panierViewModel.Articles[id].Quantite--;
+                    panierViewModel.Articles[id].PrixTotal = Math.Round(panierViewModel.Articles[id].PrixTotal - panierViewModel.Articles[id].Article.Prix, 2);
                     if (sauvPanier)
                     {
                         lePanierDAL = new PanierDAL(lUtilisateur.Id);

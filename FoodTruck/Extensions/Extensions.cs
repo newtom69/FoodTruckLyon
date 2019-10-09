@@ -11,7 +11,7 @@ namespace FoodTruck.Extensions
         {
             return url.Replace("-", " ").Replace("_", "-");
         }
-        public static string NomVersUrl(this string nom)
+        public static string NomPourUrl(this string nom)
         {
             return nom.TrimEnd(' ').Replace("-", "_").Replace(" ", "-");
         }

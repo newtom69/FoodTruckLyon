@@ -10,16 +10,15 @@
     <h3>Votre panier :</h3>
     <div class="listePanier">
         @{int i = 0;}
-        @foreach (var article in Model.Articles)
+        @foreach (var articleDetailViewModel in Model.Articles)
         {
-            double prixTotalArticle = article.Article.Prix * article.Quantite;
             <div>
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
-                @article.Quantite<span>x </span><a href="/Article/@article.Article.Nom">@article.Article.Nom</a>
+                <img src="/Content/Images/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
+                @articleDetailViewModel.Quantite<span>x </span><a href="/Article/@articleDetailViewModel.Article.Nom">@articleDetailViewModel.Article.Nom</a>
             </div>
             using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
             {
-                <input name="nom" value="@article.Article.Nom" hidden>
+                <input name="nom" value="@articleDetailViewModel.Article.Nom" hidden>
                 <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
             }
             using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
@@ -27,16 +26,15 @@
                 <input name="id" value="@i" hidden>
                 <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
             }
-            <p class="sousTotal">@prixTotalArticle.ToString("C2", new CultureInfo("fr-FR"))</p>
+            <p class="sousTotal">@articleDetailViewModel.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</p>
             <hr />
-
             i++;
         }
     </div>
     <hr />
 </aside>
 
-@if (i == 0)
+@if (Model.Articles.Count == 0)
 {
     <h4>Votre panier est vide. Venez <a href="/Article">découvrir notre carte.</a></h4>
 }
