@@ -35,6 +35,7 @@ namespace FoodTruck.Controllers
         public ActionResult Ajouter(string nom)
         {
             bool sauvPanier = false;
+
             Utilisateur lUtilisateur = null;
             if (Session["Utilisateur"] != null)
             {
@@ -54,7 +55,7 @@ namespace FoodTruck.Controllers
             Article lArticle = lArticleDAL.Details(nom);
             if (lArticle == null || !lArticle.DansCarte)
             {
-                return RedirectToAction("/");
+                return Redirect(Request.UrlReferrer.ToString());
             }
             else
             {
@@ -84,7 +85,7 @@ namespace FoodTruck.Controllers
 
                 Session["Panier"] = panierViewModel;
                 VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-                return RedirectToAction("../Article");
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
 
@@ -109,7 +110,7 @@ namespace FoodTruck.Controllers
             ArticleDAL lArticleDAL = new ArticleDAL();
             if (id >= panierViewModel.Articles.Count)
             {
-                return RedirectToAction("../Article/Erreur404");
+                return Redirect(Request.UrlReferrer.ToString());
             }
             else
             {
@@ -138,7 +139,7 @@ namespace FoodTruck.Controllers
                 }
                 Session["Panier"] = panierViewModel;
                 VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-                return RedirectToAction("../Article");
+                return Redirect(Request.UrlReferrer.ToString());
             }
         }
     }
