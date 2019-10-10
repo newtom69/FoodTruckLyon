@@ -45,7 +45,7 @@ namespace FoodTruck.Controllers
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
             }
             Session["Utilisateur"] = lUtilisateur;
-            ViewBag.lUtilisateur = lUtilisateur;
+            ViewBag.Utilisateur = lUtilisateur;
 
             if (SynchroniserPanier(lUtilisateur)) 
             {
@@ -53,7 +53,7 @@ namespace FoodTruck.Controllers
             }
 
             Session["Utilisateur"] = null;
-            ViewBag.lUtilisateur = null;
+            ViewBag.Utilisateur = null;
             ViewBag.MauvaisEmailMdp = true;
 
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
@@ -113,7 +113,7 @@ namespace FoodTruck.Controllers
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
             }
             Session["Utilisateur"] = lUtilisateur;
-            ViewBag.lUtilisateur = lUtilisateur;
+            ViewBag.Utilisateur = lUtilisateur;
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             if (lUtilisateur != null)
             {
@@ -122,7 +122,7 @@ namespace FoodTruck.Controllers
             else
             {
                 Session["Utilisateur"] = null;
-                ViewBag.lUtilisateur = null;
+                ViewBag.Utilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }

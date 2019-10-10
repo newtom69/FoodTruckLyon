@@ -16,32 +16,10 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-
-            SessionVariables session = new SessionVariables(HttpContext);
-            var a = session.Utilisateur;
-            var b = session.PanierViewModel;
-
-            //PanierViewModel lePanier;
-            //if (Session["Panier"] == null) lePanier = new PanierViewModel();
-            //else lePanier = (PanierViewModel)Session["Panier"];
-            //Session["Panier"] = lePanier;
-
-
+            SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-
-
-            //ViewBag.Panier = lePanier;
-
-            //Utilisateur lUtilisateur = null;
-            //if (Session["Utilisateur"] != null)
-            //{
-            //    lUtilisateur = (Utilisateur)Session["Utilisateur"];
-            //    ViewBag.lUtilisateur = lUtilisateur;
-            //}
-            //VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-
+            ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
-
             return View(new ArticleIndexViewModel());
         }
 
@@ -59,7 +37,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
             else lUtilisateur = new Utilisateur();
             ArticleDAL lArticleDAL = new ArticleDAL();
@@ -125,7 +103,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
             else
             {
@@ -143,7 +121,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
                 if (lUtilisateur.AdminArticle || lUtilisateur.AdminTotal)
                     droitPage = true;
                 else

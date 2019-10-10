@@ -20,7 +20,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
 
             return View();
@@ -39,7 +39,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
 
             return View();

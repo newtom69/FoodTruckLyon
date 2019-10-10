@@ -38,9 +38,9 @@
     </div>
     <div class="container body-content">
         <section id="client">
-        @if (ViewBag.lUtilisateur != null)
+        @if (ViewBag.Utilisateur != null)
         {
-            <p>Bienvenue <a href="/Utilisateur/Detail/@ViewBag.lUtilisateur.Id">@ViewBag.lUtilisateur.Prenom @ViewBag.lUtilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
+            <p>Bienvenue <a href="/Utilisateur/Detail/@ViewBag.Utilisateur.Id">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
         }
         else
         {

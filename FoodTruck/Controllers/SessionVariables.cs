@@ -3,22 +3,21 @@ using FoodTruck.ViewModels;
 using System.Web;
 
 namespace FoodTruck.Controllers
-{   public class SessionVariables
+{
+    public class SessionVariables
     {
-        private HttpContextBase Context { get; set; }
-        public Utilisateur Utilisateur;
-        public PanierViewModel PanierViewModel;
+        public Utilisateur Utilisateur { get; set; }
+        public PanierViewModel PanierViewModel { get; set; }
 
-        public SessionVariables(HttpContextBase context)
+        public SessionVariables()
         {
-            Context = context;
+            if (HttpContext.Current.Session["Utilisateur"] != null)
+                Utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
 
-            if (Context.Session["Utilisateur"] != null) Utilisateur = (Utilisateur)Context.Session["Utilisateur"];
-
-            if (Context.Session["Panier"] == null)
-                Context.Session["Panier"] = PanierViewModel = new PanierViewModel();
+            if (HttpContext.Current.Session["Panier"] == null)
+                HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
             else
-                PanierViewModel = (PanierViewModel)Context.Session["Panier"];
+                PanierViewModel = (PanierViewModel)HttpContext.Current.Session["Panier"];
         }
     }
 }

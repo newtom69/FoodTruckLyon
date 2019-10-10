@@ -27,7 +27,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
 
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
@@ -50,7 +50,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
 
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
@@ -71,7 +71,7 @@ namespace FoodTruck.Controllers
             if (Session["Utilisateur"] != null)
             {
                 lUtilisateur = (Utilisateur) Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
+                ViewBag.Utilisateur = lUtilisateur;
             }
             else
             {

@@ -33,7 +33,7 @@ namespace FoodTruck.Controllers
             }
 
             Utilisateur lUtilisateur = (Utilisateur)Session["Utilisateur"];
-            ViewBag.lUtilisateur = lUtilisateur;
+            ViewBag.Utilisateur = lUtilisateur;
 
             Commande laCommande = new Commande
             {
