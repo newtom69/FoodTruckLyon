@@ -148,7 +148,7 @@ namespace FoodTruck.Controllers
                 else
                     panierUI = (PanierViewModel)Session["Panier"];
 
-                foreach(ArticleDetailsViewModel lArticle in panierUI.Articles)
+                foreach(ArticleDetailsViewModel lArticle in panierUI.ArticlesDetailsViewModel)
                 {
                     Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
                     if(panier == null)
@@ -161,7 +161,7 @@ namespace FoodTruck.Controllers
                 foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
                 {
                     panierUI.PrixTotal += lePanier.PrixTotal;
-                    ArticleDetailsViewModel article = panierUI.Articles.Find(art => art.Article.Id == lePanier.ArticleId);
+                    ArticleDetailsViewModel article = panierUI.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
                     if (article != null)
                     {
                         article.Quantite++;
@@ -169,7 +169,7 @@ namespace FoodTruck.Controllers
                     else
                     {
                         ArticleDAL articleDAL = new ArticleDAL();
-                        panierUI.Articles.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                        panierUI.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
                     }
                 }
 

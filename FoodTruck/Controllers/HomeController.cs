@@ -19,6 +19,7 @@ namespace FoodTruck.Controllers
                 lePanier = new PanierViewModel();
             else
                 lePanier = (PanierViewModel)Session["Panier"];
+            lePanier.Trier();
             Session["Panier"] = lePanier;
             ViewBag.Panier = lePanier;
 

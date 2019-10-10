@@ -10,7 +10,7 @@
     <h3>Votre panier :</h3>
     <div class="listePanier">
         @{int i = 0;}
-        @foreach (var articleDetailViewModel in Model.Articles)
+        @foreach (var articleDetailViewModel in Model.ArticlesDetailsViewModel)
         {
             <div>
                 <img src="/Content/Images/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
@@ -34,7 +34,7 @@
     <hr />
 </aside>
 
-@if (Model.Articles.Count == 0)
+@if (Model.ArticlesDetailsViewModel.Count == 0)
 {
     <h4>Votre panier est vide. Venez <a href="/Article">découvrir notre carte.</a></h4>
 }

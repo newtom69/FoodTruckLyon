@@ -8,11 +8,16 @@ namespace FoodTruck.ViewModels
     public class PanierViewModel
     {
         public double PrixTotal { get; set; }
-        public List<ArticleDetailsViewModel> Articles { get; set; }
+        public List<ArticleDetailsViewModel> ArticlesDetailsViewModel { get; set; }
 
         public PanierViewModel()
         {
-            Articles = new List<ArticleDetailsViewModel>();
+            ArticlesDetailsViewModel = new List<ArticleDetailsViewModel>();
+        }
+
+        public void Trier()
+        {
+            ArticlesDetailsViewModel=ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
         }
     }
 }
