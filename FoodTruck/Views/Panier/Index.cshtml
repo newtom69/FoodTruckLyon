@@ -13,8 +13,10 @@
         @foreach (var articleDetailViewModel in Model.ArticlesDetailsViewModel)
         {
             <div>
-                <img src="/Content/Images/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
-                @articleDetailViewModel.Quantite<span>x </span><a href="/Article/@articleDetailViewModel.Article.Nom">@articleDetailViewModel.Article.Nom</a>
+                <a href="/Article/@articleDetailViewModel.NomPourUrl">
+                    <img src="/Content/Images/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
+                </a>
+                @articleDetailViewModel.Quantite<span>x </span><a href="/Article/@articleDetailViewModel.NomPourUrl">@articleDetailViewModel.Article.Nom</a>
             </div>
             using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
             {

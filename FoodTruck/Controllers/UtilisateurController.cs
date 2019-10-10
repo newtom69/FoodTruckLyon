@@ -115,7 +115,7 @@ namespace FoodTruck.Controllers
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             if (lUtilisateur != null)
             {
-                return RedirectToAction($"./Detail/{lUtilisateur.Id}");
+                return RedirectToAction($"./Profil");
             }
             else
             {
