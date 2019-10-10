@@ -133,6 +133,7 @@
     <Compile Include="Controllers\CommandeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
+    <Compile Include="Controllers\SessionVariables.cs" />
     <Compile Include="Controllers\UtilisateurController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\ArticlesDAL.cs" />

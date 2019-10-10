@@ -16,19 +16,32 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             ViewBag.PanierAbsent = false;
-            PanierViewModel lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierViewModel();
-            else lePanier = (PanierViewModel)Session["Panier"];
-            Session["Panier"] = lePanier;
-            ViewBag.Panier = lePanier;
 
-            Utilisateur lUtilisateur = null;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.lUtilisateur = lUtilisateur;
-            }
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            SessionVariables session = new SessionVariables(HttpContext);
+            var a = session.Utilisateur;
+            var b = session.PanierViewModel;
+
+            //PanierViewModel lePanier;
+            //if (Session["Panier"] == null) lePanier = new PanierViewModel();
+            //else lePanier = (PanierViewModel)Session["Panier"];
+            //Session["Panier"] = lePanier;
+
+
+            ViewBag.Panier = session.PanierViewModel;
+
+
+            //ViewBag.Panier = lePanier;
+
+            //Utilisateur lUtilisateur = null;
+            //if (Session["Utilisateur"] != null)
+            //{
+            //    lUtilisateur = (Utilisateur)Session["Utilisateur"];
+            //    ViewBag.lUtilisateur = lUtilisateur;
+            //}
+            //VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+
+            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
+
             return View(new ArticleIndexViewModel());
         }
 
