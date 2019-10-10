@@ -1,26 +1,26 @@
 ﻿@using FoodTruck.Models
 @using System.Globalization
-
+@model Commande
 @{
     ViewBag.Title = "FoodTruck-Lyon - Commande";
 }
 
-@if (ViewBag.pasDePanier)
+@if (Model.ModeLivraison=="") //DETTE TECHNIQUE -> une commande peut potentiellement avoir un prix à 0 avec remise et cie => mettre Model.DateCommande==0 ??
 {
     <h4>Vous ne pouvez pas commander si votre panier est vide.</h4>
     <h4>Venez le remplir en <a href="/Article">découvrant notre carte.</a></h4>
 }
-@if (ViewBag.pasDeClient)
+@if (Model.UtilisateurId==0)
 {
     <h4>Votre panier est enregistré, mais vous ne pouvez pas commander si vous n'êtes pas identifié.</h4>
     <h4>Vous pouvez utiliser les liens <a href="/Utilisateur/Connexion">&laquo;&nbsp;Connexion&nbsp;&raquo;</a> ou <a href="/Utilisateur/Creation">&laquo;&nbsp;Création de compte&nbsp;&raquo;.</a></h4>
 }
-@if (!ViewBag.pasDePanier && !ViewBag.pasDeClient)
+@if (Model.PrixTotal!=0 && Model.UtilisateurId!=0)
 {
     <h3>Commande confirmée. Merci !</h3>
     <td>
-        <p>Votre commande a été passée le @ViewBag.laCommande.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</p>
-        <p>Date de la livraison&nbsp;: le @ViewBag.laCommande.DateLivraison.ToString("dd/MM/yyyy HH:mm").</p>
-        <p>Mode de livraison&nbsp;: @ViewBag.laCommande.ModeLivraison</p>
+        <p>Votre commande a été passée le @Model.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</p>
+        <p>Date de la livraison&nbsp;: le @Model.DateLivraison.ToString("dd/MM/yyyy HH:mm").</p>
+        <p>Mode de livraison&nbsp;: @Model.ModeLivraison</p>
     </td>
 }

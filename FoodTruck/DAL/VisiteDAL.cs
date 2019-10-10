@@ -12,7 +12,6 @@ namespace FoodTruck.DAL
                 db.Visite.Add(laVisite);
                 db.SaveChanges();
             }
-
         }
 
         public static void Enregistrer(int lUtilisateurId)

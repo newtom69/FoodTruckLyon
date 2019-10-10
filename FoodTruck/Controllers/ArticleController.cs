@@ -19,7 +19,7 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleIndexViewModel());
         }
 
@@ -51,7 +51,7 @@ namespace FoodTruck.Controllers
                 TempData["ArticleOk"] = true;
             }
 
-            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleDetailsViewModel(articleCourant));
         }
         [HttpGet]
@@ -98,7 +98,7 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
 

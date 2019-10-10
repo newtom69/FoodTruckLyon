@@ -10,57 +10,41 @@ namespace FoodTruck.Controllers
 {
     public class CommandeController : Controller
     {
-        // GET: Commande
         [HttpPost]
         public ActionResult Index()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            ViewBag.pasDePanier = false;
-            ViewBag.pasDeClient = false;
-
-            if (session.PanierViewModel.ArticlesDetailsViewModel.Count==0)
+            if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0 || session.Utilisateur.Id == 0)
             {
-                ViewBag.pasDePanier = true;
-                return View();
+                return View(new Commande());
             }
-            if (session.Utilisateur.Id==0)
+            else
             {
-                ViewBag.pasDeClient = true;
-                return View();
+                Commande commande = new Commande
+                {
+                    UtilisateurId = session.Utilisateur.Id,
+                    DateCommande = DateTime.Now,
+                    ModeLivraison = "à notre Foodtruck",
+                    DateLivraison = DateTime.Now.AddMinutes(45), //TODO : commande avant 13h : livré le midi + "ecart / 13h" ; commande après 13h livré le soir
+                    PrixTotal = 0
+                };
+                foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
+                {
+                    commande.PrixTotal += article.Article.Prix * article.Quantite;
+                    ArticleDAL larticleDAL = new ArticleDAL();
+                    larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
+                }
+                CommandeDAL commandeDal = new CommandeDAL();
+                commandeDal.Ajouter(commande, session.PanierViewModel.ArticlesDetailsViewModel);
+                Mail(session.Utilisateur, commande, session.PanierViewModel);
+                Session["Panier"] = null;
+                PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
+                panierDAL.Supprimer();
+                VisiteDAL.Enregistrer(session.Utilisateur.Id);
+                return View(commande);
             }
-
-
-            Commande laCommande = new Commande
-            {
-                UtilisateurId = session.Utilisateur.Id,
-                DateCommande = DateTime.Now,
-                ModeLivraison = "à notre Foodtruck",
-                DateLivraison = DateTime.Now.AddMinutes(45), //TODO
-                PrixTotal = 0
-            };
-
-            foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
-            {
-                laCommande.PrixTotal += article.Article.Prix * article.Quantite;
-                ArticleDAL larticleDAL = new ArticleDAL();
-                larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
-            }
-
-            CommandeDAL laCommandeDal = new CommandeDAL();
-            laCommandeDal.Ajouter(laCommande, session.PanierViewModel.ArticlesDetailsViewModel);
-            
-            Mail(session.Utilisateur, laCommande, session.PanierViewModel);
-
-            ViewBag.laCommande = laCommande;
-            Session["Panier"] = null;
-            PanierDAL lePanierDAL = new PanierDAL(session.Utilisateur.Id);
-            lePanierDAL.Supprimer();
-            
-            VisiteDAL.Enregistrer(session.Utilisateur.Id);
-            return View();
         }
 
 
