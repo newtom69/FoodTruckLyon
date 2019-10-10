@@ -151,7 +151,6 @@
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ArticleUI.cs" />
     <Compile Include="Models\Commande.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
@@ -179,7 +178,6 @@
     <Compile Include="Models\Panier.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PanierUI.cs" />
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
