@@ -38,7 +38,7 @@
     </div>
     <div class="container body-content">
         <section id="client">
-        @if (ViewBag.Utilisateur != null)
+        @if (ViewBag.Utilisateur!=null && ViewBag.Utilisateur.Id != 0)
         {
             <p>Bienvenue <a href="/Utilisateur/Detail/@ViewBag.Utilisateur.Id">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
         }
@@ -50,7 +50,7 @@
 
         @RenderBody()
 
-        @if (ViewBag.Panier != null && ViewBag.Panier.PrixTotal != 0 && !ViewBag.PanierAbsent)
+        @if (ViewBag.Panier != null && ViewBag.Panier.PrixTotal != 0 && TempData["PanierLatteralDesactive"] == null)
     {
         <aside id="panier">
             <h4>Panier</h4>
@@ -62,7 +62,7 @@
                     double prixTotalArticle = article.Article.Prix * article.Quantite;
                     <div>
                         @article.Quantite
-                        <span>x </span><a href="/Article/@article.Article.Nom">
+                        <span>x </span><a href="/Article/@article.NomPourUrl">
                             @article.Article.Nom
                         </a>
                     </div>

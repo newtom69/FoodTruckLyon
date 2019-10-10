@@ -13,79 +13,43 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.PanierAbsent = false;
-            PanierViewModel lePanier;
-            if (Session["Panier"] == null)
-                lePanier = new PanierViewModel();
-            else
-                lePanier = (PanierViewModel)Session["Panier"];
-            lePanier.Trier();
-            Session["Panier"] = lePanier;
-            ViewBag.Panier = lePanier;
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
 
-            Utilisateur lUtilisateur = null;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-            }
-
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new HomeViewModel());
         }
 
         [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.PanierAbsent = false;
-            PanierViewModel lePanier;
-            if (Session["Panier"] == null)
-                lePanier = new PanierViewModel();
-            else
-                lePanier = (PanierViewModel)Session["Panier"];
-            Session["Panier"] = lePanier;
-            ViewBag.Panier = lePanier;
-
-            Utilisateur lUtilisateur = null;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-            }
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
 
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
                 " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous " +
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
             ViewBag.MailEnvoye = "";
 
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Contact(string nom, string prenom, string email, string comments)
         {
-            ViewBag.PanierAbsent = false;
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
 
-            Utilisateur lUtilisateur;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur) Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-            }
-            else
-            {
-                lUtilisateur = new Utilisateur();
-            }
-
-            ViewBag.Message = "Vous avez des questions sur nos produits ?" +
-                              " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
+            ViewBag.Message = "Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
                               " et un membre de notre équipe vous répondra dans les plus brefs délais.";
 
             string nomOk = Server.HtmlEncode(nom);
             string prenomOk = Server.HtmlEncode(prenom);
             string commentsOk = Server.HtmlEncode(comments);
-
             try
             {
                 using (MailMessage message = new MailMessage { From = new MailAddress("info@foodtruck-lyon.com") })
@@ -159,8 +123,7 @@ namespace FoodTruck.Controllers
                 ViewBag.MailEnvoye = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
             }
             
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
     }

@@ -2,7 +2,7 @@
 @using FoodTruck.ViewModels
 @model ArticleDetailsViewModel
 @{
-    bool affichageArticle = Model != null ? true : false;
+    bool affichageArticle = Model.Article != null ? true : false;
 }
 
 @if (!affichageArticle)

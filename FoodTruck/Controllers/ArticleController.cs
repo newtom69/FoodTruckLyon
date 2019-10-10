@@ -15,10 +15,10 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.PanierAbsent = false;
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
+
             VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
             return View(new ArticleIndexViewModel());
         }
@@ -27,27 +27,20 @@ namespace FoodTruck.Controllers
         public ActionResult Details(string nom)
         {
             nom = nom.UrlVersNom();
-            ViewBag.PanierAbsent = false;
-            PanierViewModel lePanier;
-            if (Session["Panier"] == null) lePanier = new PanierViewModel();
-            else lePanier = (PanierViewModel)Session["Panier"];
-            Session["Panier"] = lePanier;
-            ViewBag.Panier = lePanier;
-            Utilisateur lUtilisateur;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-            }
-            else lUtilisateur = new Utilisateur();
+
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+
+
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
             articleCourant = lArticleDAL.Details(nom);
-            if(articleCourant==null)
+            if (articleCourant == null)
             {
                 TempData["ArticleOk"] = false;
             }
-            else if(!articleCourant.DansCarte)
+            else if (!articleCourant.DansCarte)
             {
                 TempData["ArticleOk"] = true;
                 TempData["ArticleDansCarte"] = false;
@@ -57,7 +50,8 @@ namespace FoodTruck.Controllers
                 TempData["ArticleDansCarte"] = true;
                 TempData["ArticleOk"] = true;
             }
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
+
+            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
             return View(new ArticleDetailsViewModel(articleCourant));
         }
         [HttpGet]
@@ -72,6 +66,7 @@ namespace FoodTruck.Controllers
         public ActionResult AjouterEnBase(Article lArticle)
         {
             bool droitPage = VerifierDroit();
+            TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
@@ -79,7 +74,7 @@ namespace FoodTruck.Controllers
                 {
                     articleDAL.AjouterArticleEnBase(lArticle);
 
-                    if(Request.Files.Count != 1 || Request.Files[0].ContentLength == 0 || Request.Files[0].ContentLength > 1024 * 1024 * 2)
+                    if (Request.Files.Count != 1 || Request.Files[0].ContentLength == 0 || Request.Files[0].ContentLength > 1024 * 1024 * 2)
                     {
                         ModelState.AddModelError("uploadError", "File's length is zero, or no files found");
                     }
@@ -96,48 +91,28 @@ namespace FoodTruck.Controllers
                 {
                     TempData["Erreur"] = ex.Message;
                 }
-
                 //TODO
             }
-            Utilisateur lUtilisateur;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-            }
-            else
-            {
-                lUtilisateur = new Utilisateur();
-            }
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-            TempData["DroitPage"] = droitPage;
+
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+
+            VisiteDAL.Enregistrer(session.Utilisateur != null ? session.Utilisateur.Id : 0);
             return View();
         }
 
         private bool VerifierDroit()
         {
-            bool droitPage;
-            Utilisateur lUtilisateur;
-            if (Session["Utilisateur"] != null)
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-                ViewBag.Utilisateur = lUtilisateur;
-                if (lUtilisateur.AdminArticle || lUtilisateur.AdminTotal)
-                    droitPage = true;
-                else
-                    droitPage = false;
-            }
+            SessionVariables session = new SessionVariables();
+
+            if (session.Utilisateur.AdminArticle || session.Utilisateur.AdminTotal)
+                return true;
             else
-            {
-                droitPage = false;
-            }
-
-#if DEBUG
-            return true;
-#endif
-            return droitPage;
+            #if DEBUG
+                return true;
+            #endif
+                return false;
         }
-
-        
     }
 }

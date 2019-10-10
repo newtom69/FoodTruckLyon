@@ -14,37 +14,35 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Index()
         {
-            ViewBag.PanierAbsent = false;
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+
             ViewBag.pasDePanier = false;
             ViewBag.pasDeClient = false;
 
-            if (Session["Panier"] == null)
+            if (session.PanierViewModel.ArticlesDetailsViewModel.Count==0)
             {
                 ViewBag.pasDePanier = true;
                 return View();
             }
-
-            PanierViewModel lePanier = (PanierViewModel)Session["Panier"];
-
-            if (Session["Utilisateur"] == null)
+            if (session.Utilisateur.Id==0)
             {
                 ViewBag.pasDeClient = true;
                 return View();
             }
 
-            Utilisateur lUtilisateur = (Utilisateur)Session["Utilisateur"];
-            ViewBag.Utilisateur = lUtilisateur;
 
             Commande laCommande = new Commande
             {
-                UtilisateurId = lUtilisateur.Id,
+                UtilisateurId = session.Utilisateur.Id,
                 DateCommande = DateTime.Now,
                 ModeLivraison = "à notre Foodtruck",
                 DateLivraison = DateTime.Now.AddMinutes(45), //TODO
                 PrixTotal = 0
             };
 
-            foreach (ArticleDetailsViewModel article in lePanier.ArticlesDetailsViewModel)
+            foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
             {
                 laCommande.PrixTotal += article.Article.Prix * article.Quantite;
                 ArticleDAL larticleDAL = new ArticleDAL();
@@ -52,17 +50,16 @@ namespace FoodTruck.Controllers
             }
 
             CommandeDAL laCommandeDal = new CommandeDAL();
-            laCommandeDal.Ajouter(laCommande, lePanier.ArticlesDetailsViewModel);
+            laCommandeDal.Ajouter(laCommande, session.PanierViewModel.ArticlesDetailsViewModel);
             
-            Mail(lUtilisateur, laCommande, lePanier);
+            Mail(session.Utilisateur, laCommande, session.PanierViewModel);
 
             ViewBag.laCommande = laCommande;
             Session["Panier"] = null;
-            PanierDAL lePanierDAL = new PanierDAL(lUtilisateur.Id);
+            PanierDAL lePanierDAL = new PanierDAL(session.Utilisateur.Id);
             lePanierDAL.Supprimer();
             
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
-
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
 

@@ -16,10 +16,13 @@ namespace FoodTruck.ViewModels
 
         public ArticleDetailsViewModel(Article article, int quantite = 1)
         {
-            Quantite = quantite;
-            PrixTotal = Math.Round(quantite * article.Prix, 2);
-            Article = article;
-            NomPourUrl = Article.Nom.NomPourUrl();
+            if (article != null)
+            {
+                Quantite = quantite;
+                PrixTotal = Math.Round(quantite * article.Prix, 2);
+                Article = article;
+                NomPourUrl = Article.Nom.NomPourUrl();
+            }
         }
     }
 }
