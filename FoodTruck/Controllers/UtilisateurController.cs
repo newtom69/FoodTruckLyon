@@ -8,13 +8,22 @@ namespace FoodTruck.Controllers
     public class UtilisateurController : Controller
     {
         [HttpGet]
+        public ActionResult Profil()
+        {
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            return View(session.Utilisateur);
+        }
+
+        [HttpGet]
         public ActionResult Connexion()
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            if (session.Utilisateur.Id==0)
+            if (session.Utilisateur.Id == 0)
                 return View();
             else
                 return RedirectToAction("../");
@@ -28,7 +37,7 @@ namespace FoodTruck.Controllers
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (session.Utilisateur.Id==0)
+            if (session.Utilisateur.Id == 0)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
@@ -40,7 +49,7 @@ namespace FoodTruck.Controllers
             Session["Utilisateur"] = lUtilisateur;
             ViewBag.Utilisateur = lUtilisateur;
 
-            if (lUtilisateur!=null)
+            if (lUtilisateur != null)
             {
                 SynchroniserPanier(lUtilisateur);
                 VisiteDAL.Enregistrer(lUtilisateur.Id);
@@ -83,7 +92,7 @@ namespace FoodTruck.Controllers
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (session.Utilisateur.Id==0)
+            if (session.Utilisateur.Id == 0)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 if (!VerifMdp(Mdp, Mdp2))
@@ -121,7 +130,7 @@ namespace FoodTruck.Controllers
         {
             bool valeurRetour = true;
             if (mdp1 != mdp2) valeurRetour = false;
-            if (mdp1.Length<8) valeurRetour = false;
+            if (mdp1.Length < 8) valeurRetour = false;
             return valeurRetour;
         }
 
@@ -162,5 +171,5 @@ namespace FoodTruck.Controllers
                 }
             }
         }
-     }
+    }
 }

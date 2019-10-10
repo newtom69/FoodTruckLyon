@@ -40,7 +40,7 @@
         <section id="client">
         @if (ViewBag.Utilisateur!=null && ViewBag.Utilisateur.Id != 0)
         {
-            <p>Bienvenue <a href="/Utilisateur/Detail/@ViewBag.Utilisateur.Id">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
+            <p>Bienvenue <a href="/Utilisateur/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
         }
         else
         {
