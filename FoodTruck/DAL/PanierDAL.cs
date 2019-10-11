@@ -14,15 +14,15 @@ namespace FoodTruck.DAL
             UtilisateurId = utilisateurId;
         }
 
-        ///Ajouter un article au panier en base d'un utilisateur
-        public void Ajouter(Article lArticle)
+        ///Ajouter un article non présent au panier en base d'un utilisateur
+        public void Ajouter(Article lArticle, int quantite=1)
         {
             Panier lePanier = new Panier
             {
                 ArticleId = lArticle.Id,
                 UtilisateurId = UtilisateurId,
-                Quantite = 1,
-                PrixTotal = lArticle.Prix
+                Quantite = quantite,
+                PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
         };
             using (foodtruckEntities db = new foodtruckEntities())
             {

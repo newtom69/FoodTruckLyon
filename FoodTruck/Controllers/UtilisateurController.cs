@@ -57,7 +57,10 @@ namespace FoodTruck.Controllers
 
             if (lUtilisateur != null)
             {
-                SynchroniserPanier(lUtilisateur);
+                session = new SessionVariables();
+                //SynchroniserPanier(lUtilisateur);
+                session.SynchroniserPanier();
+                ViewBag.Panier = Session["Panier"];
                 VisiteDAL.Enregistrer(lUtilisateur.Id);
                 return RedirectToAction("../");
             }
@@ -142,44 +145,6 @@ namespace FoodTruck.Controllers
             if (mdp1 != mdp2) valeurRetour = false;
             if (mdp1.Length < 8) valeurRetour = false;
             return valeurRetour;
-        }
-
-        void SynchroniserPanier(Utilisateur lUtilisateur)
-        {
-            if (lUtilisateur != null && lUtilisateur.Id != 0)
-            {
-                PanierDAL lePanierDal = new PanierDAL(lUtilisateur.Id);
-
-                SessionVariables session = new SessionVariables();
-                ViewBag.Panier = session.PanierViewModel;
-                ViewBag.Utilisateur = session.Utilisateur;
-
-                foreach (ArticleDetailsViewModel lArticle in session.PanierViewModel.ArticlesDetailsViewModel)
-                {
-                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
-                    if (panier == null)
-                        lePanierDal.Ajouter(lArticle.Article);
-                    else
-                        lePanierDal.ModifierQuantite(lArticle.Article, 1);
-                }
-
-                session.PanierViewModel = new PanierViewModel();
-                foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
-                {
-                    session.PanierViewModel.PrixTotal += lePanier.PrixTotal;
-                    ArticleDetailsViewModel article = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
-                    if (article != null)
-                    {
-                        article.Quantite++;
-                    }
-                    else
-                    {
-                        ArticleDAL articleDAL = new ArticleDAL();
-                        session.PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
-                        Session["Panier"] = session.PanierViewModel;
-                    }
-                }
-            }
         }
     }
 }
