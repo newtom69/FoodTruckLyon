@@ -56,7 +56,6 @@ namespace FoodTruck.Controllers
                     else
                         lePanierDal.ModifierQuantite(lArticle.Article, lArticle.Quantite);
                 }
-
                 PanierViewModel = new PanierViewModel();
                 foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
                 {
