@@ -29,7 +29,7 @@ namespace FoodTruck.Controllers
             if (session.Utilisateur.Id == 0)
                 return View();
             else
-                return RedirectToAction("../");
+                return RedirectToAction("Profil");
         }
 
         [HttpPost]
@@ -57,12 +57,16 @@ namespace FoodTruck.Controllers
 
             if (lUtilisateur != null)
             {
-                session = new SessionVariables();
-                //SynchroniserPanier(lUtilisateur);
-                session.SynchroniserPanier();
-                ViewBag.Panier = Session["Panier"];
-                VisiteDAL.Enregistrer(lUtilisateur.Id);
-                return RedirectToAction("../");
+                bool panierPresentEnBase = new PanierDAL(lUtilisateur.Id).ListerPanierUtilisateur().Count > 0 ? true : false;
+                if (panierPresentEnBase)
+                {
+                    TempData["DemandeRestaurationPanier"] = true;
+                    return RedirectToAction("RestaurerPanier", "Utilisateur");
+                }
+                else
+                {
+                    return RedirectToAction("Profil", "Utilisateur");
+                }
             }
             else
             {
@@ -71,6 +75,43 @@ namespace FoodTruck.Controllers
                 ViewBag.MauvaisEmailMdp = true;
                 VisiteDAL.Enregistrer(0);
                 return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult RestaurerPanier()
+        {
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            return View(session.Utilisateur);
+        }
+
+        [HttpPost]
+        public ActionResult RestaurerPanier(string reponse)
+        {
+            SessionVariables session = new SessionVariables();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            if (reponse == "Oui")
+            {
+                //recupération du panier en base
+                session.SauvegarderPanierEnBase();
+                session.RecupererPanierEnBase();
+                ViewBag.Panier = session.PanierViewModel;
+                ViewBag.Utilisateur = session.Utilisateur;
+                VisiteDAL.Enregistrer(session.Utilisateur.Id);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                //effacer panier en base
+                PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
+                panierDAL.Supprimer();
+                session.SauvegarderPanierEnBase();
+                ViewBag.Panier = session.PanierViewModel;
+                ViewBag.Utilisateur = session.Utilisateur;
+                return RedirectToAction("Index", "Home");
             }
         }
 

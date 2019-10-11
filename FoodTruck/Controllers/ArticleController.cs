@@ -32,7 +32,6 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
             articleCourant = lArticleDAL.Details(nom);

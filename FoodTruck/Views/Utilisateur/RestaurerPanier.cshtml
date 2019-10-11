@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "RestaurerPanier";
+}
+
+<h2>Restaurer Panier</h2>
+
+@if (ViewBag.Ulilisateur != null)
+{
+    <ul>
+        <li>@ViewBag.Utilisateur.Nom</li>
+        <li>@ViewBag.Utilisateur.Prenom </li>
+        <li>@ViewBag.Utilisateur.Email</li>
+        <li>@ViewBag.Utilisateur.Telephone</li>
+    </ul>
+}
+
+@if (TempData["DemandeRestaurationPanier"] != null)
+{
+    <p>Des articles sont présent dans an ancien panier.</p>
+    <p>Voulez-vous les récupérer ?</p>
+    using (Html.BeginForm("RestaurerPanier", "Utilisateur", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
+    {
+        <div class="ccfield-prepend">
+            <input class="ccformfield" type="radio" name="reponse" value="Oui" id="Oui" />
+            <label class="ccformfield">Oui</label>
+            <input class="ccformfield" type="radio" name="reponse" value="Non" id="Non" />
+            <label class="ccformfield">Non</label>
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccbtn" type="submit" value="Valider">
+        </div>
+    }
+}
