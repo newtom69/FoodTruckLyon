@@ -1,6 +1,8 @@
-﻿using FoodTruck.Models;
+﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
@@ -12,7 +14,16 @@ namespace FoodTruck.Controllers
         public SessionVariables()
         {
             if (HttpContext.Current.Session["Utilisateur"] == null)
-                HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
+            {
+                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Email");
+                if (cookie != null)
+                {
+                    UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+                    HttpContext.Current.Session["Utilisateur"] = Utilisateur = utilisateurDAL.ConnexionCookies(cookie.Value);
+                }
+                else
+                    HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
+            }
             else
                 Utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
 
@@ -24,10 +35,10 @@ namespace FoodTruck.Controllers
                 PanierViewModel.Trier();
             }
         }
-        public SessionVariables(int iPourSurcharge)
+        public SessionVariables(int pourSurchargeUniquement)
         {
-                HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
-                HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
+            HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
+            HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
         }
     }
 }

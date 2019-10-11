@@ -22,7 +22,17 @@ namespace FoodTruck.DAL
             }
             return lUtilisateur;
         }
-
+        public Utilisateur ConnexionCookies(string email)
+        {
+            Utilisateur lUtilisateur = new Utilisateur();
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                lUtilisateur = (from user in db.Utilisateur
+                                where user.Email == email
+                                select user).FirstOrDefault();
+            }
+            return lUtilisateur;
+        }
         public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
         {
             string mdpHash;

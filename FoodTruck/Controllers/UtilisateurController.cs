@@ -1,6 +1,9 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using System;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -41,6 +44,9 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
+                HttpCookie cookie = new HttpCookie("Email");
+                cookie.Value = lUtilisateur.Email;
+                Response.Cookies.Add(cookie);
             }
             else
             {
@@ -68,6 +74,10 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
+            HttpCookie newCookie = new HttpCookie("Email");
+            newCookie.Expires = DateTime.Now.AddDays(-30);
+            Response.Cookies.Add(newCookie);
+
             SessionVariables session = new SessionVariables(0);
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;

@@ -4,6 +4,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Net.Mail;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -16,6 +17,19 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
+
+            //if (session.Utilisateur.Id == 0)
+            //{
+            //    HttpCookie cookie = Request.Cookies.Get("Email");
+            //    if (cookie != null)
+            //    {
+            //        UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            //        Utilisateur utilisateur = utilisateurDAL.ConnexionCookies(cookie.Value);
+            //        Session["Utilisateur"] = utilisateur;
+            //        ViewBag.Utilisateur = utilisateur;
+            //    }
+            //}
+
 
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new HomeViewModel());
