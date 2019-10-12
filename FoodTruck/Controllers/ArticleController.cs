@@ -59,6 +59,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult AjouterEnBase()
         {
+
             bool droitPage = VerifierDroit();
             TempData["DroitPage"] = droitPage;
             return View();
@@ -93,11 +94,11 @@ namespace FoodTruck.Controllers
                 ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
-                    string dossierImage = ConfigurationManager.AppSettings["PathImages"];
+                    string dossierImage = ConfigurationManager.AppSettings["PathArticlesImages"];
                     string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
                     string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
-                    int tailleImage = Int32.Parse(ConfigurationManager.AppSettings["ImagesArticleSize"]);
+                    int tailleImage = Int32.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
                     var nouvelleImage = new Bitmap(image, tailleImage, tailleImage);
                     nouvelleImage.Save(chemin);
                     nouvelleImage.Dispose();

@@ -1,12 +1,14 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
+@using System.Configuration;
+@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
 @model HomeViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon";
 }
 
 <div class="carouselContainer">
-        <img src="/Content/Images/food-truck.jpg" alt="Notre Foodtruck" style="width:90%;">
+    <img src="@dossierArticlesImages/food-truck.jpg" alt="Notre Foodtruck" style="width:90%;">
 </div>
 
 <h3><a href="../Article">Voir notre carte</a></h3>
@@ -17,7 +19,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">

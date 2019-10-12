@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using System.Configuration;
+@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
+
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,8 +23,8 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/">
-                    <img src="/Content/Images/logo.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-full">
-                    <img src="/Content/Images/logo-only.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-only">
+                    <img src="@dossierArticlesImages/logo.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-full">
+                    <img src="@dossierArticlesImages/logo-only.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-only">
                 </a>
 
             </div>
@@ -38,54 +41,54 @@
     </div>
     <div class="container body-content">
         <section id="client">
-        @if (ViewBag.Utilisateur!=null && ViewBag.Utilisateur.Id != 0)
-        {
-            <p>Bienvenue <a href="/Utilisateur/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
-        }
-        else
-        {
-            <p><a href="/Utilisateur/Connexion/">Connexion</a> - <a href="/Utilisateur/Creation/">Création de compte</a></p>
-        }
+            @if (ViewBag.Utilisateur != null && ViewBag.Utilisateur.Id != 0)
+            {
+                <p>Bienvenue <a href="/Utilisateur/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
+            }
+            else
+            {
+                <p><a href="/Utilisateur/Connexion/">Connexion</a> - <a href="/Utilisateur/Creation/">Création de compte</a></p>
+            }
         </section>
 
         @RenderBody()
 
         @if (ViewBag.Panier != null && ViewBag.Panier.PrixTotal != 0 && TempData["PanierLatteralDesactive"] == null)
-    {
-        <aside id="panier">
-            <h4>Panier</h4>
-            <div class="listePanier">
-                @{int i = 0;
-                }
-                @foreach (var article in ViewBag.Panier.ArticlesDetailsViewModel)
-                {
-                    double prixTotalArticle = article.Article.Prix * article.Quantite;
-                    <div>
-                        @article.Quantite
-                        <span>x </span><a href="/Article/@article.NomPourUrl">
-                            @article.Article.Nom
-                        </a>
-                    </div>
-                    using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
-                    {
-                        <input name="nom" value="@article.Article.Nom" hidden>
-                        <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
+        {
+            <aside id="panier">
+                <h4>Panier</h4>
+                <div class="listePanier">
+                    @{int i = 0;
                     }
-                    using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                    @foreach (var article in ViewBag.Panier.ArticlesDetailsViewModel)
                     {
-                        <input name="id" value="@i" hidden>
-                        <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
+                        double prixTotalArticle = article.Article.Prix * article.Quantite;
+                        <div>
+                            @article.Quantite
+                            <span>x </span><a href="/Article/@article.NomPourUrl">
+                                @article.Article.Nom
+                            </a>
+                        </div>
+                        using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                        {
+                            <input name="nom" value="@article.Article.Nom" hidden>
+                            <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
+                        }
+                        using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                        {
+                            <input name="id" value="@i" hidden>
+                            <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
+                        }
+                        <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
+                        <hr />
+                        i++;
                     }
-                    <p class="sousTotal">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
-                    <hr />
-                    i++;
-                }
-            </div>
-            <hr />
-            <p>Total : @ViewBag.Panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>
-            <a class="validerPanier" href="/Panier">Valider votre panier</a>
-        </aside>
-}
+                </div>
+                <hr />
+                <p>Total : @ViewBag.Panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>
+                <a class="validerPanier" href="/Panier">Valider votre panier</a>
+            </aside>
+        }
 
         <hr />
         <footer>

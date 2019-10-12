@@ -1,5 +1,7 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
+@using System.Configuration;
+@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
 @model ArticleIndexViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon - Notre carte";
@@ -16,7 +18,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
@@ -41,7 +43,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
@@ -66,7 +68,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
@@ -91,7 +93,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
@@ -117,7 +119,7 @@
     {
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="/Content/Images/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
