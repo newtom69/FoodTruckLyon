@@ -68,7 +68,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult AjouterEnBase(string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            string nomOk = nom.FormatAutoriseNom();
+            string nomOk = nom.NomAdmis();
             double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
             int grammageOk = Math.Abs(grammage ?? 0);
             int litrageOk = Math.Abs(litrage ?? 0);

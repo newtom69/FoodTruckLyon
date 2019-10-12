@@ -17,13 +17,28 @@ namespace FoodTruck.Extensions
             return nom.TrimEnd(' ').Replace("-", "_").Replace(" ", "-");
         }
 
-        public static string FormatAutoriseNom(this string nom)
+        public static string NomAdmis(this string nom)
         {
-            const string espace = " "; 
-            nom = nom.Replace("_", espace).Replace("&", espace).Replace("@", espace).Replace("#", espace).Replace("?", espace);
-            return string.Join(espace, nom.Split(Path.GetInvalidFileNameChars()));
+            const char espace = ' ';
+            const string interdit = "@=&#_;%^";
+            return nom.Replace(interdit, espace).Replace(Path.GetInvalidFileNameChars(), espace);
         }
 
-
+        public static string Replace(this string orig, string to, char by)
+        {
+            foreach (char car in to)
+            {
+                orig = orig.Replace(car, by);
+            }
+            return orig;
+        }
+        public static string Replace(this string orig, char[] to, char by)
+        {
+            foreach (char car in to)
+            {
+                orig = orig.Replace(car, by);
+            }
+            return orig;
+        }
     }
 }
