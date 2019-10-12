@@ -21,7 +21,7 @@ namespace FoodTruck.ViewModels
                 Quantite = quantite;
                 PrixTotal = Math.Round(quantite * article.Prix, 2);
                 Article = article;
-                NomPourUrl = Article.Nom.NomPourUrl();
+                NomPourUrl = Article.Nom.ToUrl();
             }
         }
     }

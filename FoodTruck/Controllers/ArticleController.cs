@@ -7,6 +7,7 @@ using System.IO;
 using FoodTruck.Extensions;
 using FoodTruck.ViewModels;
 using System.Globalization;
+using System.Drawing;
 
 namespace FoodTruck.Controllers
 {
@@ -63,35 +64,45 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult AjouterEnBase(string nom, string description, string prix, int grammage, int litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
+        public ActionResult AjouterEnBase(string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
+            string nomOk = nom.FormatAutoriseNom();
+            double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
+            int grammageOk = Math.Abs(grammage ?? 0);
+            int litrageOk = Math.Abs(litrage ?? 0);
+            string descriptionOk = description;
+            string allergenesOk = allergenes ?? "";
+            int familleIdOk = familleId;
+            bool dansCarteOk = dansCarte;
             bool droitPage = VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
-                //TODO : vérif et formattage entrée utilisateur
                 Article lArticle = new Article
                 {
-                    Nom = nom,
-                    Description = description,
-                    Prix = Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2),
-                    Grammage = grammage,
-                    Litrage = litrage,
-                    Allergenes = allergenes,
-                    FamilleId = familleId,
-                    DansCarte = dansCarte,
+                    Nom = nomOk,
+                    Description = descriptionOk,
+                    Prix = prixOk,
+                    Grammage = grammageOk,
+                    Litrage = litrageOk,
+                    Allergenes = allergenesOk,
+                    FamilleId = familleIdOk,
+                    DansCarte = dansCarteOk,
                 };
                 ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
-                    string fileName = nom.NomPourUrl() + Path.GetFileName(file.FileName);
-                    lArticle.Image = fileName;
-                    var path = Path.Combine(Server.MapPath("/Content/Images"), fileName);
-                    //TODO : resize file
-                    file.SaveAs(path);
-
+                    string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
+                    string chemin = Path.Combine(Server.MapPath("/Content/Images"), fileName);
+                    Image image = Image.FromStream(file.InputStream);
+                    int tailleMin = image.Height < image.Width ? image.Height : image.Width;
+                    var nouvelleImage = new Bitmap(image, tailleMin, tailleMin);
+                    nouvelleImage.Save(chemin);
+                    nouvelleImage.Dispose();
+                    image.Dispose();
                     lArticle.Image = fileName;
                     articleDAL.AjouterArticleEnBase(lArticle);
+                    TempData["UploadOK"] = "Votre article a bien été ajouté";
                 }
                 catch (Exception ex)
                 {
@@ -114,10 +125,10 @@ namespace FoodTruck.Controllers
             if (session.Utilisateur.AdminArticle || session.Utilisateur.AdminTotal)
                 return true;
             else
-            #if DEBUG
+#if DEBUG
                 return true;
-            #endif
-                return false;
+#endif
+            return false;
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
-    class ArticleDAL
+    public class ArticleDAL
     {
-        public Article Details(int id)
+        internal Article Details(int id)
         {
             Article larticle;
             using (foodtruckEntities db = new foodtruckEntities())
@@ -28,7 +29,20 @@ namespace FoodTruck.DAL
             }
             return larticle;
         }
-        public void AugmenterQuantiteVendue(int id, int nbre)
+
+        public List<FamilleArticle> FamillesArticle()
+        {
+            List<FamilleArticle> famillesArticle;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                famillesArticle = (from fa in db.FamilleArticle
+                                   orderby fa.Id
+                                   select fa).ToList();
+            }
+            return famillesArticle;
+        }
+
+        internal void AugmenterQuantiteVendue(int id, int nbre)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

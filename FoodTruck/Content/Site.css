@@ -544,11 +544,16 @@ h3.total {
     margin: 20px;
     font-size: large;
 }
+.messageInfo {
+    color: green;
+    margin: 20px;
+    font-size: medium;
+}
 
-a.tip {
+/*a.tip {
     border-bottom: 1px medium;
     text-decoration: none;
-}
+}*/
 
     /*a.tip:hover {
         cursor: help;

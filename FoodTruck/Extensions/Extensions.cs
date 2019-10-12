@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -11,9 +12,18 @@ namespace FoodTruck.Extensions
         {
             return url.Replace("-", " ").Replace("_", "-");
         }
-        public static string NomPourUrl(this string nom)
+        public static string ToUrl(this string nom)
         {
             return nom.TrimEnd(' ').Replace("-", "_").Replace(" ", "-");
         }
+
+        public static string FormatAutoriseNom(this string nom)
+        {
+            const string espace = " "; 
+            nom = nom.Replace("_", espace).Replace("&", espace).Replace("@", espace).Replace("#", espace).Replace("?", espace);
+            return string.Join(espace, nom.Split(Path.GetInvalidFileNameChars()));
+        }
+
+
     }
 }
