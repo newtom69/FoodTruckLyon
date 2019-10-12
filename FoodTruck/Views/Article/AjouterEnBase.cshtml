@@ -16,49 +16,48 @@
         }
         @*@Html.ValidationMessage("uploadError")*@
         <div>
-            @using (Html.BeginForm("Ajouter", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
+            @using (Html.BeginForm("AjouterEnBase", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="Nom" type="text" placeholder="Nom" maxlength='30' required>
+                    <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="Description" type="text" placeholder="Description" maxlength='500' required>
+                    <input class="ccformfield" name="description" type="text" placeholder="Description" maxlength='500' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-euro  fa-2x"></i></span>
-                    <input class="ccformfield" name="Prix" type="number" step="0.01" placeholder="Prix" maxlength='8' required>
+                    <input class="ccformfield" name="prix" type="number" step="0.1" placeholder="Prix" maxlength='8' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="Grammage" type="number" placeholder="Grammage" maxlength='8' required>
+                    <input class="ccformfield" name="grammage" type="number" placeholder="Grammage" maxlength='8' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="Litrage" type="number" step="10" placeholder="Litrage" maxlength='8' required>
+                    <input class="ccformfield" name="litrage" type="number" step="10" placeholder="Litrage" maxlength='8' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="Allergenes" type="text" placeholder="Allergènes" maxlength='10' required>
+                    <input class="ccformfield" name="allergenes" type="text" placeholder="Allergènes" maxlength='10' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
-                    <input class="ccformfield" name="FamilleId" type="text" placeholder="Famille" maxlength='10' required>
+                    <input class="ccformfield" name="familleId" type="text" placeholder="Famille" maxlength='10' required>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-pencil fa-2x"></i></span>
                     <div class="ccformfield">
                         Visible dans la carte
-                        <input name="DansCarte" type="checkbox" value="true" checked>
-                        <input name="DansCarte" type="hidden" value="false">
+                        <input name="dansCarte" type="checkbox" value="true" checked>
+                        <input name="dansCarte" type="hidden" value="false">
                     </div>
                 </div>
                 <div class="ccfield-prepend">
                     <span class="ccform-addon"><i class="glyphicon-camera fa-2x"></i></span>
-                    <input class="ccformfield" name="Image" type="file" accept="image/*" placeholder="Image" maxlength='10' required>
+                    <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='300' required>
                 </div>
-
                 <div class="ccfield-prepend">
                     <input class="ccbtn" type="submit" value="Ajouter">
                 </div>

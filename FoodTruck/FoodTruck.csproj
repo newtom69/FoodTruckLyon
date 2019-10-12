@@ -132,6 +132,7 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LinkedinController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\SessionVariables.cs" />
     <Compile Include="Controllers\UtilisateurController.cs" />
@@ -306,6 +307,8 @@
     <Content Include="Views\Utilisateur\Profil.cshtml" />
     <Content Include="Views\Article\AjouterEnBase.cshtml" />
     <Content Include="Views\Utilisateur\RestaurerPanier.cshtml" />
+    <Content Include="Views\Linkedin\callback.cshtml" />
+    <Content Include="Views\Linkedin\File.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -315,7 +318,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

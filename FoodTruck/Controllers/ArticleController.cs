@@ -6,6 +6,7 @@ using System.Web;
 using System.IO;
 using FoodTruck.Extensions;
 using FoodTruck.ViewModels;
+using System.Globalization;
 
 namespace FoodTruck.Controllers
 {
@@ -62,35 +63,40 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult AjouterEnBase(Article lArticle)
+        public ActionResult AjouterEnBase(string nom, string description, string prix, int grammage, int litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
             bool droitPage = VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
+                //TODO : vérif et formattage entrée utilisateur
+                Article lArticle = new Article
+                {
+                    Nom = nom,
+                    Description = description,
+                    Prix = Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2),
+                    Grammage = grammage,
+                    Litrage = litrage,
+                    Allergenes = allergenes,
+                    FamilleId = familleId,
+                    DansCarte = dansCarte,
+                };
                 ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
-                    articleDAL.AjouterArticleEnBase(lArticle);
+                    string fileName = nom.NomPourUrl() + Path.GetFileName(file.FileName);
+                    lArticle.Image = fileName;
+                    var path = Path.Combine(Server.MapPath("/Content/Images"), fileName);
+                    //TODO : resize file
+                    file.SaveAs(path);
 
-                    if (Request.Files.Count != 1 || Request.Files[0].ContentLength == 0 || Request.Files[0].ContentLength > 1024 * 1024 * 2)
-                    {
-                        ModelState.AddModelError("uploadError", "File's length is zero, or no files found");
-                    }
-                    else
-                    {
-                        // extract only the filename
-                        string fileName = Path.GetFileName(Request.Files[0].FileName);
-                        lArticle.Image += GetHashCode();
-                        string path = Path.Combine(Server.MapPath("~/Content/Images"), lArticle.Image);
-                        Request.Files[0].SaveAs(path);
-                    }
+                    lArticle.Image = fileName;
+                    articleDAL.AjouterArticleEnBase(lArticle);
                 }
                 catch (Exception ex)
                 {
                     TempData["Erreur"] = ex.Message;
                 }
-                //TODO
             }
 
             SessionVariables session = new SessionVariables();
