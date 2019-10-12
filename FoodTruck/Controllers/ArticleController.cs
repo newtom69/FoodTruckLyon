@@ -14,7 +14,6 @@ namespace FoodTruck.Controllers
 {
     public class ArticleController : Controller
     {
-        // GET: Article
         [HttpGet]
         public ActionResult Index()
         {

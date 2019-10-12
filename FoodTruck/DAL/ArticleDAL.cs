@@ -29,7 +29,10 @@ namespace FoodTruck.DAL
             }
             return larticle;
         }
-
+        /// <summary>
+        /// retourne la liste des familles d'articles. Trié par Id
+        /// </summary>
+        /// <returns></returns>
         public List<FamilleArticle> FamillesArticle()
         {
             List<FamilleArticle> famillesArticle;
@@ -53,12 +56,15 @@ namespace FoodTruck.DAL
                 db.SaveChanges();
             }
         }
-        internal void AjouterArticleEnBase(Article lArticle)
+        /// <summary>
+        /// Ajoute l'article lArticle en base
+        /// </summary>
+        /// <param name="lArticle"></param>
+        internal void Ajouter(Article lArticle)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.Article.Add(lArticle);
-
                 try
                 {
                     db.SaveChanges();
@@ -70,7 +76,7 @@ namespace FoodTruck.DAL
                 }
             }
         }
-        internal void ReferencerArticle(int id)
+        internal void Referencer(int id)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -81,7 +87,7 @@ namespace FoodTruck.DAL
                 db.SaveChanges();
             }
         }
-        internal void DereferencerArticle(int id)
+        internal void Dereferencer(int id)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -117,6 +123,20 @@ namespace FoodTruck.DAL
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
                                           where article.DansCarte == true && famille.Nom == nomFamille
                                           orderby article.Nom
+                                          select article)
+                                          .Take(nombreMax)
+                                          .ToList();
+                return articles;
+            }
+        }
+
+        public List<Article> ListerTout(int nombreMax = 200)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Article> articles = (from article in db.Article
+                                          where article.DansCarte == true
+                                          orderby article.FamilleId, article.Nom
                                           select article)
                                           .Take(nombreMax)
                                           .ToList();

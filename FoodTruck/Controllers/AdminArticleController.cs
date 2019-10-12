@@ -63,7 +63,7 @@ namespace FoodTruck.Controllers
                     nouvelleImage.Dispose();
                     image.Dispose();
                     lArticle.Image = fileName;
-                    articleDAL.AjouterArticleEnBase(lArticle);
+                    articleDAL.Ajouter(lArticle);
                     TempData["UploadOK"] = "Votre article a bien été ajouté";
                 }
                 catch (Exception ex)
