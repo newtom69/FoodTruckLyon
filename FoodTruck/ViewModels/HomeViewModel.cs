@@ -15,8 +15,8 @@ namespace FoodTruck.ViewModels
         {
             ArticlesTopRandom = new List<ArticleDetailsViewModel>();
 
-            ArticlesDAL articles = new ArticlesDAL();
-            foreach (Article article in articles.ListerRandom(3, 7))
+            ArticleDAL articleDAL = new ArticleDAL();
+            foreach (Article article in articleDAL.ListerRandom(3, 7))
             {
                 ArticlesTopRandom.Add(new ArticleDetailsViewModel(article));
             }

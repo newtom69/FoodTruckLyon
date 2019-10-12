@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminArticleController.cs" />
     <Compile Include="Controllers\AProposController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
@@ -137,7 +138,6 @@
     <Compile Include="Controllers\SessionVariables.cs" />
     <Compile Include="Controllers\UtilisateurController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
-    <Compile Include="DAL\ArticlesDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
@@ -319,6 +319,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="Views\AdminArticle\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

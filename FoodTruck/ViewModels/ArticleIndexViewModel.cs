@@ -17,7 +17,7 @@ namespace FoodTruck.ViewModels
 
         public ArticleIndexViewModel()
         {
-            ArticlesDAL articlesDAL = new ArticlesDAL();
+            ArticleDAL articleDAL = new ArticleDAL();
 
             ArticlesEntree = new List<ArticleDetailsViewModel>();
             ArticlesPlat = new List<ArticleDetailsViewModel>();
@@ -25,27 +25,27 @@ namespace FoodTruck.ViewModels
             ArticlesBoissonFraiche = new List<ArticleDetailsViewModel>();
             ArticlesBoissonChaude = new List<ArticleDetailsViewModel>();
 
-            foreach (Article article in articlesDAL.Lister("Entrée"))
+            foreach (Article article in articleDAL.Lister("Entrée"))
             {
                 ArticlesEntree.Add(new ArticleDetailsViewModel(article));
             }
 
-            foreach (Article article in articlesDAL.Lister("Plat"))
+            foreach (Article article in articleDAL.Lister("Plat"))
             {
                 ArticlesPlat.Add(new ArticleDetailsViewModel(article));
             }
 
-            foreach (Article article in articlesDAL.Lister("Dessert"))
+            foreach (Article article in articleDAL.Lister("Dessert"))
             {
                 ArticlesDessert.Add(new ArticleDetailsViewModel(article));
             }
 
-            foreach (Article article in articlesDAL.Lister("Boisson Fraiche"))
+            foreach (Article article in articleDAL.Lister("Boisson Fraiche"))
             {
                 ArticlesBoissonFraiche.Add(new ArticleDetailsViewModel(article));
             }
 
-            foreach (Article article in articlesDAL.Lister("Boisson Chaude"))
+            foreach (Article article in articleDAL.Lister("Boisson Chaude"))
             {
                 ArticlesBoissonChaude.Add(new ArticleDetailsViewModel(article));
             }
