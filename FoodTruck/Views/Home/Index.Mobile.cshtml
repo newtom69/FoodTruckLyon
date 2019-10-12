@@ -1,5 +1,7 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
+@using System.Configuration;
+@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
 @model HomeViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon";
