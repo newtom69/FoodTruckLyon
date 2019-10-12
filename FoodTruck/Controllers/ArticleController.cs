@@ -8,6 +8,7 @@ using FoodTruck.Extensions;
 using FoodTruck.ViewModels;
 using System.Globalization;
 using System.Drawing;
+using System.Configuration;
 
 namespace FoodTruck.Controllers
 {
@@ -92,11 +93,12 @@ namespace FoodTruck.Controllers
                 ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
+                    string dossierImage = ConfigurationManager.AppSettings["PathImages"];
                     string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
-                    string chemin = Path.Combine(Server.MapPath("/Content/Images"), fileName);
+                    string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
-                    int tailleMin = image.Height < image.Width ? image.Height : image.Width;
-                    var nouvelleImage = new Bitmap(image, tailleMin, tailleMin);
+                    int tailleImage = Int32.Parse(ConfigurationManager.AppSettings["ImagesArticleSize"]);
+                    var nouvelleImage = new Bitmap(image, tailleImage, tailleImage);
                     nouvelleImage.Save(chemin);
                     nouvelleImage.Dispose();
                     image.Dispose();
