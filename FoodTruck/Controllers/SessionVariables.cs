@@ -65,7 +65,8 @@ namespace FoodTruck.Controllers
                         HttpContext.Current.Session["Prospect"] = guid;
                         cookie = new HttpCookie("Prospect")
                         {
-                            Value = guid
+                            Value = guid,
+                            Expires = DateTime.Now.AddDays(30)
                         };
                         HttpContext.Current.Response.Cookies.Add(cookie);
                     }
@@ -80,7 +81,8 @@ namespace FoodTruck.Controllers
             HttpContext.Current.Session["Prospect"] = guid;
             HttpCookie cookie = new HttpCookie("Prospect")
             {
-                Value = guid
+                Value = guid,
+                Expires = DateTime.Now.AddDays(30)
             };
             HttpContext.Current.Request.Cookies.Add(cookie);
         }

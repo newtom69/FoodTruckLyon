@@ -46,7 +46,8 @@ namespace FoodTruck.Controllers
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
                 HttpCookie cookie = new HttpCookie("EmailClient")
                 {
-                    Value = lUtilisateur.Email
+                    Value = lUtilisateur.Email,
+                    Expires = DateTime.Now.AddDays(30)
                 };
                 Response.Cookies.Add(cookie);
             }
