@@ -143,6 +143,7 @@
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
+    <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="Extensions\Extensions.cs" />
