@@ -2,6 +2,7 @@
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,6 +11,7 @@ namespace FoodTruck.Controllers
     public class SessionVariables
     {
         public Utilisateur Utilisateur { get; set; }
+        public string ProspectGuid { get; set; }
         public PanierViewModel PanierViewModel { get; set; }
 
         public SessionVariables()
@@ -24,7 +26,7 @@ namespace FoodTruck.Controllers
 
             if (HttpContext.Current.Session["Utilisateur"] == null)
             {
-                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Email");
+                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("EmailClient");
                 if (cookie != null)
                 {
                     UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
@@ -38,22 +40,35 @@ namespace FoodTruck.Controllers
             else
                 Utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
 
-            if (Utilisateur.Id == 0 && HttpContext.Current.Session["UtilisateurTemp"] == null)
+            if (Utilisateur.Id == 0)
             {
-                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("UtilisateurTemp");
-                if (cookie != null)
+                if (HttpContext.Current.Session["Prospect"] != null)
                 {
-                    HttpContext.Current.Session["UtilisateurTemp"] = cookie.Value;
+                    ProspectGuid = HttpContext.Current.Session["Prospect"].ToString();
                 }
                 else
-                {
-                    Guid guid = Guid.NewGuid();
-                    HttpContext.Current.Session["UtilisateurTemp"] = guid.ToString();
-                    cookie = new HttpCookie("UtilisateurTemp")
+                { 
+                    HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Prospect");
+                    if (cookie != null)
                     {
-                        Value = guid.ToString()
-                    };
-                    HttpContext.Current.Response.Cookies.Add(cookie);
+                        HttpContext.Current.Session["Prospect"] = ProspectGuid = cookie.Value;
+                        PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        List<PanierProspect> paniers = panierProspectDAL.ListerPanierUtilisateur();
+                        if (paniers.Count > 0)
+                        {
+                            RecupererPanierEnBase();
+                        }
+                    }
+                    else
+                    {
+                        string guid = Guid.NewGuid().ToString();
+                        HttpContext.Current.Session["Prospect"] = guid;
+                        cookie = new HttpCookie("Prospect")
+                        {
+                            Value = guid
+                        };
+                        HttpContext.Current.Response.Cookies.Add(cookie);
+                    }
                 }
             }
         }
@@ -61,11 +76,11 @@ namespace FoodTruck.Controllers
         {
             HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
             HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
-            Guid guid = Guid.NewGuid();
-            HttpContext.Current.Session["UtilisateurTemp"] = guid.ToString();
-            HttpCookie cookie = new HttpCookie("UtilisateurTemp")
+            string guid = Guid.NewGuid().ToString();
+            HttpContext.Current.Session["Prospect"] = guid;
+            HttpCookie cookie = new HttpCookie("Prospect")
             {
-                Value = guid.ToString()
+                Value = guid
             };
             HttpContext.Current.Request.Cookies.Add(cookie);
         }
@@ -85,18 +100,34 @@ namespace FoodTruck.Controllers
                 }
             }
         }
-
         public void RecupererPanierEnBase()
         {
-            PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
-            PanierViewModel = new PanierViewModel();
-            foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
+            if (Utilisateur.Id != 0)
             {
-                PanierViewModel.PrixTotal += lePanier.PrixTotal;
-                ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
-                ArticleDAL articleDAL = new ArticleDAL();
-                PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
-                HttpContext.Current.Session["Panier"] = PanierViewModel;
+                PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
+                PanierViewModel = new PanierViewModel();
+                foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
+                {
+                    PanierViewModel.PrixTotal += lePanier.PrixTotal;
+                    ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                    ArticleDAL articleDAL = new ArticleDAL();
+                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                    HttpContext.Current.Session["Panier"] = PanierViewModel;
+                }
+            }
+            else
+            {
+                PanierProspectDAL lePanierProspectDal = new PanierProspectDAL(ProspectGuid); //todo
+                PanierViewModel = new PanierViewModel();
+                foreach (PanierProspect lePanier in lePanierProspectDal.ListerPanierUtilisateur())
+                {
+                    PanierViewModel.PrixTotal += lePanier.PrixTotal;
+                    ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                    ArticleDAL articleDAL = new ArticleDAL();
+                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                    HttpContext.Current.Session["Panier"] = PanierViewModel;
+                }
+
             }
         }
     }

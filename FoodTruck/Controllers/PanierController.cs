@@ -26,9 +26,12 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            bool sauvPanier = false;
+            bool sauvPanierClient = false;
+            bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
-                sauvPanier = true;
+                sauvPanierClient = true;
+            else
+                sauvPanierProspect = true;
 
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
@@ -39,25 +42,36 @@ namespace FoodTruck.Controllers
             else
             {
                 PanierDAL lePanierDAL;
+                PanierProspectDAL lePanierProspectDAL;
                 ArticleDetailsViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
                 if (artcl == null)
                 {
                     ArticleDetailsViewModel article = new ArticleDetailsViewModel(lArticle);
                     session.PanierViewModel.ArticlesDetailsViewModel.Add(article);
-                    if (sauvPanier)
+                    if (sauvPanierClient)
                     {
                         lePanierDAL = new PanierDAL(session.Utilisateur.Id);
                         lePanierDAL.Ajouter(lArticle);
+                    }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL.Ajouter(lArticle);
                     }
                 }
                 else
                 {
                     artcl.Quantite++;
                     artcl.PrixTotal = Math.Round(artcl.PrixTotal + artcl.Article.Prix, 2);
-                    if (sauvPanier)
+                    if (sauvPanierClient)
                     {
                         lePanierDAL = new PanierDAL(session.Utilisateur.Id);
                         lePanierDAL.ModifierQuantite(lArticle, 1);
+                    }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL.ModifierQuantite(lArticle, 1);
                     }
                 }
                 session.PanierViewModel.PrixTotal += lArticle.Prix;
@@ -75,9 +89,12 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
 
-            bool sauvPanier = false;
+            bool sauvPanierClient = false;
+            bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
-                sauvPanier = true;
+                sauvPanierClient = true;
+            else
+                sauvPanierProspect = true;
 
             ArticleDAL lArticleDAL = new ArticleDAL();
             if (id >= session.PanierViewModel.ArticlesDetailsViewModel.Count)
@@ -88,25 +105,37 @@ namespace FoodTruck.Controllers
             {
                 Article lArticle = lArticleDAL.Details(session.PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
                 PanierDAL lePanierDAL;
+                PanierProspectDAL lePanierProspectDAL;
                 session.PanierViewModel.PrixTotal = Math.Round(session.PanierViewModel.PrixTotal - lArticle.Prix, 2);
 
                 if (session.PanierViewModel.ArticlesDetailsViewModel[id].Quantite > 1)
                 {
                     session.PanierViewModel.ArticlesDetailsViewModel[id].Quantite--;
                     session.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal = Math.Round(session.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal - session.PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
-                    if (sauvPanier)
+                    if (sauvPanierClient)
                     {
                         lePanierDAL = new PanierDAL(session.Utilisateur.Id);
                         lePanierDAL.ModifierQuantite(lArticle, -1);
                     }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL.ModifierQuantite(lArticle, -1);
+                    }
+
                 }
                 else
                 {
                     session.PanierViewModel.ArticlesDetailsViewModel.RemoveAt(id);
-                    if (sauvPanier)
+                    if (sauvPanierClient)
                     {
                         lePanierDAL = new PanierDAL(session.Utilisateur.Id);
                         lePanierDAL.Supprimer(lArticle);
+                    }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL.Supprimer(lArticle);
                     }
                 }
                 Session["Panier"] = session.PanierViewModel;

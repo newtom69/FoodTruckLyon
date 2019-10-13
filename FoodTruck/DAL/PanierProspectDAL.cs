@@ -20,7 +20,7 @@ namespace FoodTruck.DAL
             PanierProspect panierProspect = new PanierProspect
             {
                 ArticleId = lArticle.Id,
-                ProspectGuid = ProspectGuid,
+                ProspectGuid = this.ProspectGuid,
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
             };

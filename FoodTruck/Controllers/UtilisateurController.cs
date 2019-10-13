@@ -44,7 +44,7 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-                HttpCookie cookie = new HttpCookie("Email")
+                HttpCookie cookie = new HttpCookie("EmailClient")
                 {
                     Value = lUtilisateur.Email
                 };
@@ -59,6 +59,14 @@ namespace FoodTruck.Controllers
 
             if (lUtilisateur != null)
             {
+                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                panierProspectDAL.Supprimer();
+                HttpCookie cookie = new HttpCookie("Prospect")
+                {
+                    Expires = DateTime.Now.AddDays(-30)
+                };
+                Response.Cookies.Add(cookie);
+
                 bool panierPresentEnBase = new PanierDAL(lUtilisateur.Id).ListerPanierUtilisateur().Count > 0 ? true : false;
                 if (panierPresentEnBase)
                 {
@@ -120,7 +128,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            HttpCookie newCookie = new HttpCookie("Email")
+            HttpCookie newCookie = new HttpCookie("EmailClient")
             {
                 Expires = DateTime.Now.AddDays(-30)
             };
