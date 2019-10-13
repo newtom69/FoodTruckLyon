@@ -37,11 +37,37 @@ namespace FoodTruck.Controllers
             }
             else
                 Utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
+
+            if (Utilisateur.Id == 0 && HttpContext.Current.Session["UtilisateurTemp"] == null)
+            {
+                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("UtilisateurTemp");
+                if (cookie != null)
+                {
+                    HttpContext.Current.Session["UtilisateurTemp"] = cookie.Value;
+                }
+                else
+                {
+                    Guid guid = Guid.NewGuid();
+                    HttpContext.Current.Session["UtilisateurTemp"] = guid.ToString();
+                    cookie = new HttpCookie("UtilisateurTemp")
+                    {
+                        Value = guid.ToString()
+                    };
+                    HttpContext.Current.Response.Cookies.Add(cookie);
+                }
+            }
         }
         public SessionVariables(int pourSurchargeUniquement)
         {
             HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
             HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
+            Guid guid = Guid.NewGuid();
+            HttpContext.Current.Session["UtilisateurTemp"] = guid.ToString();
+            HttpCookie cookie = new HttpCookie("UtilisateurTemp")
+            {
+                Value = guid.ToString()
+            };
+            HttpContext.Current.Request.Cookies.Add(cookie);
         }
 
         public void AgregerPanierEnBase()

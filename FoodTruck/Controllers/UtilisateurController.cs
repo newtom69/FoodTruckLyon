@@ -44,8 +44,10 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-                HttpCookie cookie = new HttpCookie("Email");
-                cookie.Value = lUtilisateur.Email;
+                HttpCookie cookie = new HttpCookie("Email")
+                {
+                    Value = lUtilisateur.Email
+                };
                 Response.Cookies.Add(cookie);
             }
             else
@@ -118,8 +120,10 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            HttpCookie newCookie = new HttpCookie("Email");
-            newCookie.Expires = DateTime.Now.AddDays(-30);
+            HttpCookie newCookie = new HttpCookie("Email")
+            {
+                Expires = DateTime.Now.AddDays(-30)
+            };
             Response.Cookies.Add(newCookie);
 
             SessionVariables session = new SessionVariables(0);
