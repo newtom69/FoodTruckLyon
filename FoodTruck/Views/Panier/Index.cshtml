@@ -48,5 +48,9 @@ else
             <button class="validerPanier" type="submit">Commander</button>
         }
     </h3>
+    if (ViewBag.Utilisateur == null || ViewBag.Utilisateur.Id == 0)
+    {
+        <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais la commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>
+    }
 
 }
