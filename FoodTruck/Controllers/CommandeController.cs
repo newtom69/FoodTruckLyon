@@ -16,7 +16,7 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Utilisateur = session.Utilisateur;
 
-            if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0 || session.Utilisateur.Id == 0)
+            if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
             }
@@ -39,9 +39,9 @@ namespace FoodTruck.Controllers
                 CommandeDAL commandeDal = new CommandeDAL();
                 commandeDal.Ajouter(commande, session.PanierViewModel.ArticlesDetailsViewModel);
                 Mail(session.Utilisateur, commande, session.PanierViewModel);
-                Session["Panier"] = null;
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
                 panierDAL.Supprimer();
+                Session["Panier"] = null;
                 VisiteDAL.Enregistrer(session.Utilisateur.Id);
                 return View(commande);
             }
@@ -50,7 +50,6 @@ namespace FoodTruck.Controllers
 
         public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
         {
-
             string lesArticlesDansLeMail = "";
             foreach (ArticleDetailsViewModel article in panier.ArticlesDetailsViewModel)
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
@@ -59,7 +58,7 @@ namespace FoodTruck.Controllers
             string nomClient = lUtilisateur.Nom;
             string prenomClient = lUtilisateur.Prenom;
             string emailClient = lUtilisateur.Email;
-
+            string numeroCommande = laCommande.Id.ToString();
             string corpsDuMailEnCommunClientFoodtruck =
                 $"Nom : {nomClient}\nPrénom : {prenomClient}\nEmail : {emailClient}\n\nArticles :{lesArticlesDansLeMail}" +
                 $"\nTotal de la commande : {laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}";
@@ -71,8 +70,8 @@ namespace FoodTruck.Controllers
                     From = new MailAddress("info@foodtruck-lyon.com")
                 };
                 message.To.Add("info@foodtruck-lyon.com");
-                message.Subject = "Nouvelle commande";
-                message.Body = $"Nouvelle commande d'un client. Merci de lui préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
+                message.Subject = "Nouvelle commande numéro " + numeroCommande;
+                message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
 
                 using (SmtpClient client = new SmtpClient
                 {
@@ -88,27 +87,30 @@ namespace FoodTruck.Controllers
                 ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
             }
 
-            try
+            if (lUtilisateur.Id != 0)
             {
-                MailMessage message = new MailMessage
+                try
                 {
-                    From = new MailAddress("info@foodtruck-lyon.com")
-                };
-                message.To.Add(emailClient);
-                message.Subject = " Nouvelle commande FoodTruck-Lyon prise en compte";
-                message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
-                               $"\nMerci de votre confiance\n\n" +
-                               "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
+                    MailMessage message = new MailMessage
+                    {
+                        From = new MailAddress("info@foodtruck-lyon.com")
+                    };
+                    message.To.Add(emailClient);
+                    message.Subject = " Nouvelle commande FoodTruck-Lyon prise en compte";
+                    message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
+                                   $"\nMerci de votre confiance\n\n" +
+                                   "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
 
-                using (SmtpClient client = new SmtpClient { EnableSsl = true })
-                {
-                    client.Send(message);
+                    using (SmtpClient client = new SmtpClient { EnableSsl = true })
+                    {
+                        client.Send(message);
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                Response.StatusCode = 400;
-                ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
+                catch (Exception)
+                {
+                    Response.StatusCode = 400;
+                    ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
+                }
             }
         }
     }

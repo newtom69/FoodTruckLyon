@@ -542,12 +542,10 @@ h3.total {
 
 .messageErreur {
     color: red;
-    margin: 20px;
     font-size: large;
 }
 .messageInfo {
     color: green;
-    margin: 20px;
     font-size: medium;
 }
 
