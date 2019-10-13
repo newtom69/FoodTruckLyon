@@ -79,9 +79,6 @@ namespace FoodTruck.Controllers
             if (session.Utilisateur.Id != 0)
                 sauvPanier = true;
 
-
-
-
             ArticleDAL lArticleDAL = new ArticleDAL();
             if (id >= session.PanierViewModel.ArticlesDetailsViewModel.Count)
             {

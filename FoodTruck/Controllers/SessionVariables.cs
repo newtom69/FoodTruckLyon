@@ -29,7 +29,7 @@ namespace FoodTruck.Controllers
                 {
                     UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
                     HttpContext.Current.Session["Utilisateur"] = Utilisateur = utilisateurDAL.ConnexionCookies(cookie.Value);
-                    SauvegarderPanierEnBase();
+                    AgregerPanierEnBase();
                     RecupererPanierEnBase();
                 }
                 else
@@ -44,7 +44,7 @@ namespace FoodTruck.Controllers
             HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
         }
 
-        public void SauvegarderPanierEnBase()
+        public void AgregerPanierEnBase()
         {
             if (Utilisateur != null && Utilisateur.Id != 0)
             {

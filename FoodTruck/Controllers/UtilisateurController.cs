@@ -96,7 +96,7 @@ namespace FoodTruck.Controllers
             if (reponse == "Oui")
             {
                 //recupération du panier en base
-                session.SauvegarderPanierEnBase();
+                session.AgregerPanierEnBase();
                 session.RecupererPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
                 ViewBag.Utilisateur = session.Utilisateur;
@@ -108,7 +108,7 @@ namespace FoodTruck.Controllers
                 //effacer panier en base
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
                 panierDAL.Supprimer();
-                session.SauvegarderPanierEnBase();
+                session.AgregerPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
                 ViewBag.Utilisateur = session.Utilisateur;
                 return RedirectToAction("Index", "Home");
