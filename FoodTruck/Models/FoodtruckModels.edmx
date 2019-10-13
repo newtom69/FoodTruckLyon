@@ -47,7 +47,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nom" Type="nchar" MaxLength="14" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <EntityType Name="Panier">
           <Key>
@@ -55,6 +55,16 @@
             <PropertyRef Name="ArticleId" />
           </Key>
           <Property Name="UtilisateurId" Type="int" Nullable="false" />
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="PrixTotal" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PanierProspect">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProspectGuid" Type="char" MaxLength="36" Nullable="false" />
           <Property Name="ArticleId" Type="int" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
@@ -134,6 +144,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PanierProspect_Article">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="PanierProspect" Type="Self.PanierProspect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PanierProspect">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Utilisateur_Article_Article">
           <End Role="Article" Type="Self.Article" Multiplicity="1" />
           <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
@@ -176,6 +198,7 @@
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
@@ -193,6 +216,10 @@
           <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierProspect_Article" Association="Self.FK_PanierProspect_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="PanierProspect" EntitySet="PanierProspect" />
           </AssociationSet>
           <AssociationSet Name="FK_Utilisateur_Article_Article" Association="Self.FK_Utilisateur_Article_Article">
             <End Role="Article" EntitySet="Article" />
@@ -229,6 +256,7 @@
           <NavigationProperty Name="FamilleArticle" Relationship="Self.FK_Article_FamilleArticle" FromRole="Article" ToRole="FamilleArticle" />
           <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Article" ToRole="Commande_Article" />
           <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Article" ToRole="Panier" />
+          <NavigationProperty Name="PanierProspect" Relationship="foodtruckModel.FK_PanierProspect_Article" FromRole="Article" ToRole="PanierProspect" />
         </EntityType>
         <EntityType Name="Commande">
           <Key>
@@ -260,7 +288,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" MaxLength="14" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
         </EntityType>
         <EntityType Name="Panier">
@@ -426,7 +454,35 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
+          <EntitySet Name="PanierProspect" EntityType="foodtruckModel.PanierProspect" />
+          <AssociationSet Name="FK_PanierProspect_Article" Association="foodtruckModel.FK_PanierProspect_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="PanierProspect" EntitySet="PanierProspect" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="PanierProspect">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProspectGuid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="PrixTotal" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="foodtruckModel.FK_PanierProspect_Article" FromRole="PanierProspect" ToRole="Article" />
+        </EntityType>
+        <Association Name="FK_PanierProspect_Article">
+          <End Type="foodtruckModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="foodtruckModel.PanierProspect" Role="PanierProspect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PanierProspect">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -516,6 +572,17 @@
                 <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
                 <ScalarProperty Name="UrlOrigine" ColumnName="UrlOrigine" />
                 <ScalarProperty Name="Navigateur" ColumnName="Navigateur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PanierProspect">
+            <EntityTypeMapping TypeName="foodtruckModel.PanierProspect">
+              <MappingFragment StoreEntitySet="PanierProspect">
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="ProspectGuid" ColumnName="ProspectGuid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

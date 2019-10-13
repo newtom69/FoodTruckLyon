@@ -19,6 +19,7 @@ namespace FoodTruck.Models
         {
             this.Commande_Article = new HashSet<Commande_Article>();
             this.Panier = new HashSet<Panier>();
+            this.PanierProspect = new HashSet<PanierProspect>();
         }
     
         public int Id { get; set; }
@@ -38,5 +39,7 @@ namespace FoodTruck.Models
         public virtual ICollection<Commande_Article> Commande_Article { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Panier> Panier { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PanierProspect> PanierProspect { get; set; }
     }
 }

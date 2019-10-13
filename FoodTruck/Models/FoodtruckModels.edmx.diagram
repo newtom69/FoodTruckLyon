@@ -19,6 +19,8 @@
         <AssociationConnector Association="foodtruckModel.FK_Commande_Utilisateur" ManuallyRouted="false" />
         <AssociationConnector Association="foodtruckModel.FK_Utilisateur_Article_Utilisateur" ManuallyRouted="false" />
         <AssociationConnector Association="foodtruckModel.FK_Visite_Utilisateur" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="foodtruckModel.PanierProspect" Width="1.5" PointX="5.25" PointY="1.625" />
+        <AssociationConnector Association="foodtruckModel.FK_PanierProspect_Article" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

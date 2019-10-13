@@ -179,6 +179,9 @@
     <Compile Include="Models\Panier.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PanierProspect.cs">
+      <DependentUpon>FoodtruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
