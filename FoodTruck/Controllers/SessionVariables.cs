@@ -132,5 +132,16 @@ namespace FoodTruck.Controllers
 
             }
         }
+
+        public bool VerifierDroit()
+        {
+            if (Utilisateur.AdminArticle || Utilisateur.AdminTotal)
+                return true;
+            else
+#if DEBUG
+                return true;
+#endif
+            return false;
+        }
     }
 }

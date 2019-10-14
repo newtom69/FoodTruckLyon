@@ -18,7 +18,8 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Ajouter()
         {
-            bool droitPage = VerifierDroit();
+            SessionVariables session = new SessionVariables();
+            bool droitPage = session.VerifierDroit();
             TempData["DroitPage"] = droitPage;
             return View();
         }
@@ -35,7 +36,8 @@ namespace FoodTruck.Controllers
             int familleIdOk = familleId;
             bool dansCarteOk = dansCarte;
 
-            bool droitPage = VerifierDroit();
+            SessionVariables session = new SessionVariables();
+            bool droitPage = session.VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -71,8 +73,6 @@ namespace FoodTruck.Controllers
                     TempData["Erreur"] = ex.Message;
                 }
             }
-
-            SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
@@ -82,7 +82,8 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Modifier()
         {
-            bool droitPage = VerifierDroit();
+            SessionVariables session = new SessionVariables();
+            bool droitPage = session.VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
                 return View(new ArticleDAL().ListerTout());
@@ -93,7 +94,8 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Modifier(int id)
         {
-            bool droitPage = VerifierDroit();
+            SessionVariables session = new SessionVariables();
+            bool droitPage = session.VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -108,7 +110,8 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            bool droitPage = VerifierDroit();
+            SessionVariables session = new SessionVariables();
+            bool droitPage = session.VerifierDroit();
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -170,24 +173,10 @@ namespace FoodTruck.Controllers
                     }
                 }
             }
-            SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
-        }
-
-        private bool VerifierDroit()
-        {
-            SessionVariables session = new SessionVariables();
-
-            if (session.Utilisateur.AdminArticle || session.Utilisateur.AdminTotal)
-                return true;
-            else
-#if DEBUG
-                return true;
-#endif
-            return false;
         }
     }
 }
