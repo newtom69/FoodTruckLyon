@@ -74,6 +74,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Guid" Type="char" MaxLength="36" Nullable="false" />
           <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
           <Property Name="Mdp" Type="nchar" MaxLength="64" Nullable="false" />
           <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
@@ -320,6 +321,7 @@
           <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
           <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
           <Property Name="AdminTotal" Type="Boolean" Nullable="false" />
+          <Property Name="Guid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -549,6 +551,7 @@
           <EntitySetMapping Name="Utilisateur">
             <EntityTypeMapping TypeName="foodtruckModel.Utilisateur">
               <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
                 <ScalarProperty Name="AdminTotal" ColumnName="AdminTotal" />
                 <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
                 <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />

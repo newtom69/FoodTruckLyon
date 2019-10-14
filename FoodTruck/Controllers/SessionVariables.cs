@@ -26,7 +26,7 @@ namespace FoodTruck.Controllers
 
             if (HttpContext.Current.Session["Utilisateur"] == null)
             {
-                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("EmailClient");
+                HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("GuidClient");
                 if (cookie != null)
                 {
                     UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
