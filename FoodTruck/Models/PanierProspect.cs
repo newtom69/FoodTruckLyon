@@ -19,6 +19,7 @@ namespace FoodTruck.Models
         public int ArticleId { get; set; }
         public int Quantite { get; set; }
         public double PrixTotal { get; set; }
+        public System.DateTime DateAjout { get; set; }
     
         public virtual Article Article { get; set; }
     }

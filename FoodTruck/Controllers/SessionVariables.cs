@@ -53,7 +53,7 @@ namespace FoodTruck.Controllers
                     {
                         HttpContext.Current.Session["Prospect"] = ProspectGuid = cookie.Value;
                         PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        List<PanierProspect> paniers = panierProspectDAL.ListerPanierUtilisateur();
+                        List<PanierProspect> paniers = panierProspectDAL.ListerPanierProspect();
                         if (paniers.Count > 0)
                         {
                             RecupererPanierEnBase();
@@ -121,7 +121,7 @@ namespace FoodTruck.Controllers
             {
                 PanierProspectDAL lePanierProspectDal = new PanierProspectDAL(ProspectGuid); //todo
                 PanierViewModel = new PanierViewModel();
-                foreach (PanierProspect lePanier in lePanierProspectDal.ListerPanierUtilisateur())
+                foreach (PanierProspect lePanier in lePanierProspectDal.ListerPanierProspect())
                 {
                     PanierViewModel.PrixTotal += lePanier.PrixTotal;
                     ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);

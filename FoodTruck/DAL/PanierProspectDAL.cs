@@ -22,7 +22,8 @@ namespace FoodTruck.DAL
                 ArticleId = lArticle.Id,
                 ProspectGuid = this.ProspectGuid,
                 Quantite = quantite,
-                PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
+                PrixTotal = Math.Round(quantite * lArticle.Prix, 2),
+                DateAjout = DateTime.Now,
             };
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -41,6 +42,7 @@ namespace FoodTruck.DAL
                                                  select panier).FirstOrDefault();
                 panierProspect.Quantite += quantite;
                 panierProspect.PrixTotal = Math.Round(panierProspect.PrixTotal + quantite * lArticle.Prix, 2);
+                panierProspect.DateAjout = DateTime.Now;
                 db.SaveChanges();
             }
         }
@@ -73,7 +75,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<PanierProspect> ListerPanierUtilisateur()
+        public List<PanierProspect> ListerPanierProspect()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -85,7 +87,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Article> ListerArticlesPanierUtilisateur()
+        public List<Article> ListerArticlesPanierProspect()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

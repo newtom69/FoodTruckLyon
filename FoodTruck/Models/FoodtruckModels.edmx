@@ -68,6 +68,7 @@
           <Property Name="ArticleId" Type="int" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
+          <Property Name="DateAjout" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Utilisateur">
           <Key>
@@ -472,6 +473,7 @@
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="foodtruckModel.FK_PanierProspect_Article" FromRole="PanierProspect" ToRole="Article" />
+          <Property Name="DateAjout" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_PanierProspect_Article">
           <End Type="foodtruckModel.Article" Role="Article" Multiplicity="1" />
@@ -581,6 +583,7 @@
           <EntitySetMapping Name="PanierProspect">
             <EntityTypeMapping TypeName="foodtruckModel.PanierProspect">
               <MappingFragment StoreEntitySet="PanierProspect">
+                <ScalarProperty Name="DateAjout" ColumnName="DateAjout" />
                 <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
                 <ScalarProperty Name="Quantite" ColumnName="Quantite" />
                 <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />

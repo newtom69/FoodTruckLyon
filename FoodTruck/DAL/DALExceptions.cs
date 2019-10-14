@@ -11,7 +11,7 @@ namespace FoodTruck.DAL
     {
         public static string HandleException(Exception exception)
         {
-            if (exception is DbUpdateConcurrencyException concurrencyEx)
+            if (exception is DbUpdateConcurrencyException)
             {
                 // A custom exception of yours for concurrency issues
                 throw new ConcurrencyException();
