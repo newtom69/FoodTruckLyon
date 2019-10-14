@@ -9,25 +9,25 @@ namespace FoodTruck.DAL
     {
         internal Article Details(int id)
         {
-            Article larticle;
+            Article lArticle;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                larticle = (from article in db.Article
+                lArticle = (from article in db.Article
                             where article.Id == id
                             select article).FirstOrDefault();
             }
-            return larticle;
+            return lArticle;
         }
         internal Article Details(string nom)
         {
-            Article larticle;
+            Article lArticle;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                larticle = (from article in db.Article
+                lArticle = (from article in db.Article
                             where article.Nom == nom
                             select article).FirstOrDefault();
             }
-            return larticle;
+            return lArticle;
         }
         /// <summary>
         /// retourne la liste des familles d'articles. Trié par Id
@@ -49,10 +49,10 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Article larticle = (from article in db.Article
+                Article lArticle = (from article in db.Article
                                     where article.Id == id
                                     select article).FirstOrDefault();
-                larticle.NombreVendus += nbre;
+                lArticle.NombreVendus += nbre;
                 db.SaveChanges();
             }
         }
@@ -74,28 +74,6 @@ namespace FoodTruck.DAL
                     string messageErreur = DALExceptions.HandleException(ex);
                     throw new Exception(messageErreur);
                 }
-            }
-        }
-        internal void Referencer(int id)
-        {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                Article larticle = (from article in db.Article
-                                    where article.Id == id
-                                    select article).FirstOrDefault();
-                larticle.DansCarte = true;
-                db.SaveChanges();
-            }
-        }
-        internal void Dereferencer(int id)
-        {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                Article larticle = (from article in db.Article
-                                    where article.Id == id
-                                    select article).FirstOrDefault();
-                larticle.DansCarte = false;
-                db.SaveChanges();
             }
         }
 
@@ -130,17 +108,57 @@ namespace FoodTruck.DAL
             }
         }
 
+        internal bool NomExiste(string nom, int id = 0)
+        {
+            Article lArticle;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                lArticle = (from article in db.Article
+                            where article.Nom == nom && article.Id != id
+                            select article).FirstOrDefault();
+            }
+            return lArticle != null ? true : false;
+        }
+
         public List<Article> ListerTout(int nombreMax = 200)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from article in db.Article
-                                          where article.DansCarte == true
                                           orderby article.FamilleId, article.Nom
                                           select article)
                                           .Take(nombreMax)
                                           .ToList();
                 return articles;
+            }
+        }
+
+        internal void Modifier(Article lArticle)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                Article articleAModifier = (from article in db.Article
+                                            where article.Id == lArticle.Id
+                                            select article).FirstOrDefault();
+
+                articleAModifier.Nom = lArticle.Nom;
+                articleAModifier.Description = lArticle.Description;
+                articleAModifier.Prix = lArticle.Prix;
+                articleAModifier.Allergenes = lArticle.Allergenes;
+                articleAModifier.DansCarte = lArticle.DansCarte;
+                articleAModifier.FamilleId = lArticle.FamilleId;
+                articleAModifier.Grammage = lArticle.Grammage;
+                articleAModifier.Litrage = lArticle.Litrage;
+                articleAModifier.Image = lArticle.Image;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    string messageErreur = DALExceptions.HandleException(ex);
+                    throw new Exception(messageErreur);
+                }
             }
         }
     }

@@ -15,9 +15,9 @@
         {
             <div class="messageErreur">@TempData["Erreur"]</div>
         }
-        if ((string)TempData["UploadOK"] != "")
+        if ((string)TempData["AjoutOK"] != "")
         {
-            <div class="messageInfo">@TempData["UploadOK"]</div>
+            <div class="messageInfo">@TempData["AjoutOK"]</div>
         }
         <div>
             @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -58,7 +58,7 @@
                 </div>
                 <div class="ccfield-prepend">
                     <label for="selectionFichier">Image</label>
-                    <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='300' required>
+                    <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='100' required>
                 </div>
                 <div class="ccfield-prepend">
                     <input class="ccbtn" type="submit" value="Ajouter">

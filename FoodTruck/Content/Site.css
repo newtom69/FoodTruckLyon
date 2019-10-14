@@ -579,3 +579,7 @@ h3.total {
         text-decoration: none;
         text-align: center;
     }*/
+
+select.ccformfield option.red {
+    color: red;
+}

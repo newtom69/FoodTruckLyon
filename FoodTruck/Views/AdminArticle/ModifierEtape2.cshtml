@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+@using FoodTruck.DAL;
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Modifier un article du catalogue";
+}
+<div class="detailArticle">
+    @if (!(bool)TempData["DroitPage"])
+    {
+        <div><p class="grow">Vous ne pouvez pas modifier d'article du catalogue !</p></div>
+    }
+    else
+    {
+        <h2>Ajouter un article au catalogue</h2>
+        if ((string)TempData["Erreur"] != "")
+        {
+            <div class="messageErreur">@TempData["Erreur"]</div>
+        }
+        if ((string)TempData["ModifOK"] != "")
+        {
+            <div class="messageInfo">@TempData["ModifOK"]</div>
+        }
+    }
+</div>

@@ -14,7 +14,6 @@ namespace FoodTruck.ViewModels
         public HomeViewModel()
         {
             ArticlesTopRandom = new List<ArticleDetailsViewModel>();
-
             ArticleDAL articleDAL = new ArticleDAL();
             foreach (Article article in articleDAL.ListerRandom(3, 7))
             {

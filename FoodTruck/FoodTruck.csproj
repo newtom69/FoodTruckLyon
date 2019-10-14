@@ -313,6 +313,8 @@
     <Content Include="Views\Linkedin\callback.cshtml" />
     <Content Include="Views\Linkedin\File.cshtml" />
     <Content Include="Views\AdminArticle\Ajouter.cshtml" />
+    <Content Include="Views\AdminArticle\Modifier.cshtml" />
+    <Content Include="Views\AdminArticle\ModifierEtape2.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
