@@ -25,14 +25,20 @@
 @using (Html.BeginForm("Connexion", "Utilisateur", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
 {
     @Html.AntiForgeryToken()
-
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-envelope fa-2x"></i></span>
         <input class="ccformfield" name="Email" type="email" placeholder="Email" required>
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-key fa-2x"></i></span>
         <input class="ccformfield" name="Mdp" type="password" placeholder="Mot de passe" required>
+    </div>
+    <div class="ccfield-prepend">
+        <div class="ccformfield">
+            <div>
+                Connexion automatique
+                <input name="connexionAuto" type="checkbox" value="true" checked>
+                <input name="connexionAuto" type="hidden" value="false">
+            </div>
+        </div>
     </div>
     <div class="ccfield-prepend">
         <input class="ccbtn" type="submit" value="Connexion">

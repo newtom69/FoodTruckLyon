@@ -48,6 +48,14 @@ else
                             <input name="nom" value="@Model.Article.Nom" hidden>
                             <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                         }
+                        if (TempData["Admin"] != null && (bool)TempData["Admin"])
+                        {
+                            using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                            {
+                                <input type="hidden" name="id" value="@Model.Article.Id">
+                                <button class="adminArticle" type="submit">Modifier l'article</button>
+                            }
+                        }
                     }
                 </p>
             </div>

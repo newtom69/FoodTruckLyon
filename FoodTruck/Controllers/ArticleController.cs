@@ -20,6 +20,7 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
+            TempData["Admin"] = VerifierDroit(session.Utilisateur);
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleIndexViewModel());
         }
@@ -28,10 +29,10 @@ namespace FoodTruck.Controllers
         public ActionResult Details(string nom)
         {
             nom = nom.UrlVersNom();
-
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
+            TempData["Admin"] = VerifierDroit(session.Utilisateur);
 
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
@@ -54,6 +55,13 @@ namespace FoodTruck.Controllers
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleDetailsViewModel(articleCourant));
         }
-        
+        public bool VerifierDroit(Utilisateur utilisateur)
+        {
+            if (utilisateur.AdminArticle || utilisateur.AdminTotal)
+                return true;
+            else
+                return false;
+        }
+
     }
 }

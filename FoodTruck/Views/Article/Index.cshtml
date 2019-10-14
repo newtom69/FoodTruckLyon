@@ -16,7 +16,7 @@
 <section class="notreCarte">
     @foreach (var article in Model.ArticlesEntree)
     {
-        <div>
+        <div class="indexArticle">
             <a href="/Article/@article.NomPourUrl">
                 <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
@@ -41,7 +41,7 @@
 <section class="notreCarte">
     @foreach (var article in Model.ArticlesPlat)
     {
-        <div>
+        <div class="indexArticle">
             <a href="/Article/@article.NomPourUrl">
                 <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
@@ -66,7 +66,7 @@
 <section class="notreCarte">
     @foreach (var article in Model.ArticlesDessert)
     {
-        <div>
+        <div class="indexArticle">
             <a href="/Article/@article.NomPourUrl">
                 <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
@@ -91,7 +91,7 @@
 <section class="notreCarte">
     @foreach (var article in Model.ArticlesBoissonFraiche)
     {
-        <div>
+        <div class="indexArticle">
             <a href="/Article/@article.NomPourUrl">
                 <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
@@ -117,7 +117,7 @@
 
     @foreach (var article in Model.ArticlesBoissonChaude)
     {
-        <div>
+        <div class="indexArticle">
             <a href="/Article/@article.NomPourUrl">
                 <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>

@@ -19,7 +19,7 @@
 <div class="adminArticle">
     @if (!(bool)TempData["DroitPage"])
     {
-        <div><p class="grow">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
+        <div><p class="messageErreur">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
     }
     else
     {
@@ -40,12 +40,11 @@
                                 <optgroup label="@nomFamille"></optgroup>
                             }
                             string redOrNothing = "";
-                            if (!article.DansCarte) { redOrNothing = "red"; }
+                            if (!article.DansCarte)
+                                { redOrNothing = "red"; }
                             string selected = "";
                             if (ViewBag.ArticleAModifier != null && @ViewBag.ArticleAModifier.Id == article.Id)
-                            {
-                                selected = "selected";
-                            }
+                                { selected = "selected"; }
                             <option class="@redOrNothing" value="@article.Id" @selected>@article.Nom</option>
                         }
                     }

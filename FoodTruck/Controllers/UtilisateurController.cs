@@ -33,7 +33,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Connexion(string Email, string Mdp)
+        public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
@@ -44,12 +44,6 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-                HttpCookie cookie = new HttpCookie("GuidClient")
-                {
-                    Value = lUtilisateur.Guid,
-                    Expires = DateTime.Now.AddDays(30)
-                };
-                Response.Cookies.Add(cookie);
             }
             else
             {
@@ -60,9 +54,20 @@ namespace FoodTruck.Controllers
 
             if (lUtilisateur != null)
             {
+                //connexion ok
+                HttpCookie cookie;
+                if (connexionAuto)
+                {
+                    cookie = new HttpCookie("GuidClient")
+                    {
+                        Value = lUtilisateur.Guid,
+                        Expires = DateTime.Now.AddDays(30)
+                    };
+                    Response.Cookies.Add(cookie);
+                }
                 PanierProspectDAL panierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
                 panierProspectDAL.Supprimer();
-                HttpCookie cookie = new HttpCookie("Prospect")
+                cookie = new HttpCookie("Prospect")
                 {
                     Expires = DateTime.Now.AddDays(-30)
                 };

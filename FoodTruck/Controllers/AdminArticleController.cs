@@ -19,8 +19,9 @@ namespace FoodTruck.Controllers
         public ActionResult Ajouter()
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = session.VerifierDroit();
-            TempData["DroitPage"] = droitPage;
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            TempData["DroitPage"] = VerifierDroit(session.Utilisateur);
             return View();
         }
 
@@ -37,7 +38,9 @@ namespace FoodTruck.Controllers
             bool dansCarteOk = dansCarte;
 
             SessionVariables session = new SessionVariables();
-            bool droitPage = session.VerifierDroit();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            bool droitPage = VerifierDroit(session.Utilisateur);
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -83,7 +86,9 @@ namespace FoodTruck.Controllers
         public ActionResult Modifier()
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = session.VerifierDroit();
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            bool droitPage = VerifierDroit(session.Utilisateur);
             TempData["DroitPage"] = droitPage;
             if (droitPage)
                 return View(new ArticleDAL().ListerTout());
@@ -95,7 +100,9 @@ namespace FoodTruck.Controllers
         public ActionResult Modifier(int id)
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = session.VerifierDroit();
+            bool droitPage = VerifierDroit(session.Utilisateur);
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -111,7 +118,7 @@ namespace FoodTruck.Controllers
         public ActionResult ModifierEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = session.VerifierDroit();
+            bool droitPage = VerifierDroit(session.Utilisateur);
             TempData["DroitPage"] = droitPage;
             if (droitPage)
             {
@@ -142,7 +149,7 @@ namespace FoodTruck.Controllers
                         Allergenes = allergenesOk,
                         FamilleId = familleIdOk,
                         DansCarte = dansCarteOk,
-                    };              
+                    };
                     try
                     {
                         if (file != null)
@@ -177,6 +184,14 @@ namespace FoodTruck.Controllers
             ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
+        }
+
+        public bool VerifierDroit(Utilisateur utilisateur)
+        {
+            if (utilisateur.AdminArticle || utilisateur.AdminTotal)
+                return true;
+            else
+                return false;
         }
     }
 }

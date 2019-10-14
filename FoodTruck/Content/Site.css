@@ -176,6 +176,14 @@ section.notreCarte {
         margin-left: 0 !important;
         align-self: flex-end;
     }
+    .detailArticle .admin_article {
+        margin-left: 0 !important;
+        align-self: flex-end !important;
+    }
+
+    .indexArticle img {
+        margin-top: 15px;
+    }
 
 .adminArticle {
     max-width: 700px;
@@ -373,7 +381,14 @@ button.ajoutPanier {
     padding: 0.6rem;
     border: solid 1px #95BE27;
     border-radius: 1.5rem;
-    margin-bottom: 1em;
+}
+
+button.adminArticle {
+    background-color: orangered;
+    padding: 0.6rem;
+    border: solid 1px orangered;
+    border-radius: 1.5rem;
+    margin-top: 5px;
 }
 
 button.ajoutSupprPanierTexte {
@@ -504,7 +519,7 @@ h3.total {
 
 .ccform .ccfield-prepend {
     display: flex;
-    width: auto;
+    width: 100%;
     justify-content: flex-end;
 }
 

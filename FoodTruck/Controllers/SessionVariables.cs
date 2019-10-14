@@ -129,19 +129,7 @@ namespace FoodTruck.Controllers
                     PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
                     HttpContext.Current.Session["Panier"] = PanierViewModel;
                 }
-
             }
-        }
-
-        public bool VerifierDroit()
-        {
-            if (Utilisateur.AdminArticle || Utilisateur.AdminTotal)
-                return true;
-            else
-#if DEBUG
-                return true;
-#endif
-            return false;
         }
     }
 }
