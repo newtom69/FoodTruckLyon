@@ -53,7 +53,7 @@ namespace FoodTruck.Controllers
                 ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
-                    string dossierImage = ConfigurationManager.AppSettings["PathArticlesImages"];
+                    string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
                     string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
                     string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
@@ -144,7 +144,7 @@ namespace FoodTruck.Controllers
                     {
                         if (file != null)
                         {
-                            string dossierImage = ConfigurationManager.AppSettings["PathArticlesImages"];
+                            string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
                             string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
                             string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                             Image image = Image.FromStream(file.InputStream);

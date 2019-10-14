@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration;
-@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
+@{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model HomeViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon";
@@ -17,7 +17,7 @@
 
         <div>
             <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierArticlesImages/@article.Article.Image" alt="@article.Article.Nom" />
+                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">

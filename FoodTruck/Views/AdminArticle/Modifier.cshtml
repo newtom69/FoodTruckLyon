@@ -4,6 +4,7 @@
 @using System.Configuration;
 @{
     ViewBag.Title = "Modifier";
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
 }
 @model List<Article>
 
@@ -52,7 +53,6 @@
             </div>
             <input class="ccbtn" type="hidden" value="Sélectionner">
         }
-
         if (ViewBag.ArticleAModifier != null)
         {
             <p>Rentrez les nouvelles valeurs dans les champs que vous voulez modifier</p>
@@ -61,22 +61,19 @@
                 @using (Html.BeginForm("ModifierEtape2", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <input name="id" type="hidden" value="@ViewBag.ArticleAModifier.Id">
-                    string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"];
                     <div class="ccfield-prepend">
                         <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' value="@ViewBag.ArticleAModifier.Nom.Trim()" required>
                     </div>
-
                     <div class="ccfield-prepend">
                         <div class="ccformfield">
                             <figure>
                                 <label for="selectionFichier">
-                                    <img id="ImagePreview" src="@dossierArticlesImages/@ViewBag.ArticleAModifier.Image" alt="@ViewBag.ArticleAModifier.Nom" />
+                                    <img id="ImagePreview" src="@dossierImagesArticles/@ViewBag.ArticleAModifier.Image" alt="@ViewBag.ArticleAModifier.Nom" />
                                     <figcaption>Cliquez pour changer l'image</figcaption>
                                 </label>
                             </figure>
                         </div>
                     </div>
-
                     <div class="image-upload">
                         <input id="selectionFichier" class="ccformfield" onchange="readURL(this);" name="file" type="file" accept="image/*" maxlength='100'>
                     </div>

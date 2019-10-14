@@ -1,8 +1,14 @@
 ﻿@using System.Globalization
 @using FoodTruck.DAL;
+@using System.Configuration;
 @{
+
     ViewBag.Title = "FoodTruck-Lyon - Ajouter article au catalogue";
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
 }
+<script src="~/Scripts/myJs.js"></script>
+
 <div class="adminArticle">
     @if (!(bool)TempData["DroitPage"])
     {
@@ -24,6 +30,19 @@
             {
                 <div class="ccfield-prepend">
                     <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
+                </div>
+                <div class="ccfield-prepend">
+                    <div class="ccformfield">
+                        <figure>
+                            <label for="selectionFichier">
+                                <img id="ImagePreview" src="@dossierImagesSysteme/AjouterUneImage.png" alt="Ajouter une image" />
+                                <figcaption>Cliquez pour changer l'image</figcaption>
+                            </label>
+                        </figure>
+                    </div>
+                </div>
+                <div class="image-upload">
+                    <input id="selectionFichier" class="ccformfield" onchange="readURL(this);" name="file" type="file" accept="image/*" maxlength='100' required>
                 </div>
                 <div class="ccfield-prepend">
                     <textarea class="ccformfield" name="description" rows="2" placeholder="Description" maxlength='500' required></textarea>
@@ -56,10 +75,10 @@
                         <input name="dansCarte" type="hidden" value="false">
                     </div>
                 </div>
-                <div class="ccfield-prepend">
-                    <label for="selectionFichier">Image</label>
-                    <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='100' required>
-                </div>
+                @*<div class="ccfield-prepend">
+                        <label for="selectionFichier">Image</label>
+                        <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='100' required>
+                    </div>*@
                 <div class="ccfield-prepend">
                     <input class="ccbtn" type="submit" value="Ajouter">
                 </div>

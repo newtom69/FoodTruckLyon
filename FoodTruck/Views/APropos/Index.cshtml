@@ -1,12 +1,12 @@
 ﻿@using System.Configuration;
-@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
-
 @{
     ViewBag.Title = "FoodTruck-Lyon - projet de fin de formation";
+    string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
+    string dossierImagesBlog = ConfigurationManager.AppSettings["PathImagesBlog"];
 }
 <article id="articleAPropos">
     <h2>FoodTruckLyon.fr : 1 an déjà !</h2>
-    <img src="@dossierArticlesImages/asp-net-mvc.jpg" alt="asp.net MVC" height="400" width="600" />
+    <img src="@dossierImagesBlog/asp-net-mvc.jpg" alt="asp.net MVC" height="400" width="600" />
 
     <h4>Mise à jour du 5 octobre 2019</h4>
     <p>
@@ -18,8 +18,8 @@
 
     <p>
         <figure>
-            <a href="@dossierArticlesImages/avant-après.png" target="_blank">
-                <img src="@dossierArticlesImages/avant-après.png" alt="de sql à linq to entities" height="400" width="600" />
+            <a href="@dossierImagesBlog/avant-après.png" target="_blank">
+                <img src="@dossierImagesBlog/avant-après.png" alt="de sql à linq to entities" height="400" width="600" />
             </a>
             <figcaption>Cliquez pour zoomer</figcaption>
         </figure>

@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration;
-@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
+@{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model ArticleDetailsViewModel
 @{
     bool affichageArticle = Model.Article != null ? true : false;
@@ -22,7 +22,7 @@ else
     }
     <div class="detailArticle">
         <div>
-            <img src="@dossierArticlesImages/@Model.Article.Image" alt="@Model.Article.Nom" />
+            <img src="@dossierImagesArticles/@Model.Article.Image" alt="@Model.Article.Nom" />
             <div class="articleDescription">
                 <h2>@Model.Article.Nom</h2>
                 <h4>@Model.Article.Description</h4>

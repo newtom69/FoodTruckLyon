@@ -1,5 +1,8 @@
 ﻿@using System.Configuration;
-@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
+@{
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
+}
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,8 +26,8 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/">
-                    <img src="@dossierArticlesImages/logo.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-full">
-                    <img src="@dossierArticlesImages/logo-only.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-only">
+                    <img src="@dossierImagesSysteme/logo.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-full">
+                    <img src="@dossierImagesSysteme/logo-only.png" alt="Logo Foodtruck-lyon" class="d-inline-block align-top logo-only">
                 </a>
 
             </div>

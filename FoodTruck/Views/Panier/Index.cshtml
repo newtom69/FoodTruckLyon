@@ -3,7 +3,7 @@
 @using System.Configuration;
 @model PanierViewModel
 @{ViewBag.Title = "FoodTruck-Lyon - Panier"; }
-@{string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"]; }
+@{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 
 <aside id="panierValide">
     <h3>Votre panier :</h3>
@@ -13,7 +13,7 @@
         {
             <div>
                 <a href="/Article/@articleDetailViewModel.NomPourUrl">
-                    <img src="@dossierArticlesImages/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
+                    <img src="@dossierImagesArticles/@articleDetailViewModel.Article.Image" alt="@articleDetailViewModel.Article.Nom" />
                 </a>
                 @articleDetailViewModel.Quantite<span>x </span><a href="/Article/@articleDetailViewModel.NomPourUrl">@articleDetailViewModel.Article.Nom</a>
             </div>

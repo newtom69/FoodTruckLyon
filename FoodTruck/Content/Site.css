@@ -188,7 +188,10 @@ section.notreCarte {
 
     .adminArticle img {
         margin: 0px;
-        padding:0px;
+        padding: 0px;
+        width: 300px;
+        min-width: 300px;
+        max-width:300px;
     }
 
     .adminArticle figure {
