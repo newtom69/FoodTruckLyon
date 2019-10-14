@@ -1,112 +1,136 @@
 ﻿@using FoodTruck.Models
 @using FoodTruck.DAL
 @using System.Globalization;
+@using System.Configuration;
 @{
     ViewBag.Title = "Modifier";
 }
 @model List<Article>
 
-@if (!(bool)TempData["DroitPage"])
-{
-    <div><p class="grow">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
-}
-else
-{
-    <h2>Modifier/supprimer un article</h2>
-    using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="~/Scripts/myJs.js"></script>
+<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<meta charset=utf-8 />
+
+
+<div class="adminArticle">
+    @if (!(bool)TempData["DroitPage"])
     {
-        <div class="ccfield-prepend">
-            <select class="ccformfield" name="id" size="1" onchange="this.form.submit()" required>
-                <option selected disabled>Sélectionner l'article</option>
-                @{int i = 0;}
-                @foreach (Article article in Model)
-                {
-                    if (article.FamilleId != i)
-                    {
-                        i = article.FamilleId;
-                        string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == i).Nom;
-                        <optgroup label="@nomFamille"></optgroup>
-                    }
-                    string redOrNothing = "";
-                    if (!article.DansCarte) { redOrNothing = "red"; }
-
-                    string selected = "";
-                    if (ViewBag.ArticleAModifier != null && @ViewBag.ArticleAModifier.Id == article.Id)
-                    {
-                        selected = "selected";
-                    }
-
-                    <option class="@redOrNothing" value="@article.Id" @selected>@article.Nom</option>
-                }
-            </select>
-        </div>
-        <input class="ccbtn" type="hidden" value="Sélectionner">
+        <div><p class="grow">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
     }
-
-    if (ViewBag.ArticleAModifier != null)
+    else
     {
-        using (Html.BeginForm("ModifierEtape2", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        <h2>Modifier/supprimer un article</h2>
+        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <input name="id" type="hidden" value="@ViewBag.ArticleAModifier.Id">
-            <div class="ccfield-prepend">
-                <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' value="@ViewBag.ArticleAModifier.Nom.Trim()" required>
-            </div>
-            <div class="ccfield-prepend">
-                <textarea class="ccformfield" name="description" rows="2" placeholder="Description" maxlength='500' required>@ViewBag.ArticleAModifier.Description.Trim()</textarea>
-            </div>
-            <div class="ccfield-prepend">
-                <input class="ccformfield" name="prix" type="number" step="0.05" placeholder="Prix" maxlength='8' value="@ViewBag.ArticleAModifier.Prix.ToString("0.00", CultureInfo.InvariantCulture)" required>
-            </div>
-            <div class="ccfield-prepend">
-                <input class="ccformfield" name="grammage" type="number" step="10" placeholder="Grammage" maxlength='8' value="@ViewBag.ArticleAModifier.Grammage">
-            </div>
-            <div class="ccfield-prepend">
-                <input class="ccformfield" name="litrage" type="number" step="10" placeholder="Litrage" maxlength='8' value="@ViewBag.ArticleAModifier.Litrage">
-            </div>
-            <div class="ccfield-prepend">
-                <input class="ccformfield" name="allergenes" type="text" placeholder="Allergènes" maxlength='100' value="@ViewBag.ArticleAModifier.Allergenes.Trim()">
-            </div>
-            <div class="ccfield-prepend">
-                <select class="ccformfield" name="familleId" size="1" required>
-                    <option selected disabled>Type d'article</option>
-                    @foreach (var famille in new ArticleDAL().FamillesArticle())
-                    {
-                        string selected = "";
-                        if (famille.Id == ViewBag.ArticleAModifier.FamilleId)
+            <div class="ModifArticle">
+                <select class="ccformfield" name="id" size="1" onchange="this.form.submit()" required>
+                    <option selected disabled>Sélectionnez l'article</option>
+                    @{
+                        int i = 0;
+                        foreach (Article article in Model)
                         {
-                            selected = "selected";
+                            if (article.FamilleId != i)
+                            {
+                                i = article.FamilleId;
+                                string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == i).Nom;
+                                <optgroup label="@nomFamille"></optgroup>
+                            }
+                            string redOrNothing = "";
+                            if (!article.DansCarte) { redOrNothing = "red"; }
+                            string selected = "";
+                            if (ViewBag.ArticleAModifier != null && @ViewBag.ArticleAModifier.Id == article.Id)
+                            {
+                                selected = "selected";
+                            }
+                            <option class="@redOrNothing" value="@article.Id" @selected>@article.Nom</option>
                         }
-                        <option value="@famille.Id" @selected>@famille.Nom</option>
                     }
                 </select>
             </div>
-            <div class="ccfield-prepend">
-                <div class="ccformfield">
-                    Visible dans la carte
-                    @{string check = ""; }
-                    @if (ViewBag.ArticleAModifier.DansCarte)
-                    {
-                        check = "checked";
-                    }
-                    <input name="dansCarte" type="checkbox" value="true" @check>
-                    <input name="dansCarte" type="hidden" value="false">
-                </div>
-            </div>
-            <div class="ccfield-prepend">
-                <label for="selectionFichier">Image</label>
-                <input class="ccformfield" name="file" type="file" accept="image/*" placeholder="Image" maxlength='100'>
-            </div>
-            //Ajouter visuelle de l'image actuelle
-            <div class="ccfield-prepend">
-                <input class="ccbtn" type="submit" value="Modifier">
-            </div>
+            <input class="ccbtn" type="hidden" value="Sélectionner">
         }
 
+        if (ViewBag.ArticleAModifier != null)
+        {
+            <p>Rentrez les nouvelles valeurs dans les champs que vous voulez modifier</p>
+            <p>Décochez "visible dans la carte" pour supprimer l'article</p>
+            <div>
+                @using (Html.BeginForm("ModifierEtape2", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input name="id" type="hidden" value="@ViewBag.ArticleAModifier.Id">
+                    string dossierArticlesImages = ConfigurationManager.AppSettings["PathArticlesImages"];
+                    <div class="ccfield-prepend">
+                        <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' value="@ViewBag.ArticleAModifier.Nom.Trim()" required>
+                    </div>
+
+                    <div class="ccfield-prepend">
+                        <div class="ccformfield">
+                            <figure>
+                                <label for="selectionFichier">
+                                    <img id="ImagePreview" src="@dossierArticlesImages/@ViewBag.ArticleAModifier.Image" alt="@ViewBag.ArticleAModifier.Nom" />
+                                    <figcaption>Cliquez pour changer l'image</figcaption>
+                                </label>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="image-upload">
+                        <input id="selectionFichier" class="ccformfield" onchange="readURL(this);" name="file" type="file" accept="image/*" maxlength='100'>
+                    </div>
+                    <div class="ccfield-prepend">
+                        <textarea class="ccformfield" name="description" rows="2" placeholder="Description" maxlength='500' required>@ViewBag.ArticleAModifier.Description.Trim()</textarea>
+                    </div>
+                    <div class="ccfield-prepend">
+                        <input class="ccformfield" name="prix" type="number" min="0.05" step="0.05" placeholder="Prix" maxlength='8' value="@ViewBag.ArticleAModifier.Prix.ToString("0.00", CultureInfo.InvariantCulture)" required>
+                    </div>
+                    <div class="ccfield-prepend">
+                        <input class="ccformfield" name="grammage" type="number" min="0" step="10" placeholder="Grammage" maxlength='8' value="@ViewBag.ArticleAModifier.Grammage">
+                    </div>
+                    <div class="ccfield-prepend">
+                        <input class="ccformfield" name="litrage" type="number" min="0" step="10" placeholder="Litrage" maxlength='8' value="@ViewBag.ArticleAModifier.Litrage">
+                    </div>
+                    <div class="ccfield-prepend">
+                        <input class="ccformfield" name="allergenes" type="text" placeholder="Allergènes" maxlength='100' value="@ViewBag.ArticleAModifier.Allergenes.Trim()">
+                    </div>
+                    <div class="ccfield-prepend">
+                        <select class="ccformfield" name="familleId" size="1" required>
+                            <option selected disabled>Type d'article</option>
+                            @foreach (var famille in new ArticleDAL().FamillesArticle())
+                            {
+                                string selected = "";
+                                if (famille.Id == ViewBag.ArticleAModifier.FamilleId)
+                                {
+                                    selected = "selected";
+                                }
+                                <option value="@famille.Id" @selected>@famille.Nom</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="ccfield-prepend">
+                        <div class="ccformfield">
+                            @{
+                                string check = "";
+                                if (ViewBag.ArticleAModifier.DansCarte)
+                                {
+                                    check = "checked";
+                                }
+                            }
+                            <div>
+                                Visible dans la carte
+                                <input name="dansCarte" type="checkbox" value="true" @check>
+                                <input name="dansCarte" type="hidden" value="false">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ccfield-prepend">
+                        <input class="ccbtn" type="submit" value="Modifier">
+                    </div>
+                }
+            </div>
+        }
     }
+</div>
 
-
-
-
-
-
-}

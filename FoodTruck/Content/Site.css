@@ -14,11 +14,7 @@ a {
 
 figure {
     border: thin #c0c0c0 solid;
-    /*display: flex;
-    flex-flow: column;
-    padding: 5px;
-    max-width: 220px;*/
-    margin: auto;
+    margin: unset;
 }
 
 figcaption {
@@ -26,7 +22,6 @@ figcaption {
     color: #fff;
     font: italic smaller sans-serif;
     padding: 3px;
-    /*text-align: center;*/
 }
 
 
@@ -123,33 +118,6 @@ textarea {
     border-color: black;
 }
 
-.carousel-control-prev {
-    left: 0;
-}
-
-.carousel-control-next {
-    right: 0;
-}
-
-.carousel-control-next, .carousel-control-prev {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    width: 15%;
-    color: #fff;
-    text-align: center;
-    opacity: .5;
-}
-
 section#bestsellers, section.notreCarte {
     display: flex;
     justify-content: space-around;
@@ -209,6 +177,38 @@ section.notreCarte {
         align-self: flex-end;
     }
 
+.adminArticle {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+    .adminArticle > div {
+        display: flex;
+    }
+
+    .adminArticle img {
+        margin: 0px;
+        padding:0px;
+    }
+
+    .adminArticle figure {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .adminArticle label {
+        padding: 0px;
+        margin: 0px;
+    }
+    .adminArticle h2 {
+        margin-top: 0;
+    }
+
+    .adminArticle a {
+        text-decoration: none;
+    }
+
+
 .prix {
     font-size: 3rem;
 }
@@ -253,6 +253,12 @@ section.notreCarte {
     width: 100%;
 }
 
+.ModifArticle {
+    margin-bottom: 10px;
+    width: 75%;
+}
+
+
 .ccform-addon {
     color: #95BE27;
     float: left;
@@ -267,15 +273,21 @@ section.notreCarte {
     background: #FFFFFF;
     border: solid 1px #95BE27;
     padding: 15.5px;
-    width: 91.9%;
+    width: 100%;
     display: block;
     font-family: 'Lato',Arial,sans-serif;
     font-size: 14px;
 }
 
-.ccformfield {
-    font-family: 'Lato',Arial,sans-serif;
+.ccfield-input {
+    width: 100%;
 }
+
+input, textarea, img, select, option {
+    width: inherit !important;
+    max-width: 100%;
+}
+
 
 .ccbtn {
     display: block;
@@ -320,36 +332,6 @@ article#articleAPropos {
 
     article#articleAPropos a {
         text-decoration: underline;
-    }
-
-article#stationnement {
-    margin: 0 auto;
-    width: 800px;
-}
-
-    article#stationnement section {
-        background-image: url("stationnement-dots.jpg");
-        display: flex;
-        align-items: flex-start;
-        width: 800px;
-        height: 470px;
-    }
-
-    article#stationnement aside {
-        background-color: white;
-        opacity: 0.75;
-        filter: alpha(opacity=75); /* IE8 et ancients */
-        padding: 1rem 1rem 0 1rem;
-    }
-
-    article#stationnement table {
-        margin-bottom: 15px;
-    }
-
-    article#stationnement table, tr, td {
-        border: solid 1px #95BE27;
-        padding: 0.3rem;
-        font-size: 1.5rem;
     }
 
 .articleDescription a {
@@ -549,37 +531,10 @@ h3.total {
     font-size: medium;
 }
 
-/*a.tip {
-    border-bottom: 1px medium;
-    text-decoration: none;
-}*/
-
-    /*a.tip:hover {
-        cursor: help;
-        position: relative;
-    }
-
-    a.tip span {
-        display: none;
-        background-color: #95BE27;
-        padding: 0.6rem;
-        border: solid 1px #95BE27;
-        border-radius: 1.5rem;
-    }
-
-    a.tip:hover span {
-        border: 1px medium;
-        padding: 5px 20px 5px 5px;
-        display: block;
-        z-index: 100;
-        left: -25px;
-        bottom: 75px;
-        width: 120%;        
-        position: absolute;
-        text-decoration: none;
-        text-align: center;
-    }*/
-
 select.ccformfield option.red {
     color: red;
+}
+
+.image-upload > input {
+    display: none;
 }
