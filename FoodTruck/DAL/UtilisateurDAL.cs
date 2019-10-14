@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FoodTruck.Models;
@@ -38,16 +39,17 @@ namespace FoodTruck.DAL
             string mdpHash;
             using (SHA256 Hash = SHA256.Create())
                 mdpHash = GetHash(Hash, mdp);
-            
+            string guid = Guid.NewGuid().ToString();
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 int id = (from user in db.Utilisateur
-                          where user.Email == email
+                          where user.Email == email || user.Guid == guid
                           select user.Id).FirstOrDefault();
                 if (id == 0)
                 {
                     Utilisateur lUtilisateur = new Utilisateur
                     {
+                        Guid = guid,
                         Email = email,
                         Mdp = mdpHash,
                         Nom = nom,
