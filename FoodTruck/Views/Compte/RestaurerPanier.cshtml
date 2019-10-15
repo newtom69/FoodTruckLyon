@@ -1,18 +1,19 @@
-﻿
+﻿@using FoodTruck.Models
 @{
     ViewBag.Title = "RestaurerPanier";
+    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
 }
 
 <h2>Restaurer Panier</h2>
 <dl class="dl-horizontal"></dl>
 
-@if (ViewBag.Ulilisateur != null)
+@if (utilisateur != null)
 {
     <ul>
-        <li>@ViewBag.Utilisateur.Nom</li>
-        <li>@ViewBag.Utilisateur.Prenom </li>
-        <li>@ViewBag.Utilisateur.Email</li>
-        <li>@ViewBag.Utilisateur.Telephone</li>
+        <li>@utilisateur.Nom</li>
+        <li>@utilisateur.Prenom </li>
+        <li>@utilisateur.Email</li>
+        <li>@utilisateur.Telephone</li>
     </ul>
 }
 

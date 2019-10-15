@@ -20,7 +20,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             return View();
         }
 
@@ -38,7 +37,6 @@ namespace FoodTruck.Controllers
 
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 Article lArticle = new Article
@@ -74,7 +72,6 @@ namespace FoodTruck.Controllers
                 }
             }
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
@@ -84,7 +81,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
                 return View(new ArticleDAL().ListerTout());
             else
@@ -96,7 +92,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 ArticleDAL articleDAL = new ArticleDAL();
@@ -172,7 +167,6 @@ namespace FoodTruck.Controllers
                 }
             }
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }

@@ -14,8 +14,6 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Utilisateur = session.Utilisateur;
-
             if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());

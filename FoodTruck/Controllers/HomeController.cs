@@ -17,7 +17,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new HomeViewModel());
         }
@@ -27,8 +26,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
-
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
                 " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous " +
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
@@ -43,11 +40,8 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
-
             ViewBag.Message = "Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
                               " et un membre de notre équipe vous répondra dans les plus brefs délais.";
-
             string nomOk = Server.HtmlEncode(nom);
             string prenomOk = Server.HtmlEncode(prenom);
             string commentsOk = Server.HtmlEncode(comments);

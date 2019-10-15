@@ -29,7 +29,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             return View(session.Utilisateur);
         }
 
@@ -38,8 +37,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur; // todo
-
             if (session.Utilisateur.Id == 0)
                 return View();
             else
@@ -57,7 +54,6 @@ namespace FoodTruck.Controllers
             lUtilisateurDAL = new UtilisateurDAL();
             lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
             Session["Utilisateur"] = lUtilisateur;
-            ViewBag.Utilisateur = lUtilisateur;
             if (lUtilisateur != null)
             {
                 HttpCookie cookie;
@@ -95,7 +91,6 @@ namespace FoodTruck.Controllers
             else
             {
                 Session["Utilisateur"] = null;
-                ViewBag.Utilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 VisiteDAL.Enregistrer(0);
                 return View();
@@ -107,7 +102,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             return View(session.Utilisateur);
         }
 
@@ -116,14 +110,12 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             if (reponse == "Oui")
             {
                 //recupération du panier en base et agrégation avec celui de la session
                 session.AgregerPanierEnBase();
                 session.RecupererPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
-                ViewBag.Utilisateur = session.Utilisateur;
             }
             else
             {
@@ -132,7 +124,6 @@ namespace FoodTruck.Controllers
                 panierDAL.Supprimer();
                 session.AgregerPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
-                ViewBag.Utilisateur = session.Utilisateur;
             }
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return Redirect(Session["UrlNonCompte"].ToString());
@@ -149,7 +140,6 @@ namespace FoodTruck.Controllers
 
             SessionVariables session = new SessionVariables(0);
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             return Redirect(Session["UrlNonCompte"].ToString());
         }
 
@@ -158,7 +148,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             return View();
         }
 
@@ -167,7 +156,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
@@ -190,7 +178,6 @@ namespace FoodTruck.Controllers
                 lUtilisateur = session.Utilisateur;
             }
             Session["Utilisateur"] = lUtilisateur;
-            ViewBag.Utilisateur = lUtilisateur;
             VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             if (lUtilisateur != null)
             {
@@ -199,7 +186,6 @@ namespace FoodTruck.Controllers
             else
             {
                 Session["Utilisateur"] = null;
-                ViewBag.Utilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }

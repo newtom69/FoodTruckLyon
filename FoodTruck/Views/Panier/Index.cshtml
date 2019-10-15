@@ -1,9 +1,13 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration;
+@using FoodTruck.Models
 @model PanierViewModel
-@{ViewBag.Title = "FoodTruck-Lyon - Panier"; }
-@{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
+@{
+    ViewBag.Title = "FoodTruck-Lyon - Panier";
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+}
 <h2>Votre panier :</h2>
 <dl class="dl-horizontal"></dl>
 
@@ -49,7 +53,7 @@ else
             <button class="validerPanier" type="submit">Commander</button>
         }
     </h3>
-    if (ViewBag.Utilisateur == null || ViewBag.Utilisateur.Id == 0)
+    if (utilisateur == null || utilisateur.Id == 0)
     {
         <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais la commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>
     }

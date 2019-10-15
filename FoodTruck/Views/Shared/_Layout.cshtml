@@ -1,8 +1,10 @@
-﻿@using System.Configuration;
+﻿@using FoodTruck.Models
+@using System.Configuration;
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
-        bool droitAdmin;
+    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    bool droitAdmin;
     if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"]
      || Session["AdminArticle"] != null && (bool)Session["AdminArticle"]
      || Session["AdminCommande"] != null && (bool)Session["AdminCommande"]
@@ -69,9 +71,9 @@
     </div>
     <div class="container body-content">
         <section id="client">
-            @if (ViewBag.Utilisateur != null && ViewBag.Utilisateur.Id != 0)
+            @if (utilisateur != null && utilisateur.Id != 0)
             {
-                <p>Bienvenue <a href="/Compte/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></p>
+                <p>Bienvenue <a href="/Compte/Profil">@utilisateur.Prenom @utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></p>
             }
             else
             {

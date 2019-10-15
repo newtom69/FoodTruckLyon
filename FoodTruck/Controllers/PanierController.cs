@@ -13,7 +13,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
@@ -24,7 +23,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
 
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
@@ -87,8 +85,6 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
-
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)

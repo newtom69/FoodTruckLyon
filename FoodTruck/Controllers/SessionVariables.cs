@@ -16,7 +16,7 @@ namespace FoodTruck.Controllers
 
         public SessionVariables()
         {
-            SetUrlToSession();
+            MettrelUrlEnSession();
             if (HttpContext.Current.Session["Panier"] == null)
                 HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
             else
@@ -156,7 +156,7 @@ namespace FoodTruck.Controllers
             if (Utilisateur.AdminUtilisateur)
                 HttpContext.Current.Session["AdminUtilisateur"] = true;
         }
-        private void SetUrlToSession()
+        private void MettrelUrlEnSession()
         {
             string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
             string getOrPost = HttpContext.Current.Request.HttpMethod;
