@@ -11,10 +11,9 @@ namespace BatchFoodTruck
     {
         static void Main(string[] args)
         {
-
             // Purge de la table PanierProspect
             PanierProspectDAL panierProspectDAL = new PanierProspectDAL("");
-            int nb = panierProspectDAL.Purger(1);
+            int nb = panierProspectDAL.Purger(30);
             Console.WriteLine("Nombre d'enregistrement de PanierProspect supprimés : " + nb);
 
 
