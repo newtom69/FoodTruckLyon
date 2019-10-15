@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "FoodTruck-Lyon - Modifier un article du catalogue";
 }
+    <h2>Modifier un article</h2>
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
+
 <div class="adminArticle">
     @if (!(bool)TempData["DroitPage"])
     {
@@ -10,7 +15,6 @@
     }
     else
     {
-        <h2>Ajouter un article au catalogue</h2>
         if ((string)TempData["Erreur"] != "")
         {
             <div class="messageErreur">@TempData["Erreur"]</div>

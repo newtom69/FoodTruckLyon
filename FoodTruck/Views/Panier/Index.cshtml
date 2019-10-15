@@ -4,9 +4,11 @@
 @model PanierViewModel
 @{ViewBag.Title = "FoodTruck-Lyon - Panier"; }
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
-
+<h2>Votre panier :</h2>
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
 <aside id="panierValide">
-    <h3>Votre panier :</h3>
     <div class="listePanier">
         @{int i = 0;}
         @foreach (var articleDetailViewModel in Model.ArticlesDetailsViewModel)

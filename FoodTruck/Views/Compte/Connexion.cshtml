@@ -22,7 +22,7 @@
     <div class="messageErreur">Mauvais Email ou mot de passe. Veuillez réessayer s'il vous plait.</div>
 }
 <h4>Saisissez vos identifiants :</h4>
-@using (Html.BeginForm("Connexion", "Utilisateur", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
+@using (Html.BeginForm("Connexion", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
 {
     @Html.AntiForgeryToken()
     <div class="ccfield-prepend">

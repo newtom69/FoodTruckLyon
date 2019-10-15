@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class UtilisateurController : Controller
+    public class CompteController : Controller
     {
         [HttpGet]
         public ActionResult Profil()
@@ -77,11 +77,11 @@ namespace FoodTruck.Controllers
                 if (panierPresentEnBase)
                 {
                     TempData["DemandeRestaurationPanier"] = true;
-                    return RedirectToAction("RestaurerPanier", "Utilisateur");
+                    return RedirectToAction("RestaurerPanier", "Compte");
                 }
                 else
                 {
-                    return RedirectToAction("Profil", "Utilisateur");
+                    return RedirectToAction("Profil", "Compte");
                 }
             }
             else

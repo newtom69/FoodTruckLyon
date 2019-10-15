@@ -14,8 +14,10 @@
 <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
 <meta charset=utf-8 />
-
-
+<h2>Modifier un article</h2>
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
 <div class="adminArticle">
     @if (!(bool)TempData["DroitPage"])
     {
@@ -23,7 +25,6 @@
     }
     else
     {
-        <h2>Modifier/supprimer un article</h2>
         using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="ModifArticle">

@@ -132,11 +132,11 @@
     <Compile Include="Controllers\AProposController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
+    <Compile Include="Controllers\CompteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LinkedinController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="Controllers\SessionVariables.cs" />
-    <Compile Include="Controllers\UtilisateurController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\ConcurrencyException.cs" />
@@ -305,16 +305,16 @@
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Commande\Index.cshtml" />
     <Content Include="Views\Panier\Index.cshtml" />
-    <Content Include="Views\Utilisateur\Connexion.cshtml" />
-    <Content Include="Views\Utilisateur\Creation.cshtml" />
-    <Content Include="Views\Utilisateur\Deconnexion.cshtml" />
-    <Content Include="Views\Utilisateur\Profil.cshtml" />
-    <Content Include="Views\Utilisateur\RestaurerPanier.cshtml" />
     <Content Include="Views\Linkedin\callback.cshtml" />
     <Content Include="Views\Linkedin\File.cshtml" />
     <Content Include="Views\AdminArticle\Ajouter.cshtml" />
     <Content Include="Views\AdminArticle\Modifier.cshtml" />
     <Content Include="Views\AdminArticle\ModifierEtape2.cshtml" />
+    <Content Include="Views\Compte\Connexion.cshtml" />
+    <Content Include="Views\Compte\Creation.cshtml" />
+    <Content Include="Views\Compte\Deconnexion.cshtml" />
+    <Content Include="Views\Compte\Profil.cshtml" />
+    <Content Include="Views\Compte\RestaurerPanier.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

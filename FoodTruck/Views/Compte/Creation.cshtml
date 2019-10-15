@@ -4,10 +4,12 @@
 }
 
 <h2>Création de votre compte</h2>
-
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
 <h4>Créez un compte pour profiter de l'ensemble de nos services FoodTruck-Lyon.</h4>
 
-@using (Html.BeginForm("Creation", "Utilisateur", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
+@using (Html.BeginForm("Creation", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
 {
     @Html.AntiForgeryToken()
     if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
@@ -20,27 +22,21 @@
     }
 
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-envelope fa-2x"></i></span>
         <input class="ccformfield" name="Email" type="email" placeholder="Email" maxlength='80' required value="@if(ViewBag.Email != null) {@ViewBag.Email}">
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-key fa-2x"></i></span>
         <input class="ccformfield" name="Mdp" type="password" placeholder="Mot de passe" maxlength='20' required>
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-key fa-2x"></i></span>
         <input class="ccformfield" name="Mdp2" type="password" placeholder="Confirmer le mot de passe" maxlength='20' required>
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-user fa-2x"></i></span>
         <input class="ccformfield" name="Nom" type="text" placeholder="Nom" maxlength='30' required value="@if(ViewBag.Nom != null) {@ViewBag.Nom}">
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-user fa-2x"></i></span>
         <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' required value="@if(ViewBag.Prenom != null) {@ViewBag.Prenom}">
     </div>
     <div class="ccfield-prepend">
-        <span class="ccform-addon"><i class="fa fa-mobile fa-2x"></i></span>
         <input class="ccformfield" name="Telephone" type="tel" placeholder="Téléphone" maxlength='10' required value="@if(ViewBag.Telephone != null) {@ViewBag.Telephone}">
     </div>
     <div class="ccfield-prepend">

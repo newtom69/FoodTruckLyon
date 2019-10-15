@@ -33,6 +33,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (TempData["Admin"] != null && (bool)TempData["Admin"])
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
+                    }
                     <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
                     <li>@Html.ActionLink("A propos", "Index", "APropos")</li>
                     <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
@@ -46,11 +50,11 @@
         <section id="client">
             @if (ViewBag.Utilisateur != null && ViewBag.Utilisateur.Id != 0)
             {
-                <p>Bienvenue <a href="/Utilisateur/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Utilisateur/Deconnexion/">Déconnexion</a></p>
+                <p>Bienvenue <a href="/Compte/Profil">@ViewBag.Utilisateur.Prenom @ViewBag.Utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></p>
             }
             else
             {
-                <p><a href="/Utilisateur/Connexion/">Connexion</a> - <a href="/Utilisateur/Creation/">Création de compte</a></p>
+                <p><a href="/Compte/Connexion/">Connexion</a> - <a href="/Compte/Creation/">Création de compte</a></p>
             }
         </section>
 

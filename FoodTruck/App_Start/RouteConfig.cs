@@ -34,8 +34,8 @@ namespace FoodTruck
             routes.MapRoute("Panier", "Panier/{action}/{nom}",
             defaults: new { controller = "Panier", action = "Ajouter" });
 
-            routes.MapRoute("Utilisateur", "Utilisateur/Profil",
-            defaults: new { controller = "Utilisateur", action = "Profil" });
+            routes.MapRoute("Compte", "Compte/Profil",
+            defaults: new { controller = "Compte", action = "Profil" });
 
             routes.MapRoute("Default", "{controller}/{action}/{id}",
             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });

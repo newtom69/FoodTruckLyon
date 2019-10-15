@@ -4,7 +4,9 @@
 }
 
 <h2>Restaurer Panier</h2>
-
+<div>
+    <dl class="dl-horizontal"></dl>
+</div>
 @if (ViewBag.Ulilisateur != null)
 {
     <ul>
@@ -19,7 +21,7 @@
 {
     <p>Des articles sont présent dans an ancien panier.</p>
     <p>Voulez-vous les récupérer ?</p>
-    using (Html.BeginForm("RestaurerPanier", "Utilisateur", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
+    using (Html.BeginForm("RestaurerPanier", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
     {
         <div class="ccfield-prepend">
             <input class="ccformfield" type="radio" name="reponse" value="Oui" id="Oui" />
