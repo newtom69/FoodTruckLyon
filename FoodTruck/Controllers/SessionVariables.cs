@@ -16,6 +16,7 @@ namespace FoodTruck.Controllers
 
         public SessionVariables()
         {
+            SetUrlToSession();
             if (HttpContext.Current.Session["Panier"] == null)
                 HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
             else
@@ -42,6 +43,10 @@ namespace FoodTruck.Controllers
 
             if (Utilisateur.Id == 0)
             {
+                HttpContext.Current.Session["AdminSuper"] = false;
+                HttpContext.Current.Session["AdminArticle"] = false;
+                HttpContext.Current.Session["AdminCommande"] = false;
+                HttpContext.Current.Session["AdminUtilisateur"] = false;
                 if (HttpContext.Current.Session["Prospect"] != null)
                 {
                     ProspectGuid = HttpContext.Current.Session["Prospect"].ToString();
@@ -74,7 +79,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                VerifierDroit();
+                VerifierDroits();
             }
         }
         public SessionVariables(int pourSurchargeUniquement)
@@ -140,7 +145,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void VerifierDroit()
+        private void VerifierDroits()
         {
             if (Utilisateur.AdminSuper)
                 HttpContext.Current.Session["AdminSuper"] = true;
@@ -151,5 +156,13 @@ namespace FoodTruck.Controllers
             if (Utilisateur.AdminUtilisateur)
                 HttpContext.Current.Session["AdminUtilisateur"] = true;
         }
+        private void SetUrlToSession()
+        {
+            string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+            string getOrPost = HttpContext.Current.Request.HttpMethod;
+            if (controller != "Compte" && getOrPost=="GET")
+                HttpContext.Current.Session["UrlNonCompte"] = HttpContext.Current.Request.Url.ToString();
+        }
     }
+
 }

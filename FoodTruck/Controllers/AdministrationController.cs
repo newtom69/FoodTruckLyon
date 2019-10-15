@@ -8,10 +8,18 @@ namespace FoodTruck.Controllers
 {
     public class AdministrationController : Controller
     {
-        // GET: Administration
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            SessionVariables session = new SessionVariables();
+            if ((bool)Session["AdminSuper"] || (bool)Session["AdminUtilisateur"] || (bool)Session["AdminArticle"] || (bool)Session["AdminCommande"])
+            {
+
+            }
+
+            ViewBag.Panier = session.PanierViewModel;
+            ViewBag.Utilisateur = session.Utilisateur;
+            return View(session.Utilisateur);
         }
     }
 }

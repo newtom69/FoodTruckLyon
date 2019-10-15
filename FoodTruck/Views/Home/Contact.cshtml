@@ -2,27 +2,27 @@
     ViewBag.Title = "FoodTruck-Lyon - Contactez-nous !";
 }
 <h2>@ViewBag.Title</h2>
-<div>
-    <dl class="dl-horizontal"></dl>
-</div>
+
+<dl class="dl-horizontal"></dl>
+
 <h4>@ViewBag.Message</h4>
 <h4 class="messageContactForm">@ViewBag.MailEnvoye</h4>
-    @using (Html.BeginForm("Contact", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform contact" }))
-    {
-        @Html.AntiForgeryToken()
-        <div class="ccfield-prepend">
-            <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
-        </div>
-        <div class="ccfield-prepend">
-            <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' required>
-        </div>
-        <div class="ccfield-prepend">
-            <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required>
-        </div>
-        <div class="ccfield-prepend">
-            <textarea class="ccformfield" name="comments" rows="8" placeholder="Message" maxlength='1000' required></textarea>
-        </div>
-        <div class="ccfield-prepend">
-            <input class="ccbtn" type="submit" value="Envoyer">
-        </div>
-    }
+@using (Html.BeginForm("Contact", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform contact" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required>
+    </div>
+    <div class="ccfield-prepend">
+        <textarea class="ccformfield" name="comments" rows="8" placeholder="Message" maxlength='1000' required></textarea>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccbtn" type="submit" value="Envoyer">
+    </div>
+}

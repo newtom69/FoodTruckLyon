@@ -52,13 +52,5 @@ namespace FoodTruck.Controllers
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleDetailsViewModel(articleCourant));
         }
-        public bool VerifierDroit(Utilisateur utilisateur)
-        {
-            if (utilisateur.AdminArticle || utilisateur.AdminSuper)
-                return true;
-            else
-                return false;
-        }
-
     }
 }

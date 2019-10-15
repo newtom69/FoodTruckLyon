@@ -21,7 +21,6 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            TempData["DroitPage"] = VerifierDroit(session.Utilisateur);
             return View();
         }
 
@@ -40,9 +39,7 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            bool droitPage = VerifierDroit(session.Utilisateur);
-            TempData["DroitPage"] = droitPage;
-            if (droitPage)
+            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 Article lArticle = new Article
                 {
@@ -88,9 +85,7 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            bool droitPage = VerifierDroit(session.Utilisateur);
-            TempData["DroitPage"] = droitPage;
-            if (droitPage)
+            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
                 return View(new ArticleDAL().ListerTout());
             else
                 return View();
@@ -100,11 +95,9 @@ namespace FoodTruck.Controllers
         public ActionResult Modifier(int id)
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = VerifierDroit(session.Utilisateur);
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            TempData["DroitPage"] = droitPage;
-            if (droitPage)
+            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 ArticleDAL articleDAL = new ArticleDAL();
                 ViewBag.ArticleAModifier = articleDAL.Details(id);
@@ -118,9 +111,7 @@ namespace FoodTruck.Controllers
         public ActionResult ModifierEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
             SessionVariables session = new SessionVariables();
-            bool droitPage = VerifierDroit(session.Utilisateur);
-            TempData["DroitPage"] = droitPage;
-            if (droitPage)
+            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 string nomOk = nom.NomAdmis();
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
@@ -184,14 +175,6 @@ namespace FoodTruck.Controllers
             ViewBag.Utilisateur = session.Utilisateur;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
-        }
-
-        public bool VerifierDroit(Utilisateur utilisateur)
-        {
-            if (utilisateur.AdminArticle || utilisateur.AdminSuper)
-                return true;
-            else
-                return false;
         }
     }
 }

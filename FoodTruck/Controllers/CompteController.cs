@@ -11,6 +11,20 @@ namespace FoodTruck.Controllers
     public class CompteController : Controller
     {
         [HttpGet]
+        public ActionResult Index()
+        {
+            SessionVariables session = new SessionVariables();
+            if (session.Utilisateur.Id == 0)
+            {
+                return RedirectToAction("Connexion", "Compte");
+            }
+            else
+            {
+                return RedirectToAction("Profil");
+            }
+        }
+
+        [HttpGet]
         public ActionResult Profil()
         {
             SessionVariables session = new SessionVariables();
@@ -24,7 +38,7 @@ namespace FoodTruck.Controllers
         {
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
-            ViewBag.Utilisateur = session.Utilisateur;
+            ViewBag.Utilisateur = session.Utilisateur; // todo
 
             if (session.Utilisateur.Id == 0)
                 return View();
@@ -40,21 +54,12 @@ namespace FoodTruck.Controllers
 
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (session.Utilisateur.Id == 0)
-            {
-                lUtilisateurDAL = new UtilisateurDAL();
-                lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-            }
-            else
-            {
-                lUtilisateur = (Utilisateur)Session["Utilisateur"];
-            }
+            lUtilisateurDAL = new UtilisateurDAL();
+            lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
             Session["Utilisateur"] = lUtilisateur;
             ViewBag.Utilisateur = lUtilisateur;
-
             if (lUtilisateur != null)
             {
-                //connexion ok
                 HttpCookie cookie;
                 if (connexionAuto)
                 {
@@ -76,12 +81,15 @@ namespace FoodTruck.Controllers
                 bool panierPresentEnBase = new PanierDAL(lUtilisateur.Id).ListerPanierUtilisateur().Count > 0 ? true : false;
                 if (panierPresentEnBase)
                 {
+                    //todo page pécedente l'appel à connexion ?
                     TempData["DemandeRestaurationPanier"] = true;
                     return RedirectToAction("RestaurerPanier", "Compte");
                 }
                 else
                 {
-                    return RedirectToAction("Profil", "Compte");
+                    //todo page pécedente l'appel à connexion ?
+                    //return RedirectToAction("Profil", "Compte");
+                    return Redirect(Session["UrlNonCompte"].ToString());
                 }
             }
             else
@@ -111,24 +119,23 @@ namespace FoodTruck.Controllers
             ViewBag.Utilisateur = session.Utilisateur;
             if (reponse == "Oui")
             {
-                //recupération du panier en base
+                //recupération du panier en base et agrégation avec celui de la session
                 session.AgregerPanierEnBase();
                 session.RecupererPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
                 ViewBag.Utilisateur = session.Utilisateur;
-                VisiteDAL.Enregistrer(session.Utilisateur.Id);
-                return RedirectToAction("Index", "Home");
             }
             else
             {
-                //effacer panier en base
+                //effacement panier en base puis enregistrement de celui de la session
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
                 panierDAL.Supprimer();
                 session.AgregerPanierEnBase();
                 ViewBag.Panier = session.PanierViewModel;
                 ViewBag.Utilisateur = session.Utilisateur;
-                return RedirectToAction("Index", "Home");
             }
+            VisiteDAL.Enregistrer(session.Utilisateur.Id);
+            return Redirect(Session["UrlNonCompte"].ToString());
         }
 
         [HttpGet]
@@ -143,7 +150,7 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables(0);
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            return View();
+            return Redirect(Session["UrlNonCompte"].ToString());
         }
 
         [HttpGet]

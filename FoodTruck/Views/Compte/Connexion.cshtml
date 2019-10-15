@@ -1,13 +1,10 @@
-﻿@model FoodTruck.Models.Utilisateur
-
+﻿@using FoodTruck.Models
 @{
     ViewBag.Title = "FoodTruck-Lyon - Connexion";
 }
 <h2>Connexion</h2>
-<div>
-    <dl class="dl-horizontal"></dl>
-</div>
-@if (ViewBag.lUlilisateur != null)
+<dl class="dl-horizontal"></dl>
+@if (Session["Ulilisateur"] != null && ((Utilisateur)Session["Utilisateur"]).Id != 0)
 {
     <ul>
         <li>@ViewBag.Utilisateur.Nom</li>
@@ -15,6 +12,12 @@
         <li>@ViewBag.Utilisateur.Email</li>
         <li>@ViewBag.Utilisateur.Telephone</li>
     </ul>
+}
+else
+{
+    <p>Connectez-vous à votre compte pour profiter de tous les servives de votre foodtruck.</p>
+    <p>Si vous n'avez pas de compte, pour pouvez en créer un en <a href="/Compte/Creation">suivant ce lien</a>.</p>
+    <dl class="dl-horizontal"></dl>
 }
 
 @if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
