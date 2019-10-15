@@ -5,6 +5,15 @@
 @model ArticleDetailsViewModel
 @{
     bool affichageArticle = Model.Article != null ? true : false;
+    bool droitAdminArticle;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
+    {
+        droitAdminArticle = true;
+    }
+    else
+    {
+        droitAdminArticle = false;
+    }
 }
 
 @if (!affichageArticle)
@@ -48,7 +57,7 @@ else
                             <input name="nom" value="@Model.Article.Nom" hidden>
                             <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                         }
-                        if (TempData["Admin"] != null && (bool)TempData["Admin"])
+                        if (droitAdminArticle)
                         {
                             using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                             {

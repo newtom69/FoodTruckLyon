@@ -6,6 +6,15 @@
     ViewBag.Title = "FoodTruck-Lyon - Ajouter article au catalogue";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
+    bool droitPage;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
+    {
+        droitPage = true;
+    }
+    else
+    {
+        droitPage = false;
+    }
 }
 <script src="~/Scripts/myJs.js"></script>
 <h2>Ajouter un article au catalogue</h2>
@@ -14,7 +23,7 @@
 </div>
 
 <div class="adminArticle">
-    @if (!(bool)TempData["DroitPage"])
+    @if (!droitPage)
     {
         <div><p class="messageErreur">Vous ne pouvez pas ajouter d'article au catalogue !</p></div>
     }

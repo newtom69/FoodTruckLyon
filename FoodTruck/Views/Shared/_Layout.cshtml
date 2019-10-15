@@ -2,6 +2,22 @@
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
+        bool droitAdmin;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"]
+     || Session["AdminArticle"] != null && (bool)Session["AdminArticle"]
+     || Session["AdminCommande"] != null && (bool)Session["AdminCommande"]
+     || Session["AdminUtilisateur"] != null && (bool)Session["AdminUtilisateur"]
+       )
+    {
+        droitAdmin = true;
+    }
+    else
+    {
+        droitAdmin = false;
+    }
+
+
+
 }
 
 <!DOCTYPE html>
@@ -33,14 +49,19 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (TempData["Admin"] != null && (bool)TempData["Admin"])
-                    {
-                        <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
-                    }
+
                     <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
                     <li>@Html.ActionLink("A propos", "Index", "APropos")</li>
                     <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (droitAdmin)
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Votre compte", "Index", "Compte")</li>
+                    }
                     <li>@Html.ActionLink("Panier", "Index", "Panier")</li>
                 </ul>
             </div>

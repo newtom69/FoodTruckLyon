@@ -2,14 +2,23 @@
 @using FoodTruck.DAL;
 @{
     ViewBag.Title = "FoodTruck-Lyon - Modifier un article du catalogue";
+    bool droitPage;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
+    {
+        droitPage = true;
+    }
+    else
+    {
+        droitPage = false;
+    }
 }
-    <h2>Modifier un article</h2>
+<h2>Modifier un article</h2>
 <div>
     <dl class="dl-horizontal"></dl>
 </div>
 
 <div class="adminArticle">
-    @if (!(bool)TempData["DroitPage"])
+    @if (!droitPage)
     {
         <div><p class="messageErreur">Vous ne pouvez pas modifier d'article du catalogue !</p></div>
     }

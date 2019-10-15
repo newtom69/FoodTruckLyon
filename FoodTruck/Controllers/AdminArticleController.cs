@@ -188,7 +188,7 @@ namespace FoodTruck.Controllers
 
         public bool VerifierDroit(Utilisateur utilisateur)
         {
-            if (utilisateur.AdminArticle || utilisateur.AdminTotal)
+            if (utilisateur.AdminArticle || utilisateur.AdminSuper)
                 return true;
             else
                 return false;

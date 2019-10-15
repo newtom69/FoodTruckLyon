@@ -5,6 +5,15 @@
 @{
     ViewBag.Title = "Modifier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    bool droitPage;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
+    {
+        droitPage = true;
+    }
+    else
+    {
+        droitPage = false;
+    }
 }
 @model List<Article>
 
@@ -19,7 +28,7 @@
     <dl class="dl-horizontal"></dl>
 </div>
 <div class="adminArticle">
-    @if (!(bool)TempData["DroitPage"])
+    @if (!droitPage)
     {
         <div><p class="messageErreur">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
     }
@@ -42,10 +51,10 @@
                             }
                             string redOrNothing = "";
                             if (!article.DansCarte)
-                                { redOrNothing = "red"; }
+                            { redOrNothing = "red"; }
                             string selected = "";
                             if (ViewBag.ArticleAModifier != null && @ViewBag.ArticleAModifier.Id == article.Id)
-                                { selected = "selected"; }
+                            { selected = "selected"; }
                             <option class="@redOrNothing" value="@article.Id" @selected>@article.Nom</option>
                         }
                     }

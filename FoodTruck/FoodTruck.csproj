@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminArticleController.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AProposController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
@@ -315,6 +316,7 @@
     <Content Include="Views\Compte\Deconnexion.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
     <Content Include="Views\Compte\RestaurerPanier.cshtml" />
+    <Content Include="Views\Administration\Index.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

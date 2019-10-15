@@ -84,7 +84,7 @@
           <Property Name="AdminCommande" Type="bit" Nullable="false" />
           <Property Name="AdminUtilisateur" Type="bit" Nullable="false" />
           <Property Name="AdminArticle" Type="bit" Nullable="false" />
-          <Property Name="AdminTotal" Type="bit" Nullable="false" />
+          <Property Name="AdminSuper" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -321,8 +321,8 @@
           <Property Name="AdminCommande" Type="Boolean" Nullable="false" />
           <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
           <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
-          <Property Name="AdminTotal" Type="Boolean" Nullable="false" />
           <Property Name="Guid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="AdminSuper" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -553,8 +553,8 @@
           <EntitySetMapping Name="Utilisateur">
             <EntityTypeMapping TypeName="foodtruckModel.Utilisateur">
               <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="AdminSuper" ColumnName="AdminSuper" />
                 <ScalarProperty Name="Guid" ColumnName="Guid" />
-                <ScalarProperty Name="AdminTotal" ColumnName="AdminTotal" />
                 <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
                 <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />
                 <ScalarProperty Name="AdminCommande" ColumnName="AdminCommande" />

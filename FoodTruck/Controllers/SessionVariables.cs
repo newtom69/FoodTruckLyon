@@ -47,7 +47,7 @@ namespace FoodTruck.Controllers
                     ProspectGuid = HttpContext.Current.Session["Prospect"].ToString();
                 }
                 else
-                { 
+                {
                     HttpCookie cookie = HttpContext.Current.Request.Cookies.Get("Prospect");
                     if (cookie != null)
                     {
@@ -72,9 +72,17 @@ namespace FoodTruck.Controllers
                     }
                 }
             }
+            else
+            {
+                VerifierDroit();
+            }
         }
         public SessionVariables(int pourSurchargeUniquement)
         {
+            HttpContext.Current.Session["AdminSuper"] = false;
+            HttpContext.Current.Session["AdminArticle"] = false;
+            HttpContext.Current.Session["AdminCommande"] = false;
+            HttpContext.Current.Session["AdminUtilisateur"] = false;
             HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
             HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
             string guid = Guid.NewGuid().ToString();
@@ -130,6 +138,18 @@ namespace FoodTruck.Controllers
                     HttpContext.Current.Session["Panier"] = PanierViewModel;
                 }
             }
+        }
+
+        private void VerifierDroit()
+        {
+            if (Utilisateur.AdminSuper)
+                HttpContext.Current.Session["AdminSuper"] = true;
+            if (Utilisateur.AdminArticle)
+                HttpContext.Current.Session["AdminArticle"] = true;
+            if (Utilisateur.AdminCommande)
+                HttpContext.Current.Session["AdminCommande"] = true;
+            if (Utilisateur.AdminUtilisateur)
+                HttpContext.Current.Session["AdminUtilisateur"] = true;
         }
     }
 }

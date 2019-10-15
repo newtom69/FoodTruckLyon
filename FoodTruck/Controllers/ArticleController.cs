@@ -20,7 +20,6 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            TempData["Admin"] = VerifierDroit(session.Utilisateur);
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleIndexViewModel());
         }
@@ -32,8 +31,6 @@ namespace FoodTruck.Controllers
             SessionVariables session = new SessionVariables();
             ViewBag.Panier = session.PanierViewModel;
             ViewBag.Utilisateur = session.Utilisateur;
-            TempData["Admin"] = VerifierDroit(session.Utilisateur);
-
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
             articleCourant = lArticleDAL.Details(nom);
@@ -57,7 +54,7 @@ namespace FoodTruck.Controllers
         }
         public bool VerifierDroit(Utilisateur utilisateur)
         {
-            if (utilisateur.AdminArticle || utilisateur.AdminTotal)
+            if (utilisateur.AdminArticle || utilisateur.AdminSuper)
                 return true;
             else
                 return false;
