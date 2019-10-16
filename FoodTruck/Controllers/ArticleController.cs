@@ -18,7 +18,6 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleIndexViewModel());
         }
@@ -28,7 +27,6 @@ namespace FoodTruck.Controllers
         {
             nom = nom.UrlVersNom();
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article articleCourant;
             articleCourant = lArticleDAL.Details(nom);
@@ -46,7 +44,6 @@ namespace FoodTruck.Controllers
                 TempData["ArticleDansCarte"] = true;
                 TempData["ArticleOk"] = true;
             }
-
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new ArticleDetailsViewModel(articleCourant));
         }

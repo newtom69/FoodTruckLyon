@@ -41,7 +41,11 @@ namespace FoodTruck.Controllers
             else
                 Utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
 
-            if (Utilisateur.Id == 0)
+            if (Utilisateur.Id != 0)
+            {
+                DonnerLesDroitsdAcces();
+            }
+            else
             {
                 HttpContext.Current.Session["AdminSuper"] = false;
                 HttpContext.Current.Session["AdminArticle"] = false;
@@ -76,10 +80,6 @@ namespace FoodTruck.Controllers
                         HttpContext.Current.Response.Cookies.Add(cookie);
                     }
                 }
-            }
-            else
-            {
-                VerifierDroits();
             }
         }
         public SessionVariables(int pourSurchargeUniquement)
@@ -145,7 +145,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void VerifierDroits()
+        private void DonnerLesDroitsdAcces()
         {
             if (Utilisateur.AdminSuper)
                 HttpContext.Current.Session["AdminSuper"] = true;
@@ -160,7 +160,7 @@ namespace FoodTruck.Controllers
         {
             string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
             string getOrPost = HttpContext.Current.Request.HttpMethod;
-            if (controller != "Compte" && getOrPost=="GET")
+            if (controller != "Compte" && getOrPost == "GET")
                 HttpContext.Current.Session["UrlNonCompte"] = HttpContext.Current.Request.Url.ToString();
         }
     }

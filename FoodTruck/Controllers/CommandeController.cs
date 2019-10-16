@@ -45,7 +45,6 @@ namespace FoodTruck.Controllers
             }
         }
 
-
         public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
         {
             string lesArticlesDansLeMail = "";

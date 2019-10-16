@@ -16,7 +16,6 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new HomeViewModel());
         }
@@ -25,7 +24,6 @@ namespace FoodTruck.Controllers
         public ActionResult Contact()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
                 " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous " +
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
@@ -39,7 +37,6 @@ namespace FoodTruck.Controllers
         public ActionResult Contact(string nom, string prenom, string email, string comments)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             ViewBag.Message = "Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
                               " et un membre de notre équipe vous répondra dans les plus brefs délais.";
             string nomOk = Server.HtmlEncode(nom);
@@ -117,7 +114,6 @@ namespace FoodTruck.Controllers
                 Response.StatusCode = 400;
                 ViewBag.MailEnvoye = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
             }
-            
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }

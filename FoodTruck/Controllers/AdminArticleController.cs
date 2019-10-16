@@ -18,8 +18,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Ajouter()
         {
-            SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
+            new SessionVariables();
             return View();
         }
 
@@ -36,7 +35,6 @@ namespace FoodTruck.Controllers
             bool dansCarteOk = dansCarte;
 
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 Article lArticle = new Article
@@ -71,7 +69,7 @@ namespace FoodTruck.Controllers
                     TempData["Erreur"] = ex.Message;
                 }
             }
-            ViewBag.Panier = session.PanierViewModel;
+            
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
@@ -79,8 +77,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Modifier()
         {
-            SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
+            new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
                 return View(new ArticleDAL().ListerTout());
             else
@@ -90,8 +87,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Modifier(int id)
         {
-            SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
+            new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 ArticleDAL articleDAL = new ArticleDAL();
@@ -166,7 +162,6 @@ namespace FoodTruck.Controllers
                     }
                 }
             }
-            ViewBag.Panier = session.PanierViewModel;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }

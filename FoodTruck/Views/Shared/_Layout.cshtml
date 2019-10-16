@@ -1,9 +1,11 @@
-﻿@using FoodTruck.Models
+﻿@using FoodTruck.ViewModels;
+@using FoodTruck.Models;
 @using System.Configuration;
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    PanierViewModel panier = (PanierViewModel)Session["Panier"];
     bool droitAdmin;
     if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"]
      || Session["AdminArticle"] != null && (bool)Session["AdminArticle"]
@@ -83,14 +85,14 @@
 
         @RenderBody()
 
-        @if (ViewBag.Panier != null && ViewBag.Panier.PrixTotal != 0 && TempData["PanierLatteralDesactive"] == null)
+        @if (panier != null && panier.PrixTotal != 0 && TempData["PanierLatteralDesactive"] == null)
         {
             <aside id="panier">
                 <h4>Panier</h4>
                 <div class="listePanier">
                     @{int i = 0;
                     }
-                    @foreach (var article in ViewBag.Panier.ArticlesDetailsViewModel)
+                    @foreach (var article in panier.ArticlesDetailsViewModel)
                     {
                         double prixTotalArticle = article.Article.Prix * article.Quantite;
                         <div>
@@ -115,7 +117,7 @@
                     }
                 </div>
                 <hr />
-                <p>Total : @ViewBag.Panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>
+                <p>Total : @panier.PrixTotal.ToString("F2") &nbsp;&euro;</p>
                 <a class="validerPanier" href="/Panier">Valider votre panier</a>
             </aside>
         }

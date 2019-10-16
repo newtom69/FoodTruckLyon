@@ -1,5 +1,21 @@
-﻿@{
+﻿@using FoodTruck.Models;
+
+@{
     ViewBag.Title = "FoodTruck-Lyon - Contactez-nous !";
+    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    string valueNom = "", valuePrenom = "", valueEmail = "";
+    if (utilisateur.Nom != "")
+    {
+        valueNom = "value=" + utilisateur.Nom;
+    }
+    if (utilisateur.Prenom != "")
+    {
+        valuePrenom = "value=" + utilisateur.Prenom;
+    }
+    if (utilisateur.Email != "")
+    {
+        valueEmail = "value=" + utilisateur.Email;
+    }
 }
 <h2>@ViewBag.Title</h2>
 
@@ -10,18 +26,21 @@
 @using (Html.BeginForm("Contact", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform contact" }))
 {
     @Html.AntiForgeryToken()
-    <div class="ccfield-prepend">
-        <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required>
-    </div>
-    <div class="ccfield-prepend">
-        <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' required>
-    </div>
-    <div class="ccfield-prepend">
-        <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required>
-    </div>
+    <p>Votre message</p>
     <div class="ccfield-prepend">
         <textarea class="ccformfield" name="comments" rows="8" placeholder="Message" maxlength='1000' required></textarea>
     </div>
+    <p>Vous</p>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' @valueNom required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="Prenom" type="text" placeholder="Prénom" maxlength='30' @valuePrenom required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' @valueEmail required>
+    </div>
+
     <div class="ccfield-prepend">
         <input class="ccbtn" type="submit" value="Envoyer">
     </div>

@@ -28,7 +28,6 @@ namespace FoodTruck.Controllers
         public ActionResult Profil()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             return View(session.Utilisateur);
         }
 
@@ -36,7 +35,6 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             if (session.Utilisateur.Id == 0)
                 return View();
             else
@@ -47,8 +45,6 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
-
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             lUtilisateurDAL = new UtilisateurDAL();
@@ -77,14 +73,11 @@ namespace FoodTruck.Controllers
                 bool panierPresentEnBase = new PanierDAL(lUtilisateur.Id).ListerPanierUtilisateur().Count > 0 ? true : false;
                 if (panierPresentEnBase)
                 {
-                    //todo page pécedente l'appel à connexion ?
                     TempData["DemandeRestaurationPanier"] = true;
                     return RedirectToAction("RestaurerPanier", "Compte");
                 }
                 else
                 {
-                    //todo page pécedente l'appel à connexion ?
-                    //return RedirectToAction("Profil", "Compte");
                     return Redirect(Session["UrlNonCompte"].ToString());
                 }
             }
@@ -101,7 +94,6 @@ namespace FoodTruck.Controllers
         public ActionResult RestaurerPanier()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             return View(session.Utilisateur);
         }
 
@@ -109,13 +101,11 @@ namespace FoodTruck.Controllers
         public ActionResult RestaurerPanier(string reponse)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             if (reponse == "Oui")
             {
                 //recupération du panier en base et agrégation avec celui de la session
                 session.AgregerPanierEnBase();
                 session.RecupererPanierEnBase();
-                ViewBag.Panier = session.PanierViewModel;
             }
             else
             {
@@ -123,7 +113,6 @@ namespace FoodTruck.Controllers
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
                 panierDAL.Supprimer();
                 session.AgregerPanierEnBase();
-                ViewBag.Panier = session.PanierViewModel;
             }
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return Redirect(Session["UrlNonCompte"].ToString());
@@ -137,17 +126,14 @@ namespace FoodTruck.Controllers
                 Expires = DateTime.Now.AddDays(-30)
             };
             Response.Cookies.Add(newCookie);
-
-            SessionVariables session = new SessionVariables(0);
-            ViewBag.Panier = session.PanierViewModel;
+            new SessionVariables(0);
             return Redirect(Session["UrlNonCompte"].ToString());
         }
 
         [HttpGet]
         public ActionResult Creation()
         {
-            SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
+            new SessionVariables();
             return View();
         }
 
@@ -155,8 +141,6 @@ namespace FoodTruck.Controllers
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
-
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             if (session.Utilisateur.Id == 0)

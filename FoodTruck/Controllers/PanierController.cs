@@ -12,7 +12,6 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             VisiteDAL.Enregistrer(session.Utilisateur.Id);
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
@@ -22,15 +21,12 @@ namespace FoodTruck.Controllers
         public ActionResult Ajouter(string nom)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
-
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
                 sauvPanierClient = true;
             else
                 sauvPanierProspect = true;
-
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
             if (lArticle == null || !lArticle.DansCarte)
@@ -74,7 +70,6 @@ namespace FoodTruck.Controllers
                 }
                 session.PanierViewModel.PrixTotal += lArticle.Prix;
                 Session["Panier"] = session.PanierViewModel;
-
                 VisiteDAL.Enregistrer(session.Utilisateur.Id);
                 return Redirect(Request.UrlReferrer.ToString());
             }
@@ -84,7 +79,6 @@ namespace FoodTruck.Controllers
         public ActionResult Retirer(int id)
         {
             SessionVariables session = new SessionVariables();
-            ViewBag.Panier = session.PanierViewModel;
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
@@ -118,7 +112,6 @@ namespace FoodTruck.Controllers
                         lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
                         lePanierProspectDAL.ModifierQuantite(lArticle, -1);
                     }
-
                 }
                 else
                 {

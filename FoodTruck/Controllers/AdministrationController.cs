@@ -17,7 +17,7 @@ namespace FoodTruck.Controllers
 
             }
 
-            ViewBag.Panier = session.PanierViewModel;
+            
             return View(session.Utilisateur);
         }
     }
