@@ -10,13 +10,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
-          <Property Name="Image" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Nom" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="Image" Type="char" MaxLength="30" Nullable="false" />
           <Property Name="Prix" Type="float" Nullable="false" />
           <Property Name="FamilleId" Type="int" Nullable="false" />
           <Property Name="NombreVendus" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Allergenes" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="90" Nullable="false" />
+          <Property Name="Allergenes" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Grammage" Type="int" Nullable="false" />
           <Property Name="Litrage" Type="int" Nullable="false" />
           <Property Name="DansCarte" Type="bit" Nullable="false" />
@@ -245,13 +245,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Prix" Type="Double" Nullable="false" />
           <Property Name="FamilleId" Type="Int32" Nullable="false" />
           <Property Name="NombreVendus" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Allergenes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Allergenes" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Grammage" Type="Int32" Nullable="false" />
           <Property Name="Litrage" Type="Int32" Nullable="false" />
           <Property Name="DansCarte" Type="Boolean" Nullable="false" />

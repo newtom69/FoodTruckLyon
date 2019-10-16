@@ -155,7 +155,9 @@ section.notreCarte {
     }
 
     .detailArticle img {
-        margin-right: 20px;
+        margin-right: 15px;
+        max-width: 300px;
+        min-width: 300px;
     }
 
     .detailArticle h2 {
@@ -357,7 +359,7 @@ article#articleAPropos {
 .articleDescription p {
     margin: 0 0 0.3rem;
     font-size: 1.7rem;
-    word-wrap: break-word;
+    /*word-wrap: break-word;*/
 }
 
     .articleDescription p:last-child {
