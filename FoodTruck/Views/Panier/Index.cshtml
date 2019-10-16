@@ -22,15 +22,15 @@
                 </a>
                 @articleDetailViewModel.Quantite<span>x </span><a href="/Article/@articleDetailViewModel.NomPourUrl">@articleDetailViewModel.Article.Nom</a>
             </div>
-            using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
-            {
-                <input name="nom" value="@articleDetailViewModel.Article.Nom" hidden>
-                <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
-            }
             using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
             {
                 <input name="id" value="@i" hidden>
                 <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
+            }
+            using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+            {
+                <input name="nom" value="@articleDetailViewModel.Article.Nom" hidden>
+                <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
             }
             <p class="sousTotal">@articleDetailViewModel.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</p>
             <hr />
