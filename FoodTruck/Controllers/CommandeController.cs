@@ -45,7 +45,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        public void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
+        private void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
         {
             string lesArticlesDansLeMail = "";
             foreach (ArticleDetailsViewModel article in panier.ArticlesDetailsViewModel)

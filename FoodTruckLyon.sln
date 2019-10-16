@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchFoodTruck", "BatchFood
 		{849EAC99-F37E-4B26-9D63-53073D8F9CBC} = {849EAC99-F37E-4B26-9D63-53073D8F9CBC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTruck.TU", "FoodTruck.TU\FoodTruck.TU.csproj", "{30C89FF2-6761-463C-B619-D2D53D51A13C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{4757FC6B-E5EA-4A0E-84E8-8428A1695A80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4757FC6B-E5EA-4A0E-84E8-8428A1695A80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4757FC6B-E5EA-4A0E-84E8-8428A1695A80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30C89FF2-6761-463C-B619-D2D53D51A13C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30C89FF2-6761-463C-B619-D2D53D51A13C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30C89FF2-6761-463C-B619-D2D53D51A13C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30C89FF2-6761-463C-B619-D2D53D51A13C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
