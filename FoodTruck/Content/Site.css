@@ -224,6 +224,8 @@ section.notreCarte {
 
 .prix {
     font-size: 3rem;
+    text-align: right;
+    display: block;
 }
 
 .grow {
@@ -390,7 +392,7 @@ button.adminArticle {
     padding: 0.6rem;
     border: solid 1px orangered;
     border-radius: 1.5rem;
-    margin-top: 5px;
+    margin-left: 5px;
 }
 
 button.ajoutSupprPanierTexte {
@@ -557,4 +559,8 @@ select.ccformfield option.red {
 
 .image-upload > input {
     display: none;
+}
+
+#ajoutPanier {
+    display: flex;
 }

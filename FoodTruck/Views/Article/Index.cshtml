@@ -5,6 +5,15 @@
 @model ArticleIndexViewModel
 @{
     ViewBag.Title = "FoodTruck-Lyon - Notre carte";
+    bool droitAdminArticle;
+    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
+    {
+        droitAdminArticle = true;
+    }
+    else
+    {
+        droitAdminArticle = false;
+    }
 }
 
 @if (Model.ArticlesEntree.Count != 0)
@@ -25,11 +34,21 @@
                     <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-            {
-                <input name="nom" value="@article.Article.Nom" hidden>
-                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-            }
+            <div id="ajoutPanier">
+                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                {
+                    <input name="nom" value="@article.Article.Nom" hidden>
+                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                }
+                @if (droitAdminArticle)
+                {
+                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                    {
+                        <input type="hidden" name="id" value="@article.Article.Id">
+                        <button class="adminArticle" type="submit">Modifier</button>
+                    }
+                }
+            </div>
         </div>
     }
 </section>
@@ -50,11 +69,21 @@
                     <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-            {
-                <input name="nom" value="@article.Article.Nom" hidden>
-                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-            }
+            <div id="ajoutPanier">
+                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                {
+                    <input name="nom" value="@article.Article.Nom" hidden>
+                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                }
+                @if (droitAdminArticle)
+                {
+                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                    {
+                        <input type="hidden" name="id" value="@article.Article.Id">
+                        <button class="adminArticle" type="submit">Modifier</button>
+                    }
+                }
+            </div>
         </div>
     }
 </section>
@@ -75,11 +104,21 @@
                     <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-            {
-                <input name="nom" value="@article.Article.Nom" hidden>
-                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-            }
+            <div id="ajoutPanier">
+                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                {
+                    <input name="nom" value="@article.Article.Nom" hidden>
+                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                }
+                @if (droitAdminArticle)
+                {
+                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                    {
+                        <input type="hidden" name="id" value="@article.Article.Id">
+                        <button class="adminArticle" type="submit">Modifier</button>
+                    }
+                }
+            </div>
         </div>
     }
 </section>
@@ -100,11 +139,21 @@
                     <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-            {
-                <input name="nom" value="@article.Article.Nom" hidden>
-                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-            }
+            <div id="ajoutPanier">
+                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                {
+                    <input name="nom" value="@article.Article.Nom" hidden>
+                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                }
+                @if (droitAdminArticle)
+                {
+                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                    {
+                        <input type="hidden" name="id" value="@article.Article.Id">
+                        <button class="adminArticle" type="submit">Modifier</button>
+                    }
+                }
+            </div>
         </div>
     }
 </section>
@@ -127,11 +176,21 @@
                     <p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
-            @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-            {
-                <input name="nom" value="@article.Article.Nom" hidden>
-                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-            }
+            <div id="ajoutPanier">
+                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                {
+                    <input name="nom" value="@article.Article.Nom" hidden>
+                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                }
+                @if (droitAdminArticle)
+                {
+                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                    {
+                        <input type="hidden" name="id" value="@article.Article.Id">
+                        <button class="adminArticle" type="submit">Modifier</button>
+                    }
+                }
+            </div>
         </div>
     }
 </section>
