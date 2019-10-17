@@ -4,7 +4,7 @@
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model ArticleIndexViewModel
 @{
-    ViewBag.Title = "FoodTruck-Lyon - Notre carte";
+    ViewBag.Title = "FoodTruckLyon - Notre carte";
     bool droitAdminArticle;
     if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
     {

@@ -44,7 +44,7 @@ namespace FoodTruck.Controllers
             string commentsOk = Server.HtmlEncode(comments);
             try
             {
-                using (MailMessage message = new MailMessage { From = new MailAddress("info@foodtruck-lyon.com") })
+                using (MailMessage message = new MailMessage { From = new MailAddress("info@foodtrucklyon.fr") })
                 {
                     message.To.Add(email);
                     message.Subject = "Message à partir du formulaire de contact";
@@ -84,7 +84,7 @@ namespace FoodTruck.Controllers
                 {
                     From = new MailAddress(email)
                 };
-                message.To.Add("info@foodtruck-lyon.com");
+                message.To.Add("info@foodtrucklyon.fr");
                 message.Subject = "Message à partir du formulaire de contact";
 
                 StringBuilder mastringbuilder = new StringBuilder();

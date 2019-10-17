@@ -64,9 +64,9 @@ namespace FoodTruck.Controllers
             {
                 MailMessage message = new MailMessage
                 {
-                    From = new MailAddress("info@foodtruck-lyon.com")
+                    From = new MailAddress("info@foodtrucklyon.fr")
                 };
-                message.To.Add("info@foodtruck-lyon.com");
+                message.To.Add("info@foodtrucklyon.fr");
                 message.Subject = "Nouvelle commande numéro " + numeroCommande;
                 message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
 
@@ -90,10 +90,10 @@ namespace FoodTruck.Controllers
                 {
                     MailMessage message = new MailMessage
                     {
-                        From = new MailAddress("info@foodtruck-lyon.com")
+                        From = new MailAddress("info@foodtrucklyon.fr")
                     };
                     message.To.Add(emailClient);
-                    message.Subject = " Nouvelle commande FoodTruck-Lyon prise en compte";
+                    message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
                     message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
                                    $"\nMerci de votre confiance\n\n" +
                                    "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
