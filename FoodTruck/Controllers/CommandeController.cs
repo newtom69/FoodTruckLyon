@@ -62,52 +62,41 @@ namespace FoodTruck.Controllers
 
             try
             {
-                MailMessage message = new MailMessage
+                using (MailMessage message = new MailMessage())
                 {
-                    From = new MailAddress("info@foodtrucklyon.fr")
-                };
-                message.To.Add("info@foodtrucklyon.fr");
-                message.Subject = "Nouvelle commande numéro " + numeroCommande;
-                message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
-
-                using (SmtpClient client = new SmtpClient
+                    message.From = new MailAddress("info@foodtrucklyon.fr");
+                    message.To.Add("info@foodtrucklyon.fr");
+                    message.ReplyToList.Add(emailClient);
+                    message.Subject = "Nouvelle commande numéro " + numeroCommande;
+                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
+                    using (SmtpClient client = new SmtpClient())
+                    {
+                        client.EnableSsl = false;
+                        client.Send(message);
+                    }
+                }
+                if (lUtilisateur.Id != 0)
                 {
-                    EnableSsl = true
-                })
-                {
-                    client.Send(message);
+                    using (MailMessage message = new MailMessage())
+                    {
+                        message.From = new MailAddress("info@foodtrucklyon.fr");
+                        message.To.Add(emailClient);
+                        message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
+                        message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
+                                       $"\nMerci de votre confiance\n\n" +
+                                       "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
+                        using (SmtpClient client = new SmtpClient())
+                        {
+                            client.EnableSsl = false;
+                            client.Send(message);
+                        }
+                    }
                 }
             }
             catch (Exception)
             {
                 Response.StatusCode = 400;
                 ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
-            }
-
-            if (lUtilisateur.Id != 0)
-            {
-                try
-                {
-                    MailMessage message = new MailMessage
-                    {
-                        From = new MailAddress("info@foodtrucklyon.fr")
-                    };
-                    message.To.Add(emailClient);
-                    message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
-                    message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
-                                   $"\nMerci de votre confiance\n\n" +
-                                   "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
-
-                    using (SmtpClient client = new SmtpClient { EnableSsl = true })
-                    {
-                        client.Send(message);
-                    }
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 400;
-                    ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
-                }
             }
         }
     }
