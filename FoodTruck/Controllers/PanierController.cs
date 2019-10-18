@@ -2,6 +2,7 @@
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -11,6 +12,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            session.PanierViewModel.DatesPossiblesLivraison = ObtenirDatesPossiblesLivraison();
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
         }
@@ -125,6 +127,114 @@ namespace FoodTruck.Controllers
                 Session["Panier"] = session.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
             }
+        }
+
+        private List<DateTime> ObtenirDatesPossiblesLivraison()
+        {
+            const int heurePremierCreneauxDejeuner = 11; //TODO conf
+            const int minutePremierCreneauxDejeuner = 45;
+            const int heureDernierCreneauxDejeuner = 14; //TODO conf
+            const int minuteDernierCreneauxDejeuner = 00;
+            const int heurePremierCreneauxDiner = 19; //TODO conf
+            const int minutePremierCreneauxDiner = 00;
+            const int heureDernierCreneauxDiner = 22; //TODO conf
+            const int minuteDernierCreneauxDiner = 00;
+            DateTime maintenant = DateTime.Now;
+            int jAnnee = maintenant.Year;
+            int jMois = maintenant.Month;
+            int jJour = maintenant.Day;
+
+            DateTime maintenantTest8h = new DateTime(jAnnee, jMois, jJour, 8, 0, 0);
+            DateTime maintenantTest23h = new DateTime(jAnnee, jMois, jJour, 23, 0, 0);
+            DateTime maintenantTest21h = new DateTime(jAnnee, jMois, jJour, 21, 0, 0);
+            DateTime maintenantTest19h = new DateTime(jAnnee, jMois, jJour, 19, 0, 0);
+            DateTime maintenantTest15h = new DateTime(jAnnee, jMois, jJour, 15, 0, 0);
+
+            maintenant = maintenantTest8h; //TODO TEST !
+            int jMoins1Annee = maintenant.AddDays(-1).Year;
+            int jMoins1Mois = maintenant.AddDays(-1).Month;
+            int jMoins1Jour = maintenant.AddDays(-1).Day;
+
+            DateTime maxCommandePourDejeuner = new DateTime(jAnnee, jMois, jJour, 13, 45, 00); //TODO conf
+            DateTime minCommandePourDejeuner = new DateTime(jMoins1Annee, jMoins1Mois, jMoins1Jour, 21, 00, 00);
+            DateTime minCommandePourDiner = new DateTime(jAnnee, jMois, jJour, 13, 00, 00);
+            DateTime maxCommandePourDiner = new DateTime(jAnnee, jMois, jJour, 21, 45, 00);
+
+            DateTime premierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heurePremierCreneauxDejeuner, minutePremierCreneauxDejeuner, 0);
+            DateTime dernierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heureDernierCreneauxDejeuner, minuteDernierCreneauxDejeuner, 0);
+            premierCreneauxDejeuner = ObtenirCreneauCourant(premierCreneauxDejeuner);
+            dernierCreneauxDejeuner = ObtenirCreneauCourant(dernierCreneauxDejeuner);
+            if (dernierCreneauxDejeuner < maintenant)
+            {
+                premierCreneauxDejeuner = premierCreneauxDejeuner.AddDays(1);
+                dernierCreneauxDejeuner = dernierCreneauxDejeuner.AddDays(1);
+            }
+            if (premierCreneauxDejeuner < ObtenirCreneauCourant(maintenant))
+            {
+                premierCreneauxDejeuner = ObtenirCreneauSuivant(maintenant);
+            }
+            List<DateTime> creneauxDejeuner = ConstruireCreneaux(premierCreneauxDejeuner, dernierCreneauxDejeuner);
+
+            DateTime premierCreneauxDiner = new DateTime(jAnnee, jMois, jJour, heurePremierCreneauxDiner, minutePremierCreneauxDiner, 0);
+            DateTime dernierCreneauxDiner = new DateTime(jAnnee, jMois, jJour, heureDernierCreneauxDiner, minuteDernierCreneauxDiner, 0);
+            premierCreneauxDiner = ObtenirCreneauCourant(premierCreneauxDiner);
+            dernierCreneauxDiner = ObtenirCreneauCourant(dernierCreneauxDiner);
+            if (dernierCreneauxDiner < maintenant)
+            {
+                premierCreneauxDiner = premierCreneauxDiner.AddDays(1);
+                dernierCreneauxDiner = dernierCreneauxDiner.AddDays(1);
+            }
+            if (premierCreneauxDiner < ObtenirCreneauCourant(maintenant))
+            {
+                premierCreneauxDiner = ObtenirCreneauSuivant(maintenant);
+            }
+            List<DateTime> creneauxDiner = ConstruireCreneaux(premierCreneauxDiner, dernierCreneauxDiner);
+
+            if (premierCreneauxDejeuner < premierCreneauxDiner)
+            {
+                creneauxDejeuner.AddRange(creneauxDiner);
+                return creneauxDejeuner;
+            }
+            else
+            {
+                creneauxDiner.AddRange(creneauxDejeuner);
+                return creneauxDiner;
+            }
+        }
+
+        private List<DateTime> ConstruireCreneaux(DateTime premierCreneau, DateTime dernierCreneau)
+        {
+            DateTime creneauCourant = premierCreneau;
+            List<DateTime> creneaux = new List<DateTime>();
+            while (creneauCourant <= dernierCreneau)
+            {
+                creneaux.Add(creneauCourant);
+                creneauCourant = ObtenirCreneauSuivant(creneauCourant);
+            }
+            return creneaux;
+        }
+
+        private DateTime ObtenirCreneauSuivant(DateTime date)
+        {
+            const int pas = 15; //TODO Conf
+            int annee = date.Year;
+            int mois = date.Month;
+            int jour = date.Day;
+            int heure = date.Hour;
+            int minute = date.Minute;
+            int minuteCreneauCourant = (minute / pas) * pas;
+            return new DateTime(annee, mois, jour, heure, minuteCreneauCourant, 0).AddMinutes(pas);
+        }
+        private DateTime ObtenirCreneauCourant(DateTime date)
+        {
+            const int pas = 15; //TODO Conf
+            int annee = date.Year;
+            int mois = date.Month;
+            int jour = date.Day;
+            int heure = date.Hour;
+            int minute = date.Minute;
+            int minuteCreneauCourant = (minute / pas) * pas;
+            return new DateTime(annee, mois, jour, heure, minuteCreneauCourant, 0);
         }
     }
 }

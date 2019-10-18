@@ -40,6 +40,25 @@
     <hr />
 </aside>
 
+@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    <div class="ccfield-prepend">
+        <select class="ccformfield" name="familleId" size="1" required>
+            <option selected disabled>Choix du créneau horaire</option>
+            @i = 0;
+            @foreach (DateTime date in Model.DatesPossiblesLivraison)
+            {
+                <option value="@date.ToString()">@date.ToString()</option>
+            }
+
+
+        </select>
+    </div>
+
+}
+
 @if (Model.ArticlesDetailsViewModel.Count == 0)
 {
     <h4>Votre panier est vide. Venez <a href="/Article">découvrir notre carte.</a></h4>
