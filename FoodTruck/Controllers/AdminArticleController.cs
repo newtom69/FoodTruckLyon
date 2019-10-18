@@ -13,12 +13,11 @@ using System.Configuration;
 
 namespace FoodTruck.Controllers
 {
-    public class AdminArticleController : Controller
+    public class AdminArticleController : ControllerParent
     {
         [HttpGet]
         public ActionResult Ajouter()
         {
-            new SessionVariables();
             return View();
         }
 
@@ -33,8 +32,6 @@ namespace FoodTruck.Controllers
             string allergenesOk = allergenes ?? "";
             int familleIdOk = familleId;
             bool dansCarteOk = dansCarte;
-
-            SessionVariables session = new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 Article lArticle = new Article
@@ -69,15 +66,12 @@ namespace FoodTruck.Controllers
                     TempData["Erreur"] = ex.Message;
                 }
             }
-            
-            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
 
         [HttpGet]
         public ActionResult Modifier()
         {
-            new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
                 return View(new ArticleDAL().ListerTout());
             else
@@ -87,7 +81,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Modifier(int id)
         {
-            new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 ArticleDAL articleDAL = new ArticleDAL();
@@ -101,7 +94,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            SessionVariables session = new SessionVariables();
             if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
             {
                 string nomOk = nom.NomAdmis();
@@ -162,7 +154,6 @@ namespace FoodTruck.Controllers
                     }
                 }
             }
-            VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
     }

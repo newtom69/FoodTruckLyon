@@ -13,7 +13,6 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            //SessionVariables session = new SessionVariables();
             if (session.Utilisateur.Id == 0)
             {
                 return RedirectToAction("Connexion", "Compte");
@@ -27,14 +26,12 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            //SessionVariables session = new SessionVariables();
             return View(session.Utilisateur);
         }
 
         [HttpGet]
         public ActionResult Connexion()
         {
-            //SessionVariables session = new SessionVariables();
             if (session.Utilisateur.Id == 0)
                 return View();
             else
@@ -44,7 +41,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
-            //SessionVariables session = new SessionVariables();
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             lUtilisateurDAL = new UtilisateurDAL();
@@ -85,7 +81,6 @@ namespace FoodTruck.Controllers
             {
                 Session["Utilisateur"] = null;
                 ViewBag.MauvaisEmailMdp = true;
-                //VisiteDAL.Enregistrer(0);
                 return View();
             }
         }
@@ -93,14 +88,12 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult RestaurerPanier()
         {
-            //SessionVariables session = new SessionVariables();
             return View(session.Utilisateur);
         }
 
         [HttpPost]
         public ActionResult RestaurerPanier(string reponse)
         {
-            //SessionVariables session = new SessionVariables();
             if (reponse == "Oui")
             {
                 //recupération du panier en base et agrégation avec celui de la session
@@ -114,14 +107,12 @@ namespace FoodTruck.Controllers
                 panierDAL.Supprimer();
                 session.AgregerPanierEnBase();
             }
-            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return Redirect(Session["Url"].ToString());
         }
 
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            //SessionVariables session = new SessionVariables();
             if (session.Utilisateur.Id != 0)
             {
                 HttpCookie newCookie = new HttpCookie("GuidClient")
@@ -138,14 +129,12 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Creation()
         {
-            //new SessionVariables();
             return View();
         }
 
         [HttpPost]
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
-            //SessionVariables session = new SessionVariables();
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             if (session.Utilisateur.Id == 0)
@@ -167,7 +156,6 @@ namespace FoodTruck.Controllers
                 lUtilisateur = session.Utilisateur;
             }
             Session["Utilisateur"] = lUtilisateur;
-            VisiteDAL.Enregistrer(lUtilisateur != null ? lUtilisateur.Id : 0);
             if (lUtilisateur != null)
             {
                 return RedirectToAction($"./Profil");

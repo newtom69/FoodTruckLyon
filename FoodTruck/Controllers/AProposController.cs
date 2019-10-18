@@ -9,14 +9,12 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            new SessionVariables();
             return View();
         }
 
         [HttpGet]
         public ActionResult Stationnement()
         {
-            new SessionVariables();
             return View();
         }
     }

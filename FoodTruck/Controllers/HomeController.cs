@@ -15,29 +15,23 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            //SessionVariables session = new SessionVariables();
-            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View(new HomeViewModel());
         }
 
         [HttpGet]
         public ActionResult Contact()
         {
-            //SessionVariables session = new SessionVariables();
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
                 " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous " +
                 "et un membre de notre équipe vous répondra dans les plus brefs délais.";
             ViewBag.MailEnvoye = "";
             ViewBag.MailErreur = "";
-
-            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Contact(string nom, string prenom, string email, string comments)
         {
-            //SessionVariables session = new SessionVariables();
             ViewBag.Message = "Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
                               " et un membre de notre équipe vous répondra dans les plus brefs délais.";
             string nomOk = Server.HtmlEncode(nom);
@@ -103,7 +97,6 @@ namespace FoodTruck.Controllers
                 ViewBag.MailErreur = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
                 ViewBag.MailEnvoye = "";
             }
-            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
             return View();
         }
     }

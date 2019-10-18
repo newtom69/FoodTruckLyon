@@ -11,8 +11,6 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            //SessionVariables session = new SessionVariables();
-            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
         }
@@ -20,7 +18,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Ajouter(string nom)
         {
-            //SessionVariables session = new SessionVariables();
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
@@ -70,7 +67,6 @@ namespace FoodTruck.Controllers
                 }
                 session.PanierViewModel.PrixTotal += lArticle.Prix;
                 Session["Panier"] = session.PanierViewModel;
-                //VisiteDAL.Enregistrer(session.Utilisateur.Id);
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -78,7 +74,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Retirer(int id)
         {
-            //SessionVariables session = new SessionVariables();
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (session.Utilisateur.Id != 0)
@@ -128,7 +123,6 @@ namespace FoodTruck.Controllers
                     }
                 }
                 Session["Panier"] = session.PanierViewModel;
-                //VisiteDAL.Enregistrer(session.Utilisateur.Id);
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
