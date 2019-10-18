@@ -23,9 +23,8 @@ namespace FoodTruck.Models
         public int Id { get; set; }
         public int UtilisateurId { get; set; }
         public System.DateTime DateCommande { get; set; }
-        public System.DateTime DateLivraison { get; set; }
-        public string ModeLivraison { get; set; }
         public double PrixTotal { get; set; }
+        public System.DateTime DateRetrait { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande_Article> Commande_Article { get; set; }

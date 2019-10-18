@@ -48,7 +48,7 @@
         <select class="ccformfield" name="familleId" size="1" required>
             <option selected disabled>Choix du créneau horaire</option>
             @i = 0;
-            @foreach (DateTime date in Model.DatesPossiblesLivraison)
+            @foreach (DateTime date in Model.DatesRetraitPossibles)
             {
                 <option value="@date.ToString()">@date.ToString()</option>
             }

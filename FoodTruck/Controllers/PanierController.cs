@@ -12,7 +12,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            session.PanierViewModel.DatesPossiblesLivraison = ObtenirDatesPossiblesLivraison();
+            session.PanierViewModel.DatesRetraitPossibles = ObtenirDatesPossiblesLivraison();
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
         }

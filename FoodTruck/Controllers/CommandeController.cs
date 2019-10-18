@@ -23,8 +23,7 @@ namespace FoodTruck.Controllers
                 {
                     UtilisateurId = session.Utilisateur.Id,
                     DateCommande = DateTime.Now,
-                    ModeLivraison = "à notre Foodtruck",
-                    DateLivraison = DateTime.Now.AddMinutes(45), //TODO : commande avant 13h : livré le midi + "ecart / 13h" ; commande après 13h livré le soir
+                    DateRetrait = DateTime.Now.AddMinutes(45), //TODO : commande avant 13h : livré le midi + "ecart / 13h" ; commande après 13h livré le soir
                     PrixTotal = 0
                 };
                 foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
@@ -66,7 +65,7 @@ namespace FoodTruck.Controllers
                     message.To.Add("info@foodtrucklyon.fr");
                     message.ReplyToList.Add(emailClient);
                     message.Subject = "Nouvelle commande numéro " + numeroCommande;
-                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateLivraison}\n" + corpsDuMailEnCommunClientFoodtruck;
+                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateRetrait}\n" + corpsDuMailEnCommunClientFoodtruck;
                     using (SmtpClient client = new SmtpClient())
                     {
                         client.EnableSsl = false;

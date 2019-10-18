@@ -28,8 +28,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UtilisateurId" Type="int" Nullable="false" />
           <Property Name="DateCommande" Type="datetime" Nullable="false" />
-          <Property Name="DateLivraison" Type="datetime" Nullable="false" />
-          <Property Name="ModeLivraison" Type="nchar" MaxLength="17" Nullable="false" />
+          <Property Name="DateRetrait" Type="datetime" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Commande_Article">
@@ -267,11 +266,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
           <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateLivraison" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModeLivraison" Type="String" MaxLength="17" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
           <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
+          <Property Name="DateRetrait" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
@@ -513,11 +511,10 @@
           <EntitySetMapping Name="Commande">
             <EntityTypeMapping TypeName="foodtruckModel.Commande">
               <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="DateRetrait" ColumnName="DateRetrait" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
                 <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
-                <ScalarProperty Name="DateLivraison" ColumnName="DateLivraison" />
-                <ScalarProperty Name="ModeLivraison" ColumnName="ModeLivraison" />
                 <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
               </MappingFragment>
             </EntityTypeMapping>
