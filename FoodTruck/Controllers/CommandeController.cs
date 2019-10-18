@@ -11,7 +11,7 @@ namespace FoodTruck.Controllers
     public class CommandeController : ControllerParent
     {
         [HttpPost]
-        public ActionResult Index()
+        public ActionResult Index(DateTime dateRetrait)
         {
             if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
@@ -23,7 +23,7 @@ namespace FoodTruck.Controllers
                 {
                     UtilisateurId = session.Utilisateur.Id,
                     DateCommande = DateTime.Now,
-                    DateRetrait = DateTime.Now.AddMinutes(45), //TODO : commande avant 13h : livré le midi + "ecart / 13h" ; commande après 13h livré le soir
+                    DateRetrait = dateRetrait,
                     PrixTotal = 0
                 };
                 foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
@@ -65,7 +65,7 @@ namespace FoodTruck.Controllers
                     message.To.Add("info@foodtrucklyon.fr");
                     message.ReplyToList.Add(emailClient);
                     message.Subject = "Nouvelle commande numéro " + numeroCommande;
-                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateRetrait}\n" + corpsDuMailEnCommunClientFoodtruck;
+                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
                     using (SmtpClient client = new SmtpClient())
                     {
                         client.EnableSsl = false;
@@ -80,6 +80,8 @@ namespace FoodTruck.Controllers
                         message.To.Add(emailClient);
                         message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
                         message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
+                            $"\nVous pourrez venir la chercher le {laCommande.DateRetrait.ToString("dddd dd MMMM")}" +
+                            $" à partir de {laCommande.DateRetrait.ToString("HH:mm").Replace(":", "h")}"+
                                        $"\nMerci de votre confiance\n\n" +
                                        "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
                         using (SmtpClient client = new SmtpClient())

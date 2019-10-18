@@ -5,7 +5,7 @@
     ViewBag.Title = "FoodTruckLyon - Commande";
 }
 
-@if (Model.ModeLivraison=="") //DETTE TECHNIQUE -> une commande peut potentiellement avoir un prix à 0 avec remise et cie => mettre Model.DateCommande==0 ??
+@if (Model.PrixTotal==0) //DETTE TECHNIQUE -> une commande peut potentiellement avoir un prix à 0 avec remise et cie => mettre Model.DateCommande==0 ??
 {
     <h4>Vous ne pouvez pas commander si votre panier est vide.</h4>
     <h4>Venez le remplir en <a href="/Article">découvrant notre carte.</a></h4>
@@ -20,7 +20,6 @@
             <p class="messageInfo">Vous n'avez pas utilisé de compte client. Merci de bien noter votre numéro de commande</p>
         }
         <p>Votre commande a été passée le @Model.DateCommande.ToString(new System.Globalization.CultureInfo("fr-FR")).</p>
-        <p>Date de la livraison&nbsp;: le @Model.DateLivraison.ToString("dd/MM/yyyy HH:mm").</p>
-        <p>Mode de livraison&nbsp;: @Model.ModeLivraison</p>
+        <p>Date du retrait&nbsp;: le @Model.DateRetrait.ToString("dd/MM/yyyy HH:mm").</p>
     </td>
 }

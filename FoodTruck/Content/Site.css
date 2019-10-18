@@ -273,7 +273,10 @@ section.notreCarte {
     width: 75%;
 }
 
-
+.ChoixHoraire {
+    margin-bottom: 10px;
+    width: 75%;
+}
 .ccform-addon {
     color: #95BE27;
     float: left;

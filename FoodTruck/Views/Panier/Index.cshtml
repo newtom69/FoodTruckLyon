@@ -39,26 +39,6 @@
     </div>
     <hr />
 </aside>
-
-@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-
-
-    <div class="ccfield-prepend">
-        <select class="ccformfield" name="familleId" size="1" required>
-            <option selected disabled>Choix du créneau horaire</option>
-            @i = 0;
-            @foreach (DateTime date in Model.DatesRetraitPossibles)
-            {
-                <option value="@date.ToString()">@date.ToString()</option>
-            }
-
-
-        </select>
-    </div>
-
-}
-
 @if (Model.ArticlesDetailsViewModel.Count == 0)
 {
     <h4>Votre panier est vide. Venez <a href="/Article">découvrir notre carte.</a></h4>
@@ -66,12 +46,49 @@
 else
 {
     <h3 class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
-    <h3 class="total">
-        @using (Html.BeginForm("Index", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "validerPanier" }))
-        {
+    <h2>Votre retrait :</h2>
+    using (Html.BeginForm("Index", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    {
+        <div class="choixHoraire">
+            <select class="ccformfield" name="dateRetrait" size="1" required>
+                <option selected disabled>créneau horaire de retrait</option>
+                @{
+                    string groupeRepas1 = "";
+                    string groupeRepas2 = "";
+                    const int heureMinPourDiner = 16;
+                }
+                @foreach (DateTime date in Model.DatesRetraitPossibles)
+                {
+                    if (groupeRepas1 == "" && date.Hour < heureMinPourDiner)
+                    {
+                        groupeRepas1 = "Déjeuner";
+                        <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
+                    }
+                    else if (groupeRepas1 == "" && date.Hour >= heureMinPourDiner)
+                    {
+                        groupeRepas1 = "Diner";
+                        <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
+                    }
+                    else if (groupeRepas2 == "" && date.Hour < heureMinPourDiner && groupeRepas1 == "Diner")
+                    {
+                        groupeRepas2 = "Déjeuner";
+                        <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>
+
+                    }
+                    else if (groupeRepas2 == "" && date.Hour >= heureMinPourDiner && groupeRepas1 == "Déjeuner")
+                    {
+                        groupeRepas2 = "Diner";
+                        <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>
+
+                    }
+                    <option value="@date">@date.ToString("HH:mm").Replace(":", "h")</option>
+                }
+            </select>
+        </div>
+        <h3 class="total">
             <button class="validerPanier" type="submit">Commander</button>
-        }
-    </h3>
+        </h3>
+    }
     if (utilisateur == null || utilisateur.Id == 0)
     {
         <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais la commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>

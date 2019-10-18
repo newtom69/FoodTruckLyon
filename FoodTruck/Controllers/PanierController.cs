@@ -131,8 +131,8 @@ namespace FoodTruck.Controllers
 
         private List<DateTime> ObtenirDatesPossiblesLivraison()
         {
-            const int heurePremierCreneauxDejeuner = 11; //TODO conf
-            const int minutePremierCreneauxDejeuner = 45;
+            const int heurePremierCreneauxDejeuner = 12; //TODO conf
+            const int minutePremierCreneauxDejeuner = 00;
             const int heureDernierCreneauxDejeuner = 14; //TODO conf
             const int minuteDernierCreneauxDejeuner = 00;
             const int heurePremierCreneauxDiner = 19; //TODO conf
@@ -150,7 +150,7 @@ namespace FoodTruck.Controllers
             DateTime maintenantTest19h = new DateTime(jAnnee, jMois, jJour, 19, 0, 0);
             DateTime maintenantTest15h = new DateTime(jAnnee, jMois, jJour, 15, 0, 0);
 
-            maintenant = maintenantTest8h; //TODO TEST !
+            //maintenant = maintenantTest15h; //TODO TEST !
             int jMoins1Annee = maintenant.AddDays(-1).Year;
             int jMoins1Mois = maintenant.AddDays(-1).Month;
             int jMoins1Jour = maintenant.AddDays(-1).Day;
