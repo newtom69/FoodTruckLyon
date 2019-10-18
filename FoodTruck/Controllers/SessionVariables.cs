@@ -161,7 +161,9 @@ namespace FoodTruck.Controllers
             string controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
             string getOrPost = HttpContext.Current.Request.HttpMethod;
             if (controller != "Compte" && getOrPost == "GET")
-                HttpContext.Current.Session["UrlNonCompte"] = HttpContext.Current.Request.Url.ToString();
+                HttpContext.Current.Session["Url"] = HttpContext.Current.Request.Url.ToString();
+            if (HttpContext.Current.Session["Url"] == null)
+                HttpContext.Current.Session["Url"] = "~/";
         }
     }
 

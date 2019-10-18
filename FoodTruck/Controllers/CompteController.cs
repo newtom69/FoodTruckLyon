@@ -8,12 +8,12 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class CompteController : Controller
+    public class CompteController : ControllerParent
     {
         [HttpGet]
         public ActionResult Index()
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             if (session.Utilisateur.Id == 0)
             {
                 return RedirectToAction("Connexion", "Compte");
@@ -27,14 +27,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             return View(session.Utilisateur);
         }
 
         [HttpGet]
         public ActionResult Connexion()
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             if (session.Utilisateur.Id == 0)
                 return View();
             else
@@ -44,7 +44,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             lUtilisateurDAL = new UtilisateurDAL();
@@ -78,14 +78,14 @@ namespace FoodTruck.Controllers
                 }
                 else
                 {
-                    return Redirect(Session["UrlNonCompte"].ToString());
+                    return Redirect(Session["Url"].ToString());
                 }
             }
             else
             {
                 Session["Utilisateur"] = null;
                 ViewBag.MauvaisEmailMdp = true;
-                VisiteDAL.Enregistrer(0);
+                //VisiteDAL.Enregistrer(0);
                 return View();
             }
         }
@@ -93,14 +93,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult RestaurerPanier()
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             return View(session.Utilisateur);
         }
 
         [HttpPost]
         public ActionResult RestaurerPanier(string reponse)
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             if (reponse == "Oui")
             {
                 //recupération du panier en base et agrégation avec celui de la session
@@ -114,33 +114,38 @@ namespace FoodTruck.Controllers
                 panierDAL.Supprimer();
                 session.AgregerPanierEnBase();
             }
-            VisiteDAL.Enregistrer(session.Utilisateur.Id);
-            return Redirect(Session["UrlNonCompte"].ToString());
+            //VisiteDAL.Enregistrer(session.Utilisateur.Id);
+            return Redirect(Session["Url"].ToString());
         }
 
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            HttpCookie newCookie = new HttpCookie("GuidClient")
+            //SessionVariables session = new SessionVariables();
+            if (session.Utilisateur.Id != 0)
             {
-                Expires = DateTime.Now.AddDays(-30)
-            };
-            Response.Cookies.Add(newCookie);
-            new SessionVariables(0);
-            return Redirect(Session["UrlNonCompte"].ToString());
+                HttpCookie newCookie = new HttpCookie("GuidClient")
+                {
+                    Expires = DateTime.Now.AddDays(-30)
+                };
+                Response.Cookies.Add(newCookie);
+                new SessionVariables(0);
+            }
+            return Redirect(Session["Url"].ToString());
+
         }
 
         [HttpGet]
         public ActionResult Creation()
         {
-            new SessionVariables();
+            //new SessionVariables();
             return View();
         }
 
         [HttpPost]
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
             if (session.Utilisateur.Id == 0)

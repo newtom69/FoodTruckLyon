@@ -8,12 +8,12 @@ using FoodTruck.ViewModels;
 
 namespace FoodTruck.Controllers
 {
-    public class CommandeController : Controller
+    public class CommandeController : ControllerParent
     {
         [HttpPost]
         public ActionResult Index()
         {
-            SessionVariables session = new SessionVariables();
+            //SessionVariables session = new SessionVariables();
             if (session.PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
@@ -40,7 +40,7 @@ namespace FoodTruck.Controllers
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
                 panierDAL.Supprimer();
                 Session["Panier"] = null;
-                VisiteDAL.Enregistrer(session.Utilisateur.Id);
+                //VisiteDAL.Enregistrer(session.Utilisateur.Id);
                 return View(commande);
             }
         }
