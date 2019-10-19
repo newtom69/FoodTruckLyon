@@ -2,6 +2,7 @@
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -28,6 +29,20 @@ namespace FoodTruck.Controllers
         {
             return View(session.Utilisateur);
         }
+
+        [HttpGet]
+        public ActionResult Commandes()
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(session.Utilisateur.Id);
+            AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
+            return View(administrationViewModel);
+        }
+
+
+
+
+
 
         [HttpGet]
         public ActionResult Connexion()

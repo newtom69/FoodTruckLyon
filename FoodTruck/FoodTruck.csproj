@@ -195,7 +195,7 @@
     <Compile Include="ViewModels\AdministrationViewModel.cs" />
     <Compile Include="ViewModels\CommandeViewModel.cs" />
     <Compile Include="ViewModels\ArticleIndexViewModel.cs" />
-    <Compile Include="ViewModels\ArticleDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\PanierViewModel.cs" />
   </ItemGroup>
@@ -319,7 +319,9 @@
     <Content Include="Views\Compte\Deconnexion.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
     <Content Include="Views\Compte\RestaurerPanier.cshtml" />
-    <Content Include="Views\Administration\Index.cshtml" />
+    <Content Include="Views\Administration\CommandesEnCours.cshtml" />
+    <Content Include="Views\Administration\Commandes.cshtml" />
+    <Content Include="Views\Compte\Commandes.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

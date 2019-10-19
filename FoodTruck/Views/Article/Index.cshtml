@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
-@using System.Configuration;
+@using System.Configuration
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model ArticleIndexViewModel
 @{
@@ -21,7 +21,6 @@
     <hr />
     <h2 class="familleNotreCarte">Entrées :</h2>
 }
-@using FoodTruck.Extensions
 <section class="notreCarte">
     @foreach (var article in Model.ArticlesEntree)
     {

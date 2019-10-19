@@ -1,0 +1,69 @@
+﻿@using FoodTruck.ViewModels
+@using System.Configuration
+@using System.Globalization
+@{
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    ViewBag.Title = "Commandes en cours";
+}
+@model AdministrationViewModel
+
+
+<h2>Administration</h2>
+@if (Model != null)
+{
+    <h3>Commandes à traiter</h3>
+    <aside id="panierValide">
+        <div class="choixHoraire">
+            <hr />
+            @foreach (var c in Model.Commandes)
+            {
+                <div class="gestionCommandeArticle">
+                    @{
+                        string titreCommande = "";
+                        if (c.Commande.DateRetrait > DateTime.Now.AddMinutes(30))
+                        {
+                            titreCommande = "titreCommandeBlack";
+                        }
+                        else if (c.Commande.DateRetrait.AddMinutes(15) < DateTime.Now)
+                        {
+                            titreCommande = "titreCommandeRed";
+                        }
+                        else
+                        {
+                            titreCommande = "titreCommandeGreen";
+                        }
+                    }
+                    <h4 class="@titreCommande">Commande n° : @c.Commande.Id pour @c.Commande.DateRetrait.ToString("HH:mm").Replace(":", "h")</h4>
+                    <div>Client : @c.Utilisateur.Prenom @c.Utilisateur.Nom</div>
+                    <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="imagesGestionCommande">
+                        @foreach (var a in c.ListArticlesVM)
+                        {
+                            <div>
+                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                <p>@a.Quantite x @a.Article.Nom</p>
+                            </div>
+                        }
+                    </div>
+
+                    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input name="id" type="hidden" value="@c.Commande.Id">
+                        <div>
+                            <input name="statut" type="radio" value="retire" checked>
+                            Marquer la commande Retirée
+                        </div>
+                        <div>
+                            <input name="statut" type="radio" value="annule">
+                            Marquer la commande Annulée
+                        </div>
+                        <div class="ccfield-prepend">
+                            <input class="ccbtn" type="submit" value="Mettre à jour commande @c.Commande.Id">
+                        </div>
+                    }
+                    <hr />
+                </div>
+            }
+        </div>
+    </aside>
+}

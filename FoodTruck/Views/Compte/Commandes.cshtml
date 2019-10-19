@@ -1,0 +1,55 @@
+﻿@using FoodTruck.ViewModels
+@using System.Configuration
+@using System.Globalization
+@using FoodTruck.Extensions
+@{
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    ViewBag.Title = "Vos commandes";
+}
+@model AdministrationViewModel
+
+
+<h2>Votre Compte</h2>
+@if (Model != null)
+{
+    <h3>Vos commandes</h3>
+    <aside id="panierValide">
+        <div class="choixHoraire">
+            <hr />
+            @foreach (var c in Model.Commandes)
+            {
+        <div class="gestionCommandeArticle">
+            <h4>Commande n° : @c.Commande.Id</h4>
+            @{
+                string preDate = "";
+                if(@c.Commande.Annulation)
+                {
+                    preDate = "Commande annulée. Le retrait été prévu le : ";
+                }
+                else if (c.Commande.Retrait)
+                {
+                    preDate = "Retirée le :";
+                }
+                else
+                {
+                    preDate = "A retirer le :";
+                }
+            }
+            <div>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+            <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+            <div class="imagesGestionCommande">
+                @foreach (var a in c.ListArticlesVM)
+                {
+                    <div>
+                        <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                        <p>@a.Quantite x @a.Article.Nom</p>
+                    </div>
+                }
+            </div>
+
+            <hr />
+        </div>
+            }
+        </div>
+    </aside>
+}

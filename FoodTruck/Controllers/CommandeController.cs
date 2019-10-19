@@ -26,7 +26,7 @@ namespace FoodTruck.Controllers
                     DateRetrait = dateRetrait,
                     PrixTotal = 0
                 };
-                foreach (ArticleDetailsViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
+                foreach (ArticleViewModel article in session.PanierViewModel.ArticlesDetailsViewModel)
                 {
                     commande.PrixTotal += article.Article.Prix * article.Quantite;
                     ArticleDAL larticleDAL = new ArticleDAL();
@@ -45,7 +45,7 @@ namespace FoodTruck.Controllers
         private void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
         {
             string lesArticlesDansLeMail = "";
-            foreach (ArticleDetailsViewModel article in panier.ArticlesDetailsViewModel)
+            foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
                                          (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 

@@ -3,6 +3,7 @@ using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -12,7 +13,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            session.PanierViewModel.DatesRetraitPossibles = ObtenirDatesPossiblesLivraison();
+            session.PanierViewModel.DatesRetraitPossibles = ObtenirDatesRetraitPossibles();
             TempData["PanierLatteralDesactive"] = true;
             return View(session.PanierViewModel);
         }
@@ -36,10 +37,10 @@ namespace FoodTruck.Controllers
             {
                 PanierDAL lePanierDAL;
                 PanierProspectDAL lePanierProspectDAL;
-                ArticleDetailsViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
+                ArticleViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
                 if (artcl == null)
                 {
-                    ArticleDetailsViewModel article = new ArticleDetailsViewModel(lArticle);
+                    ArticleViewModel article = new ArticleViewModel(lArticle);
                     session.PanierViewModel.ArticlesDetailsViewModel.Add(article);
                     if (sauvPanierClient)
                     {
@@ -129,16 +130,37 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private List<DateTime> ObtenirDatesPossiblesLivraison()
+        private List<DateTime> ObtenirDatesRetraitPossibles()
         {
-            const int heurePremierCreneauxDejeuner = 12; //TODO conf
-            const int minutePremierCreneauxDejeuner = 00;
-            const int heureDernierCreneauxDejeuner = 14; //TODO conf
-            const int minuteDernierCreneauxDejeuner = 00;
-            const int heurePremierCreneauxDiner = 19; //TODO conf
-            const int minutePremierCreneauxDiner = 00;
-            const int heureDernierCreneauxDiner = 22; //TODO conf
-            const int minuteDernierCreneauxDiner = 00;
+            int heurePremierCreneauxDejeuner = 0, minutePremierCreneauxDejeuner = 0;
+            int heureDernierCreneauxDejeuner = 0, minuteDernierCreneauxDejeuner = 0;
+            int heurePremierCreneauxDiner = 0, minutePremierCreneauxDiner = 0;
+            int heureDernierCreneauxDiner = 0, minuteDernierCreneauxDiner = 0;
+            string[] premierCreneauDejeuner = ConfigurationManager.AppSettings["PremierCreneauDejeuner"].Split(':');
+            string[] dernierCreneauDejeuner = ConfigurationManager.AppSettings["DernierCreneauDejeuner"].Split(':');
+            string[] premierCreneauDiner = ConfigurationManager.AppSettings["PremierCreneauDiner"].Split(':');
+            string[] dernierCreneauDiner = ConfigurationManager.AppSettings["DernierCreneauDiner"].Split(':');
+            if (!ObtenirHeureMinute(premierCreneauDejeuner, ref heurePremierCreneauxDejeuner, ref minutePremierCreneauxDejeuner))
+            {
+                heurePremierCreneauxDejeuner = 12;
+                minutePremierCreneauxDejeuner = 0;
+            }
+            if (!ObtenirHeureMinute(dernierCreneauDejeuner, ref heureDernierCreneauxDejeuner, ref minuteDernierCreneauxDejeuner))
+            {
+                heureDernierCreneauxDejeuner = 14;
+                minuteDernierCreneauxDejeuner = 0;
+            }
+            if (!ObtenirHeureMinute(premierCreneauDiner, ref heurePremierCreneauxDiner, ref minutePremierCreneauxDiner))
+            {
+                heurePremierCreneauxDiner = 19;
+                minutePremierCreneauxDiner = 0;
+            }
+            if (!ObtenirHeureMinute(dernierCreneauDiner, ref heureDernierCreneauxDiner, ref minuteDernierCreneauxDiner))
+            {
+                heureDernierCreneauxDiner = 22;
+                minuteDernierCreneauxDiner = 0;
+            }
+
             DateTime maintenant = DateTime.Now;
             int jAnnee = maintenant.Year;
             int jMois = maintenant.Month;
@@ -147,18 +169,10 @@ namespace FoodTruck.Controllers
             DateTime maintenantTest8h = new DateTime(jAnnee, jMois, jJour, 8, 0, 0);
             DateTime maintenantTest23h = new DateTime(jAnnee, jMois, jJour, 23, 0, 0);
             DateTime maintenantTest21h = new DateTime(jAnnee, jMois, jJour, 21, 0, 0);
-            DateTime maintenantTest19h = new DateTime(jAnnee, jMois, jJour, 19, 0, 0);
+            DateTime maintenantTest19h = new DateTime(jAnnee, jMois, jJour, 19, 2, 0);
             DateTime maintenantTest15h = new DateTime(jAnnee, jMois, jJour, 15, 0, 0);
 
-            //maintenant = maintenantTest15h; //TODO TEST !
-            int jMoins1Annee = maintenant.AddDays(-1).Year;
-            int jMoins1Mois = maintenant.AddDays(-1).Month;
-            int jMoins1Jour = maintenant.AddDays(-1).Day;
-
-            DateTime maxCommandePourDejeuner = new DateTime(jAnnee, jMois, jJour, 13, 45, 00); //TODO conf
-            DateTime minCommandePourDejeuner = new DateTime(jMoins1Annee, jMoins1Mois, jMoins1Jour, 21, 00, 00);
-            DateTime minCommandePourDiner = new DateTime(jAnnee, jMois, jJour, 13, 00, 00);
-            DateTime maxCommandePourDiner = new DateTime(jAnnee, jMois, jJour, 21, 45, 00);
+            //maintenant = maintenantTest19h; //TODO TEST !
 
             DateTime premierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heurePremierCreneauxDejeuner, minutePremierCreneauxDejeuner, 0);
             DateTime dernierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heureDernierCreneauxDejeuner, minuteDernierCreneauxDejeuner, 0);
@@ -169,10 +183,9 @@ namespace FoodTruck.Controllers
                 premierCreneauxDejeuner = premierCreneauxDejeuner.AddDays(1);
                 dernierCreneauxDejeuner = dernierCreneauxDejeuner.AddDays(1);
             }
-            if (premierCreneauxDejeuner < ObtenirCreneauCourant(maintenant))
-            {
+            if (premierCreneauxDejeuner <= ObtenirCreneauCourant(maintenant))
                 premierCreneauxDejeuner = ObtenirCreneauSuivant(maintenant);
-            }
+
             List<DateTime> creneauxDejeuner = ConstruireCreneaux(premierCreneauxDejeuner, dernierCreneauxDejeuner);
 
             DateTime premierCreneauxDiner = new DateTime(jAnnee, jMois, jJour, heurePremierCreneauxDiner, minutePremierCreneauxDiner, 0);
@@ -184,10 +197,9 @@ namespace FoodTruck.Controllers
                 premierCreneauxDiner = premierCreneauxDiner.AddDays(1);
                 dernierCreneauxDiner = dernierCreneauxDiner.AddDays(1);
             }
-            if (premierCreneauxDiner < ObtenirCreneauCourant(maintenant))
-            {
+            if (premierCreneauxDiner <= ObtenirCreneauCourant(maintenant))
                 premierCreneauxDiner = ObtenirCreneauSuivant(maintenant);
-            }
+
             List<DateTime> creneauxDiner = ConstruireCreneaux(premierCreneauxDiner, dernierCreneauxDiner);
 
             if (premierCreneauxDejeuner < premierCreneauxDiner)
@@ -202,6 +214,23 @@ namespace FoodTruck.Controllers
             }
         }
 
+        private bool ObtenirHeureMinute(string[] heureEtMinute, ref int heure, ref int minute)
+        {
+            bool retour = true;
+            if (heureEtMinute.Length == 2)
+            {
+                if (!int.TryParse(heureEtMinute[0], out heure))
+                    retour = false;
+                if (!int.TryParse(heureEtMinute[1], out minute))
+                    retour = false;
+            }
+            else
+            {
+                retour = false;
+            }
+            return retour;
+        }
+
         private List<DateTime> ConstruireCreneaux(DateTime premierCreneau, DateTime dernierCreneau)
         {
             DateTime creneauCourant = premierCreneau;
@@ -213,21 +242,9 @@ namespace FoodTruck.Controllers
             }
             return creneaux;
         }
-
-        private DateTime ObtenirCreneauSuivant(DateTime date)
-        {
-            const int pas = 15; //TODO Conf
-            int annee = date.Year;
-            int mois = date.Month;
-            int jour = date.Day;
-            int heure = date.Hour;
-            int minute = date.Minute;
-            int minuteCreneauCourant = (minute / pas) * pas;
-            return new DateTime(annee, mois, jour, heure, minuteCreneauCourant, 0).AddMinutes(pas);
-        }
         private DateTime ObtenirCreneauCourant(DateTime date)
         {
-            const int pas = 15; //TODO Conf
+            int pas = int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]);
             int annee = date.Year;
             int mois = date.Month;
             int jour = date.Day;
@@ -236,5 +253,11 @@ namespace FoodTruck.Controllers
             int minuteCreneauCourant = (minute / pas) * pas;
             return new DateTime(annee, mois, jour, heure, minuteCreneauCourant, 0);
         }
+        private DateTime ObtenirCreneauSuivant(DateTime date)
+        {
+            int pas = int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]);
+            return ObtenirCreneauCourant(date).AddMinutes(pas);
+        }
+
     }
 }

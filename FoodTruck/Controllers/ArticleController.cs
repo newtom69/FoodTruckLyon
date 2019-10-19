@@ -41,7 +41,7 @@ namespace FoodTruck.Controllers
                 TempData["ArticleDansCarte"] = true;
                 TempData["ArticleOk"] = true;
             }
-            return View(new ArticleDetailsViewModel(articleCourant));
+            return View(new ArticleViewModel(articleCourant));
         }
     }
 }

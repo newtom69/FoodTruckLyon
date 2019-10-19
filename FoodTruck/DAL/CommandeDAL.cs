@@ -9,7 +9,7 @@ namespace FoodTruck.DAL
 {
     class CommandeDAL
     {
-        public void Ajouter(Commande laCommande, List<ArticleDetailsViewModel> articles)
+        public void Ajouter(Commande laCommande, List<ArticleViewModel> articles)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -38,34 +38,77 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Commande> ListerEnCours()
+        internal void MettreAJourStatut(int id, bool retire, bool annule)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                Commande commande = (from cmd in db.Commande
+                                     where cmd.Id == id
+                                     select cmd).FirstOrDefault();
+                if (commande != null)
+                {
+                    commande.Annulation = annule;
+                    commande.Retrait = retire;
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public List<Commande> ListerCommandesEnCours()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
+                const int intervalleMax = 4;
+                var commandes = (from cmd in db.Commande
+                                 where cmd.Retrait == false && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < intervalleMax
+                                 orderby cmd.DateRetrait
+                                 select cmd).ToList();
+                return commandes;
+            }
+        }
+
+        internal List<Commande> ListerCommandesUtilisateur(int id)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where cmd.Retrait == false && DbFunctions.DiffMinutes(now, cmd.DateRetrait) > 0
+                                            where cmd.UtilisateurId == id
+                                            orderby cmd.Retrait descending, cmd.DateRetrait descending
+                                            select cmd).ToList();
+                return commandes;
+            }
+        }
+
+        internal List<Commande> ListerCommandesToutes()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Commande> commandes = (from cmd in db.Commande
                                             orderby cmd.DateRetrait
                                             select cmd).ToList();
                 return commandes;
             }
         }
 
-        public List<Article> ListerArticles(int commandeId)
+        public List<ArticleViewModel> ListerArticles(int commandeId)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                List<Article> listArticles = (from cmd in db.Commande
-                                              join ca in db.Commande_Article on cmd.Id equals ca.CommandeId
-                                              join art in db.Article on ca.ArticleId equals art.Id
-                                              where cmd.Id == commandeId
-                                              orderby art.FamilleId, art.Nom
-                                              select art).ToList();
+                var listArticlesQuantites = (from cmd in db.Commande
+                                             join ca in db.Commande_Article on cmd.Id equals ca.CommandeId
+                                             join article in db.Article on ca.ArticleId equals article.Id
+                                             where cmd.Id == commandeId
+                                             orderby article.FamilleId, article.Nom
+                                             select new { article, ca.Quantite }).ToList();
+
+                List<ArticleViewModel> listArticles = new List<ArticleViewModel>();
+                foreach (var articleQuantite in listArticlesQuantites)
+                {
+                    listArticles.Add(new ArticleViewModel(articleQuantite.article, articleQuantite.Quantite));
+                }
                 return listArticles;
             }
         }
-
-
-
     }
 }

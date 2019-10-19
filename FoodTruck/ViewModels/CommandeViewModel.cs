@@ -11,7 +11,7 @@ namespace FoodTruck.ViewModels
     {
         public Commande Commande { get; set; }
         public Utilisateur Utilisateur { get; set; }
-        public List<Article> ListArticles { get; set; }
+        public List<ArticleViewModel> ListArticlesVM { get; set; }
 
         public CommandeViewModel(Commande commande, Utilisateur utilisateur)
         {

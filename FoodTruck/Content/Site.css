@@ -187,10 +187,36 @@ section.notreCarte {
         margin-top: 15px;
     }
 
-.adminArticle {
-    max-width: 700px;
-    margin: 0 auto;
+.imagesGestionCommande {
+    display: flex;
 }
+
+.gestionCommandeArticle img {
+    margin-top: 5px;
+    margin: 3px;
+    padding: 0px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    height:150px;
+    min-height:150px;
+    max-height:150px;
+}
+
+.gestionCommandeArticle .titreCommandeBlack {
+    color: black;
+}
+.gestionCommandeArticle .titreCommandeRed {
+    color: red;
+}
+.gestionCommandeArticle .titreCommandeGreen {
+    color: green;
+}
+
+    .adminArticle {
+        max-width: 700px;
+        margin: 0 auto;
+    }
 
     .adminArticle > div {
         display: flex;

@@ -9,11 +9,11 @@ namespace FoodTruck.ViewModels
 {
     public class AdministrationViewModel
     {
-        public List<CommandeViewModel> CommandesEnCours { get; internal set; }
+        public List<CommandeViewModel> Commandes { get; private set; }
 
         public AdministrationViewModel(List<Commande> commandes)
         {
-            CommandesEnCours = new List<CommandeViewModel>();
+            Commandes = new List<CommandeViewModel>();
             foreach (Commande commande in commandes)
             {
                 Utilisateur utilisateur = new UtilisateurDAL().Details(commande.UtilisateurId);
@@ -21,14 +21,10 @@ namespace FoodTruck.ViewModels
                 {
                     Commande = commande,
                     Utilisateur = utilisateur,
-                    ListArticles = new CommandeDAL().ListerArticles(commande.Id),
+                    ListArticlesVM = new CommandeDAL().ListerArticles(commande.Id),
                 };
-
-
-                CommandesEnCours.Add(commandeVM);
+                Commandes.Add(commandeVM);
             }
         }
-
-
     }
 }

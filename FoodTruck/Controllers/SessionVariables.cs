@@ -104,7 +104,7 @@ namespace FoodTruck.Controllers
             if (Utilisateur != null && Utilisateur.Id != 0)
             {
                 PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
-                foreach (ArticleDetailsViewModel lArticle in PanierViewModel.ArticlesDetailsViewModel)
+                foreach (ArticleViewModel lArticle in PanierViewModel.ArticlesDetailsViewModel)
                 {
                     Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
                     if (panier == null)
@@ -123,9 +123,9 @@ namespace FoodTruck.Controllers
                 foreach (Panier lePanier in lePanierDal.ListerPanierUtilisateur())
                 {
                     PanierViewModel.PrixTotal += lePanier.PrixTotal;
-                    ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                    ArticleViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
                     ArticleDAL articleDAL = new ArticleDAL();
-                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
                     HttpContext.Current.Session["Panier"] = PanierViewModel;
                 }
             }
@@ -136,9 +136,9 @@ namespace FoodTruck.Controllers
                 foreach (PanierProspect lePanier in lePanierProspectDal.ListerPanierProspect())
                 {
                     PanierViewModel.PrixTotal += lePanier.PrixTotal;
-                    ArticleDetailsViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                    ArticleViewModel article = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
                     ArticleDAL articleDAL = new ArticleDAL();
-                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleDetailsViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                    PanierViewModel.ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
                     HttpContext.Current.Session["Panier"] = PanierViewModel;
                 }
             }

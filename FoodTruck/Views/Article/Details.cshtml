@@ -2,7 +2,7 @@
 @using FoodTruck.ViewModels
 @using System.Configuration;
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
-@model ArticleDetailsViewModel
+@model ArticleViewModel
 @{
     bool affichageArticle = Model.Article != null ? true : false;
     bool droitAdminArticle;
