@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FoodTruck.DAL;
+using FoodTruck.Models;
+using FoodTruck.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,11 +14,16 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if ((bool)Session["AdminSuper"] || (bool)Session["AdminUtilisateur"] || (bool)Session["AdminArticle"] || (bool)Session["AdminCommande"])
+            AdministrationViewModel administrationViewModel = null;
+            if (session.AdminSuper || session.AdminCommande)
             {
+                //lister les commandes en cours
+                CommandeDAL commandeDAL = new CommandeDAL();
+                List<Commande> commandes = commandeDAL.ListerEnCours();
+                administrationViewModel = new AdministrationViewModel(commandes);
 
             }
-            return View(session.Utilisateur);
+            return View(administrationViewModel);
         }
     }
 }

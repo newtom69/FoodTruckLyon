@@ -8,6 +8,18 @@ namespace FoodTruck.DAL
 {
     class UtilisateurDAL
     {
+        public Utilisateur Details(int id)
+        {
+            Utilisateur utilisateur;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                utilisateur = (from u in db.Utilisateur
+                            where u.Id == id
+                            select u).FirstOrDefault();
+            }
+            return utilisateur;
+        }
+
         public Utilisateur Connexion(string email, string mdp)
         {
             string mdpHash;

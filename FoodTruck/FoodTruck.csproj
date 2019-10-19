@@ -192,6 +192,8 @@
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AdministrationViewModel.cs" />
+    <Compile Include="ViewModels\CommandeViewModel.cs" />
     <Compile Include="ViewModels\ArticleIndexViewModel.cs" />
     <Compile Include="ViewModels\ArticleDetailsViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />

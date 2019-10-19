@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
@@ -35,5 +37,35 @@ namespace FoodTruck.DAL
                 db.SaveChanges();
             }
         }
+
+        public List<Commande> ListerEnCours()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                DateTime now = DateTime.Now;
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where cmd.Retrait == false && DbFunctions.DiffMinutes(now, cmd.DateRetrait) > 0
+                                            orderby cmd.DateRetrait
+                                            select cmd).ToList();
+                return commandes;
+            }
+        }
+
+        public List<Article> ListerArticles(int commandeId)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Article> listArticles = (from cmd in db.Commande
+                                              join ca in db.Commande_Article on cmd.Id equals ca.CommandeId
+                                              join art in db.Article on ca.ArticleId equals art.Id
+                                              where cmd.Id == commandeId
+                                              orderby art.FamilleId, art.Nom
+                                              select art).ToList();
+                return listArticles;
+            }
+        }
+
+
+
     }
 }

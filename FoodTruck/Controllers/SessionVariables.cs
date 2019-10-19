@@ -13,6 +13,11 @@ namespace FoodTruck.Controllers
         public Utilisateur Utilisateur { get; set; }
         public string ProspectGuid { get; set; }
         public PanierViewModel PanierViewModel { get; set; }
+        public bool AdminSuper { get; set; }
+        public bool AdminArticle { get; set; }
+        public bool AdminCommande { get; set; }
+        public bool AdminUtilisateur { get; set; }
+
 
         public SessionVariables()
         {
@@ -47,10 +52,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                HttpContext.Current.Session["AdminSuper"] = false;
-                HttpContext.Current.Session["AdminArticle"] = false;
-                HttpContext.Current.Session["AdminCommande"] = false;
-                HttpContext.Current.Session["AdminUtilisateur"] = false;
+                RetirerLesDroitsdAcces();
                 if (HttpContext.Current.Session["Prospect"] != null)
                 {
                     ProspectGuid = HttpContext.Current.Session["Prospect"].ToString();
@@ -84,10 +86,7 @@ namespace FoodTruck.Controllers
         }
         public SessionVariables(int pourSurchargeUniquement)
         {
-            HttpContext.Current.Session["AdminSuper"] = false;
-            HttpContext.Current.Session["AdminArticle"] = false;
-            HttpContext.Current.Session["AdminCommande"] = false;
-            HttpContext.Current.Session["AdminUtilisateur"] = false;
+            RetirerLesDroitsdAcces();
             HttpContext.Current.Session["Utilisateur"] = Utilisateur = new Utilisateur();
             HttpContext.Current.Session["Panier"] = PanierViewModel = new PanierViewModel();
             string guid = Guid.NewGuid().ToString();
@@ -148,13 +147,21 @@ namespace FoodTruck.Controllers
         private void DonnerLesDroitsdAcces()
         {
             if (Utilisateur.AdminSuper)
-                HttpContext.Current.Session["AdminSuper"] = true;
+                HttpContext.Current.Session["AdminSuper"] = AdminSuper = true;
             if (Utilisateur.AdminArticle)
-                HttpContext.Current.Session["AdminArticle"] = true;
+                HttpContext.Current.Session["AdminArticle"] = AdminArticle = true;
             if (Utilisateur.AdminCommande)
-                HttpContext.Current.Session["AdminCommande"] = true;
+                HttpContext.Current.Session["AdminCommande"] = AdminCommande = true;
             if (Utilisateur.AdminUtilisateur)
-                HttpContext.Current.Session["AdminUtilisateur"] = true;
+                HttpContext.Current.Session["AdminUtilisateur"] = AdminUtilisateur = true;
+        }
+
+        private void RetirerLesDroitsdAcces()
+        {
+            HttpContext.Current.Session["AdminSuper"] = AdminSuper = false;
+            HttpContext.Current.Session["AdminArticle"] = AdminArticle = false;
+            HttpContext.Current.Session["AdminCommande"] = AdminCommande = false;
+            HttpContext.Current.Session["AdminUtilisateur"] = AdminUtilisateur = false;
         }
         private void MettrelUrlEnSession()
         {

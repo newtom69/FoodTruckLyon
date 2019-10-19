@@ -25,6 +25,7 @@ namespace FoodTruck.Models
         public System.DateTime DateCommande { get; set; }
         public double PrixTotal { get; set; }
         public System.DateTime DateRetrait { get; set; }
+        public bool Retrait { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande_Article> Commande_Article { get; set; }

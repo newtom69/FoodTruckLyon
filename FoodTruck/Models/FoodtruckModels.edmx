@@ -30,6 +30,7 @@
           <Property Name="DateCommande" Type="datetime" Nullable="false" />
           <Property Name="DateRetrait" Type="datetime" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
+          <Property Name="Retrait" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
@@ -270,6 +271,7 @@
           <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
           <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
           <Property Name="DateRetrait" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Retrait" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
@@ -511,6 +513,7 @@
           <EntitySetMapping Name="Commande">
             <EntityTypeMapping TypeName="foodtruckModel.Commande">
               <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="Retrait" ColumnName="Retrait" />
                 <ScalarProperty Name="DateRetrait" ColumnName="DateRetrait" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />

@@ -1,6 +1,4 @@
-﻿@using System.Globalization
-@using FoodTruck.DAL;
-@{
+﻿@{
     ViewBag.Title = "FoodTruckLyon - Modifier un article du catalogue";
     bool droitPage;
     if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
