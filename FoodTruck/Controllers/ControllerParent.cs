@@ -9,11 +9,11 @@ namespace FoodTruck.Controllers
 {
     public class ControllerParent : Controller
     {
-        protected SessionVariables session;
+        protected SessionVariables VariablesSession;
         public ControllerParent()
         {
-            session = new SessionVariables();
-            VisiteDAL.Enregistrer(session.Utilisateur.Id);
+            VariablesSession = new SessionVariables();
+            VisiteDAL.Enregistrer(VariablesSession.Utilisateur.Id);
         }
     }
 }

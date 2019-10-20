@@ -14,7 +14,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (session.Utilisateur.Id == 0)
+            if (VariablesSession.Utilisateur.Id == 0)
             {
                 return RedirectToAction("Connexion", "Compte");
             }
@@ -27,14 +27,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            return View(session.Utilisateur);
+            return View(VariablesSession.Utilisateur);
         }
 
         [HttpGet]
         public ActionResult Commandes()
         {
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(session.Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(VariablesSession.Utilisateur.Id);
             AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
             return View(administrationViewModel);
         }
@@ -44,7 +44,7 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == session.Utilisateur.Id)
+            if (commande != null && commande.UtilisateurId == VariablesSession.Utilisateur.Id)
             {
                 commandeDAL.Annuler(commandeId);
             }
@@ -56,24 +56,24 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == session.Utilisateur.Id)
+            if (commande != null && commande.UtilisateurId == VariablesSession.Utilisateur.Id)
             {
                 List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
-                PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
+                PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                 if (viderPanier)
                 {
                     panierDAL.Supprimer();
-                    session.PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
+                    VariablesSession.PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
                     Session["Panier"] = null;
                 }
                 PanierController panierController = new PanierController();
                 foreach (var a in articles)
                 {
                     panierController.Ajouter(a.Article, a.Quantite);
-                    session.PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                    Session["Panier"] = session.PanierViewModel;
+                    VariablesSession.PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
+                    Session["Panier"] = VariablesSession.PanierViewModel;
                 }
-                session.RecupererPanierEnBase();
+                VariablesSession.RecupererPanierEnBase();
             }
             return RedirectToAction("Commandes", "Compte");
         }
@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Connexion()
         {
-            if (session.Utilisateur.Id == 0)
+            if (VariablesSession.Utilisateur.Id == 0)
                 return View();
             else
                 return RedirectToAction("Profil");
@@ -107,7 +107,7 @@ namespace FoodTruck.Controllers
                     };
                     Response.Cookies.Add(cookie);
                 }
-                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
                 panierProspectDAL.Supprimer();
                 cookie = new HttpCookie("Prospect")
                 {
@@ -137,7 +137,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult RestaurerPanier()
         {
-            return View(session.Utilisateur);
+            return View(VariablesSession.Utilisateur);
         }
 
         [HttpPost]
@@ -146,15 +146,15 @@ namespace FoodTruck.Controllers
             if (reponse == "Oui")
             {
                 //recupération du panier en base et agrégation avec celui de la session
-                session.AgregerPanierEnBase();
-                session.RecupererPanierEnBase();
+                VariablesSession.AgregerPanierEnBase();
+                VariablesSession.RecupererPanierEnBase();
             }
             else
             {
                 //effacement panier en base puis enregistrement de celui de la session
-                PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
+                PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                 panierDAL.Supprimer();
-                session.AgregerPanierEnBase();
+                VariablesSession.AgregerPanierEnBase();
             }
             return Redirect(Session["Url"].ToString());
         }
@@ -162,7 +162,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            if (session.Utilisateur.Id != 0)
+            if (VariablesSession.Utilisateur.Id != 0)
             {
                 HttpCookie newCookie = new HttpCookie("GuidClient")
                 {
@@ -186,7 +186,7 @@ namespace FoodTruck.Controllers
         {
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (session.Utilisateur.Id == 0)
+            if (VariablesSession.Utilisateur.Id == 0)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 if (!VerifMdp(Mdp, Mdp2))
@@ -202,7 +202,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                lUtilisateur = session.Utilisateur;
+                lUtilisateur = VariablesSession.Utilisateur;
             }
             Session["Utilisateur"] = lUtilisateur;
             if (lUtilisateur != null)

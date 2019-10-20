@@ -13,9 +13,9 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            session.PanierViewModel.DatesRetraitPossibles = ObtenirDatesRetraitPossibles();
+            VariablesSession.PanierViewModel.DatesRetraitPossibles = ObtenirDatesRetraitPossibles();
             TempData["PanierLatteralDesactive"] = true;
-            return View(session.PanierViewModel);
+            return View(VariablesSession.PanierViewModel);
         }
 
         [HttpPost]
@@ -30,8 +30,8 @@ namespace FoodTruck.Controllers
             else
             {
                 Ajouter(lArticle);
-                session.PanierViewModel.PrixTotal += lArticle.Prix;
-                Session["Panier"] = session.PanierViewModel;
+                VariablesSession.PanierViewModel.PrixTotal += lArticle.Prix;
+                Session["Panier"] = VariablesSession.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -41,53 +41,53 @@ namespace FoodTruck.Controllers
         {
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
-            if (session.Utilisateur.Id != 0)
+            if (VariablesSession.Utilisateur.Id != 0)
                 sauvPanierClient = true;
             else
                 sauvPanierProspect = true;
 
             ArticleDAL lArticleDAL = new ArticleDAL();
-            if (id >= session.PanierViewModel.ArticlesDetailsViewModel.Count)
+            if (id >= VariablesSession.PanierViewModel.ArticlesDetailsViewModel.Count)
             {
                 return Redirect(Request.UrlReferrer.ToString());
             }
             else
             {
-                Article lArticle = lArticleDAL.Details(session.PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
+                Article lArticle = lArticleDAL.Details(VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
                 PanierDAL lePanierDAL;
                 PanierProspectDAL lePanierProspectDAL;
-                session.PanierViewModel.PrixTotal = Math.Round(session.PanierViewModel.PrixTotal - lArticle.Prix, 2);
+                VariablesSession.PanierViewModel.PrixTotal = Math.Round(VariablesSession.PanierViewModel.PrixTotal - lArticle.Prix, 2);
 
-                if (session.PanierViewModel.ArticlesDetailsViewModel[id].Quantite > 1)
+                if (VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].Quantite > 1)
                 {
-                    session.PanierViewModel.ArticlesDetailsViewModel[id].Quantite--;
-                    session.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal = Math.Round(session.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal - session.PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
+                    VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].Quantite--;
+                    VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal = Math.Round(VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal - VariablesSession.PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                        lePanierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                         lePanierDAL.ModifierQuantite(lArticle, -1);
                     }
                     else if (sauvPanierProspect)
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
                         lePanierProspectDAL.ModifierQuantite(lArticle, -1);
                     }
                 }
                 else
                 {
-                    session.PanierViewModel.ArticlesDetailsViewModel.RemoveAt(id);
+                    VariablesSession.PanierViewModel.ArticlesDetailsViewModel.RemoveAt(id);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                        lePanierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                         lePanierDAL.Supprimer(lArticle);
                     }
                     else if (sauvPanierProspect)
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                        lePanierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
                         lePanierProspectDAL.Supprimer(lArticle);
                     }
                 }
-                Session["Panier"] = session.PanierViewModel;
+                Session["Panier"] = VariablesSession.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -96,25 +96,25 @@ namespace FoodTruck.Controllers
         {
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
-            if (session.Utilisateur.Id != 0)
+            if (VariablesSession.Utilisateur.Id != 0)
                 sauvPanierClient = true;
             else
                 sauvPanierProspect = true;
             PanierDAL lePanierDAL;
             PanierProspectDAL lePanierProspectDAL;
-            ArticleViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
+            ArticleViewModel artcl = VariablesSession.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
             if (artcl == null)
             {
                 ArticleViewModel article = new ArticleViewModel(lArticle);
-                session.PanierViewModel.ArticlesDetailsViewModel.Add(article);
+                VariablesSession.PanierViewModel.ArticlesDetailsViewModel.Add(article);
                 if (sauvPanierClient)
                 {
-                    lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                    lePanierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                     lePanierDAL.Ajouter(lArticle, quantite);
                 }
                 else if (sauvPanierProspect)
                 {
-                    lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                    lePanierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
                     lePanierProspectDAL.Ajouter(lArticle, quantite);
                 }
             }
@@ -124,12 +124,12 @@ namespace FoodTruck.Controllers
                 artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
                 if (sauvPanierClient)
                 {
-                    lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                    lePanierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                     lePanierDAL.ModifierQuantite(lArticle, quantite);
                 }
                 else if (sauvPanierProspect)
                 {
-                    lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                    lePanierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
                     lePanierProspectDAL.ModifierQuantite(lArticle, quantite);
                 }
             }
