@@ -34,7 +34,7 @@
                             </div>
                         }
                     </div>
-                    @using (Html.BeginForm("CommandesAMarquer", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <input name="id" type="hidden" value="@c.Commande.Id">
                         <div>
