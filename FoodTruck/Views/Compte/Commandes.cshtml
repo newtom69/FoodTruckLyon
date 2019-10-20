@@ -20,6 +20,7 @@
             {
                 string classDate = "class=commandeAnnulee";
                 string preDate = "";
+                bool enCours = true;
                 if (@c.Commande.Annulation)
                 {
                     preDate = "Commande annulée. Le retrait été prévu le ";
@@ -34,6 +35,7 @@
                 {
                     preDate = "A retirer le ";
                     classDate = "class=commandeARetirer";
+                    enCours = false;
                 }
                 <div class="gestionCommandeArticle">
                     <h4>Commande n° : @c.Commande.Id</h4>
