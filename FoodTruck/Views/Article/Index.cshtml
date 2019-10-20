@@ -39,9 +39,11 @@
         @foreach (ArticleViewModel a in articles)
         {
             string effet = "";
+            bool dansCarte = true;
             if (!a.Article.DansCarte)
             {
                 effet = "class=pasDansCarte";
+                dansCarte = false;
             }
             <div class="indexArticle">
                 <a @effet href="/Article/@a.NomPourUrl">
@@ -54,10 +56,13 @@
                     </a>
                 </div>
                 <div id="ajoutPanier">
-                    @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                    @if (dansCarte)
                     {
-                        <input name="nom" value="@a.Article.Nom" hidden>
-                        <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                        using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                        {
+                            <input name="nom" value="@a.Article.Nom" hidden>
+                            <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                        }
                     }
                     @if (droitAdminArticle)
                     {
