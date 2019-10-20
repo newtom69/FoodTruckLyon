@@ -15,9 +15,6 @@
     {
         droitAdminArticle = false;
     }
-}
-
-@{
     var familles = new ArticleDAL().FamillesArticle();
     int familleId = familles[0].Id;
     int indexId = familles.FindIndex(f => f.Id == familleId);
@@ -39,29 +36,34 @@
         indexId = familles.FindIndex(f => f.Id == familleId);
     }
     <section class="notreCarte">
-        @foreach (ArticleViewModel article in articles)
+        @foreach (ArticleViewModel a in articles)
         {
+            string effet = "";
+            if (!a.Article.DansCarte)
+            {
+                effet = "class=pasDansCarte";
+            }
             <div class="indexArticle">
-                <a href="/Article/@article.NomPourUrl">
-                    <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
+                <a @effet href="/Article/@a.NomPourUrl">
+                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
                 </a>
                 <div class="articleDescription">
-                    <a href="/Article/@article.NomPourUrl">
-                        <p>@article.Article.Nom</p>
-                        <p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                    <a href="/Article/@a.NomPourUrl">
+                        <p>@a.Article.Nom</p>
+                        <p>@a.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
                     </a>
                 </div>
                 <div id="ajoutPanier">
                     @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
                     {
-                        <input name="nom" value="@article.Article.Nom" hidden>
+                        <input name="nom" value="@a.Article.Nom" hidden>
                         <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                     }
                     @if (droitAdminArticle)
                     {
                         using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                         {
-                            <input type="hidden" name="id" value="@article.Article.Id">
+                            <input type="hidden" name="id" value="@a.Article.Id">
                             <button class="adminArticle" type="submit">Modifier</button>
                         }
                     }

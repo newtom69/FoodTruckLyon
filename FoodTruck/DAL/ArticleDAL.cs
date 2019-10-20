@@ -107,6 +107,14 @@ namespace FoodTruck.DAL
                 return articles;
             }
         }
+        public List<Article> ListerTousArticles(string nomFamille, int nombreMax = 200)
+        {
+            var articles = ListerArticles(nomFamille, true, nombreMax);
+            var articlesPasDansCarte = ListerArticles(nomFamille, false, nombreMax);
+            articles.AddRange(articlesPasDansCarte);
+            articles = articles.OrderBy(a => a.Nom).ToList();
+            return articles;
+        }
         public List<Article> ListerArticles(bool dansCarte, int nombreMax = 200)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -120,6 +128,14 @@ namespace FoodTruck.DAL
                                           .ToList();
                 return articles;
             }
+        }
+        public List<Article> ListerTousArticles(int nombreMax = 200)
+        {
+            var articles = ListerArticles(true, nombreMax);
+            var articlesPasDansCarte = ListerArticles(false, nombreMax);
+            articles.AddRange(articlesPasDansCarte);
+            articles = articles.OrderBy(a => a.FamilleId).ThenBy(a => a.Nom).ToList();
+            return articles;
         }
 
         internal bool NomExiste(string nom, int id = 0)
