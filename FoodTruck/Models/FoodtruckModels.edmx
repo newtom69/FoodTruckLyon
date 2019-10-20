@@ -48,7 +48,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nom" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="Nom" Type="char" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Panier">
           <Key>
@@ -292,7 +292,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
         </EntityType>
         <EntityType Name="Panier">
