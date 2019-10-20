@@ -32,7 +32,7 @@ namespace FoodTruck.Controllers
             string allergenesOk = allergenes ?? "";
             int familleIdOk = familleId;
             bool dansCarteOk = dansCarte;
-            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
+            if(session.AdminSuper || session.AdminArticle)
             {
                 Article lArticle = new Article
                 {
@@ -72,7 +72,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Modifier()
         {
-            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
+            if (session.AdminSuper || session.AdminArticle)
                 return View(new ArticleDAL().ListerTout());
             else
                 return View();
@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Modifier(int id)
         {
-            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
+            if (session.AdminSuper || session.AdminArticle)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
                 ViewBag.ArticleAModifier = articleDAL.Details(id);
@@ -94,7 +94,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            if ((bool)Session["AdminSuper"] || (bool)Session["AdminArticle"])
+            if (session.AdminSuper || session.AdminArticle)
             {
                 string nomOk = nom.NomAdmis();
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
