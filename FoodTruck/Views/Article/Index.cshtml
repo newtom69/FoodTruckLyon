@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using FoodTruck.DAL
 @using FoodTruck.ViewModels
 @using System.Configuration
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
@@ -16,180 +17,56 @@
     }
 }
 
-@if (Model.ArticlesEntree.Count != 0)
+@{
+    var familles = new ArticleDAL().FamillesArticle();
+    int familleId = familles[0].Id;
+    int indexId = familles.FindIndex(f => f.Id == familleId);
+    int i = 0;
+}
+@while (i < Model.Articles.Count)
 {
     <hr />
-    <h2 class="familleNotreCarte">Entrées :</h2>
-}
-<section class="notreCarte">
-    @foreach (var article in Model.ArticlesEntree)
+    <h2 class="familleNotreCarte">@familles[indexId].Nom</h2>
+    List<ArticleViewModel> articles = new List<ArticleViewModel>();
+    while (i < Model.Articles.Count && Model.Articles[i].Article.FamilleId == familleId)
     {
-        <div class="indexArticle">
-            <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
-            </a>
-            <div class="articleDescription">
-                <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
-                </a>
-            </div>
-            <div id="ajoutPanier">
-                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                {
-                    <input name="nom" value="@article.Article.Nom" hidden>
-                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-                }
-                @if (droitAdminArticle)
-                {
-                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
-                    {
-                        <input type="hidden" name="id" value="@article.Article.Id">
-                        <button class="adminArticle" type="submit">Modifier</button>
-                    }
-                }
-            </div>
-        </div>
+        articles.Add(Model.Articles[i]);
+        i++;
     }
-</section>
-@if (Model.ArticlesPlat.Count != 0)
-{
-    <hr />
-    <h2 class="familleNotreCarte">Plats :</h2>
-}
-<section class="notreCarte">
-    @foreach (var article in Model.ArticlesPlat)
+    if (i != Model.Articles.Count)
     {
-        <div class="indexArticle">
-            <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
-            </a>
-            <div class="articleDescription">
-                <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
-                </a>
-            </div>
-            <div id="ajoutPanier">
-                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                {
-                    <input name="nom" value="@article.Article.Nom" hidden>
-                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-                }
-                @if (droitAdminArticle)
-                {
-                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
-                    {
-                        <input type="hidden" name="id" value="@article.Article.Id">
-                        <button class="adminArticle" type="submit">Modifier</button>
-                    }
-                }
-            </div>
-        </div>
+        familleId = Model.Articles[i].Article.FamilleId;
+        indexId = familles.FindIndex(f => f.Id == familleId);
     }
-</section>
-@if (Model.ArticlesDessert.Count != 0)
-{
-    <hr />
-    <h2 class="familleNotreCarte">Desserts :</h2>
+    <section class="notreCarte">
+        @foreach (ArticleViewModel article in articles)
+        {
+            <div class="indexArticle">
+                <a href="/Article/@article.NomPourUrl">
+                    <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
+                </a>
+                <div class="articleDescription">
+                    <a href="/Article/@article.NomPourUrl">
+                        <p>@article.Article.Nom</p>
+                        <p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                    </a>
+                </div>
+                <div id="ajoutPanier">
+                    @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                    {
+                        <input name="nom" value="@article.Article.Nom" hidden>
+                        <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                    }
+                    @if (droitAdminArticle)
+                    {
+                        using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                        {
+                            <input type="hidden" name="id" value="@article.Article.Id">
+                            <button class="adminArticle" type="submit">Modifier</button>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </section>
 }
-<section class="notreCarte">
-    @foreach (var article in Model.ArticlesDessert)
-    {
-        <div class="indexArticle">
-            <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
-            </a>
-            <div class="articleDescription">
-                <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
-                </a>
-            </div>
-            <div id="ajoutPanier">
-                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                {
-                    <input name="nom" value="@article.Article.Nom" hidden>
-                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-                }
-                @if (droitAdminArticle)
-                {
-                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
-                    {
-                        <input type="hidden" name="id" value="@article.Article.Id">
-                        <button class="adminArticle" type="submit">Modifier</button>
-                    }
-                }
-            </div>
-        </div>
-    }
-</section>
-@if (Model.ArticlesBoissonFraiche.Count != 0)
-{
-    <hr />
-    <h2 class="familleNotreCarte">Boissons fraiches :</h2>
-}
-<section class="notreCarte">
-    @foreach (var article in Model.ArticlesBoissonFraiche)
-    {
-        <div class="indexArticle">
-            <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
-            </a>
-            <div class="articleDescription">
-                <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
-                </a>
-            </div>
-            <div id="ajoutPanier">
-                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                {
-                    <input name="nom" value="@article.Article.Nom" hidden>
-                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-                }
-                @if (droitAdminArticle)
-                {
-                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
-                    {
-                        <input type="hidden" name="id" value="@article.Article.Id">
-                        <button class="adminArticle" type="submit">Modifier</button>
-                    }
-                }
-            </div>
-        </div>
-    }
-</section>
-@if (Model.ArticlesBoissonChaude.Count != 0)
-{
-    <hr />
-    <h2 class="familleNotreCarte">Boissons chaudes :</h2>
-}
-<section class="notreCarte">
-
-    @foreach (var article in Model.ArticlesBoissonChaude)
-    {
-        <div class="indexArticle">
-            <a href="/Article/@article.NomPourUrl">
-                <img src="@dossierImagesArticles/@article.Article.Image" alt="@article.Article.Nom" />
-            </a>
-            <div class="articleDescription">
-                <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p>
-                    <p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
-                </a>
-            </div>
-            <div id="ajoutPanier">
-                @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                {
-                    <input name="nom" value="@article.Article.Nom" hidden>
-                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
-                }
-                @if (droitAdminArticle)
-                {
-                    using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
-                    {
-                        <input type="hidden" name="id" value="@article.Article.Id">
-                        <button class="adminArticle" type="submit">Modifier</button>
-                    }
-                }
-            </div>
-        </div>
-    }
-</section>

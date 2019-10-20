@@ -14,6 +14,7 @@ namespace FoodTruck.ViewModels
         public List<ArticleViewModel> ArticlesDessert { get; set; }
         public List<ArticleViewModel> ArticlesBoissonFraiche { get; set; }
         public List<ArticleViewModel> ArticlesBoissonChaude { get; set; }
+        public List<ArticleViewModel> Articles { get; set; }
 
         public ArticleIndexViewModel()
         {
@@ -24,25 +25,32 @@ namespace FoodTruck.ViewModels
             ArticlesDessert = new List<ArticleViewModel>();
             ArticlesBoissonFraiche = new List<ArticleViewModel>();
             ArticlesBoissonChaude = new List<ArticleViewModel>();
-            foreach (Article article in articleDAL.Lister("Entrée"))
+            foreach (Article article in articleDAL.ListerArticles("Entrée", true))
             {
                 ArticlesEntree.Add(new ArticleViewModel(article));
             }
-            foreach (Article article in articleDAL.Lister("Plat"))
+            foreach (Article article in articleDAL.ListerArticles("Plat", true))
             {
                 ArticlesPlat.Add(new ArticleViewModel(article));
             }
-            foreach (Article article in articleDAL.Lister("Dessert"))
+            foreach (Article article in articleDAL.ListerArticles("Dessert", true))
             {
                 ArticlesDessert.Add(new ArticleViewModel(article));
             }
-            foreach (Article article in articleDAL.Lister("Boisson Fraiche"))
+            foreach (Article article in articleDAL.ListerArticles("Boisson Fraiche", true))
             {
                 ArticlesBoissonFraiche.Add(new ArticleViewModel(article));
             }
-            foreach (Article article in articleDAL.Lister("Boisson Chaude"))
+            foreach (Article article in articleDAL.ListerArticles("Boisson Chaude", true))
             {
                 ArticlesBoissonChaude.Add(new ArticleViewModel(article));
+            }
+
+
+            Articles = new List<ArticleViewModel>();
+            foreach (Article article in articleDAL.ListerArticles(true))
+            {
+                Articles.Add(new ArticleViewModel(article));
             }
         }
     }

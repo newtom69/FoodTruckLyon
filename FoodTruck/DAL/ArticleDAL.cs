@@ -93,14 +93,28 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Article> Lister(string nomFamille, int nombreMax = 200)
+        public List<Article> ListerArticles(string nomFamille, bool dansCarte, int nombreMax = 200)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
-                                          where article.DansCarte == true && famille.Nom == nomFamille
+                                          where article.DansCarte == dansCarte && famille.Nom == nomFamille
                                           orderby article.Nom
+                                          select article)
+                                          .Take(nombreMax)
+                                          .ToList();
+                return articles;
+            }
+        }
+        public List<Article> ListerArticles(bool dansCarte, int nombreMax = 200)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Article> articles = (from article in db.Article
+                                          join famille in db.FamilleArticle on article.FamilleId equals famille.Id
+                                          where article.DansCarte == dansCarte
+                                          orderby article.FamilleId, article.Nom
                                           select article)
                                           .Take(nombreMax)
                                           .ToList();
