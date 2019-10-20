@@ -54,14 +54,28 @@ namespace FoodTruck.DAL
             }
         }
 
+        internal List<Commande> ListerCommandesAMarquer()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                DateTime now = DateTime.Now;
+                const int intervalleMax = 1;
+                var commandes = (from cmd in db.Commande
+                                 where !cmd.Retrait && !cmd.Annulation && DbFunctions.DiffHours(cmd.DateRetrait, now) >= intervalleMax
+                                 orderby cmd.DateRetrait
+                                 select cmd).ToList();
+                return commandes;
+            }
+        }
+
         public List<Commande> ListerCommandesEnCours()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
-                const int intervalleMax = 4;
+                const int intervalleMax = 8;
                 var commandes = (from cmd in db.Commande
-                                 where cmd.Retrait == false && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < intervalleMax
+                                 where !cmd.Retrait && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < intervalleMax
                                  orderby cmd.DateRetrait
                                  select cmd).ToList();
                 return commandes;
@@ -74,7 +88,7 @@ namespace FoodTruck.DAL
             {
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.UtilisateurId == id
-                                            orderby cmd.Retrait descending, cmd.DateRetrait descending
+                                            orderby cmd.Annulation, cmd.Retrait, cmd.DateRetrait descending
                                             select cmd).ToList();
                 return commandes;
             }

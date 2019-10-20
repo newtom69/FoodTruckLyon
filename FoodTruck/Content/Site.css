@@ -215,6 +215,17 @@ section.notreCarte {
     min-height: 150px;
     max-height: 150px;
 }
+.gestionCommandeArticle .commandeAnnulee {
+    color: red;
+}
+.gestionCommandeArticle .commandeRetiree {
+    color: black;
+}
+
+.gestionCommandeArticle .commandeARetirer {
+    color: green;
+}
+
 
 .gestionCommandeArticle .titreCommandeBlack {
     color: black;

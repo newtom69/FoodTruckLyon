@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using FoodTruck.DAL
 @using FoodTruck.ViewModels
+@using FoodTruck.Models
 @using System.Configuration
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model ArticleIndexViewModel
@@ -15,7 +16,7 @@
     {
         droitAdminArticle = false;
     }
-    var familles = new ArticleDAL().FamillesArticle();
+    List<FamilleArticle> familles = new ArticleDAL().FamillesArticle();
     int familleId = familles[0].Id;
     int indexId = familles.FindIndex(f => f.Id == familleId);
     int i = 0;

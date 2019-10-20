@@ -14,28 +14,30 @@
 {
     <h3>Vos commandes</h3>
     <aside id="panierValide">
-        <div class="choixHoraire">
+        <div @*class="choixHoraire"*@>
             <hr />
             @foreach (var c in Model.Commandes)
             {
-        <div class="gestionCommandeArticle">
-            <h4>Commande n° : @c.Commande.Id</h4>
-            @{
+                string classDate = "class=commandeAnnulee";
                 string preDate = "";
                 if(@c.Commande.Annulation)
                 {
-                    preDate = "Commande annulée. Le retrait été prévu le : ";
+                    preDate = "Commande annulée. Le retrait été prévu le ";
+                    classDate = "class=commandeAnnulee";
                 }
                 else if (c.Commande.Retrait)
                 {
-                    preDate = "Retirée le :";
+                    preDate = "Retirée le ";
+                    classDate = "class=commandeRetiree";
                 }
                 else
                 {
-                    preDate = "A retirer le :";
+                    preDate = "A retirer le ";
+                    classDate = "class=commandeARetirer";
                 }
-            }
-            <div>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+        <div class="gestionCommandeArticle">
+            <h4>Commande n° : @c.Commande.Id</h4>
+            <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
             <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
             <div class="imagesGestionCommande">
                 @foreach (var a in c.ListArticlesVM)

@@ -45,6 +45,19 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
+        public ActionResult CommandesAMarquer()
+        {
+            AdministrationViewModel administrationViewModel = null;
+            if (session.AdminSuper || session.AdminCommande)
+            {
+                CommandeDAL commandeDAL = new CommandeDAL();
+                var commandes = commandeDAL.ListerCommandesAMarquer();
+                administrationViewModel = new AdministrationViewModel(commandes);
+            }
+            return View(administrationViewModel);
+        }
+
+        [HttpGet]
         public ActionResult Commandes()
         {
             AdministrationViewModel administrationViewModel = null;

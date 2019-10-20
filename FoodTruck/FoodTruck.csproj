@@ -323,6 +323,7 @@
     <Content Include="Views\Administration\CommandesEnCours.cshtml" />
     <Content Include="Views\Administration\Commandes.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
+    <Content Include="Views\Administration\CommandesAMarquer.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
