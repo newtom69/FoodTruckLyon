@@ -9,15 +9,15 @@ namespace FoodTruck.ViewModels
 {
     public class HomeViewModel
     {
-        public List<ArticleDetailsViewModel> ArticlesTopRandom { get; set; }
+        public List<ArticleViewModel> ArticlesTopRandom { get; set; }
 
         public HomeViewModel()
         {
-            ArticlesTopRandom = new List<ArticleDetailsViewModel>();
+            ArticlesTopRandom = new List<ArticleViewModel>();
             ArticleDAL articleDAL = new ArticleDAL();
             foreach (Article article in articleDAL.ListerRandom(3, 7))
             {
-                ArticlesTopRandom.Add(new ArticleDetailsViewModel(article));
+                ArticlesTopRandom.Add(new ArticleViewModel(article));
             }
         }
     }

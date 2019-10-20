@@ -9,45 +9,28 @@ namespace FoodTruck.ViewModels
 {
     public class ArticleIndexViewModel
     {
-        public List<ArticleDetailsViewModel> ArticlesEntree { get; set; }
-        public List<ArticleDetailsViewModel> ArticlesPlat { get; set; }
-        public List<ArticleDetailsViewModel> ArticlesDessert { get; set; }
-        public List<ArticleDetailsViewModel> ArticlesBoissonFraiche { get; set; }
-        public List<ArticleDetailsViewModel> ArticlesBoissonChaude { get; set; }
+        public List<ArticleViewModel> Articles { get; set; }
 
+        /// <summary>
+        /// retourne les articles dans carte ou non selon dansCarte
+        /// </summary>
+        public ArticleIndexViewModel(bool dansCarte)
+        {
+            Articles = new List<ArticleViewModel>();
+            foreach (Article article in new ArticleDAL().ListerArticles(dansCarte))
+            {
+                Articles.Add(new ArticleViewModel(article));
+            }
+        }
+        /// <summary>
+        /// retourne tous les articles qu'ils soient ou non dans la carte
+        /// </summary>
         public ArticleIndexViewModel()
         {
-            ArticleDAL articleDAL = new ArticleDAL();
-
-            ArticlesEntree = new List<ArticleDetailsViewModel>();
-            ArticlesPlat = new List<ArticleDetailsViewModel>();
-            ArticlesDessert = new List<ArticleDetailsViewModel>();
-            ArticlesBoissonFraiche = new List<ArticleDetailsViewModel>();
-            ArticlesBoissonChaude = new List<ArticleDetailsViewModel>();
-
-            foreach (Article article in articleDAL.Lister("Entrée"))
+            Articles = new List<ArticleViewModel>();
+            foreach (Article article in new ArticleDAL().ListerTousArticles())
             {
-                ArticlesEntree.Add(new ArticleDetailsViewModel(article));
-            }
-
-            foreach (Article article in articleDAL.Lister("Plat"))
-            {
-                ArticlesPlat.Add(new ArticleDetailsViewModel(article));
-            }
-
-            foreach (Article article in articleDAL.Lister("Dessert"))
-            {
-                ArticlesDessert.Add(new ArticleDetailsViewModel(article));
-            }
-
-            foreach (Article article in articleDAL.Lister("Boisson Fraiche"))
-            {
-                ArticlesBoissonFraiche.Add(new ArticleDetailsViewModel(article));
-            }
-
-            foreach (Article article in articleDAL.Lister("Boisson Chaude"))
-            {
-                ArticlesBoissonChaude.Add(new ArticleDetailsViewModel(article));
+                Articles.Add(new ArticleViewModel(article));
             }
         }
     }

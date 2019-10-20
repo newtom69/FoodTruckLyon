@@ -130,20 +130,12 @@ section#bestsellers, section.notreCarte {
     section#bestsellers a, section.notreCarte a {
         text-decoration: none;
         width: 200px;
+        display: flex;
     }
 
 .familleNotreCarte {
     margin-top: 0;
 }
-
-section.notreCarte {
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-    section.notreCarte > div {
-        width: 200px;
-    }
 
 .detailArticle {
     max-width: 700px;
@@ -178,14 +170,63 @@ section.notreCarte {
         margin-left: 0 !important;
         align-self: flex-end;
     }
+
     .detailArticle .admin_article {
         margin-left: 0 !important;
         align-self: flex-end !important;
     }
 
-    .indexArticle img {
-        margin-top: 15px;
+section.notreCarte {
+    flex-wrap: wrap;
+    justify-content: start;
+    display: flex;
+    flex-flow: wrap;
+}
+
+    section.notreCarte > div {
+        width: 200px;
     }
+
+    section.notreCarte .indexArticle {
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+
+        section.notreCarte .indexArticle img {
+            margin-top: 15px;
+        }
+
+        section.notreCarte .indexArticle a.pasDansCarte {
+            opacity: .5;
+        }
+
+.imagesGestionCommande {
+    display: flex;
+}
+
+.gestionCommandeArticle img {
+    margin-top: 5px;
+    margin: 3px;
+    padding: 0px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+}
+
+.gestionCommandeArticle .titreCommandeBlack {
+    color: black;
+}
+
+.gestionCommandeArticle .titreCommandeRed {
+    color: red;
+}
+
+.gestionCommandeArticle .titreCommandeGreen {
+    color: green;
+}
 
 .adminArticle {
     max-width: 700px;
@@ -201,7 +242,7 @@ section.notreCarte {
         padding: 0px;
         width: 300px;
         min-width: 300px;
-        max-width:300px;
+        max-width: 300px;
     }
 
     .adminArticle figure {
@@ -213,6 +254,7 @@ section.notreCarte {
         padding: 0px;
         margin: 0px;
     }
+
     .adminArticle h2 {
         margin-top: 0;
     }
@@ -277,6 +319,7 @@ section.notreCarte {
     margin-bottom: 10px;
     width: 75%;
 }
+
 .ccform-addon {
     color: #95BE27;
     float: left;
@@ -371,6 +414,16 @@ article#articleAPropos {
         margin-left: 0.5rem;
     }
 
+#ajoutPanier {
+    display: flex;
+    justify-content: flex-end;
+}
+
+    #ajoutPanier form {
+        display: flex;
+        justify-content: flex-end;
+    }
+
 a.ajoutPanier {
     display: flex;
     justify-content: flex-end;
@@ -388,6 +441,10 @@ button.ajoutPanier {
     padding: 0.6rem;
     border: solid 1px #95BE27;
     border-radius: 1.5rem;
+}
+
+div.ajoutPanier {
+    justify-content: space-between;
 }
 
 button.adminArticle {
@@ -551,6 +608,7 @@ h3.total {
     color: red;
     font-size: large;
 }
+
 .messageInfo {
     color: green;
     font-size: medium;
@@ -562,8 +620,4 @@ select.ccformfield option.red {
 
 .image-upload > input {
     display: none;
-}
-
-#ajoutPanier {
-    display: flex;
 }

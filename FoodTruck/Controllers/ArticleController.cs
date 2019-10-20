@@ -17,7 +17,10 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(new ArticleIndexViewModel());
+            if(session.AdminArticle || session.AdminSuper)
+                return View(new ArticleIndexViewModel());
+            else
+                return View(new ArticleIndexViewModel(true));
         }
 
         [HttpGet]
@@ -41,7 +44,7 @@ namespace FoodTruck.Controllers
                 TempData["ArticleDansCarte"] = true;
                 TempData["ArticleOk"] = true;
             }
-            return View(new ArticleDetailsViewModel(articleCourant));
+            return View(new ArticleViewModel(articleCourant));
         }
     }
 }

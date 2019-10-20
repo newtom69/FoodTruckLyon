@@ -7,13 +7,13 @@ namespace FoodTruck.ViewModels
 {
     public class PanierViewModel
     {
-        public List<ArticleDetailsViewModel> ArticlesDetailsViewModel { get; set; }
+        public List<ArticleViewModel> ArticlesDetailsViewModel { get; set; }
         public double PrixTotal { get; set; }
         public List<DateTime> DatesRetraitPossibles { get; set; }
 
         public PanierViewModel()
         {
-            ArticlesDetailsViewModel = new List<ArticleDetailsViewModel>();
+            ArticlesDetailsViewModel = new List<ArticleViewModel>();
         }
 
         public void Trier()

@@ -8,6 +8,13 @@ namespace FoodTruck.Extensions
 {
     public static class Extensions
     {
+        public static string OuiNon(this bool lebool)
+        {
+            if (lebool)
+                return "Oui";
+            else
+                return "Non";
+        }
         public static string UrlVersNom(this string url)
         {
             return url.Replace("-", " ").Replace("_", "-");
