@@ -128,7 +128,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AdminArticleController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AProposController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
@@ -312,9 +311,9 @@
     <Content Include="Views\Panier\Index.cshtml" />
     <Content Include="Views\Linkedin\callback.cshtml" />
     <Content Include="Views\Linkedin\File.cshtml" />
-    <Content Include="Views\AdminArticle\Ajouter.cshtml" />
-    <Content Include="Views\AdminArticle\Modifier.cshtml" />
-    <Content Include="Views\AdminArticle\ModifierEtape2.cshtml" />
+    <Content Include="Views\Administration\AjouterArticle.cshtml" />
+    <Content Include="Views\Administration\ModifierArticle.cshtml" />
+    <Content Include="Views\Administration\ModifierArticleEtape2.cshtml" />
     <Content Include="Views\Compte\Connexion.cshtml" />
     <Content Include="Views\Compte\Creation.cshtml" />
     <Content Include="Views\Compte\Deconnexion.cshtml" />

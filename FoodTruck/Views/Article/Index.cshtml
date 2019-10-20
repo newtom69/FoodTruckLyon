@@ -67,7 +67,7 @@
                     }
                     @if (droitAdminArticle)
                     {
-                        using (Html.BeginForm("Modifier", "AdminArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                        using (Html.BeginForm("ModifierArticle", "Administration", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                         {
                             <input type="hidden" name="id" value="@a.Article.Id">
                             <button class="adminArticle" type="submit">Modifier</button>
