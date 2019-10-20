@@ -40,7 +40,19 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult ReprendreArticlesCommande(int commandeId, string viderPanier)
+        public ActionResult AnnulerCommande(int commandeId)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            Commande commande = commandeDAL.Detail(commandeId);
+            if (commande != null && commande.UtilisateurId == session.Utilisateur.Id)
+            {
+                commandeDAL.Annuler(commandeId);
+            }
+            return RedirectToAction("Commandes", "Compte");
+        }
+
+        [HttpPost]
+        public ActionResult ReprendreArticlesCommande(int commandeId, bool viderPanier)
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
@@ -48,34 +60,23 @@ namespace FoodTruck.Controllers
             {
                 List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
                 PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
-                if (viderPanier == "Oui")
+                if (viderPanier)
                 {
                     panierDAL.Supprimer();
-                    session.RecupererPanierEnBase();
+                    session.PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
+                    Session["Panier"] = null;
                 }
                 PanierController panierController = new PanierController();
                 foreach (var a in articles)
                 {
-                    panierController.Ajouter(a.Article);
-                    session.PanierViewModel.PrixTotal += a.Article.Prix;
+                    panierController.Ajouter(a.Article, a.Quantite);
+                    session.PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
                     Session["Panier"] = session.PanierViewModel;
                 }
                 session.RecupererPanierEnBase();
             }
             return RedirectToAction("Commandes", "Compte");
         }
-        [HttpPost]
-        public ActionResult Commandes(int id)
-        {
-            CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(session.Utilisateur.Id);
-            AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
-            return View(administrationViewModel);
-        }
-
-
-
-
 
         [HttpGet]
         public ActionResult Connexion()

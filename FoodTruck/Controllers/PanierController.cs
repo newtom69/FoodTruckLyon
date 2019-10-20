@@ -92,7 +92,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        internal void Ajouter(Article lArticle)
+        internal void Ajouter(Article lArticle, int quantite = 1)
         {
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
@@ -110,27 +110,27 @@ namespace FoodTruck.Controllers
                 if (sauvPanierClient)
                 {
                     lePanierDAL = new PanierDAL(session.Utilisateur.Id);
-                    lePanierDAL.Ajouter(lArticle);
+                    lePanierDAL.Ajouter(lArticle, quantite);
                 }
                 else if (sauvPanierProspect)
                 {
                     lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
-                    lePanierProspectDAL.Ajouter(lArticle);
+                    lePanierProspectDAL.Ajouter(lArticle, quantite);
                 }
             }
             else
             {
-                artcl.Quantite++;
-                artcl.PrixTotal = Math.Round(artcl.PrixTotal + artcl.Article.Prix, 2);
+                artcl.Quantite += quantite;
+                artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
                 if (sauvPanierClient)
                 {
                     lePanierDAL = new PanierDAL(session.Utilisateur.Id);
-                    lePanierDAL.ModifierQuantite(lArticle, 1);
+                    lePanierDAL.ModifierQuantite(lArticle, quantite);
                 }
                 else if (sauvPanierProspect)
                 {
                     lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
-                    lePanierProspectDAL.ModifierQuantite(lArticle, 1);
+                    lePanierProspectDAL.ModifierQuantite(lArticle, quantite);
                 }
             }
         }

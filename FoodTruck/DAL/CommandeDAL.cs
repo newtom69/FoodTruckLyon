@@ -19,6 +19,21 @@ namespace FoodTruck.DAL
                 return commande;
             }
         }
+        internal void Annuler(int id)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                Commande commande = (from cmd in db.Commande
+                                     where cmd.Id == id
+                                     select cmd).FirstOrDefault();
+                if (commande != null)
+                {
+                    commande.Annulation = true;
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public void Ajouter(Commande laCommande, List<ArticleViewModel> articles)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -99,7 +114,7 @@ namespace FoodTruck.DAL
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.UtilisateurId == id
                                             //orderby cmd.Annulation, cmd.Retrait, cmd.DateRetrait descending
-                                            orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) 
+                                            orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
                                             select cmd).ToList();
                 return commandes;
             }

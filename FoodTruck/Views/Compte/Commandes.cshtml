@@ -20,7 +20,7 @@
             {
                 string classDate = "class=commandeAnnulee";
                 string preDate = "";
-                bool enCours = true;
+                bool enCours = false;
                 if (@c.Commande.Annulation)
                 {
                     preDate = "Commande annulée. Le retrait été prévu le ";
@@ -35,10 +35,20 @@
                 {
                     preDate = "A retirer le ";
                     classDate = "class=commandeARetirer";
-                    enCours = false;
+                    enCours = true;
                 }
                 <div class="gestionCommandeArticle">
                     <h4>Commande n° : @c.Commande.Id</h4>
+                    @if (enCours)
+                    {
+                        using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                            <div class="ccfield-prepend">
+                                <button class="annulerCommande" type="submit">Annuler cette commande</button>
+                            </div>
+                        }
+                    }
                     <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
                     <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
                     <div class="imagesGestionCommande">
@@ -53,15 +63,15 @@
                     @using (Html.BeginForm("ReprendreArticlesCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <div>
-                            <input name="viderPanier" type="hidden" value="Oui" />
-                            <input name="viderPanier" type="checkbox" value="Non" />
+                            <input name="viderPanier" type="checkbox" value="true">
+                            <input name="viderPanier" type="hidden" value="false">
                             Vider panier puis
                         </div>
                         <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                        <div class="ccfield-prepend">
-                            <input class="ccbtn" type="submit" value="Reprendre">
-                        </div>
+                        <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
+
                     }
+
                     <hr />
                 </div>
             }

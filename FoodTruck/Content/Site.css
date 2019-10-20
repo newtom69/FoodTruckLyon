@@ -477,6 +477,19 @@ button.ajoutSupprPanierTexte {
     float: left;
 }
 
+button.annulerCommande {
+    background-color:red;
+    padding: 0.6rem;
+    border: solid 1px red;
+    border-radius: 1.5rem;
+}
+
+.reprendreCommande, .reprendreCommande button {
+    background-color: #95BE27;
+    padding: 0.6rem;
+    border: solid 1px #95BE27;
+    border-radius: 1.5rem;
+}
 
 #panier {
     position: fixed;
