@@ -62,6 +62,19 @@ namespace FoodTruck.Controllers
             return View(administrationViewModel);
         }
 
+        [HttpPost]
+        public ActionResult CommandesAMarquer(int id, string statut)
+        {
+            bool retire = false;
+            bool annule = false;
+            if (statut == "retire")
+                retire = true;
+            else if (statut == "annule")
+                annule = true;
+            new CommandeDAL().MettreAJourStatut(id, retire, annule);
+            return RedirectToAction(RouteData.Values["action"].ToString());
+        }
+
         [HttpGet]
         public ActionResult Commandes()
         {
@@ -74,20 +87,6 @@ namespace FoodTruck.Controllers
             }
             return View(administrationViewModel);
         }
-
-        [HttpPost]
-        public ActionResult Commandes(int id, string statut)
-        {
-            bool retire = false;
-            bool annule = false;
-            if (statut == "retire")
-                retire = true;
-            else if (statut == "annule")
-                annule = true;
-            new CommandeDAL().MettreAJourStatut(id, retire, annule);
-            return RedirectToAction(RouteData.Values["action"].ToString());
-        }
-
 
         [HttpGet]
         public ActionResult AjouterArticle()

@@ -39,10 +39,31 @@ namespace FoodTruck.Controllers
             return View(administrationViewModel);
         }
 
-
-
-
-
+        [HttpPost]
+        public ActionResult ReprendreArticlesCommande(int commandeId, string viderPanier)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            Commande commande = commandeDAL.Detail(commandeId);
+            if (commande != null && commande.UtilisateurId == session.Utilisateur.Id)
+            {
+                List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
+                PanierDAL panierDAL = new PanierDAL(session.Utilisateur.Id);
+                if (viderPanier == "Oui")
+                {
+                    panierDAL.Supprimer();
+                    session.RecupererPanierEnBase();
+                }
+                PanierController panierController = new PanierController();
+                foreach (var a in articles)
+                {
+                    panierController.Ajouter(a.Article);
+                    session.PanierViewModel.PrixTotal += a.Article.Prix;
+                    Session["Panier"] = session.PanierViewModel;
+                }
+                session.RecupererPanierEnBase();
+            }
+            return RedirectToAction("Commandes", "Compte");
+        }
 
         [HttpGet]
         public ActionResult Connexion()

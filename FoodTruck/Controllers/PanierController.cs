@@ -21,12 +21,6 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Ajouter(string nom)
         {
-            bool sauvPanierClient = false;
-            bool sauvPanierProspect = false;
-            if (session.Utilisateur.Id != 0)
-                sauvPanierClient = true;
-            else
-                sauvPanierProspect = true;
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
             if (lArticle == null || !lArticle.DansCarte)
@@ -35,39 +29,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                PanierDAL lePanierDAL;
-                PanierProspectDAL lePanierProspectDAL;
-                ArticleViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
-                if (artcl == null)
-                {
-                    ArticleViewModel article = new ArticleViewModel(lArticle);
-                    session.PanierViewModel.ArticlesDetailsViewModel.Add(article);
-                    if (sauvPanierClient)
-                    {
-                        lePanierDAL = new PanierDAL(session.Utilisateur.Id);
-                        lePanierDAL.Ajouter(lArticle);
-                    }
-                    else if (sauvPanierProspect)
-                    {
-                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
-                        lePanierProspectDAL.Ajouter(lArticle);
-                    }
-                }
-                else
-                {
-                    artcl.Quantite++;
-                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + artcl.Article.Prix, 2);
-                    if (sauvPanierClient)
-                    {
-                        lePanierDAL = new PanierDAL(session.Utilisateur.Id);
-                        lePanierDAL.ModifierQuantite(lArticle, 1);
-                    }
-                    else if (sauvPanierProspect)
-                    {
-                        lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
-                        lePanierProspectDAL.ModifierQuantite(lArticle, 1);
-                    }
-                }
+                Ajouter(lArticle);
                 session.PanierViewModel.PrixTotal += lArticle.Prix;
                 Session["Panier"] = session.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
@@ -130,6 +92,49 @@ namespace FoodTruck.Controllers
             }
         }
 
+        internal void Ajouter(Article lArticle)
+        {
+            bool sauvPanierClient = false;
+            bool sauvPanierProspect = false;
+            if (session.Utilisateur.Id != 0)
+                sauvPanierClient = true;
+            else
+                sauvPanierProspect = true;
+            PanierDAL lePanierDAL;
+            PanierProspectDAL lePanierProspectDAL;
+            ArticleViewModel artcl = session.PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
+            if (artcl == null)
+            {
+                ArticleViewModel article = new ArticleViewModel(lArticle);
+                session.PanierViewModel.ArticlesDetailsViewModel.Add(article);
+                if (sauvPanierClient)
+                {
+                    lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                    lePanierDAL.Ajouter(lArticle);
+                }
+                else if (sauvPanierProspect)
+                {
+                    lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                    lePanierProspectDAL.Ajouter(lArticle);
+                }
+            }
+            else
+            {
+                artcl.Quantite++;
+                artcl.PrixTotal = Math.Round(artcl.PrixTotal + artcl.Article.Prix, 2);
+                if (sauvPanierClient)
+                {
+                    lePanierDAL = new PanierDAL(session.Utilisateur.Id);
+                    lePanierDAL.ModifierQuantite(lArticle, 1);
+                }
+                else if (sauvPanierProspect)
+                {
+                    lePanierProspectDAL = new PanierProspectDAL(session.ProspectGuid);
+                    lePanierProspectDAL.ModifierQuantite(lArticle, 1);
+                }
+            }
+        }
+
         private List<DateTime> ObtenirDatesRetraitPossibles()
         {
             int heurePremierCreneauxDejeuner = 0, minutePremierCreneauxDejeuner = 0;
@@ -160,20 +165,10 @@ namespace FoodTruck.Controllers
                 heureDernierCreneauxDiner = 22;
                 minuteDernierCreneauxDiner = 0;
             }
-
             DateTime maintenant = DateTime.Now;
             int jAnnee = maintenant.Year;
             int jMois = maintenant.Month;
             int jJour = maintenant.Day;
-
-            DateTime maintenantTest8h = new DateTime(jAnnee, jMois, jJour, 8, 0, 0);
-            DateTime maintenantTest23h = new DateTime(jAnnee, jMois, jJour, 23, 0, 0);
-            DateTime maintenantTest21h = new DateTime(jAnnee, jMois, jJour, 21, 0, 0);
-            DateTime maintenantTest19h = new DateTime(jAnnee, jMois, jJour, 19, 2, 0);
-            DateTime maintenantTest15h = new DateTime(jAnnee, jMois, jJour, 15, 0, 0);
-
-            //maintenant = maintenantTest19h; //TODO TEST !
-
             DateTime premierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heurePremierCreneauxDejeuner, minutePremierCreneauxDejeuner, 0);
             DateTime dernierCreneauxDejeuner = new DateTime(jAnnee, jMois, jJour, heureDernierCreneauxDejeuner, minuteDernierCreneauxDejeuner, 0);
             premierCreneauxDejeuner = ObtenirCreneauCourant(premierCreneauxDejeuner);

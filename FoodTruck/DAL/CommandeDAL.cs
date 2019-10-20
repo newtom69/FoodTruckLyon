@@ -9,6 +9,16 @@ namespace FoodTruck.DAL
 {
     class CommandeDAL
     {
+        internal Commande Detail(int id)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                Commande commande = (from cmd in db.Commande
+                                     where cmd.Id == id
+                                     select cmd).FirstOrDefault();
+                return commande;
+            }
+        }
         public void Ajouter(Commande laCommande, List<ArticleViewModel> articles)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -37,7 +47,6 @@ namespace FoodTruck.DAL
                 db.SaveChanges();
             }
         }
-
         internal void MettreAJourStatut(int id, bool retire, bool annule)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -86,9 +95,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
+                DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.UtilisateurId == id
-                                            orderby cmd.Annulation, cmd.Retrait, cmd.DateRetrait descending
+                                            //orderby cmd.Annulation, cmd.Retrait, cmd.DateRetrait descending
+                                            orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) 
                                             select cmd).ToList();
                 return commandes;
             }
