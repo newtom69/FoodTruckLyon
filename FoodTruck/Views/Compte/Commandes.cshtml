@@ -20,7 +20,8 @@
             {
                 string classDate = "class=commandeAnnulee";
                 string preDate = "";
-                if(@c.Commande.Annulation)
+                bool enCours = true;
+                if (@c.Commande.Annulation)
                 {
                     preDate = "Commande annulée. Le retrait été prévu le ";
                     classDate = "class=commandeAnnulee";
@@ -34,23 +35,30 @@
                 {
                     preDate = "A retirer le ";
                     classDate = "class=commandeARetirer";
+                    enCours = false;
                 }
-        <div class="gestionCommandeArticle">
-            <h4>Commande n° : @c.Commande.Id</h4>
-            <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-            <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-            <div class="imagesGestionCommande">
-                @foreach (var a in c.ListArticlesVM)
-                {
-                    <div>
-                        <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                        <p>@a.Quantite x @a.Article.Nom</p>
+                <div class="gestionCommandeArticle">
+                    <h4>Commande n° : @c.Commande.Id</h4>
+                    <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                    <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="imagesGestionCommande">
+                        @foreach (var a in c.ListArticlesVM)
+                        {
+                            <div>
+                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                <p>@a.Quantite x @a.Article.Nom</p>
+                            </div>
+                        }
                     </div>
-                }
-            </div>
-
-            <hr />
-        </div>
+                    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input name="id" type="hidden" value="@c.Commande.Id">
+                        <div class="ccfield-prepend">
+                            <input class="ccbtn" type="submit" value="Annuler">
+                        </div>
+                    }
+                    <hr />
+                </div>
             }
         </div>
     </aside>

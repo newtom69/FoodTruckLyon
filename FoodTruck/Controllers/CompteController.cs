@@ -39,6 +39,14 @@ namespace FoodTruck.Controllers
             return View(administrationViewModel);
         }
 
+        [HttpPost]
+        public ActionResult Commandes(int id)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(session.Utilisateur.Id);
+            AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
+            return View(administrationViewModel);
+        }
 
 
 
