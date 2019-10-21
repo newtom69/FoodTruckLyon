@@ -146,22 +146,15 @@ namespace FoodTruck.Controllers
 
         private void DonnerLesDroitsdAcces()
         {
-            if (Utilisateur.AdminSuper)
-                HttpContext.Current.Session["AdminSuper"] = AdminSuper = true;
-            if (Utilisateur.AdminArticle)
-                HttpContext.Current.Session["AdminArticle"] = AdminArticle = true;
-            if (Utilisateur.AdminCommande)
-                HttpContext.Current.Session["AdminCommande"] = AdminCommande = true;
-            if (Utilisateur.AdminUtilisateur)
-                HttpContext.Current.Session["AdminUtilisateur"] = AdminUtilisateur = true;
+            if (Utilisateur.AdminSuper) AdminSuper = true;
+            if (Utilisateur.AdminArticle) AdminArticle = true;
+            if (Utilisateur.AdminCommande) AdminCommande = true;
+            if (Utilisateur.AdminUtilisateur) AdminUtilisateur = true;
         }
 
         private void RetirerLesDroitsdAcces()
         {
-            HttpContext.Current.Session["AdminSuper"] = AdminSuper = false;
-            HttpContext.Current.Session["AdminArticle"] = AdminArticle = false;
-            HttpContext.Current.Session["AdminCommande"] = AdminCommande = false;
-            HttpContext.Current.Session["AdminUtilisateur"] = AdminUtilisateur = false;
+            AdminSuper = AdminArticle = AdminCommande = AdminUtilisateur = false;
         }
         private void MettrelUrlEnSession()
         {
