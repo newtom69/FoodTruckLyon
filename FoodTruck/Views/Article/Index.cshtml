@@ -7,15 +7,6 @@
 @model ArticleIndexViewModel
 @{
     ViewBag.Title = "FoodTruckLyon - Notre carte";
-    bool droitAdminArticle;
-    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
-    {
-        droitAdminArticle = true;
-    }
-    else
-    {
-        droitAdminArticle = false;
-    }
     List<FamilleArticle> familles = new ArticleDAL().FamillesArticle();
     int familleId = familles[0].Id;
     int indexId = familles.FindIndex(f => f.Id == familleId);
@@ -65,7 +56,7 @@
                             <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                         }
                     }
-                    @if (droitAdminArticle)
+                    @if (ViewBag.AdminArticle)
                     {
                         using (Html.BeginForm("ModifierArticle", "Administration", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                         {

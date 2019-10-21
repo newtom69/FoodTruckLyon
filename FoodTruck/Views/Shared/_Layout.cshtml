@@ -6,22 +6,6 @@
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
     PanierViewModel panier = (PanierViewModel)Session["Panier"];
-    bool droitAdmin;
-    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"]
-     || Session["AdminArticle"] != null && (bool)Session["AdminArticle"]
-     || Session["AdminCommande"] != null && (bool)Session["AdminCommande"]
-     || Session["AdminUtilisateur"] != null && (bool)Session["AdminUtilisateur"]
-       )
-    {
-        droitAdmin = true;
-    }
-    else
-    {
-        droitAdmin = false;
-    }
-
-
-
 }
 
 <!DOCTYPE html>
@@ -58,7 +42,7 @@
                     <li>@Html.ActionLink("A propos", "Index", "APropos")</li>
                     <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (droitAdmin)
+                    @if (ViewBag.AdminArticle || ViewBag.AdminCommande || ViewBag.AdminUtilisateur)
                     {
                         <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
                     }

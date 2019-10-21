@@ -1,20 +1,11 @@
 ﻿@{
     ViewBag.Title = "FoodTruckLyon - Modifier un article du catalogue";
-    bool droitPage;
-    if (Session["AdminSuper"] != null && (bool)Session["AdminSuper"] || Session["AdminArticle"] != null && (bool)Session["AdminArticle"])
-    {
-        droitPage = true;
-    }
-    else
-    {
-        droitPage = false;
-    }
 }
 <h2>Modifier un article</h2>
 <dl class="dl-horizontal"></dl>
 
 <div class="adminArticle">
-    @if (!droitPage)
+    @if (!ViewBag.AdminArticle)
     {
         <div><p class="messageErreur">Vous ne pouvez pas modifier d'article du catalogue !</p></div>
     }
