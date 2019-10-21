@@ -15,6 +15,18 @@ namespace FoodTruck.DAL
             ProspectGuid = prospectGuid;
         }
 
+        public List<PanierProspect> ListerPanierProspect()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<PanierProspect> paniers = (from panier in db.PanierProspect
+                                                join article in db.Article on panier.ArticleId equals article.Id
+                                                where panier.ProspectGuid == ProspectGuid
+                                                select panier).ToList();
+                return paniers;
+            }
+        }
+
         ///Ajouter un article non présent au panier en base d'un prospect
         public void Ajouter(Article lArticle, int quantite = 1)
         {
@@ -73,18 +85,6 @@ namespace FoodTruck.DAL
 
                 db.PanierProspect.RemoveRange(panierProspect);
                 db.SaveChanges();
-            }
-        }
-
-        public List<PanierProspect> ListerPanierProspect()
-        {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                List<PanierProspect> paniers = (from panier in db.PanierProspect
-                                                join article in db.Article on panier.ArticleId equals article.Id
-                                                where panier.ProspectGuid == ProspectGuid
-                                                select panier).ToList();
-                return paniers;
             }
         }
 

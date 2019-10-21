@@ -4,8 +4,8 @@
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    PanierViewModel panier = (PanierViewModel)Session["Panier"];
+    Utilisateur utilisateur = ViewBag.Utilisateur;
+    PanierViewModel panier = ViewBag.Panier;
 }
 
 <!DOCTYPE html>

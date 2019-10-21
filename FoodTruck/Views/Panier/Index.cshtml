@@ -6,7 +6,7 @@
 @{
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    Utilisateur utilisateur = ViewBag.Utilisateur;
 }
 <h2>Votre panier :</h2>
 <dl class="dl-horizontal"></dl>

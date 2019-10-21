@@ -37,7 +37,7 @@ namespace FoodTruck.Controllers
                 Mail(VariablesSession.Utilisateur, commande, VariablesSession.PanierViewModel);
                 PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
                 panierDAL.Supprimer();
-                Session["Panier"] = null;
+                ViewBag.Panier = null; //todo
                 return View(commande);
             }
         }

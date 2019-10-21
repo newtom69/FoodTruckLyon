@@ -31,7 +31,7 @@ namespace FoodTruck.Controllers
             {
                 Ajouter(lArticle);
                 VariablesSession.PanierViewModel.PrixTotal += lArticle.Prix;
-                Session["Panier"] = VariablesSession.PanierViewModel;
+                ViewBag.Panier = VariablesSession.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }
@@ -87,7 +87,7 @@ namespace FoodTruck.Controllers
                         lePanierProspectDAL.Supprimer(lArticle);
                     }
                 }
-                Session["Panier"] = VariablesSession.PanierViewModel;
+                ViewBag.Panier = VariablesSession.PanierViewModel;
                 return Redirect(Request.UrlReferrer.ToString());
             }
         }

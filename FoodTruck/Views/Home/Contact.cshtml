@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "FoodTruckLyon - Contactez-nous !";
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    Utilisateur utilisateur = ViewBag.Utilisateur;
     string valueNom = "", valuePrenom = "", valueEmail = "";
     if (utilisateur.Nom != "")
     {

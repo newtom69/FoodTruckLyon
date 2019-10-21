@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FoodTruck.DAL;
+using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +17,31 @@ namespace FoodTruck.ViewModels
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
         }
+
+        public PanierViewModel(List<Panier> panierUtilisateur)
+        {
+            ArticlesDetailsViewModel = new List<ArticleViewModel>();
+            foreach (Panier lePanier in panierUtilisateur)
+            {
+                PrixTotal += lePanier.PrixTotal;
+                ArticleViewModel article = ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                ArticleDAL articleDAL = new ArticleDAL();
+                ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+            }
+        }
+
+        public PanierViewModel(List<PanierProspect> panierProspect)
+        {
+            ArticlesDetailsViewModel = new List<ArticleViewModel>();
+            foreach (PanierProspect lePanier in panierProspect)
+            {
+                PrixTotal += lePanier.PrixTotal;
+                ArticleViewModel article = ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
+                ArticleDAL articleDAL = new ArticleDAL();
+                ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+            }
+        }
+
 
         public void Trier()
         {

@@ -15,18 +15,32 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             if (VariablesSession.Utilisateur.Id == 0)
-            {
                 return RedirectToAction("Connexion", "Compte");
-            }
             else
-            {
                 return RedirectToAction("Profil");
-            }
         }
 
         [HttpGet]
         public ActionResult Profil()
         {
+            if(TempData["PanierViewModelSauv"] != null)
+            {
+                int utilisateurId = (int)Session["UtilisateurId"];
+                if (utilisateurId != 0)
+                {
+                    PanierDAL lePanierDal = new PanierDAL(utilisateurId);
+                    foreach (ArticleViewModel lArticle in (TempData["PanierViewModelSauv"] as PanierViewModel).ArticlesDetailsViewModel)
+                    {
+                        Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
+                        if (panier == null)
+                            lePanierDal.Ajouter(lArticle.Article, lArticle.Quantite);
+                        else
+                            lePanierDal.ModifierQuantite(lArticle.Article, lArticle.Quantite);
+                    }
+                }
+                TempData["PanierViewModelSauv"] = null;
+                return RedirectToAction("Profil", "Compte");
+            }
             return View(VariablesSession.Utilisateur);
         }
 
@@ -64,16 +78,17 @@ namespace FoodTruck.Controllers
                 {
                     panierDAL.Supprimer();
                     VariablesSession.PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
-                    Session["Panier"] = null;
+                    ViewBag.Panier = null; //todo
                 }
                 PanierController panierController = new PanierController();
                 foreach (var a in articles)
                 {
-                    panierController.Ajouter(a.Article, a.Quantite);
+                    panierController.Ajouter(a.Article, a.Quantite); // todo ne pas instancier de controller si possible
                     VariablesSession.PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                    Session["Panier"] = VariablesSession.PanierViewModel;
+                    ViewBag.Panier = VariablesSession.PanierViewModel;
                 }
                 VariablesSession.RecupererPanierEnBase();
+                ViewBag.Panier = VariablesSession.PanierViewModel;
             }
             return RedirectToAction("Commandes", "Compte");
         }
@@ -94,7 +109,7 @@ namespace FoodTruck.Controllers
             UtilisateurDAL lUtilisateurDAL;
             lUtilisateurDAL = new UtilisateurDAL();
             lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-            Session["Utilisateur"] = lUtilisateur;
+            ViewBag.Utilisateur = lUtilisateur;
             if (lUtilisateur != null)
             {
                 HttpCookie cookie;
@@ -108,55 +123,21 @@ namespace FoodTruck.Controllers
                     Response.Cookies.Add(cookie);
                 }
                 PanierProspectDAL panierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
+                TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
                 panierProspectDAL.Supprimer();
                 cookie = new HttpCookie("Prospect")
                 {
                     Expires = DateTime.Now.AddDays(-30)
                 };
                 Response.Cookies.Add(cookie);
-
-                bool panierPresentEnBase = new PanierDAL(lUtilisateur.Id).ListerPanierUtilisateur().Count > 0 ? true : false;
-                if (panierPresentEnBase)
-                {
-                    TempData["DemandeRestaurationPanier"] = true;
-                    return RedirectToAction("RestaurerPanier", "Compte");
-                }
-                else
-                {
-                    return Redirect(Session["Url"].ToString());
-                }
+                return RedirectToAction("Profil", "Compte");
             }
             else
             {
-                Session["Utilisateur"] = null;
+                ViewBag.Utilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }
-        }
-
-        [HttpGet]
-        public ActionResult RestaurerPanier()
-        {
-            return View(VariablesSession.Utilisateur);
-        }
-
-        [HttpPost]
-        public ActionResult RestaurerPanier(string reponse)
-        {
-            if (reponse == "Oui")
-            {
-                //recupération du panier en base et agrégation avec celui de la session
-                VariablesSession.AgregerPanierEnBase();
-                VariablesSession.RecupererPanierEnBase();
-            }
-            else
-            {
-                //effacement panier en base puis enregistrement de celui de la session
-                PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
-                panierDAL.Supprimer();
-                VariablesSession.AgregerPanierEnBase();
-            }
-            return Redirect(Session["Url"].ToString());
         }
 
         [HttpGet]
@@ -170,6 +151,7 @@ namespace FoodTruck.Controllers
                 };
                 Response.Cookies.Add(newCookie);
                 new SessionVariables(0);
+                ViewBag.Panier = null; // todo
             }
             return Redirect(Session["Url"].ToString());
 
@@ -204,14 +186,14 @@ namespace FoodTruck.Controllers
             {
                 lUtilisateur = VariablesSession.Utilisateur;
             }
-            Session["Utilisateur"] = lUtilisateur;
+            ViewBag.Utilisateur = lUtilisateur;
             if (lUtilisateur != null)
             {
                 return RedirectToAction($"./Profil");
             }
             else
             {
-                Session["Utilisateur"] = null;
+                ViewBag.Utilisateur = null;
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }

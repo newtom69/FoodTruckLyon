@@ -1,7 +1,7 @@
 ﻿@using FoodTruck.Models
 @{
     ViewBag.Title = "RestaurerPanier";
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+    Utilisateur utilisateur = ViewBag.Utilisateur;
 }
 
 <h2>Restaurer Panier</h2>
