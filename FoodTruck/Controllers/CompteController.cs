@@ -106,9 +106,9 @@ namespace FoodTruck.Controllers
         public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
             Utilisateur utilisateur = new UtilisateurDAL().Connexion(Email, Mdp);
-            ViewBag.Utilisateur = utilisateur;
             if (utilisateur != null)
             {
+                ViewBag.Utilisateur = utilisateur;
                 HttpCookie cookie;
                 if (connexionAuto)
                 {
@@ -131,7 +131,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                ViewBag.Utilisateur = null;
+                ViewBag.Utilisateur = new Utilisateur();
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }
@@ -163,11 +163,9 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
         {
-            Utilisateur lUtilisateur;
-            UtilisateurDAL lUtilisateurDAL;
+            Utilisateur utilisateur;
             if (Utilisateur.Id == 0)
             {
-                lUtilisateurDAL = new UtilisateurDAL();
                 if (!VerifMdp(Mdp, Mdp2))
                 {
                     ViewBag.MdpIncorrect = true;
@@ -177,20 +175,20 @@ namespace FoodTruck.Controllers
                     ViewBag.Telephone = Telephone;
                     return View();
                 }
-                lUtilisateur = lUtilisateurDAL.Creation(Email, Mdp, Nom, Prenom, Telephone);
+                utilisateur = new UtilisateurDAL().Creation(Email, Mdp, Nom, Prenom, Telephone);
             }
             else
             {
-                lUtilisateur = Utilisateur;
+                utilisateur = Utilisateur;
             }
-            ViewBag.Utilisateur = lUtilisateur;
-            if (lUtilisateur != null)
+            if (utilisateur != null)
             {
+                ViewBag.Utilisateur = utilisateur;
                 return RedirectToAction("Profil");
             }
             else
             {
-                ViewBag.Utilisateur = null;
+                ViewBag.Utilisateur = new Utilisateur();
                 ViewBag.MauvaisEmailMdp = true;
                 return View();
             }

@@ -48,10 +48,12 @@ namespace FoodTruck.Controllers
             }
             else
                 Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
-
+            
+            VisiteDAL.Enregistrer(Utilisateur.Id);
             if (Utilisateur.Id != 0)
             {
                 DonnerLesDroitsdAcces();
+                PanierViewModel = new PanierViewModel(new PanierDAL(Utilisateur.Id).ListerPanierUtilisateur());
             }
             else
             {
@@ -66,8 +68,7 @@ namespace FoodTruck.Controllers
                     if (cookie != null)
                     {
                         Session["ProspectGuid"] = ProspectGuid = cookie.Value;
-                        PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        List<PanierProspect> paniers = panierProspectDAL.ListerPanierProspect();
+                        List<PanierProspect> paniers = new PanierProspectDAL(ProspectGuid).ListerPanierProspect();
                         if (paniers.Count > 0)
                         {
                             RecupererPanierEnBase();
@@ -76,7 +77,7 @@ namespace FoodTruck.Controllers
                     else
                     {
                         string guid = Guid.NewGuid().ToString();
-                        Session["ProspectGuid"] = guid;
+                        Session["ProspectGuid"] = ProspectGuid = guid;
                         cookie = new HttpCookie("Prospect")
                         {
                             Value = guid,
@@ -85,9 +86,10 @@ namespace FoodTruck.Controllers
                         Response.Cookies.Add(cookie);
                     }
                 }
+                PanierViewModel = new PanierViewModel(new PanierProspectDAL(ProspectGuid).ListerPanierProspect());
             }
-
-            VisiteDAL.Enregistrer(Utilisateur.Id);
+            PanierViewModel.Trier();
+            ViewBag.Panier = PanierViewModel;
 
             if (Utilisateur.AdminSuper)
             {
@@ -104,19 +106,6 @@ namespace FoodTruck.Controllers
                 if (Utilisateur.AdminUtilisateur) ViewBag.AdminUtilisateur = true;
                 else ViewBag.AdminUtilisateur = false;
             }
-
-            if (Utilisateur.Id != 0)
-            {
-                PanierDAL panierDAL = new PanierDAL(Utilisateur.Id);
-                PanierViewModel = new PanierViewModel(panierDAL.ListerPanierUtilisateur());
-            }
-            else
-            {
-                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                PanierViewModel = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
-            }
-            PanierViewModel.Trier();
-            ViewBag.Panier = PanierViewModel;
         }
 
         protected void InitialiserSession()
@@ -173,16 +162,10 @@ namespace FoodTruck.Controllers
         }
         private void MettrelUrlEnSession()
         {
-            string controller = Request.RequestContext.RouteData.Values["controller"].ToString();
-            string getOrPost = Request.HttpMethod;
-            if (controller != "Compte" && getOrPost == "GET")
-                Session["Url"] = Request.Url.ToString();
+            if (ControllerNom != "Compte" && Request.HttpMethod == "GET")
+                Session["Url"] = Request.Url.LocalPath;
             if (Session["Url"] == null)
                 Session["Url"] = "~/";
         }
-
-
-
-
     }
 }
