@@ -15,7 +15,7 @@
 @while (i < Model.Articles.Count)
 {
     <hr />
-    <h2 class="familleNotreCarte">@familles[indexId].Nom</h2>
+    <div @*id="@familles[indexId].Id"*@><h2 class="familleNotreCarte">@familles[indexId].Nom</h2></div>
     List<ArticleViewModel> articles = new List<ArticleViewModel>();
     while (i < Model.Articles.Count && Model.Articles[i].Article.FamilleId == familleId)
     {
@@ -37,7 +37,7 @@
                 effet = "class=pasDansCarte";
                 dansCarte = false;
             }
-            <div class="indexArticle">
+            <div id="@a.NomPourUrl" class="indexArticle">
                 <a @effet href="/Article/@a.NomPourUrl">
                     <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
                 </a>
@@ -53,6 +53,7 @@
                         using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
                         {
                             <input name="nom" value="@a.Article.Nom" hidden>
+                            <input type="hidden" name="ancre" value="#@a.NomPourUrl">
                             <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                         }
                     }

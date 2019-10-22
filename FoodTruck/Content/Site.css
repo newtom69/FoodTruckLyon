@@ -3,6 +3,11 @@
     padding-bottom: 20px;
 }
 
+div:target {
+    padding-top: 180px;
+    margin-top: -180px;
+}
+
 a {
     color: #452B1A;
     text-decoration: none;

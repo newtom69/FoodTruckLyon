@@ -19,7 +19,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Ajouter(string nom)
+        public ActionResult Ajouter(string nom, string ancre)
         {
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
@@ -31,7 +31,7 @@ namespace FoodTruck.Controllers
                     ViewBag.Panier = PanierViewModel;
                 }
             }
-            return Redirect(Request.UrlReferrer.AbsolutePath);
+            return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
         }
 
         [HttpPost]
