@@ -39,7 +39,7 @@ namespace FoodTruck.Controllers
                     }
                 }
                 TempData["PanierViewModelSauv"] = null;
-                return RedirectToAction("Profil", "Compte");
+                return RedirectToAction(ActionNom, ControllerNom);
             }
             return View(Utilisateur);
         }
@@ -105,19 +105,16 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
         {
-            Utilisateur lUtilisateur;
-            UtilisateurDAL lUtilisateurDAL;
-            lUtilisateurDAL = new UtilisateurDAL();
-            lUtilisateur = lUtilisateurDAL.Connexion(Email, Mdp);
-            ViewBag.Utilisateur = lUtilisateur;
-            if (lUtilisateur != null)
+            Utilisateur utilisateur = new UtilisateurDAL().Connexion(Email, Mdp);
+            ViewBag.Utilisateur = utilisateur;
+            if (utilisateur != null)
             {
                 HttpCookie cookie;
                 if (connexionAuto)
                 {
                     cookie = new HttpCookie("GuidClient")
                     {
-                        Value = lUtilisateur.Guid,
+                        Value = utilisateur.Guid,
                         Expires = DateTime.Now.AddDays(30)
                     };
                     Response.Cookies.Add(cookie);
@@ -153,7 +150,7 @@ namespace FoodTruck.Controllers
                 InitialiserSession();
                 ViewBag.Panier = null; // todo
             }
-            return Redirect(Session["Url"].ToString());
+            return RedirectToAction(Session["Url"] as string);
 
         }
 
@@ -189,7 +186,7 @@ namespace FoodTruck.Controllers
             ViewBag.Utilisateur = lUtilisateur;
             if (lUtilisateur != null)
             {
-                return RedirectToAction($"./Profil");
+                return RedirectToAction("Profil");
             }
             else
             {

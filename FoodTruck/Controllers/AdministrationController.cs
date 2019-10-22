@@ -46,7 +46,7 @@ namespace FoodTruck.Controllers
             else if (statut == "annule")
                 annule = true;
             new CommandeDAL().MettreAJourStatut(id, retire, annule);
-            return RedirectToAction(RouteData.Values["action"].ToString());
+            return RedirectToAction(ActionNom);
         }
 
         [HttpGet]
@@ -72,7 +72,7 @@ namespace FoodTruck.Controllers
             else if (statut == "annule")
                 annule = true;
             new CommandeDAL().MettreAJourStatut(id, retire, annule);
-            return RedirectToAction(RouteData.Values["action"].ToString());
+            return RedirectToAction(ActionNom);
         }
 
         [HttpGet]

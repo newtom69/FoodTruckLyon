@@ -2,10 +2,8 @@
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web;
 using System.Web.Routing;
 using FoodTruck.Models;
 
@@ -13,6 +11,8 @@ namespace FoodTruck.Controllers
 {
     public class ControllerParent : Controller
     {
+        protected string ActionNom { get; set; }
+        protected string ControllerNom { get; set; }
         protected Utilisateur Utilisateur { get; set; }
         protected string ProspectGuid { get; set; }
         protected PanierViewModel PanierViewModel { get; set; }
@@ -24,6 +24,10 @@ namespace FoodTruck.Controllers
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
+
+            ActionNom = RouteData.Values["action"].ToString();
+            ControllerNom = RouteData.Values["controller"].ToString();
+
             if (Session["UtilisateurId"] != null)
             {
                 ViewBag.Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
@@ -32,11 +36,11 @@ namespace FoodTruck.Controllers
             else
             {
                 ViewBag.Utilisateur = null;
-            //TODO ajouter ViewBag.Panier par prospect
+                //TODO ajouter ViewBag.Panier par prospect
             }
 
-
             MettrelUrlEnSession();
+
             if (Session["UtilisateurId"] == null || (int)Session["UtilisateurId"] == 0)
             {
                 HttpCookie cookie = Request.Cookies.Get("GuidClient");
@@ -127,7 +131,7 @@ namespace FoodTruck.Controllers
             ViewBag.Panier = PanierViewModel;
         }
 
-        public void InitialiserSession()
+        protected void InitialiserSession()
         {
             RetirerLesDroitsdAcces();
             Session["UtilisateurId"] = 0;
@@ -143,7 +147,7 @@ namespace FoodTruck.Controllers
             Request.Cookies.Add(cookie);
         }
 
-        public void AgregerPanierEnBase()
+        private void AgregerPanierEnBase()
         {
             if (Utilisateur != null && Utilisateur.Id != 0)
             {
@@ -158,7 +162,7 @@ namespace FoodTruck.Controllers
                 }
             }
         }
-        public void RecupererPanierEnBase()
+        protected void RecupererPanierEnBase()
         {
             if (Utilisateur.Id != 0)
                 PanierViewModel = new PanierViewModel(new PanierDAL(Utilisateur.Id).ListerPanierUtilisateur());
@@ -192,16 +196,5 @@ namespace FoodTruck.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
- 
     }
 }

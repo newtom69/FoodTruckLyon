@@ -23,17 +23,13 @@ namespace FoodTruck.Controllers
         {
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
-            if (lArticle == null || !lArticle.DansCarte)
-            {
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-            else
+            if (lArticle != null && lArticle.DansCarte)
             {
                 Ajouter(lArticle);
                 PanierViewModel.PrixTotal += lArticle.Prix;
                 ViewBag.Panier = PanierViewModel;
-                return Redirect(Request.UrlReferrer.ToString());
             }
+            return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 
         [HttpPost]
@@ -47,11 +43,7 @@ namespace FoodTruck.Controllers
                 sauvPanierProspect = true;
 
             ArticleDAL lArticleDAL = new ArticleDAL();
-            if (id >= PanierViewModel.ArticlesDetailsViewModel.Count)
-            {
-                return Redirect(Request.UrlReferrer.ToString());
-            }
-            else
+            if (id < PanierViewModel.ArticlesDetailsViewModel.Count)
             {
                 Article lArticle = lArticleDAL.Details(PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
                 PanierDAL lePanierDAL;
@@ -88,8 +80,8 @@ namespace FoodTruck.Controllers
                     }
                 }
                 ViewBag.Panier = PanierViewModel;
-                return Redirect(Request.UrlReferrer.ToString());
             }
+            return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 
         internal void Ajouter(Article lArticle, int quantite = 1)
