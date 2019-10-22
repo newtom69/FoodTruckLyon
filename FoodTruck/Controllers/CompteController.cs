@@ -150,7 +150,7 @@ namespace FoodTruck.Controllers
                 InitialiserSession();
                 ViewBag.Panier = null; // todo
             }
-            return RedirectToAction(Session["Url"] as string);
+            return Redirect(Session["Url"] as string);
 
         }
 

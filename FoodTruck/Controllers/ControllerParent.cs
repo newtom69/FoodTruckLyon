@@ -27,6 +27,7 @@ namespace FoodTruck.Controllers
 
             ActionNom = RouteData.Values["action"].ToString();
             ControllerNom = RouteData.Values["controller"].ToString();
+            MettrelUrlEnSession();
 
             if (Session["UtilisateurId"] != null)
             {
@@ -39,7 +40,7 @@ namespace FoodTruck.Controllers
                 //TODO ajouter ViewBag.Panier par prospect
             }
 
-            MettrelUrlEnSession();
+
 
             if (Session["UtilisateurId"] == null || (int)Session["UtilisateurId"] == 0)
             {
