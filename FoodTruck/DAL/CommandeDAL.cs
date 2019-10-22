@@ -136,7 +136,7 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            orderby cmd.DateRetrait
+                                            orderby cmd.Id descending
                                             select cmd).ToList();
                 return commandes;
             }
