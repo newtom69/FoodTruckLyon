@@ -37,7 +37,10 @@
                 {
                     preDate = "A retirer le ";
                     classDate = "class=commandeARetirer";
-                    enCours = true;
+                    if(c.Commande.DateRetrait > DateTime.Now)
+                    {
+                        enCours = true;
+                    }
                 }
                 <div class="gestionCommandeArticle">
                     <h4>Commande n° : @c.Commande.Id</h4>
