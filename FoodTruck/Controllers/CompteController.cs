@@ -41,6 +41,9 @@ namespace FoodTruck.Controllers
                 TempData["PanierViewModelSauv"] = null;
                 return RedirectToAction(ActionNom, ControllerNom);
             }
+            CommandeDAL commandeDAL = new CommandeDAL();
+            List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
+            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
             return View(Utilisateur);
         }
 
@@ -49,8 +52,8 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(Utilisateur.Id);
-            AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
-            return View(administrationViewModel);
+            ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
+            return View(listeCommandesViewModel);
         }
 
         [HttpPost]
@@ -183,7 +186,8 @@ namespace FoodTruck.Controllers
             }
             if (utilisateur != null)
             {
-                ViewBag.Utilisateur = utilisateur;
+                Session["UtilisateurId"] = utilisateur.Id;
+                //ViewBag.Utilisateur = utilisateur;
                 return RedirectToAction("Profil");
             }
             else

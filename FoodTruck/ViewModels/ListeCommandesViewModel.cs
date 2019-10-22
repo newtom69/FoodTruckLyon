@@ -7,11 +7,11 @@ using FoodTruck.Models;
 
 namespace FoodTruck.ViewModels
 {
-    public class AdministrationViewModel
+    public class ListeCommandesViewModel
     {
         public List<CommandeViewModel> Commandes { get; private set; }
 
-        public AdministrationViewModel(List<Commande> commandes)
+        public ListeCommandesViewModel(List<Commande> commandes)
         {
             Commandes = new List<CommandeViewModel>();
             foreach (Commande commande in commandes)

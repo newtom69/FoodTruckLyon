@@ -1,12 +1,11 @@
 ﻿@using FoodTruck.ViewModels
 @using System.Configuration
 @using System.Globalization
-@using FoodTruck.Extensions
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Vos commandes";
 }
-@model AdministrationViewModel
+@model ListeCommandesViewModel
 
 
 <h2>Votre Compte</h2>
@@ -15,7 +14,10 @@
     <h3>Vos commandes</h3>
     <aside id="panierValide">
         <div @*class="choixHoraire"*@>
-            <hr />
+            @if (Model.Commandes.Count == 0)
+            {
+                <div class="messageInfo">Vous n'avez pas encore effectué de commande</div>
+            }
             @foreach (var c in Model.Commandes)
             {
                 string classDate = "class=commandeAnnulee";

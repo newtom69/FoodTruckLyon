@@ -1,17 +1,90 @@
-﻿@model FoodTruck.Models.Utilisateur
-
+﻿@using FoodTruck.ViewModels
+@using System.Configuration
+@using System.Globalization
 @{
     ViewBag.Title = "FoodTruckLyon - Votre profil";
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    ListeCommandesViewModel listeCommandesEnCours = ViewBag.ListeCommandesEnCours as ListeCommandesViewModel;
 }
+@model FoodTruck.Models.Utilisateur
 
 <h2>Votre profil</h2>
 <div>
     <dl class="dl-horizontal">
     </dl>
 </div>
+@if (Model.Id == 0)
+{
+    <div class="messageErreur">Vous n'êtes pas connecté à votre compte. Merci de vous connecter pour gérer vos informations</div>
+}
+else
+{
     <ul>
         <li>@Model.Nom</li>
         <li>@Model.Prenom </li>
         <li>@Model.Email</li>
-        <li>@Model.Telephone</li> 
+        <li>@Model.Telephone</li>
     </ul>
+
+    if (listeCommandesEnCours != null)
+    {
+        <h3>Vos commandes en cours</h3>
+        <aside id="panierValide">
+            <div>
+                @if (listeCommandesEnCours.Commandes.Count == 0)
+                {
+                    <div class="messageInfo">Vous n'avez pas de commande en cours</div>
+                }
+                @foreach (var c in listeCommandesEnCours.Commandes)
+                {
+                    string classDate = "class=commandeAnnulee";
+                    string preDate = "";
+                    bool enCours = false;
+                    if (@c.Commande.Annulation)
+                    {
+                        preDate = "Commande annulée. Le retrait été prévu le ";
+                        classDate = "class=commandeAnnulee";
+                    }
+                    else if (c.Commande.Retrait)
+                    {
+                        preDate = "Retirée le ";
+                        classDate = "class=commandeRetiree";
+                    }
+                    else
+                    {
+                        preDate = "A retirer le ";
+                        classDate = "class=commandeARetirer";
+                        enCours = true;
+                    }
+                    <div class="gestionCommandeArticle">
+                        <h4>Commande n° : @c.Commande.Id</h4>
+                        @if (enCours)
+                        {
+                            using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                                <div class="ccfield-prepend">
+                                    <button class="annulerCommande" type="submit">Annuler cette commande</button>
+                                </div>
+                            }
+                        }
+                        <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                        <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                        <div class="imagesGestionCommande">
+                            @foreach (var a in c.ListArticlesVM)
+                            {
+                                <div>
+                                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                    <p>@a.Quantite x @a.Article.Nom</p>
+                                </div>
+                            }
+                        </div>
+                        <hr />
+                    </div>
+                }
+            </div>
+        </aside>
+    }
+
+    <h3>@Html.ActionLink("Voir toutes vos commandes", "Commandes", "Compte")</h3>
+}

@@ -78,7 +78,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal List<Commande> ListerCommandesAMarquer()
+        internal List<Commande> ListerCommandesAStatuer()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -97,7 +97,7 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
-                const int intervalleMax = 8;
+                const int intervalleMax = 5;
                 var commandes = (from cmd in db.Commande
                                  where !cmd.Retrait && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < intervalleMax
                                  orderby cmd.DateRetrait
@@ -113,8 +113,19 @@ namespace FoodTruck.DAL
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.UtilisateurId == id
-                                            //orderby cmd.Annulation, cmd.Retrait, cmd.DateRetrait descending
                                             orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
+                                            select cmd).ToList();
+                return commandes;
+            }
+        }
+        internal List<Commande> ListerCommandesEnCoursUtilisateur(int id)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                DateTime now = DateTime.Now;
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where cmd.UtilisateurId == id && !cmd.Annulation && !cmd.Retrait && DbFunctions.DiffHours(now, cmd.DateRetrait) > -1
+                                            orderby Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
                                             select cmd).ToList();
                 return commandes;
             }

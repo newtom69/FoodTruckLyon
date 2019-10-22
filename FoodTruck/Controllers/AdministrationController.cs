@@ -3,12 +3,10 @@ using FoodTruck.Extensions;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -25,15 +23,12 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult CommandesEnCours()
         {
-            AdministrationViewModel administrationViewModel = null;
+            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminSuper || AdminCommande)
             {
-                //lister les commandes en cours
-                CommandeDAL commandeDAL = new CommandeDAL();
-                List<Commande> commandesEnCours = commandeDAL.ListerCommandesEnCours();
-                administrationViewModel = new AdministrationViewModel(commandesEnCours);
+                listeCommandesViewModel = new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours());
             }
-            return View(administrationViewModel);
+            return View(listeCommandesViewModel);
         }
 
         [HttpPost]
@@ -50,20 +45,20 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
-        public ActionResult CommandesAMarquer()
+        public ActionResult CommandesAStatuer()
         {
-            AdministrationViewModel administrationViewModel = null;
+            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminSuper || AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
-                var commandes = commandeDAL.ListerCommandesAMarquer();
-                administrationViewModel = new AdministrationViewModel(commandes);
+                var commandes = commandeDAL.ListerCommandesAStatuer();
+                listeCommandesViewModel = new ListeCommandesViewModel(commandes);
             }
-            return View(administrationViewModel);
+            return View(listeCommandesViewModel);
         }
 
         [HttpPost]
-        public ActionResult CommandesAMarquer(int id, string statut)
+        public ActionResult CommandesAStatuer(int id, string statut)
         {
             bool retire = false;
             bool annule = false;
@@ -78,14 +73,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Commandes()
         {
-            AdministrationViewModel administrationViewModel = null;
+            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminSuper || AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 var commandes = commandeDAL.ListerCommandesToutes();
-                administrationViewModel = new AdministrationViewModel(commandes);
+                listeCommandesViewModel = new ListeCommandesViewModel(commandes);
             }
-            return View(administrationViewModel);
+            return View(listeCommandesViewModel);
         }
 
         [HttpGet]

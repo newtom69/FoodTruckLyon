@@ -189,7 +189,7 @@
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AdministrationViewModel.cs" />
+    <Compile Include="ViewModels\ListeCommandesViewModel.cs" />
     <Compile Include="ViewModels\CommandeViewModel.cs" />
     <Compile Include="ViewModels\ArticleIndexViewModel.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
@@ -320,7 +320,8 @@
     <Content Include="Views\Administration\CommandesEnCours.cshtml" />
     <Content Include="Views\Administration\Commandes.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
-    <Content Include="Views\Administration\CommandesAMarquer.cshtml" />
+    <Content Include="Views\Administration\CommandesAStatuer.cshtml" />
+    <Content Include="Views\Administration\Index.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -331,7 +332,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Views\ContrellerCommun\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
