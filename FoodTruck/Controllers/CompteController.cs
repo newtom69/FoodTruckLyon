@@ -14,7 +14,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (VariablesSession.Utilisateur.Id == 0)
+            if (Utilisateur.Id == 0)
                 return RedirectToAction("Connexion", "Compte");
             else
                 return RedirectToAction("Profil");
@@ -41,14 +41,14 @@ namespace FoodTruck.Controllers
                 TempData["PanierViewModelSauv"] = null;
                 return RedirectToAction("Profil", "Compte");
             }
-            return View(VariablesSession.Utilisateur);
+            return View(Utilisateur);
         }
 
         [HttpGet]
         public ActionResult Commandes()
         {
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(VariablesSession.Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(Utilisateur.Id);
             AdministrationViewModel administrationViewModel = new AdministrationViewModel(commandes);
             return View(administrationViewModel);
         }
@@ -58,7 +58,7 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == VariablesSession.Utilisateur.Id)
+            if (commande != null && commande.UtilisateurId == Utilisateur.Id)
             {
                 commandeDAL.Annuler(commandeId);
             }
@@ -70,25 +70,25 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == VariablesSession.Utilisateur.Id)
+            if (commande != null && commande.UtilisateurId == Utilisateur.Id)
             {
                 List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
-                PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
+                PanierDAL panierDAL = new PanierDAL(Utilisateur.Id);
                 if (viderPanier)
                 {
                     panierDAL.Supprimer();
-                    VariablesSession.PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
+                    PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
                     ViewBag.Panier = null; //todo
                 }
                 PanierController panierController = new PanierController();
                 foreach (var a in articles)
                 {
                     panierController.Ajouter(a.Article, a.Quantite); // todo ne pas instancier de controller si possible
-                    VariablesSession.PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                    ViewBag.Panier = VariablesSession.PanierViewModel;
+                    PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
+                    ViewBag.Panier = PanierViewModel;
                 }
-                VariablesSession.RecupererPanierEnBase();
-                ViewBag.Panier = VariablesSession.PanierViewModel;
+                RecupererPanierEnBase();
+                ViewBag.Panier = PanierViewModel;
             }
             return RedirectToAction("Commandes", "Compte");
         }
@@ -96,7 +96,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Connexion()
         {
-            if (VariablesSession.Utilisateur.Id == 0)
+            if (Utilisateur.Id == 0)
                 return View();
             else
                 return RedirectToAction("Profil");
@@ -122,7 +122,7 @@ namespace FoodTruck.Controllers
                     };
                     Response.Cookies.Add(cookie);
                 }
-                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(VariablesSession.ProspectGuid);
+                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
                 TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
                 panierProspectDAL.Supprimer();
                 cookie = new HttpCookie("Prospect")
@@ -143,14 +143,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            if (VariablesSession.Utilisateur.Id != 0)
+            if (Utilisateur.Id != 0)
             {
                 HttpCookie newCookie = new HttpCookie("GuidClient")
                 {
                     Expires = DateTime.Now.AddDays(-30)
                 };
                 Response.Cookies.Add(newCookie);
-                new SessionVariables(0);
+                InitialiserSession();
                 ViewBag.Panier = null; // todo
             }
             return Redirect(Session["Url"].ToString());
@@ -168,7 +168,7 @@ namespace FoodTruck.Controllers
         {
             Utilisateur lUtilisateur;
             UtilisateurDAL lUtilisateurDAL;
-            if (VariablesSession.Utilisateur.Id == 0)
+            if (Utilisateur.Id == 0)
             {
                 lUtilisateurDAL = new UtilisateurDAL();
                 if (!VerifMdp(Mdp, Mdp2))
@@ -184,7 +184,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                lUtilisateur = VariablesSession.Utilisateur;
+                lUtilisateur = Utilisateur;
             }
             ViewBag.Utilisateur = lUtilisateur;
             if (lUtilisateur != null)

@@ -13,7 +13,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Index(DateTime dateRetrait)
         {
-            if (VariablesSession.PanierViewModel.ArticlesDetailsViewModel.Count == 0)
+            if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
             }
@@ -21,21 +21,21 @@ namespace FoodTruck.Controllers
             {
                 Commande commande = new Commande
                 {
-                    UtilisateurId = VariablesSession.Utilisateur.Id,
+                    UtilisateurId = Utilisateur.Id,
                     DateCommande = DateTime.Now,
                     DateRetrait = dateRetrait,
                     PrixTotal = 0
                 };
-                foreach (ArticleViewModel article in VariablesSession.PanierViewModel.ArticlesDetailsViewModel)
+                foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
                     commande.PrixTotal += article.Article.Prix * article.Quantite;
                     ArticleDAL larticleDAL = new ArticleDAL();
                     larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
                 }
                 CommandeDAL commandeDal = new CommandeDAL();
-                commandeDal.Ajouter(commande, VariablesSession.PanierViewModel.ArticlesDetailsViewModel);
-                Mail(VariablesSession.Utilisateur, commande, VariablesSession.PanierViewModel);
-                PanierDAL panierDAL = new PanierDAL(VariablesSession.Utilisateur.Id);
+                commandeDal.Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
+                Mail(Utilisateur, commande, PanierViewModel);
+                PanierDAL panierDAL = new PanierDAL(Utilisateur.Id);
                 panierDAL.Supprimer();
                 ViewBag.Panier = null; //todo
                 return View(commande);

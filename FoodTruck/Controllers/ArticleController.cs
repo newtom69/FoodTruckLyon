@@ -17,7 +17,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if(VariablesSession.AdminArticle || VariablesSession.AdminSuper)
+            if(AdminArticle || AdminSuper)
                 return View(new ArticleIndexViewModel());
             else
                 return View(new ArticleIndexViewModel(true));

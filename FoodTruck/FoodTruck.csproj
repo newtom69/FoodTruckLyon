@@ -137,7 +137,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LinkedinController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
-    <Compile Include="Controllers\SessionVariables.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\ConcurrencyException.cs" />

@@ -26,7 +26,7 @@ namespace FoodTruck.Controllers
         public ActionResult CommandesEnCours()
         {
             AdministrationViewModel administrationViewModel = null;
-            if (VariablesSession.AdminSuper || VariablesSession.AdminCommande)
+            if (AdminSuper || AdminCommande)
             {
                 //lister les commandes en cours
                 CommandeDAL commandeDAL = new CommandeDAL();
@@ -53,7 +53,7 @@ namespace FoodTruck.Controllers
         public ActionResult CommandesAMarquer()
         {
             AdministrationViewModel administrationViewModel = null;
-            if (VariablesSession.AdminSuper || VariablesSession.AdminCommande)
+            if (AdminSuper || AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 var commandes = commandeDAL.ListerCommandesAMarquer();
@@ -79,7 +79,7 @@ namespace FoodTruck.Controllers
         public ActionResult Commandes()
         {
             AdministrationViewModel administrationViewModel = null;
-            if (VariablesSession.AdminSuper || VariablesSession.AdminCommande)
+            if (AdminSuper || AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 var commandes = commandeDAL.ListerCommandesToutes();
@@ -105,7 +105,7 @@ namespace FoodTruck.Controllers
             string allergenesOk = allergenes ?? "";
             int familleIdOk = familleId;
             bool dansCarteOk = dansCarte;
-            if (VariablesSession.AdminSuper || VariablesSession.AdminArticle)
+            if (AdminSuper || AdminArticle)
             {
                 Article lArticle = new Article
                 {
@@ -145,7 +145,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult ModifierArticle()
         {
-            if (VariablesSession.AdminSuper || VariablesSession.AdminArticle)
+            if (AdminSuper || AdminArticle)
                 return View(new ArticleDAL().ListerTout());
             else
                 return View();
@@ -154,7 +154,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierArticle(int id)
         {
-            if (VariablesSession.AdminSuper || VariablesSession.AdminArticle)
+            if (AdminSuper || AdminArticle)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
                 ViewBag.ArticleAModifier = articleDAL.Details(id);
@@ -167,7 +167,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierArticleEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            if (VariablesSession.AdminSuper || VariablesSession.AdminArticle)
+            if (AdminSuper || AdminArticle)
             {
                 string nomOk = nom.NomAdmis();
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
