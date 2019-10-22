@@ -1,9 +1,11 @@
 ﻿@using FoodTruck.ViewModels
+@using FoodTruck.Models
 @using System.Configuration
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Vos commandes";
+    List<Article> articlesNonAjoutes = TempData["ArticlesNonAjoutes"] as List<Article>;
 }
 @model ListeCommandesViewModel
 
@@ -37,7 +39,7 @@
                 {
                     preDate = "A retirer le ";
                     classDate = "class=commandeARetirer";
-                    if(c.Commande.DateRetrait > DateTime.Now)
+                    if (c.Commande.DateRetrait > DateTime.Now)
                     {
                         enCours = true;
                     }
@@ -56,15 +58,22 @@
                     }
                     <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
                     <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="imagesGestionCommande">
+                    <section class="imagesGestionCommande">
                         @foreach (var a in c.ListArticlesVM)
                         {
-                            <div>
-                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                            string effet = "";
+                            if (!a.Article.DansCarte)
+                            {
+                                effet = "class=pasDansCarte";
+                            }
+                            <div class="indexArticle">
+                                <a @effet href="/Article/@a.NomPourUrl">
+                                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                </a>
                                 <p>@a.Quantite x @a.Article.Nom</p>
                             </div>
                         }
-                    </div>
+                    </section>
                     @using (Html.BeginForm("ReprendreArticlesCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <div>

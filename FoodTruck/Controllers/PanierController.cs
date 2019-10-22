@@ -25,9 +25,11 @@ namespace FoodTruck.Controllers
             Article lArticle = lArticleDAL.Details(nom);
             if (lArticle != null && lArticle.DansCarte)
             {
-                Ajouter(lArticle);
-                PanierViewModel.PrixTotal += lArticle.Prix;
-                ViewBag.Panier = PanierViewModel;
+                if (Ajouter(lArticle))
+                {
+                    PanierViewModel.PrixTotal += lArticle.Prix;
+                    ViewBag.Panier = PanierViewModel;
+                }
             }
             return Redirect(Request.UrlReferrer.AbsolutePath);
         }
@@ -84,8 +86,9 @@ namespace FoodTruck.Controllers
             return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 
-        internal void Ajouter(Article lArticle, int quantite = 1)
+        internal bool Ajouter(Article lArticle, int quantite = 1)
         {
+            bool ajout;
             bool sauvPanierClient = false;
             bool sauvPanierProspect = false;
             if (Utilisateur.Id != 0)
@@ -94,37 +97,46 @@ namespace FoodTruck.Controllers
                 sauvPanierProspect = true;
             PanierDAL lePanierDAL;
             PanierProspectDAL lePanierProspectDAL;
-            ArticleViewModel artcl = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
-            if (artcl == null)
+            if (!lArticle.DansCarte)
             {
-                ArticleViewModel article = new ArticleViewModel(lArticle);
-                PanierViewModel.ArticlesDetailsViewModel.Add(article);
-                if (sauvPanierClient)
-                {
-                    lePanierDAL = new PanierDAL(Utilisateur.Id);
-                    lePanierDAL.Ajouter(lArticle, quantite);
-                }
-                else if (sauvPanierProspect)
-                {
-                    lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                    lePanierProspectDAL.Ajouter(lArticle, quantite);
-                }
+                ajout = false;
             }
             else
             {
-                artcl.Quantite += quantite;
-                artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
-                if (sauvPanierClient)
+                ArticleViewModel artcl = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
+                if (artcl == null)
                 {
-                    lePanierDAL = new PanierDAL(Utilisateur.Id);
-                    lePanierDAL.ModifierQuantite(lArticle, quantite);
+                    ArticleViewModel article = new ArticleViewModel(lArticle);
+                    PanierViewModel.ArticlesDetailsViewModel.Add(article);
+                    if (sauvPanierClient)
+                    {
+                        lePanierDAL = new PanierDAL(Utilisateur.Id);
+                        lePanierDAL.Ajouter(lArticle, quantite);
+                    }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        lePanierProspectDAL.Ajouter(lArticle, quantite);
+                    }
                 }
-                else if (sauvPanierProspect)
+                else
                 {
-                    lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                    lePanierProspectDAL.ModifierQuantite(lArticle, quantite);
+                    artcl.Quantite += quantite;
+                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
+                    if (sauvPanierClient)
+                    {
+                        lePanierDAL = new PanierDAL(Utilisateur.Id);
+                        lePanierDAL.ModifierQuantite(lArticle, quantite);
+                    }
+                    else if (sauvPanierProspect)
+                    {
+                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        lePanierProspectDAL.ModifierQuantite(lArticle, quantite);
+                    }
                 }
+                ajout = true;
             }
+            return ajout;
         }
 
         private List<DateTime> ObtenirDatesRetraitPossibles()

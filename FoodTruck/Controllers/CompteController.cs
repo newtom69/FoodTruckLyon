@@ -83,15 +83,25 @@ namespace FoodTruck.Controllers
                     PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
                     ViewBag.Panier = null; //todo
                 }
-                PanierController panierController = new PanierController(); // TODO ne pas instancier de controller ! BUG sur init membres !
-                panierController.Utilisateur = Utilisateur;
-                panierController.PanierViewModel = PanierViewModel;
+                PanierController panierController = new PanierController // TODO ne pas instancier de controller ! BUG sur init membres !
+                {
+                    Utilisateur = Utilisateur,
+                    PanierViewModel = PanierViewModel
+                };
+                List<Article> articlesKo = new List<Article>();
                 foreach (var a in articles)
                 {
-                    panierController.Ajouter(a.Article, a.Quantite); 
-                    PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                    ViewBag.Panier = PanierViewModel;
+                    if (panierController.Ajouter(a.Article, a.Quantite))
+                    {
+                        PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
+                        ViewBag.Panier = PanierViewModel;
+                    }
+                    else
+                    {
+                        articlesKo.Add(a.Article);
+                    }
                 }
+                TempData["ArticlesNonAjoutes"] = articlesKo;
                 RecupererPanierEnBase();
                 ViewBag.Panier = PanierViewModel;
             }

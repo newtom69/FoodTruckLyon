@@ -200,6 +200,10 @@ section.notreCarte {
             opacity: .4;
         }
 
+section.imagesGestionCommande .indexArticle a.pasDansCarte {
+    opacity: .4;
+}
+
 .imagesGestionCommande {
     display: flex;
 }
@@ -215,9 +219,11 @@ section.notreCarte {
     min-height: 150px;
     max-height: 150px;
 }
+
 .gestionCommandeArticle .commandeAnnulee {
     color: red;
 }
+
 .gestionCommandeArticle .commandeRetiree {
     color: black;
 }
@@ -478,7 +484,7 @@ button.ajoutSupprPanierTexte {
 }
 
 button.annulerCommande {
-    background-color:red;
+    background-color: red;
     padding: 0.6rem;
     border: solid 1px red;
     border-radius: 1.5rem;
