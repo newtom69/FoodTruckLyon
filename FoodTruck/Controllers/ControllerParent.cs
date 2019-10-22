@@ -47,7 +47,7 @@ namespace FoodTruck.Controllers
                 }
             }
             else
-                Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
+                ViewBag.Utilisateur = Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
             
             VisiteDAL.Enregistrer(Utilisateur.Id);
             if (Utilisateur.Id != 0)

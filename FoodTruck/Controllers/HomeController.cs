@@ -19,6 +19,12 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
+        public ActionResult APropos()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult Contact()
         {
             ViewBag.Message = "Vous avez des questions sur nos produits ?" +
