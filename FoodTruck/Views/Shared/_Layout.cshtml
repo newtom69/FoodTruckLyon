@@ -57,7 +57,7 @@
     </div>
     <div class="container body-content">
         <section id="client">
-            @if (utilisateur != null && utilisateur.Id != 0)
+            @if (utilisateur.Id != 0)
             {
                 <p>Bienvenue <a href="/Compte/Profil">@utilisateur.Prenom @utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></p>
             }

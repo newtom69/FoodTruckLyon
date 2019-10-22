@@ -29,25 +29,12 @@ namespace FoodTruck.Controllers
             ControllerNom = RouteData.Values["controller"].ToString();
             MettrelUrlEnSession();
 
-            if (Session["UtilisateurId"] != null)
-            {
-                ViewBag.Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
-                //TODO ajouter ViewBag.Panier ? et les autres ?
-            }
-            else
-            {
-                ViewBag.Utilisateur = null;
-                //TODO ajouter ViewBag.Panier par prospect
-            }
-
-
-
             if (Session["UtilisateurId"] == null || (int)Session["UtilisateurId"] == 0)
             {
                 HttpCookie cookie = Request.Cookies.Get("GuidClient");
                 if (cookie != null)
                 {
-                    Utilisateur = new UtilisateurDAL().ConnexionCookies(cookie.Value);
+                    ViewBag.Utilisateur = Utilisateur = new UtilisateurDAL().ConnexionCookies(cookie.Value);
                     Session["UtilisateurId"] = Utilisateur.Id;
                     PanierViewModel = new PanierViewModel(); //Todo effacer
                     AgregerPanierEnBase();
@@ -56,7 +43,7 @@ namespace FoodTruck.Controllers
                 else
                 {
                     Session["UtilisateurId"] = 0;
-                    Utilisateur = new Utilisateur();
+                    ViewBag.Utilisateur = Utilisateur = new Utilisateur();
                 }
             }
             else

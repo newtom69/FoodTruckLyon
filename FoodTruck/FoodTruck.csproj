@@ -318,7 +318,6 @@
     <Content Include="Views\Compte\Creation.cshtml" />
     <Content Include="Views\Compte\Deconnexion.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
-    <Content Include="Views\Compte\RestaurerPanier.cshtml" />
     <Content Include="Views\Administration\CommandesEnCours.cshtml" />
     <Content Include="Views\Administration\Commandes.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
