@@ -173,14 +173,11 @@ namespace FoodTruck.Controllers
             }
             DateTime maintenant = DateTime.Now;
 
-
             maintenant = new DateTime(2019, 10, 25, 23, 0, 0); //TODO TEST
-
 
             int maintenantAnnee = maintenant.Year;
             int maintenantMois = maintenant.Month;
             int maintenantJour = maintenant.Day;
-
 
             DateTime premierCreneauDejeunerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, 0);
             DateTime dernierCreneauDejeunerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, 0);
@@ -200,33 +197,35 @@ namespace FoodTruck.Controllers
             OuvertureDAL ouvertureDAL = new OuvertureDAL();
             if (plageHoraireRetraitDinerJ.Avant(maintenant))
             {
+                //il est tard dans la soirée, plus de retrait jour J possible, on passe au jour suivant
                 jourOuvert = maintenant.AddDays(1);
             }
-            while (!ouvertureDAL.EstOuvert(jourOuvert, 1))
+            // on ajoute une journée jusqu'à ce que le foodtruck soit ouvert
+            while (!ouvertureDAL.EstOuvert(jourOuvert, 1)) //TODO modifier algo pour prendre en compte diner
             {
                 jourOuvert = jourOuvert.AddDays(1);
             }
+            //on est sur un autre jour que je jour courant ? => il n'y a pas à chercher si l'instant T de la commande est dans une plage de retrait ou pas
             if (jourOuvert != maintenant)
             {
                 jourOuvert = new DateTime(jourOuvert.Year, jourOuvert.Month, jourOuvert.Day, 0, 0, 0);
-
                 plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
                 plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
             }
-            else
+            else //on est sur le même jour que je jour courant => il faut chercher si l'instant T de la commande est dans une plage de retrait ou pas
             {
                 if (plageHoraireRetraitDejeunerJ.Contient(jourOuvert) || plageHoraireRetraitDejeunerJ.Apres(jourOuvert))
                 {
                     // dejeuner
                     plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                    //TODO heure minutes premier creneau si jour J
+                    //TODO rogner la plage
                     plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
                 }
                 else
                 {
                     // diner 
                     plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                    //TODO heure mintutes premier creneau sur jour J
+                    //TODO rogner la plage
                     plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
                     plageHoraireRetraitRepas2 = plageHoraireRetraitRepas2.AddDays(1);
                     while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas2.PremierCreneau, plageHoraireRetraitRepas2.TypeRepas))
