@@ -50,14 +50,6 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nom" Type="char" MaxLength="25" Nullable="false" />
         </EntityType>
-        <EntityType Name="Fermeture">
-          <Key>
-            <PropertyRef Name="JourSemaine" />
-          </Key>
-          <Property Name="JourSemaine" Type="int" Nullable="false" />
-          <Property Name="Dejeuner" Type="bit" Nullable="false" />
-          <Property Name="Diner" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="JourExceptionnel">
           <Key>
             <PropertyRef Name="Id" />
@@ -66,6 +58,14 @@
           <Property Name="DateDebut" Type="date" Nullable="false" />
           <Property Name="Duree" Type="int" Nullable="false" />
           <Property Name="Type" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ouverture">
+          <Key>
+            <PropertyRef Name="JourSemaine" />
+          </Key>
+          <Property Name="JourSemaine" Type="int" Nullable="false" />
+          <Property Name="Dejeuner" Type="bit" Nullable="false" />
+          <Property Name="Diner" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Panier">
           <Key>
@@ -217,8 +217,8 @@
           <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Fermeture" EntityType="Self.Fermeture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ouverture" EntityType="Self.Ouverture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
@@ -483,8 +483,8 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="PanierProspect" EntitySet="PanierProspect" />
           </AssociationSet>
-          <EntitySet Name="Fermeture" EntityType="foodtruckModel.Fermeture" />
           <EntitySet Name="JourExceptionnel" EntityType="foodtruckModel.JourExceptionnel" />
+          <EntitySet Name="Ouverture" EntityType="foodtruckModel.Ouverture" />
         </EntityContainer>
         <EntityType Name="PanierProspect">
           <Key>
@@ -510,14 +510,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Fermeture">
-          <Key>
-            <PropertyRef Name="JourSemaine" />
-          </Key>
-          <Property Name="JourSemaine" Type="Int32" Nullable="false" />
-          <Property Name="Dejeuner" Type="Boolean" Nullable="false" />
-          <Property Name="Diner" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="JourExceptionnel">
           <Key>
             <PropertyRef Name="Id" />
@@ -526,6 +518,14 @@
           <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Duree" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ouverture">
+          <Key>
+            <PropertyRef Name="JourSemaine" />
+          </Key>
+          <Property Name="JourSemaine" Type="Int32" Nullable="false" />
+          <Property Name="Dejeuner" Type="Boolean" Nullable="false" />
+          <Property Name="Diner" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -633,15 +633,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Fermeture">
-            <EntityTypeMapping TypeName="foodtruckModel.Fermeture">
-              <MappingFragment StoreEntitySet="Fermeture">
-                <ScalarProperty Name="Diner" ColumnName="Diner" />
-                <ScalarProperty Name="Dejeuner" ColumnName="Dejeuner" />
-                <ScalarProperty Name="JourSemaine" ColumnName="JourSemaine" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="JourExceptionnel">
             <EntityTypeMapping TypeName="foodtruckModel.JourExceptionnel">
               <MappingFragment StoreEntitySet="JourExceptionnel">
@@ -649,6 +640,15 @@
                 <ScalarProperty Name="Duree" ColumnName="Duree" />
                 <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ouverture">
+            <EntityTypeMapping TypeName="foodtruckModel.Ouverture">
+              <MappingFragment StoreEntitySet="Ouverture">
+                <ScalarProperty Name="Diner" ColumnName="Diner" />
+                <ScalarProperty Name="Dejeuner" ColumnName="Dejeuner" />
+                <ScalarProperty Name="JourSemaine" ColumnName="JourSemaine" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

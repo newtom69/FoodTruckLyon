@@ -12,7 +12,7 @@ namespace FoodTruck.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Fermeture
+    public partial class Ouverture
     {
         public int JourSemaine { get; set; }
         public bool Dejeuner { get; set; }
