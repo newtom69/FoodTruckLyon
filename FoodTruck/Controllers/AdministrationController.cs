@@ -92,16 +92,16 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult AjouterArticle(string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            string nomOk = nom.NomAdmis();
-            double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
-            int grammageOk = Math.Abs(grammage ?? 0);
-            int litrageOk = Math.Abs(litrage ?? 0);
-            string descriptionOk = description;
-            string allergenesOk = allergenes ?? "";
-            int familleIdOk = familleId;
-            bool dansCarteOk = dansCarte;
             if (AdminSuper || AdminArticle)
             {
+                string nomOk = nom.NomAdmis();
+                double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
+                int grammageOk = Math.Abs(grammage ?? 0);
+                int litrageOk = Math.Abs(litrage ?? 0);
+                string descriptionOk = description;
+                string allergenesOk = allergenes ?? "";
+                int familleIdOk = familleId;
+                bool dansCarteOk = dansCarte;
                 Article lArticle = new Article
                 {
                     Nom = nomOk,
@@ -113,7 +113,6 @@ namespace FoodTruck.Controllers
                     FamilleId = familleIdOk,
                     DansCarte = dansCarteOk,
                 };
-                ArticleDAL articleDAL = new ArticleDAL();
                 try
                 {
                     string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
@@ -126,7 +125,7 @@ namespace FoodTruck.Controllers
                     nouvelleImage.Dispose();
                     image.Dispose();
                     lArticle.Image = fileName;
-                    articleDAL.Ajouter(lArticle);
+                    new ArticleDAL().Ajouter(lArticle);
                     TempData["AjoutOK"] = "Votre article a bien été ajouté";
                 }
                 catch (Exception ex)
