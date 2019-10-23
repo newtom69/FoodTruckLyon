@@ -15,7 +15,7 @@ namespace FoodTruck.Models
     public partial class Ouverture
     {
         public int JourSemaine { get; set; }
-        public bool Dejeuner { get; set; }
-        public bool Diner { get; set; }
+        public int RepasId { get; set; }
+        public bool Ouvert { get; set; }
     }
 }

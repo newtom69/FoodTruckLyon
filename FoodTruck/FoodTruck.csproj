@@ -141,6 +141,7 @@
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
+    <Compile Include="DAL\OuvertureDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\PanierProspect.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlageHoraireRetrait.cs" />
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
