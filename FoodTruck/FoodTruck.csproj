@@ -161,6 +161,9 @@
     <Compile Include="Models\FamilleArticle.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Fermeture.cs">
+      <DependentUpon>FoodtruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FoodtruckModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -175,6 +178,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FoodtruckModels.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\JourExceptionnel.cs">
+      <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Panier.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
