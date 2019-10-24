@@ -56,7 +56,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateDebut" Type="date" Nullable="false" />
-          <Property Name="Duree" Type="int" Nullable="false" />
+          <Property Name="DebutRepasId" Type="int" Nullable="false" />
+          <Property Name="FinRepasId" Type="int" Nullable="false" />
+          <Property Name="Jour" Type="int" Nullable="false" />
           <Property Name="Ouvert" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Ouverture">
@@ -517,8 +519,10 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Duree" Type="Int32" Nullable="false" />
           <Property Name="Ouvert" Type="Boolean" Nullable="false" />
+          <Property Name="DebutRepasId" Type="Int32" Nullable="false" />
+          <Property Name="FinRepasId" Type="Int32" Nullable="false" />
+          <Property Name="Jour" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Ouverture">
           <Key>
@@ -638,8 +642,10 @@
           <EntitySetMapping Name="JourExceptionnel">
             <EntityTypeMapping TypeName="foodtruckModel.JourExceptionnel">
               <MappingFragment StoreEntitySet="JourExceptionnel">
+                <ScalarProperty Name="Jour" ColumnName="Jour" />
+                <ScalarProperty Name="FinRepasId" ColumnName="FinRepasId" />
+                <ScalarProperty Name="DebutRepasId" ColumnName="DebutRepasId" />
                 <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
-                <ScalarProperty Name="Duree" ColumnName="Duree" />
                 <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

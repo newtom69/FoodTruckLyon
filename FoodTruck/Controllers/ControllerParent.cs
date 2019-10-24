@@ -16,7 +16,6 @@ namespace FoodTruck.Controllers
         public Utilisateur Utilisateur { get; set; } //todo mettre protected
         protected string ProspectGuid { get; set; }
         public PanierViewModel PanierViewModel { get; set; } //todo mettre protected
-        protected bool AdminSuper { get; set; }
         protected bool AdminArticle { get; set; }
         protected bool AdminCommande { get; set; }
         protected bool AdminUtilisateur { get; set; }
@@ -150,15 +149,20 @@ namespace FoodTruck.Controllers
         private void DonnerLesDroitsdAcces()
         {
             //TODO mettre dans Getter 
-            if (Utilisateur.AdminSuper) AdminSuper = true;
             if (Utilisateur.AdminArticle) AdminArticle = true;
             if (Utilisateur.AdminCommande) AdminCommande = true;
             if (Utilisateur.AdminUtilisateur) AdminUtilisateur = true;
+            if (Utilisateur.AdminSuper)
+            {
+                AdminArticle = true;
+                AdminCommande = true;
+                AdminUtilisateur = true;
+            }
         }
 
         private void RetirerLesDroitsdAcces()
         {
-            AdminSuper = AdminArticle = AdminCommande = AdminUtilisateur = false;
+            AdminArticle = AdminCommande = AdminUtilisateur = false;
         }
         private void MettrelUrlEnSession()
         {

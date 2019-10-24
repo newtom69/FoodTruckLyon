@@ -9,15 +9,15 @@ namespace FoodTruck.DAL
 {
     public class OuvertureDAL
     {
-        internal bool EstOuvert(DateTime date, int repasId)
+        internal bool EstOuvert(PlageHoraireRetrait plageHoraireRetrait)
         {
-            DayOfWeek jourSemaine = date.DayOfWeek;
+            TypeRepas typeRepas = plageHoraireRetrait.TypeRepas;
+            DayOfWeek jourSemaine = plageHoraireRetrait.PremierCreneau.DayOfWeek;
             bool? ouvertHabituellement;
             bool? ouvertExceptionnellement;
             bool ouvert;
-
-            ouvertHabituellement = EstOuvertHabituellement((int)jourSemaine, repasId);
-            ouvertExceptionnellement = EstOuvertExceptionnellement(date);
+            ouvertHabituellement = EstOuvertHabituellement(jourSemaine, typeRepas);
+            ouvertExceptionnellement = EstOuvertExceptionnellement(plageHoraireRetrait.PremierCreneau, typeRepas); // faire sans typeRepas (redondant)
             if (ouvertHabituellement != null && (bool)ouvertHabituellement)
             {
                 if (ouvertExceptionnellement == null || (bool)ouvertExceptionnellement)
@@ -32,37 +32,40 @@ namespace FoodTruck.DAL
                 else
                     ouvert = false;
             }
-
             return ouvert;
         }
 
         /// <summary>
         /// Retourne True si le foodtruck est ouvert
         /// </summary>
-        /// <param name="jourSemaine">1=lundi</param>
-        /// <param name="repasId">1=dejeuner ; 2=diner</param>
+        /// <param name="jourSemaine"></param>
+        /// <param name="repasId"></param>
         /// <returns></returns>
-        private bool? EstOuvertHabituellement(int jourSemaine, int repasId)
+        private bool? EstOuvertHabituellement(DayOfWeek jourSemaine, TypeRepas typeRepas)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 Ouverture ouvert = (from ouverture in db.Ouverture
-                                    where ouverture.JourSemaine == jourSemaine && ouverture.RepasId == repasId
+                                    where ouverture.JourSemaine == (int)jourSemaine && ouverture.RepasId == (int)typeRepas
                                     select ouverture).FirstOrDefault();
-
                 if (ouvert == null)
                     return null;
                 else
                     return ouvert.Ouvert;
             }
         }
-        private bool? EstOuvertExceptionnellement(DateTime date)
+        private bool? EstOuvertExceptionnellement(DateTime date, TypeRepas typeRepas) // redondance typeRepas
         {
+            int repasId = (int)typeRepas;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                JourExceptionnel ouvert = (from jour in db.JourExceptionnel
-                                           where DbFunctions.DiffDays(jour.DateDebut, date) >= 0 && DbFunctions.DiffDays(date, DbFunctions.AddDays(jour.DateDebut, jour.Duree - 1)) >= 0
-                                           select jour).FirstOrDefault();
+                JourExceptionnel ouvert =
+                    (from jexc in db.JourExceptionnel
+                     where jexc.Jour == 0 && DbFunctions.DiffDays(jexc.DateDebut, date) == 0 && jexc.DebutRepasId <= repasId && jexc.FinRepasId >= repasId
+                        || jexc.Jour > 0  && DbFunctions.DiffDays(jexc.DateDebut, date) == 0 && jexc.DebutRepasId <= repasId
+                        || jexc.Jour > 0  && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) == 0 && jexc.FinRepasId >= repasId
+                        || jexc.Jour > 0  && DbFunctions.DiffDays(jexc.DateDebut, date) > 0 && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) > 0
+                     select jexc).FirstOrDefault();
                 if (ouvert == null)
                     return null;
                 else

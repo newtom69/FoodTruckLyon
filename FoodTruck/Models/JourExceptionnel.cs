@@ -16,7 +16,9 @@ namespace FoodTruck.Models
     {
         public int Id { get; set; }
         public System.DateTime DateDebut { get; set; }
-        public int Duree { get; set; }
         public bool Ouvert { get; set; }
+        public int DebutRepasId { get; set; }
+        public int FinRepasId { get; set; }
+        public int Jour { get; set; }
     }
 }

@@ -55,6 +55,7 @@ else
                 @{
                     string groupeRepas1 = "";
                     string groupeRepas2 = "";
+                    int jourRepas1 = 0;
                     const int heureMinPourDiner = 16;
                 }
                 @foreach (DateTime date in Model.DatesRetraitPossibles)
@@ -62,20 +63,22 @@ else
                     if (groupeRepas1 == "" && date.Hour < heureMinPourDiner)
                     {
                         groupeRepas1 = "Déjeuner";
+                        jourRepas1 = date.DayOfYear;
                         <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
                     }
                     else if (groupeRepas1 == "" && date.Hour >= heureMinPourDiner)
                     {
                         groupeRepas1 = "Diner";
+                        jourRepas1 = date.DayOfYear;
                         <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
                     }
-                    else if (groupeRepas2 == "" && date.Hour < heureMinPourDiner && groupeRepas1 == "Diner")
+                    else if (groupeRepas2 == "" && date.Hour < heureMinPourDiner && (groupeRepas1 == "Diner" || date.DayOfYear != jourRepas1) )
                     {
                         groupeRepas2 = "Déjeuner";
                         <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>
 
                     }
-                    else if (groupeRepas2 == "" && date.Hour >= heureMinPourDiner && groupeRepas1 == "Déjeuner")
+                    else if (groupeRepas2 == "" && date.Hour >= heureMinPourDiner && (groupeRepas1 == "Déjeuner" || date.DayOfYear != jourRepas1) )
                     {
                         groupeRepas2 = "Diner";
                         <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>

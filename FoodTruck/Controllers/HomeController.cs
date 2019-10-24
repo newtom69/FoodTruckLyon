@@ -1,11 +1,7 @@
-﻿using FoodTruck.DAL;
-using FoodTruck.Extensions;
-using FoodTruck.Models;
-using FoodTruck.ViewModels;
+﻿using FoodTruck.ViewModels;
 using System;
 using System.Net.Mail;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers

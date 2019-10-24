@@ -1,5 +1,4 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Extensions;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
@@ -24,7 +23,7 @@ namespace FoodTruck.Controllers
         public ActionResult CommandesEnCours()
         {
             ListeCommandesViewModel listeCommandesViewModel = null;
-            if (AdminSuper || AdminCommande)
+            if (AdminCommande)
             {
                 listeCommandesViewModel = new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours());
             }
@@ -48,7 +47,7 @@ namespace FoodTruck.Controllers
         public ActionResult CommandesAStatuer()
         {
             ListeCommandesViewModel listeCommandesViewModel = null;
-            if (AdminSuper || AdminCommande)
+            if (AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 var commandes = commandeDAL.ListerCommandesAStatuer();
@@ -74,7 +73,7 @@ namespace FoodTruck.Controllers
         public ActionResult Commandes()
         {
             ListeCommandesViewModel listeCommandesViewModel = null;
-            if (AdminSuper || AdminCommande)
+            if (AdminCommande)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 var commandes = commandeDAL.ListerCommandesToutes();
@@ -92,7 +91,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult AjouterArticle(string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
         {
-            if (AdminSuper || AdminArticle)
+            if (AdminArticle)
             {
                 string nomOk = nom.NomAdmis();
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
@@ -139,7 +138,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult ModifierArticle()
         {
-            if (AdminSuper || AdminArticle)
+            if (AdminArticle)
                 return View(new ArticleDAL().ListerTout());
             else
                 return View();
@@ -148,7 +147,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult ModifierArticle(int id)
         {
-            if (AdminSuper || AdminArticle)
+            if (AdminArticle)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
                 ViewBag.ArticleAModifier = articleDAL.Details(id);
@@ -159,59 +158,45 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult ModifierArticleEtape2(int id, string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)
+        public ActionResult ModifierArticleEtape2(Article article, string prix, HttpPostedFileBase file)
         {
-            if (AdminSuper || AdminArticle)
+            if (AdminArticle)
             {
-                string nomOk = nom.NomAdmis();
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
-                int grammageOk = Math.Abs(grammage ?? 0);
-                int litrageOk = Math.Abs(litrage ?? 0);
-                string descriptionOk = description;
-                string allergenesOk = allergenes ?? "";
-                int familleIdOk = familleId;
-                bool dansCarteOk = dansCarte;
+                article.Prix = prixOk;
+                article.Nom = article.Nom.NomAdmis();
+                article.Grammage = Math.Abs(article.Grammage);
+                article.Litrage = Math.Abs(article.Litrage);
+                article.Allergenes = article.Allergenes ?? "";
 
                 ArticleDAL articleDAL = new ArticleDAL();
-                if (articleDAL.NomExiste(nomOk, id))
+                if (articleDAL.NomExiste(article.Nom, article.Id))
                 {
                     TempData["Erreur"] = "Le nom de l'article existe déjà. Merci de choisir un autre nom ou bien de renommer d'abord l'article en doublon.";
                 }
                 else
                 {
-                    Article lArticle = new Article
-                    {
-                        Id = id,
-                        Nom = nomOk,
-                        Description = descriptionOk,
-                        Prix = prixOk,
-                        Grammage = grammageOk,
-                        Litrage = litrageOk,
-                        Allergenes = allergenesOk,
-                        FamilleId = familleIdOk,
-                        DansCarte = dansCarteOk,
-                    };
                     try
                     {
                         if (file != null)
                         {
                             string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
-                            string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
+                            string fileName = article.Nom.ToUrl() + Path.GetExtension(file.FileName);
                             string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                             Image image = Image.FromStream(file.InputStream);
-                            int tailleImage = Int32.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
+                            int tailleImage = int.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
                             var nouvelleImage = new Bitmap(image, tailleImage, tailleImage);
                             nouvelleImage.Save(chemin);
                             nouvelleImage.Dispose();
                             image.Dispose();
-                            lArticle.Image = fileName;
+                            article.Image = fileName;
                         }
                         else
                         {
-                            Article ancienArticle = articleDAL.Details(id);
-                            lArticle.Image = ancienArticle.Image;
+                            Article ancienArticle = articleDAL.Details(article.Id);
+                            article.Image = ancienArticle.Image;
                         }
-                        articleDAL.Modifier(lArticle);
+                        articleDAL.Modifier(article);
                         TempData["ModifOK"] = "Votre article a bien été modifié";
 
                     }

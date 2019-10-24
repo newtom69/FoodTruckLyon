@@ -3,7 +3,6 @@ using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -141,150 +140,23 @@ namespace FoodTruck.Controllers
 
         private List<DateTime> ObtenirDatesRetraitPossibles()
         {
-            int heurePremierCreneauDejeuner = 0, minutePremierCreneauDejeuner = 0;
-            int heureDernierCreneauDejeuner = 0, minuteDernierCreneauDejeuner = 0;
-            int heurePremierCreneauDiner = 0, minutePremierCreneauDiner = 0;
-            int heureDernierCreneauDiner = 0, minuteDernierCreneauDiner = 0;
-            string[] tabpremierCreneauDejeuner = ConfigurationManager.AppSettings["PremierCreneauDejeuner"].Split(':');
-            string[] tabdernierCreneauDejeuner = ConfigurationManager.AppSettings["DernierCreneauDejeuner"].Split(':');
-            string[] tabpremierCreneauDiner = ConfigurationManager.AppSettings["PremierCreneauDiner"].Split(':');
-            string[] tabdernierCreneauDiner = ConfigurationManager.AppSettings["DernierCreneauDiner"].Split(':');
-            int pas = int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]);
-            TimeSpan pasTimeSpan = new TimeSpan(0, pas, 0);
-            if (!ObtenirHeureMinute(tabpremierCreneauDejeuner, ref heurePremierCreneauDejeuner, ref minutePremierCreneauDejeuner))
-            {
-                heurePremierCreneauDejeuner = 12;
-                minutePremierCreneauDejeuner = 0;
-            }
-            if (!ObtenirHeureMinute(tabdernierCreneauDejeuner, ref heureDernierCreneauDejeuner, ref minuteDernierCreneauDejeuner))
-            {
-                heureDernierCreneauDejeuner = 14;
-                minuteDernierCreneauDejeuner = 0;
-            }
-            if (!ObtenirHeureMinute(tabpremierCreneauDiner, ref heurePremierCreneauDiner, ref minutePremierCreneauDiner))
-            {
-                heurePremierCreneauDiner = 19;
-                minutePremierCreneauDiner = 0;
-            }
-            if (!ObtenirHeureMinute(tabdernierCreneauDiner, ref heureDernierCreneauDiner, ref minuteDernierCreneauDiner))
-            {
-                heureDernierCreneauDiner = 22;
-                minuteDernierCreneauDiner = 0;
-            }
-            DateTime maintenant = DateTime.Now;
-
-            maintenant = new DateTime(2019, 10, 25, 23, 0, 0); //TODO TEST
-
-            int maintenantAnnee = maintenant.Year;
-            int maintenantMois = maintenant.Month;
-            int maintenantJour = maintenant.Day;
-
-            DateTime premierCreneauDejeunerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, 0);
-            DateTime dernierCreneauDejeunerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, 0);
-            DateTime premierCreneauDinerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heurePremierCreneauDiner, minutePremierCreneauDiner, 0);
-            DateTime dernierCreneauDinerJ = new DateTime(maintenantAnnee, maintenantMois, maintenantJour, heureDernierCreneauDiner, minuteDernierCreneauDiner, 0);
-            premierCreneauDejeunerJ = ObtenirCreneauCourant(premierCreneauDejeunerJ);
-            dernierCreneauDejeunerJ = ObtenirCreneauCourant(dernierCreneauDejeunerJ);
-            premierCreneauDinerJ = ObtenirCreneauCourant(premierCreneauDinerJ);
-            dernierCreneauDinerJ = ObtenirCreneauCourant(dernierCreneauDinerJ);
-
-            PlageHoraireRetrait plageHoraireRetraitDejeunerJ = new PlageHoraireRetrait(premierCreneauDejeunerJ, dernierCreneauDejeunerJ, pasTimeSpan);
-            PlageHoraireRetrait plageHoraireRetraitDinerJ = new PlageHoraireRetrait(premierCreneauDinerJ, dernierCreneauDinerJ, pasTimeSpan);
-            PlageHoraireRetrait plageHoraireRetraitRepas1;
-            PlageHoraireRetrait plageHoraireRetraitRepas2;
-
-            DateTime jourOuvert = maintenant;
             OuvertureDAL ouvertureDAL = new OuvertureDAL();
-            if (plageHoraireRetraitDinerJ.Avant(maintenant))
+            DateTime maintenant = DateTime.Now;
+            //maintenant = new DateTime(2019, 10, 24, 21, 55, 1); //TODO TEST
+            PlageHoraireRetrait plageHoraireRetraitRepas1 = maintenant.PlageHoraireRetrait();
+            while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas1)) 
             {
-                //il est tard dans la soirée, plus de retrait jour J possible, on passe au jour suivant
-                jourOuvert = maintenant.AddDays(1);
+                plageHoraireRetraitRepas1 = plageHoraireRetraitRepas1.PlageHoraireRetraitSuivante();
             }
-            // on ajoute une journée jusqu'à ce que le foodtruck soit ouvert
-            while (!ouvertureDAL.EstOuvert(jourOuvert, 1)) //TODO modifier algo pour prendre en compte diner
+            PlageHoraireRetrait plageHoraireRetraitRepas2 = plageHoraireRetraitRepas1.PlageHoraireRetraitSuivante();
+            while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas2))
             {
-                jourOuvert = jourOuvert.AddDays(1);
-            }
-            //on est sur un autre jour que je jour courant ? => il n'y a pas à chercher si l'instant T de la commande est dans une plage de retrait ou pas
-            if (jourOuvert != maintenant)
-            {
-                jourOuvert = new DateTime(jourOuvert.Year, jourOuvert.Month, jourOuvert.Day, 0, 0, 0);
-                plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-            }
-            else //on est sur le même jour que je jour courant => il faut chercher si l'instant T de la commande est dans une plage de retrait ou pas
-            {
-                if (plageHoraireRetraitDejeunerJ.Contient(jourOuvert) || plageHoraireRetraitDejeunerJ.Apres(jourOuvert))
-                {
-                    // dejeuner
-                    plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                    //TODO rogner la plage
-                    plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                }
-                else
-                {
-                    // diner 
-                    plageHoraireRetraitRepas1 = new PlageHoraireRetrait(heurePremierCreneauDiner, minutePremierCreneauDiner, heureDernierCreneauDiner, minuteDernierCreneauDiner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                    //TODO rogner la plage
-                    plageHoraireRetraitRepas2 = new PlageHoraireRetrait(heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, pasTimeSpan, jourOuvert.Year, jourOuvert.Month, jourOuvert.Day);
-                    plageHoraireRetraitRepas2 = plageHoraireRetraitRepas2.AddDays(1);
-                    while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas2.PremierCreneau, plageHoraireRetraitRepas2.TypeRepas))
-                    {
-                        plageHoraireRetraitRepas2 = plageHoraireRetraitRepas2.AddDays(1);
-                    }
-                }
-
+                plageHoraireRetraitRepas2 = plageHoraireRetraitRepas2.PlageHoraireRetraitSuivante();
             }
             List<DateTime> retour = new List<DateTime>();
             retour.AddRange(plageHoraireRetraitRepas1.Creneaux);
             retour.AddRange(plageHoraireRetraitRepas2.Creneaux);
             return retour;
         }
-
-        private bool ObtenirHeureMinute(string[] heureEtMinute, ref int heure, ref int minute)
-        {
-            bool retour = true;
-            if (heureEtMinute.Length == 2)
-            {
-                if (!int.TryParse(heureEtMinute[0], out heure))
-                    retour = false;
-                if (!int.TryParse(heureEtMinute[1], out minute))
-                    retour = false;
-            }
-            else
-            {
-                retour = false;
-            }
-            return retour;
-        }
-
-        private List<DateTime> ConstruireCreneaux(DateTime premierCreneau, DateTime dernierCreneau)
-        {
-            DateTime creneauCourant = premierCreneau;
-            List<DateTime> creneaux = new List<DateTime>();
-            while (creneauCourant <= dernierCreneau)
-            {
-                creneaux.Add(creneauCourant);
-                creneauCourant = ObtenirCreneauSuivant(creneauCourant);
-            }
-            return creneaux;
-        }
-        private DateTime ObtenirCreneauCourant(DateTime date)
-        {
-            int pas = int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]);
-            int annee = date.Year;
-            int mois = date.Month;
-            int jour = date.Day;
-            int heure = date.Hour;
-            int minute = date.Minute;
-            int minuteCreneauCourant = (minute / pas) * pas;
-            return new DateTime(annee, mois, jour, heure, minuteCreneauCourant, 0);
-        }
-        private DateTime ObtenirCreneauSuivant(DateTime date)
-        {
-            int pas = int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]);
-            return ObtenirCreneauCourant(date).AddMinutes(pas);
-        }
-
     }
 }

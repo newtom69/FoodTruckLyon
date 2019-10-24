@@ -1,9 +1,5 @@
-﻿using FoodTruck.Extensions;
-using FoodTruck.Models;
-using System;
+﻿using FoodTruck.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FoodTruck.ViewModels
 {
