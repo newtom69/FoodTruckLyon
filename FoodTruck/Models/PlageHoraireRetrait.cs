@@ -96,14 +96,15 @@ namespace FoodTruck.Models
                 int compteur = 0;
                 foreach (DateTime creneau in Creneaux)
                 {
-                    if (creneau <= date)
+                    if (creneau < date)
                     {
                         compteur++;
                         if (indexMin == -1)
                             indexMin = Creneaux.IndexOf(creneau);
                     }
                 }
-                Creneaux.RemoveRange(indexMin, compteur);
+                if(compteur >0)
+                    Creneaux.RemoveRange(indexMin, compteur);
                 PremierCreneau = Creneaux[0];
             }
         }
