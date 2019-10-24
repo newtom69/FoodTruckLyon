@@ -87,5 +87,25 @@ namespace FoodTruck.Models
                 TypeRepas = TypeRepas.Dejeuner;
             }
         }
+
+        internal void Rogner(DateTime date)
+        {
+            if (Contient(date))
+            {
+                int indexMin = -1;
+                int compteur = 0;
+                foreach (DateTime creneau in Creneaux)
+                {
+                    if (creneau <= date)
+                    {
+                        compteur++;
+                        if (indexMin == -1)
+                            indexMin = Creneaux.IndexOf(creneau);
+                    }
+                }
+                Creneaux.RemoveRange(indexMin, compteur);
+                PremierCreneau = Creneaux[0];
+            }
+        }
     }
 }

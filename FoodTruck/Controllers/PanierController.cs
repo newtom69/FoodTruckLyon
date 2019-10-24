@@ -142,7 +142,7 @@ namespace FoodTruck.Controllers
         {
             OuvertureDAL ouvertureDAL = new OuvertureDAL();
             DateTime maintenant = DateTime.Now;
-            //maintenant = new DateTime(2019, 10, 24, 21, 55, 1); //TODO TEST
+            maintenant = new DateTime(2019, 10, 24, 21, 40, 1); //TODO TEST
             PlageHoraireRetrait plageHoraireRetraitRepas1 = maintenant.PlageHoraireRetrait();
             while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas1)) 
             {

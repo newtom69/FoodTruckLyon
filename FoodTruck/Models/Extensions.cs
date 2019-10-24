@@ -32,21 +32,15 @@ namespace FoodTruck.Models
             PlageHoraireRetrait plageHoraireRetraitDiner = new PlageHoraireRetrait(premierCreneauDiner, dernierCreneauDiner);
             PlageHoraireRetrait plageHoraireRetraitDejeunerLendemain = new PlageHoraireRetrait(premierCreneauDejeunerLendemain, dernierCreneauDejeunerLendemain);
 
-            if (plageHoraireRetraitDejeuner.Apres(date))
+            if (plageHoraireRetraitDejeuner.Apres(date) || plageHoraireRetraitDejeuner.Contient(date))
             {
+                plageHoraireRetraitDejeuner.Rogner(date);
                 return plageHoraireRetraitDejeuner;
             }
-            if (plageHoraireRetraitDejeuner.Contient(date))
+            if (plageHoraireRetraitDiner.Apres(date) || plageHoraireRetraitDiner.Contient(date))
             {
-                return plageHoraireRetraitDejeuner; //TODO rogner
-            }
-            if (plageHoraireRetraitDiner.Apres(date))
-            {
+                plageHoraireRetraitDiner.Rogner(date);
                 return plageHoraireRetraitDiner;
-            }
-            if (plageHoraireRetraitDiner.Contient(date))
-            {
-                return plageHoraireRetraitDiner; //TODO Rogner
             }
             return plageHoraireRetraitDejeunerLendemain;
         }
