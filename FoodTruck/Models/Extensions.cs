@@ -90,5 +90,12 @@ namespace FoodTruck.Models
             }
             return retour;
         }
+        public static string OuiNon(this bool lebool)
+        {
+            if (lebool)
+                return "Oui";
+            else
+                return "Non";
+        }
     }
 }
