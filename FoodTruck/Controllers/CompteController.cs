@@ -22,7 +22,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            if(TempData["PanierViewModelSauv"] != null)
+            if (TempData["PanierViewModelSauv"] != null)
             {
                 int utilisateurId = (int)Session["UtilisateurId"];
                 if (utilisateurId != 0)
@@ -82,25 +82,27 @@ namespace FoodTruck.Controllers
                     PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
                     ViewBag.Panier = null; //todo
                 }
-                PanierController panierController = new PanierController // TODO ne pas instancier de controller ! BUG sur init membres !
+                using (PanierController panierController = new PanierController()) // TODO plus propre
                 {
-                    Utilisateur = Utilisateur,
-                    PanierViewModel = PanierViewModel
-                };
-                List<Article> articlesKo = new List<Article>();
-                foreach (var a in articles)
-                {
-                    if (panierController.Ajouter(a.Article, a.Quantite))
+                    panierController.Utilisateur = Utilisateur;
+                    panierController.PanierViewModel = PanierViewModel;
+
+                    List<Article> articlesKo = new List<Article>();
+                    foreach (var a in articles)
                     {
-                        PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                        ViewBag.Panier = PanierViewModel;
+                        if (panierController.Ajouter(a.Article, a.Quantite))
+                        {
+                            PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
+                            ViewBag.Panier = PanierViewModel;
+                        }
+                        else
+                        {
+                            articlesKo.Add(a.Article);
+                        }
                     }
-                    else
-                    {
-                        articlesKo.Add(a.Article);
-                    }
+
+                    TempData["ArticlesNonAjoutes"] = articlesKo;
                 }
-                TempData["ArticlesNonAjoutes"] = articlesKo;
                 RecupererPanierEnBase();
                 ViewBag.Panier = PanierViewModel;
             }
