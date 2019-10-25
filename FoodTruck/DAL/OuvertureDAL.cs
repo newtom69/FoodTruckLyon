@@ -11,12 +11,12 @@ namespace FoodTruck.DAL
         {
             TypeRepas typeRepas = plageHoraireRetrait.RepasId;
             DayOfWeek jourSemaine = plageHoraireRetrait.PremierCreneau.DayOfWeek;
-            bool? ouvertHabituellement;
+            bool ouvertHabituellement;
             bool? ouvertExceptionnellement;
             bool ouvert;
             ouvertHabituellement = EstOuvertHabituellement(jourSemaine, typeRepas);
             ouvertExceptionnellement = EstOuvertExceptionnellement(plageHoraireRetrait.PremierCreneau, typeRepas); // faire sans typeRepas (redondant)
-            if (ouvertHabituellement != null && (bool)ouvertHabituellement)
+            if (ouvertHabituellement)
             {
                 if (ouvertExceptionnellement == null || (bool)ouvertExceptionnellement)
                     ouvert = true;
@@ -39,17 +39,17 @@ namespace FoodTruck.DAL
         /// <param name="jourSemaine"></param>
         /// <param name="repasId"></param>
         /// <returns></returns>
-        private bool? EstOuvertHabituellement(DayOfWeek jourSemaine, TypeRepas typeRepas)
+        private bool EstOuvertHabituellement(DayOfWeek jourSemaine, TypeRepas typeRepas)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Ouverture ouvert = (from ouverture in db.Ouverture
-                                    where ouverture.JourSemaine == (int)jourSemaine && ouverture.RepasId == (int)typeRepas
-                                    select ouverture).FirstOrDefault();
-                if (ouvert == null)
-                    return null;
+                CreneauRepas ouvert = (from cr in db.CreneauRepas
+                                       where cr.JourSemaineId == (int)jourSemaine && cr.RepasId == (int)typeRepas
+                                       select cr).FirstOrDefault();
+                if (ouvert != null)
+                    return true;
                 else
-                    return ouvert.Ouvert;
+                    return false;
             }
         }
         private bool? EstOuvertExceptionnellement(DateTime date, TypeRepas typeRepas) // redondance typeRepas

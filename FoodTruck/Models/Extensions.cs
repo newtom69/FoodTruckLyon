@@ -9,35 +9,13 @@ namespace FoodTruck.Models
     {
         public static PlageHoraireRetrait PlageHoraireRetrait(this DateTime date)
         {
-            int heurePremierCreneauDejeuner = 0, minutePremierCreneauDejeuner = 0;
-            int heureDernierCreneauDejeuner = 0, minuteDernierCreneauDejeuner = 0;
-            int heurePremierCreneauDiner = 0, minutePremierCreneauDiner = 0;
-            int heureDernierCreneauDiner = 0, minuteDernierCreneauDiner = 0;
-            string[] tabpremierCreneauDejeuner = ConfigurationManager.AppSettings["PremierCreneauDejeuner"].Split(':');
-            string[] tabdernierCreneauDejeuner = ConfigurationManager.AppSettings["DernierCreneauDejeuner"].Split(':');
-            string[] tabpremierCreneauDiner = ConfigurationManager.AppSettings["PremierCreneauDiner"].Split(':');
-            string[] tabdernierCreneauDiner = ConfigurationManager.AppSettings["DernierCreneauDiner"].Split(':');
-
-            ObtenirHeureMinute(tabpremierCreneauDejeuner, ref heurePremierCreneauDejeuner, ref minutePremierCreneauDejeuner);
-            ObtenirHeureMinute(tabdernierCreneauDejeuner, ref heureDernierCreneauDejeuner, ref minuteDernierCreneauDejeuner);
-            ObtenirHeureMinute(tabpremierCreneauDiner, ref heurePremierCreneauDiner, ref minutePremierCreneauDiner);
-            ObtenirHeureMinute(tabdernierCreneauDiner, ref heureDernierCreneauDiner, ref minuteDernierCreneauDiner);
-            DateTime premierCreneauDejeuner = new DateTime(date.Year, date.Month, date.Day, heurePremierCreneauDejeuner, minutePremierCreneauDejeuner, 0);
-            DateTime dernierCreneauDejeuner = new DateTime(date.Year, date.Month, date.Day, heureDernierCreneauDejeuner, minuteDernierCreneauDejeuner, 0);
-            DateTime premierCreneauDiner = new DateTime(date.Year, date.Month, date.Day, heurePremierCreneauDiner, minutePremierCreneauDiner, 0);
-            DateTime dernierCreneauDiner = new DateTime(date.Year, date.Month, date.Day, heureDernierCreneauDiner, minuteDernierCreneauDiner, 0);
-            DateTime premierCreneauDejeunerLendemain = premierCreneauDejeuner.AddDays(1);
-            DateTime dernierCreneauDejeunerLendemain = dernierCreneauDejeuner.AddDays(1);
-
-            PlageHoraireRetrait plageHoraireRetraitDejeuner = new PlageHoraireRetrait(premierCreneauDejeuner, dernierCreneauDejeuner);
-            PlageHoraireRetrait plageHoraireRetraitDiner = new PlageHoraireRetrait(premierCreneauDiner, dernierCreneauDiner);
-            PlageHoraireRetrait plageHoraireRetraitDejeunerLendemain = new PlageHoraireRetrait(premierCreneauDejeunerLendemain, dernierCreneauDejeunerLendemain);
-
-            //nouvelle méthodes
             CreneauRepasDAL creneauRepasDAL = new CreneauRepasDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = creneauRepasDAL.PlagesHorairesRetrait(date);
-            // TODO à terminer
-
+            List<PlageHoraireRetrait> plagesHorairesRetraitLendemain = creneauRepasDAL.PlagesHorairesRetrait(date.AddDays(1));
+            PlageHoraireRetrait plageHoraireRetraitDejeuner = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Déjeuner);
+            PlageHoraireRetrait plageHoraireRetraitDiner = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Dîner);
+            PlageHoraireRetrait plageHoraireRetraitDejeunerLendemain = plagesHorairesRetraitLendemain.Find(p => p.RepasId == TypeRepas.Déjeuner); //todo évolution prendre le RepasId min
+            // TODO à optimiser
 
             if (plageHoraireRetraitDejeuner.Apres(date) || plageHoraireRetraitDejeuner.Contient(date))
             {

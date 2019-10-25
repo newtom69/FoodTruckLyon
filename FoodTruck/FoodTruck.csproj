@@ -184,9 +184,6 @@
     <Compile Include="Models\JourExceptionnel.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Ouverture.cs">
-      <DependentUpon>FoodtruckModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Panier.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>

@@ -72,15 +72,6 @@
           <Property Name="Jour" Type="int" Nullable="false" />
           <Property Name="Ouvert" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Ouverture">
-          <Key>
-            <PropertyRef Name="JourSemaine" />
-            <PropertyRef Name="RepasId" />
-          </Key>
-          <Property Name="JourSemaine" Type="int" Nullable="false" />
-          <Property Name="RepasId" Type="int" Nullable="false" />
-          <Property Name="Ouvert" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Panier">
           <Key>
             <PropertyRef Name="UtilisateurId" />
@@ -268,7 +259,6 @@
           <EntitySet Name="CreneauRepas" EntityType="Self.CreneauRepas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Ouverture" EntityType="Self.Ouverture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Repas" EntityType="Self.Repas" Schema="dbo" store:Type="Tables" />
@@ -543,7 +533,6 @@
             <End Role="PanierProspect" EntitySet="PanierProspect" />
           </AssociationSet>
           <EntitySet Name="JourExceptionnel" EntityType="foodtruckModel.JourExceptionnel" />
-          <EntitySet Name="Ouverture" EntityType="foodtruckModel.Ouverture" />
           <EntitySet Name="CreneauRepas" EntityType="foodtruckModel.CreneauRepas" />
           <EntitySet Name="Repas" EntityType="foodtruckModel.Repas" />
           <AssociationSet Name="FK_CreneauRepas_CreneauRepas" Association="foodtruckModel.FK_CreneauRepas_CreneauRepas">
@@ -589,15 +578,6 @@
           <Property Name="DebutRepasId" Type="Int32" Nullable="false" />
           <Property Name="FinRepasId" Type="Int32" Nullable="false" />
           <Property Name="Jour" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Ouverture">
-          <Key>
-            <PropertyRef Name="JourSemaine" />
-            <PropertyRef Name="RepasId" />
-          </Key>
-          <Property Name="JourSemaine" Type="Int32" Nullable="false" />
-          <Property Name="RepasId" Type="Int32" Nullable="false" />
-          <Property Name="Ouvert" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CreneauRepas">
           <Key>
@@ -764,15 +744,6 @@
                 <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
                 <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Ouverture">
-            <EntityTypeMapping TypeName="foodtruckModel.Ouverture">
-              <MappingFragment StoreEntitySet="Ouverture">
-                <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
-                <ScalarProperty Name="RepasId" ColumnName="RepasId" />
-                <ScalarProperty Name="JourSemaine" ColumnName="JourSemaine" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
