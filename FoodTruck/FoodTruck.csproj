@@ -146,6 +146,10 @@
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
+    <Compile Include="Models\CreneauRepas.cs">
+      <DependentUpon>FoodtruckModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\CreneauRepasDAL.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -190,6 +194,9 @@
       <DependentUpon>FoodtruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlageHoraireRetrait.cs" />
+    <Compile Include="Models\Repas.cs">
+      <DependentUpon>FoodtruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TypeRepas.cs" />
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodtruckModels.tt</DependentUpon>

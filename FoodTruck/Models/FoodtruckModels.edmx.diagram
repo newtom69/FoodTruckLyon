@@ -23,6 +23,10 @@
         <AssociationConnector Association="foodtruckModel.FK_PanierProspect_Article" />
         <EntityTypeShape EntityType="foodtruckModel.JourExceptionnel" Width="1.5" PointX="7.375" PointY="3.75" />
         <EntityTypeShape EntityType="foodtruckModel.Ouverture" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="foodtruckModel.CreneauRepas" Width="1.5" PointX="11.625" PointY="1" />
+        <EntityTypeShape EntityType="foodtruckModel.Repas" Width="1.5" PointX="9.375" PointY="1.25" />
+        <AssociationConnector Association="foodtruckModel.FK_CreneauRepas_CreneauRepas" />
+        <AssociationConnector Association="foodtruckModel.FK_CreneauRepas_Repas" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

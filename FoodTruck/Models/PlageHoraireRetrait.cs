@@ -6,10 +6,10 @@ namespace FoodTruck.Models
 {
     public class PlageHoraireRetrait
     {
-        private static readonly TimeSpan Pas = new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]), 0);
+        private TimeSpan Pas = new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]), 0);
         public DateTime PremierCreneau { get; private set; }
         public DateTime DernierCreneau { get; private set; }
-        public TypeRepas TypeRepas { get; private set; }
+        public TypeRepas RepasId { get; private set; }
         public List<DateTime> Creneaux { get; private set; }
 
         public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau)
@@ -27,6 +27,24 @@ namespace FoodTruck.Models
             ConstruireCreneaux();
             SetTypeRepas();
         }
+
+        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau, TimeSpan pas, TypeRepas repasId)
+        {
+            if (premierCreneau < dernierCreneau)
+            {
+                PremierCreneau = premierCreneau;
+                DernierCreneau = dernierCreneau;
+            }
+            else
+            {
+                PremierCreneau = dernierCreneau;
+                DernierCreneau = premierCreneau;
+            }
+            Pas = pas;
+            ConstruireCreneaux();
+            RepasId = repasId;
+        }
+
         public PlageHoraireRetrait PlageHoraireRetraitSuivante()
         {
             DateTime nouvelleDate = DernierCreneau + Pas + new TimeSpan(0, 1, 0);
@@ -80,11 +98,11 @@ namespace FoodTruck.Models
             TimeSpan seizeHeure = new TimeSpan(16, 0, 0);
             if (Apres(seizeHeure))
             {
-                TypeRepas = TypeRepas.Diner;
+                RepasId = TypeRepas.Diner;
             }
             else
             {
-                TypeRepas = TypeRepas.Dejeuner;
+                RepasId = TypeRepas.Dejeuner;
             }
         }
 

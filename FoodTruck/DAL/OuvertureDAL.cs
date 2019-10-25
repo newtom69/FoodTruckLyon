@@ -9,7 +9,7 @@ namespace FoodTruck.DAL
     {
         internal bool EstOuvert(PlageHoraireRetrait plageHoraireRetrait)
         {
-            TypeRepas typeRepas = plageHoraireRetrait.TypeRepas;
+            TypeRepas typeRepas = plageHoraireRetrait.RepasId;
             DayOfWeek jourSemaine = plageHoraireRetrait.PremierCreneau.DayOfWeek;
             bool? ouvertHabituellement;
             bool? ouvertExceptionnellement;

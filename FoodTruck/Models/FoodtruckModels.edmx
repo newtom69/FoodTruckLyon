@@ -43,6 +43,17 @@
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="CreneauRepas">
+          <Key>
+            <PropertyRef Name="JourSemaineId" />
+            <PropertyRef Name="RepasId" />
+          </Key>
+          <Property Name="JourSemaineId" Type="int" Nullable="false" />
+          <Property Name="RepasId" Type="int" Nullable="false" />
+          <Property Name="Debut" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Fin" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Pas" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="FamilleArticle">
           <Key>
             <PropertyRef Name="Id" />
@@ -90,6 +101,15 @@
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
           <Property Name="DateAjout" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Repas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DebutDefaut" Type="time" Precision="7" Nullable="false" />
+          <Property Name="FinDefaut" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Utilisateur">
           <Key>
@@ -167,6 +187,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CreneauRepas_CreneauRepas">
+          <End Role="CreneauRepas" Type="Self.CreneauRepas" Multiplicity="1" />
+          <End Role="CreneauRepas1" Type="Self.CreneauRepas" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CreneauRepas">
+              <PropertyRef Name="JourSemaineId" />
+              <PropertyRef Name="RepasId" />
+            </Principal>
+            <Dependent Role="CreneauRepas1">
+              <PropertyRef Name="JourSemaineId" />
+              <PropertyRef Name="RepasId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreneauRepas_Repas">
+          <End Role="Repas" Type="Self.Repas" Multiplicity="1" />
+          <End Role="CreneauRepas" Type="Self.CreneauRepas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Repas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CreneauRepas">
+              <PropertyRef Name="RepasId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PanierProspect_Article">
           <End Role="Article" Type="Self.Article" Multiplicity="1" />
           <End Role="PanierProspect" Type="Self.PanierProspect" Multiplicity="*" />
@@ -219,11 +265,13 @@
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreneauRepas" EntityType="Self.CreneauRepas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ouverture" EntityType="Self.Ouverture" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Repas" EntityType="Self.Repas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
@@ -241,6 +289,14 @@
           <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreneauRepas_CreneauRepas" Association="Self.FK_CreneauRepas_CreneauRepas">
+            <End Role="CreneauRepas" EntitySet="CreneauRepas" />
+            <End Role="CreneauRepas1" EntitySet="CreneauRepas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreneauRepas_Repas" Association="Self.FK_CreneauRepas_Repas">
+            <End Role="Repas" EntitySet="Repas" />
+            <End Role="CreneauRepas" EntitySet="CreneauRepas" />
           </AssociationSet>
           <AssociationSet Name="FK_PanierProspect_Article" Association="Self.FK_PanierProspect_Article">
             <End Role="Article" EntitySet="Article" />
@@ -488,6 +544,16 @@
           </AssociationSet>
           <EntitySet Name="JourExceptionnel" EntityType="foodtruckModel.JourExceptionnel" />
           <EntitySet Name="Ouverture" EntityType="foodtruckModel.Ouverture" />
+          <EntitySet Name="CreneauRepas" EntityType="foodtruckModel.CreneauRepas" />
+          <EntitySet Name="Repas" EntityType="foodtruckModel.Repas" />
+          <AssociationSet Name="FK_CreneauRepas_CreneauRepas" Association="foodtruckModel.FK_CreneauRepas_CreneauRepas">
+            <End Role="CreneauRepas" EntitySet="CreneauRepas" />
+            <End Role="CreneauRepas1" EntitySet="CreneauRepas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CreneauRepas_Repas" Association="foodtruckModel.FK_CreneauRepas_Repas">
+            <End Role="Repas" EntitySet="Repas" />
+            <End Role="CreneauRepas" EntitySet="CreneauRepas" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="PanierProspect">
           <Key>
@@ -533,6 +599,56 @@
           <Property Name="RepasId" Type="Int32" Nullable="false" />
           <Property Name="Ouvert" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="CreneauRepas">
+          <Key>
+            <PropertyRef Name="JourSemaineId" />
+            <PropertyRef Name="RepasId" />
+          </Key>
+          <Property Name="JourSemaineId" Type="Int32" Nullable="false" />
+          <Property Name="RepasId" Type="Int32" Nullable="false" />
+          <Property Name="Debut" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Fin" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Pas" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CreneauRepas1" Relationship="foodtruckModel.FK_CreneauRepas_CreneauRepas" FromRole="CreneauRepas" ToRole="CreneauRepas1" />
+          <NavigationProperty Name="CreneauRepas2" Relationship="foodtruckModel.FK_CreneauRepas_CreneauRepas" FromRole="CreneauRepas1" ToRole="CreneauRepas" />
+          <NavigationProperty Name="Repas" Relationship="foodtruckModel.FK_CreneauRepas_Repas" FromRole="CreneauRepas" ToRole="Repas" />
+        </EntityType>
+        <EntityType Name="Repas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="DebutDefaut" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="FinDefaut" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CreneauRepas" Relationship="foodtruckModel.FK_CreneauRepas_Repas" FromRole="Repas" ToRole="CreneauRepas" />
+        </EntityType>
+        <Association Name="FK_CreneauRepas_CreneauRepas">
+          <End Type="foodtruckModel.CreneauRepas" Role="CreneauRepas" Multiplicity="1" />
+          <End Type="foodtruckModel.CreneauRepas" Role="CreneauRepas1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CreneauRepas">
+              <PropertyRef Name="JourSemaineId" />
+              <PropertyRef Name="RepasId" />
+            </Principal>
+            <Dependent Role="CreneauRepas1">
+              <PropertyRef Name="JourSemaineId" />
+              <PropertyRef Name="RepasId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CreneauRepas_Repas">
+          <End Type="foodtruckModel.Repas" Role="Repas" Multiplicity="1" />
+          <End Type="foodtruckModel.CreneauRepas" Role="CreneauRepas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Repas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CreneauRepas">
+              <PropertyRef Name="RepasId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -657,6 +773,27 @@
                 <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
                 <ScalarProperty Name="RepasId" ColumnName="RepasId" />
                 <ScalarProperty Name="JourSemaine" ColumnName="JourSemaine" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreneauRepas">
+            <EntityTypeMapping TypeName="foodtruckModel.CreneauRepas">
+              <MappingFragment StoreEntitySet="CreneauRepas">
+                <ScalarProperty Name="Pas" ColumnName="Pas" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Debut" ColumnName="Debut" />
+                <ScalarProperty Name="RepasId" ColumnName="RepasId" />
+                <ScalarProperty Name="JourSemaineId" ColumnName="JourSemaineId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Repas">
+            <EntityTypeMapping TypeName="foodtruckModel.Repas">
+              <MappingFragment StoreEntitySet="Repas">
+                <ScalarProperty Name="FinDefaut" ColumnName="FinDefaut" />
+                <ScalarProperty Name="DebutDefaut" ColumnName="DebutDefaut" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

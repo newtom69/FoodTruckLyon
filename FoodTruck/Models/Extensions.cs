@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
@@ -31,6 +32,12 @@ namespace FoodTruck.Models
             PlageHoraireRetrait plageHoraireRetraitDejeuner = new PlageHoraireRetrait(premierCreneauDejeuner, dernierCreneauDejeuner);
             PlageHoraireRetrait plageHoraireRetraitDiner = new PlageHoraireRetrait(premierCreneauDiner, dernierCreneauDiner);
             PlageHoraireRetrait plageHoraireRetraitDejeunerLendemain = new PlageHoraireRetrait(premierCreneauDejeunerLendemain, dernierCreneauDejeunerLendemain);
+
+            //nouvelle méthodes
+            CreneauRepasDAL creneauRepasDAL = new CreneauRepasDAL();
+            List<PlageHoraireRetrait> plagesHorairesRetrait = creneauRepasDAL.PlagesHorairesRetrait(date);
+            // TODO à terminer
+
 
             if (plageHoraireRetraitDejeuner.Apres(date) || plageHoraireRetraitDejeuner.Contient(date))
             {
