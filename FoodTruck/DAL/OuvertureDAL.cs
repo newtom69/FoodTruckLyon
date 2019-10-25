@@ -1,9 +1,7 @@
 ﻿using FoodTruck.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace FoodTruck.DAL
 {
@@ -62,9 +60,9 @@ namespace FoodTruck.DAL
                 JourExceptionnel ouvert =
                     (from jexc in db.JourExceptionnel
                      where jexc.Jour == 0 && DbFunctions.DiffDays(jexc.DateDebut, date) == 0 && jexc.DebutRepasId <= repasId && jexc.FinRepasId >= repasId
-                        || jexc.Jour > 0  && DbFunctions.DiffDays(jexc.DateDebut, date) == 0 && jexc.DebutRepasId <= repasId
-                        || jexc.Jour > 0  && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) == 0 && jexc.FinRepasId >= repasId
-                        || jexc.Jour > 0  && DbFunctions.DiffDays(jexc.DateDebut, date) > 0 && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) > 0
+                        || jexc.Jour > 0 && DbFunctions.DiffDays(jexc.DateDebut, date) == 0 && jexc.DebutRepasId <= repasId
+                        || jexc.Jour > 0 && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) == 0 && jexc.FinRepasId >= repasId
+                        || jexc.Jour > 0 && DbFunctions.DiffDays(jexc.DateDebut, date) > 0 && DbFunctions.DiffDays(date, DbFunctions.AddDays(jexc.DateDebut, jexc.Jour)) > 0
                      select jexc).FirstOrDefault();
                 if (ouvert == null)
                     return null;

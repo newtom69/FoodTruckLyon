@@ -1,11 +1,11 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FoodTruck.Models;
 
 namespace FoodTruck.Controllers
 {
@@ -47,7 +47,7 @@ namespace FoodTruck.Controllers
             }
             else
                 ViewBag.Utilisateur = Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
-            
+
             VisiteDAL.Enregistrer(Utilisateur.Id);
             if (Utilisateur.Id != 0)
             {

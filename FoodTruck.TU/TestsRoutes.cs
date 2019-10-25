@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace FoodTruck.TU
 {
     [TestClass]
     public class TestsRoutes
     {
-        
+
         [TestMethod]
         public void Routes_PageHome()
         {

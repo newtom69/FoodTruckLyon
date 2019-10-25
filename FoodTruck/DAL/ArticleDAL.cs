@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {

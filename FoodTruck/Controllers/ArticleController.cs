@@ -1,7 +1,7 @@
-﻿using FoodTruck.Models;
-using System.Web.Mvc;
-using FoodTruck.DAL;
+﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
@@ -10,7 +10,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if(AdminArticle)
+            if (AdminArticle)
                 return View(new ArticleIndexViewModel());
             else
                 return View(new ArticleIndexViewModel(true));

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
@@ -14,8 +14,8 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 utilisateur = (from u in db.Utilisateur
-                            where u.Id == id
-                            select u).FirstOrDefault();
+                               where u.Id == id
+                               select u).FirstOrDefault();
             }
             return utilisateur;
         }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
@@ -118,8 +118,8 @@ namespace FoodTruck.DAL
                 //                          where DATEDIFF(day, DateAjout, CURRENT_TIMESTAMP) < ageEnJours)
 
                 var GuidsAGarder = (from panier in db.PanierProspect
-                                   where DbFunctions.DiffDays(panier.DateAjout, now) < ageEnJours
-                                   select panier.ProspectGuid).Distinct();
+                                    where DbFunctions.DiffDays(panier.DateAjout, now) < ageEnJours
+                                    select panier.ProspectGuid).Distinct();
 
                 var paniersAPurger = (from panier in db.PanierProspect
                                       where !GuidsAGarder.Any(guid => panier.ProspectGuid.Contains(guid))

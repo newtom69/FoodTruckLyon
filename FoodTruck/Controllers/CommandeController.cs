@@ -1,10 +1,10 @@
-﻿using FoodTruck.Models;
-using System;
-using System.Web.Mvc;
-using FoodTruck.DAL;
-using System.Net.Mail;
-using System.Globalization;
+﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using System;
+using System.Globalization;
+using System.Net.Mail;
+using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
                         message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
                         message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
                             $"\nVous pourrez venir la chercher le {laCommande.DateRetrait.ToString("dddd dd MMMM")}" +
-                            $" à partir de {laCommande.DateRetrait.ToString("HH:mm").Replace(":", "h")}"+
+                            $" à partir de {laCommande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
                                        $"\nMerci de votre confiance\n\n" +
                                        "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
                         using (SmtpClient client = new SmtpClient())

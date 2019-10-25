@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FoodTruck.Models;
 
 namespace FoodTruck.DAL
 {
@@ -27,7 +27,7 @@ namespace FoodTruck.DAL
         }
 
         ///Ajouter un article non présent au panier en base d'un utilisateur
-        public void Ajouter(Article lArticle, int quantite=1)
+        public void Ajouter(Article lArticle, int quantite = 1)
         {
             Panier lePanier = new Panier
             {
@@ -35,7 +35,7 @@ namespace FoodTruck.DAL
                 UtilisateurId = UtilisateurId,
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
-        };
+            };
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.Panier.Add(lePanier);
@@ -90,9 +90,9 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from panier in db.Panier
-                                        join article in db.Article on panier.ArticleId equals article.Id
-                                        where panier.UtilisateurId == UtilisateurId
-                                        select article).ToList();
+                                          join article in db.Article on panier.ArticleId equals article.Id
+                                          where panier.UtilisateurId == UtilisateurId
+                                          select article).ToList();
                 return articles;
             }
         }

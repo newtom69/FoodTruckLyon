@@ -16,7 +16,7 @@ namespace FoodTruck.Models
             string[] tabdernierCreneauDejeuner = ConfigurationManager.AppSettings["DernierCreneauDejeuner"].Split(':');
             string[] tabpremierCreneauDiner = ConfigurationManager.AppSettings["PremierCreneauDiner"].Split(':');
             string[] tabdernierCreneauDiner = ConfigurationManager.AppSettings["DernierCreneauDiner"].Split(':');
-            
+
             ObtenirHeureMinute(tabpremierCreneauDejeuner, ref heurePremierCreneauDejeuner, ref minutePremierCreneauDejeuner);
             ObtenirHeureMinute(tabdernierCreneauDejeuner, ref heureDernierCreneauDejeuner, ref minuteDernierCreneauDejeuner);
             ObtenirHeureMinute(tabpremierCreneauDiner, ref heurePremierCreneauDiner, ref minutePremierCreneauDiner);

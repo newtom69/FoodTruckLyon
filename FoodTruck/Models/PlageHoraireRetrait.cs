@@ -103,7 +103,7 @@ namespace FoodTruck.Models
                             indexMin = Creneaux.IndexOf(creneau);
                     }
                 }
-                if(compteur >0)
+                if (compteur > 0)
                     Creneaux.RemoveRange(indexMin, compteur);
                 PremierCreneau = Creneaux[0];
             }

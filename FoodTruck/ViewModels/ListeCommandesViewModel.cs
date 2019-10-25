@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using FoodTruck.DAL;
+﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using System.Collections.Generic;
 
 namespace FoodTruck.ViewModels
 {

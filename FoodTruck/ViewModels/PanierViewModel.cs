@@ -3,7 +3,6 @@ using FoodTruck.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace FoodTruck.ViewModels
 {
@@ -45,7 +44,7 @@ namespace FoodTruck.ViewModels
 
         public void Trier()
         {
-            ArticlesDetailsViewModel=ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
+            ArticlesDetailsViewModel = ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
         }
     }
 }
