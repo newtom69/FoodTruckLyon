@@ -23,8 +23,8 @@ namespace FoodTruck.Models
         public int Id { get; set; }
         public int UtilisateurId { get; set; }
         public System.DateTime DateCommande { get; set; }
-        public double PrixTotal { get; set; }
         public System.DateTime DateRetrait { get; set; }
+        public double PrixTotal { get; set; }
         public bool Retrait { get; set; }
         public bool Annulation { get; set; }
     

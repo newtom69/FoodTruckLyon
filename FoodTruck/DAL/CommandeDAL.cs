@@ -11,7 +11,7 @@ namespace FoodTruck.DAL
     {
         internal Commande Detail(int id)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 Commande commande = (from cmd in db.Commande
                                      where cmd.Id == id
@@ -21,7 +21,7 @@ namespace FoodTruck.DAL
         }
         internal void Annuler(int id)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 Commande commande = (from cmd in db.Commande
                                      where cmd.Id == id
@@ -36,7 +36,7 @@ namespace FoodTruck.DAL
 
         public void Ajouter(Commande laCommande, List<ArticleViewModel> articles)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 db.Commande.Add(laCommande);
                 db.SaveChanges();
@@ -64,7 +64,7 @@ namespace FoodTruck.DAL
         }
         internal void MettreAJourStatut(int id, bool retire, bool annule)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 Commande commande = (from cmd in db.Commande
                                      where cmd.Id == id
@@ -80,7 +80,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesAStatuer()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 DateTime now = DateTime.Now;
                 const int intervalleMax = 1;
@@ -94,7 +94,7 @@ namespace FoodTruck.DAL
 
         public List<Commande> ListerCommandesEnCours()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 DateTime now = DateTime.Now;
                 const int intervalleMax = 5;
@@ -108,7 +108,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesUtilisateur(int id)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
@@ -120,7 +120,7 @@ namespace FoodTruck.DAL
         }
         internal List<Commande> ListerCommandesEnCoursUtilisateur(int id)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
@@ -133,7 +133,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesToutes()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
                                             orderby cmd.Id descending
@@ -144,7 +144,7 @@ namespace FoodTruck.DAL
 
         public List<ArticleViewModel> ListerArticles(int commandeId)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 var listArticlesQuantites = (from cmd in db.Commande
                                              join ca in db.Commande_Article on cmd.Id equals ca.CommandeId

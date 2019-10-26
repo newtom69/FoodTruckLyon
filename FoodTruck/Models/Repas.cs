@@ -18,6 +18,8 @@ namespace FoodTruck.Models
         public Repas()
         {
             this.CreneauRepas = new HashSet<CreneauRepas>();
+            this.JourExceptionnel = new HashSet<JourExceptionnel>();
+            this.JourExceptionnel1 = new HashSet<JourExceptionnel>();
         }
     
         public int Id { get; set; }
@@ -27,5 +29,9 @@ namespace FoodTruck.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreneauRepas> CreneauRepas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JourExceptionnel> JourExceptionnel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<JourExceptionnel> JourExceptionnel1 { get; set; }
     }
 }

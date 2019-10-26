@@ -41,7 +41,7 @@ namespace FoodTruck.DAL
         /// <returns></returns>
         private bool EstOuvertHabituellement(DayOfWeek jourSemaine, TypeRepas typeRepas)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 CreneauRepas ouvert = (from cr in db.CreneauRepas
                                        where cr.JourSemaineId == (int)jourSemaine && cr.RepasId == (int)typeRepas
@@ -55,7 +55,7 @@ namespace FoodTruck.DAL
         private bool? EstOuvertExceptionnellement(DateTime date, TypeRepas typeRepas) // redondance typeRepas
         {
             int repasId = (int)typeRepas;
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 JourExceptionnel ouvert =
                     (from jexc in db.JourExceptionnel

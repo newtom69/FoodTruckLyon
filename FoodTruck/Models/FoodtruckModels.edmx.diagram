@@ -4,28 +4,30 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a9696f3db4e74fc69af096d3805d4170" Name="Diagram1">
-        <EntityTypeShape EntityType="foodtruckModel.Article" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.Commande" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.Commande_Article" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.FamilleArticle" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.Panier" Width="1.5" PointX="6" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.Utilisateur" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodtruckModel.Visite" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <AssociationConnector Association="foodtruckModel.FK_Article_FamilleArticle" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Commande_Article_Article" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Utilisateur_Article_Article" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Commande_Article_Commande" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Commande_Utilisateur" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Utilisateur_Article_Utilisateur" ManuallyRouted="false" />
-        <AssociationConnector Association="foodtruckModel.FK_Visite_Utilisateur" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="foodtruckModel.PanierProspect" Width="1.5" PointX="5.25" PointY="1.625" />
-        <AssociationConnector Association="foodtruckModel.FK_PanierProspect_Article" />
-        <EntityTypeShape EntityType="foodtruckModel.JourExceptionnel" Width="1.5" PointX="7.375" PointY="3.75" />
-        <EntityTypeShape EntityType="foodtruckModel.CreneauRepas" Width="1.5" PointX="11.625" PointY="1" />
-        <EntityTypeShape EntityType="foodtruckModel.Repas" Width="1.5" PointX="9.375" PointY="1.25" />
-        <AssociationConnector Association="foodtruckModel.FK_CreneauRepas_CreneauRepas" />
-        <AssociationConnector Association="foodtruckModel.FK_CreneauRepas_Repas" />
+      <Diagram DiagramId="041ee2e045d1442481b467a57ceb0143" Name="Diagram1">
+        <EntityTypeShape EntityType="foodTruckModels.Article" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Commande" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Commande_Article" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.CreneauRepas" Width="1.5" PointX="10" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.FamilleArticle" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.JourExceptionnel" Width="1.5" PointX="10" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Panier" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.PanierProspect" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Repas" Width="1.5" PointX="7.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Utilisateur" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="foodTruckModels.Visite" Width="1.5" PointX="5.25" PointY="15.125" IsExpanded="true" />
+        <AssociationConnector Association="foodTruckModels.FK_Article_FamilleArticle" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Commande_Article_Article" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_PanierProspect_Article" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Utilisateur_Article_Article" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Commande_Article_Commande" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Commande_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_CreneauRepas" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_Repas" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_JourExceptionnel_Repas" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_JourExceptionnel_Repas1" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Utilisateur_Article_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="foodTruckModels.FK_Visite_Utilisateur" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

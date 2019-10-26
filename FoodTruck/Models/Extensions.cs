@@ -12,22 +12,34 @@ namespace FoodTruck.Models
             CreneauRepasDAL creneauRepasDAL = new CreneauRepasDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = creneauRepasDAL.PlagesHorairesRetrait(date);
             List<PlageHoraireRetrait> plagesHorairesRetraitLendemain = creneauRepasDAL.PlagesHorairesRetrait(date.AddDays(1));
-            PlageHoraireRetrait plageHoraireRetraitDejeuner = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Déjeuner);
-            PlageHoraireRetrait plageHoraireRetraitDiner = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Dîner);
-            PlageHoraireRetrait plageHoraireRetraitDejeunerLendemain = plagesHorairesRetraitLendemain.Find(p => p.RepasId == TypeRepas.Déjeuner); //todo évolution prendre le RepasId min
+            
+            
+            
+            PlageHoraireRetrait plageHoraireRetrait1 = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Déjeuner);
+            //TODO : si pas de plage trouvé objet à null => erreur.
+            // tester si null et prendre le suivant et ainsi de suite
+
+
+            PlageHoraireRetrait plageHoraireRetrait2;
+            plageHoraireRetrait2 = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Dîner);
+
+
+
+
+            PlageHoraireRetrait plageHoraireRetrait3 = plagesHorairesRetraitLendemain.Find(p => p.RepasId == TypeRepas.Déjeuner); //todo évolution prendre le RepasId min
             // TODO à optimiser
 
-            if (plageHoraireRetraitDejeuner.Apres(date) || plageHoraireRetraitDejeuner.Contient(date))
+            if (plageHoraireRetrait1.Apres(date) || plageHoraireRetrait1.Contient(date))
             {
-                plageHoraireRetraitDejeuner.Rogner(date);
-                return plageHoraireRetraitDejeuner;
+                plageHoraireRetrait1.Rogner(date);
+                return plageHoraireRetrait1;
             }
-            if (plageHoraireRetraitDiner.Apres(date) || plageHoraireRetraitDiner.Contient(date))
+            if (plageHoraireRetrait2.Apres(date) || plageHoraireRetrait2.Contient(date))
             {
-                plageHoraireRetraitDiner.Rogner(date);
-                return plageHoraireRetraitDiner;
+                plageHoraireRetrait2.Rogner(date);
+                return plageHoraireRetrait2;
             }
-            return plageHoraireRetraitDejeunerLendemain;
+            return plageHoraireRetrait3;
         }
         public static string UrlVersNom(this string url)
         {

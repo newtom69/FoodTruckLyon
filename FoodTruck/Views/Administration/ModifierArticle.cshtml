@@ -35,7 +35,7 @@
                             if (article.FamilleId != i)
                             {
                                 i = article.FamilleId;
-                                string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == i).Nom;
+                                string nomFamille = new dbEntities().FamilleArticle.Single(f => f.Id == i).Nom;
                                 <optgroup label="@nomFamille"></optgroup>
                             }
                             string redOrNothing = "";

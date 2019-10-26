@@ -23,6 +23,7 @@ namespace FoodTruck.Models
         }
     
         public int Id { get; set; }
+        public string Guid { get; set; }
         public string Email { get; set; }
         public string Mdp { get; set; }
         public string Nom { get; set; }
@@ -31,7 +32,6 @@ namespace FoodTruck.Models
         public bool AdminCommande { get; set; }
         public bool AdminUtilisateur { get; set; }
         public bool AdminArticle { get; set; }
-        public string Guid { get; set; }
         public bool AdminSuper { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

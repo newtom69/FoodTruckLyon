@@ -10,7 +10,7 @@ namespace FoodTruck.DAL
         internal Article Details(int id)
         {
             Article lArticle;
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 lArticle = (from article in db.Article
                             where article.Id == id
@@ -21,7 +21,7 @@ namespace FoodTruck.DAL
         internal Article Details(string nom)
         {
             Article lArticle;
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 lArticle = (from article in db.Article
                             where article.Nom == nom
@@ -36,7 +36,7 @@ namespace FoodTruck.DAL
         public List<FamilleArticle> FamillesArticle()
         {
             List<FamilleArticle> famillesArticle;
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 famillesArticle = (from fa in db.FamilleArticle
                                    orderby fa.Id
@@ -47,7 +47,7 @@ namespace FoodTruck.DAL
 
         internal void AugmenterQuantiteVendue(int id, int nbre)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 Article lArticle = (from article in db.Article
                                     where article.Id == id
@@ -62,7 +62,7 @@ namespace FoodTruck.DAL
         /// <param name="lArticle"></param>
         internal void Ajouter(Article lArticle)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 db.Article.Add(lArticle);
                 try
@@ -79,7 +79,7 @@ namespace FoodTruck.DAL
 
         public List<Article> ListerRandom(int nombreRetour, int nombreTop)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           where article.DansCarte == true && article.FamilleId <= 3
@@ -95,7 +95,7 @@ namespace FoodTruck.DAL
 
         public List<Article> ListerArticles(string nomFamille, bool dansCarte, int nombreMax = 200)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
@@ -117,7 +117,7 @@ namespace FoodTruck.DAL
         }
         public List<Article> ListerArticles(bool dansCarte, int nombreMax = 200)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
@@ -141,7 +141,7 @@ namespace FoodTruck.DAL
         internal bool NomExiste(string nom, int id = 0)
         {
             Article lArticle;
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 lArticle = (from article in db.Article
                             where article.Nom == nom && article.Id != id
@@ -152,7 +152,7 @@ namespace FoodTruck.DAL
 
         public List<Article> ListerTout(int nombreMax = 200)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           orderby article.FamilleId, article.Nom
@@ -165,7 +165,7 @@ namespace FoodTruck.DAL
 
         internal void Modifier(Article lArticle)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 Article articleAModifier = (from article in db.Article
                                             where article.Id == lArticle.Id

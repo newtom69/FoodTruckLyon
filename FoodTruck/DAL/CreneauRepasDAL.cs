@@ -9,7 +9,7 @@ namespace FoodTruck.Models
     {
         internal List<PlageHoraireRetrait> PlagesHorairesRetrait(DateTime date)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
+            using (dbEntities db = new dbEntities())
             {
                 List<CreneauRepas> Creneaux = (from creneau in db.CreneauRepas
                                                where creneau.JourSemaineId == (int)date.DayOfWeek

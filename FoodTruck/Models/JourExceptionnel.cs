@@ -14,11 +14,13 @@ namespace FoodTruck.Models
     
     public partial class JourExceptionnel
     {
-        public int Id { get; set; }
         public System.DateTime DateDebut { get; set; }
-        public bool Ouvert { get; set; }
         public int DebutRepasId { get; set; }
         public int FinRepasId { get; set; }
         public int Jour { get; set; }
+        public bool Ouvert { get; set; }
+    
+        public virtual Repas Repas { get; set; }
+        public virtual Repas Repas1 { get; set; }
     }
 }
