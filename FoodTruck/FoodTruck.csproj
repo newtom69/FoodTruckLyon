@@ -156,9 +156,6 @@
     <Compile Include="Models\Commande_Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CreneauRepas.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +188,9 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlageHoraireRetrait.cs" />
+    <Compile Include="Models\PlageRepas.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Repas.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>

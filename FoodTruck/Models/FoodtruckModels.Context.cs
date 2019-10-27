@@ -28,13 +28,13 @@ namespace FoodTruck.Models
         public virtual DbSet<Article> Article { get; set; }
         public virtual DbSet<Commande> Commande { get; set; }
         public virtual DbSet<Commande_Article> Commande_Article { get; set; }
-        public virtual DbSet<CreneauRepas> CreneauRepas { get; set; }
         public virtual DbSet<FamilleArticle> FamilleArticle { get; set; }
-        public virtual DbSet<JourExceptionnel> JourExceptionnel { get; set; }
         public virtual DbSet<Panier> Panier { get; set; }
         public virtual DbSet<PanierProspect> PanierProspect { get; set; }
         public virtual DbSet<Repas> Repas { get; set; }
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
         public virtual DbSet<Visite> Visite { get; set; }
+        public virtual DbSet<PlageRepas> PlageRepas { get; set; }
+        public virtual DbSet<JourExceptionnel> JourExceptionnel { get; set; }
     }
 }

@@ -8,9 +8,7 @@
         <EntityTypeShape EntityType="foodTruckModels.Article" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.Commande" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.Commande_Article" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodTruckModels.CreneauRepas" Width="1.5" PointX="10" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.FamilleArticle" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="foodTruckModels.JourExceptionnel" Width="1.5" PointX="10" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.Panier" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.PanierProspect" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="foodTruckModels.Repas" Width="1.5" PointX="7.75" PointY="4.5" IsExpanded="true" />
@@ -22,12 +20,12 @@
         <AssociationConnector Association="foodTruckModels.FK_Utilisateur_Article_Article" ManuallyRouted="false" />
         <AssociationConnector Association="foodTruckModels.FK_Commande_Article_Commande" ManuallyRouted="false" />
         <AssociationConnector Association="foodTruckModels.FK_Commande_Utilisateur" ManuallyRouted="false" />
-        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_CreneauRepas" ManuallyRouted="false" />
-        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_Repas" ManuallyRouted="false" />
-        <AssociationConnector Association="foodTruckModels.FK_JourExceptionnel_Repas" ManuallyRouted="false" />
-        <AssociationConnector Association="foodTruckModels.FK_JourExceptionnel_Repas1" ManuallyRouted="false" />
         <AssociationConnector Association="foodTruckModels.FK_Utilisateur_Article_Utilisateur" ManuallyRouted="false" />
         <AssociationConnector Association="foodTruckModels.FK_Visite_Utilisateur" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="foodTruckModels.PlageRepas" Width="1.5" PointX="8.375" PointY="0.625" />
+        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_CreneauRepas1" />
+        <AssociationConnector Association="foodTruckModels.FK_CreneauRepas_Repas1" />
+        <EntityTypeShape EntityType="foodTruckModels.JourExceptionnel" Width="1.5" PointX="10.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

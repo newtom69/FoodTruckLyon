@@ -12,7 +12,7 @@ namespace FoodTruck.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CreneauRepas
+    public partial class PlageRepas
     {
         public int JourSemaineId { get; set; }
         public int RepasId { get; set; }
@@ -20,8 +20,8 @@ namespace FoodTruck.Models
         public System.TimeSpan Fin { get; set; }
         public System.TimeSpan Pas { get; set; }
     
-        public virtual CreneauRepas CreneauRepas1 { get; set; }
-        public virtual CreneauRepas CreneauRepas2 { get; set; }
+        public virtual PlageRepas PlageRepas1 { get; set; }
+        public virtual PlageRepas PlageRepas2 { get; set; }
         public virtual Repas Repas { get; set; }
     }
 }

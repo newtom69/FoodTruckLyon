@@ -17,9 +17,7 @@ namespace FoodTruck.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Repas()
         {
-            this.CreneauRepas = new HashSet<CreneauRepas>();
-            this.JourExceptionnel = new HashSet<JourExceptionnel>();
-            this.JourExceptionnel1 = new HashSet<JourExceptionnel>();
+            this.PlageRepas = new HashSet<PlageRepas>();
         }
     
         public int Id { get; set; }
@@ -28,10 +26,6 @@ namespace FoodTruck.Models
         public System.TimeSpan FinDefaut { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CreneauRepas> CreneauRepas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JourExceptionnel> JourExceptionnel { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<JourExceptionnel> JourExceptionnel1 { get; set; }
+        public virtual ICollection<PlageRepas> PlageRepas { get; set; }
     }
 }

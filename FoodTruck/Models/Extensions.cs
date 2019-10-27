@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodTruck.DAL;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -9,15 +10,19 @@ namespace FoodTruck.Models
     {
         public static PlageHoraireRetrait PlageHoraireRetrait(this DateTime date)
         {
-            CreneauRepasDAL creneauRepasDAL = new CreneauRepasDAL();
-            List<PlageHoraireRetrait> plagesHorairesRetrait = creneauRepasDAL.PlagesHorairesRetrait(date);
-            List<PlageHoraireRetrait> plagesHorairesRetraitLendemain = creneauRepasDAL.PlagesHorairesRetrait(date.AddDays(1));
-            
-            
-            
+            PlageRepasDAL plageRepasDAL = new PlageRepasDAL();
+            OuvertureDAL ouvertureDAL = new OuvertureDAL();
+            List<PlageHoraireRetrait> plagesHorairesRetrait = plageRepasDAL.PlagesHorairesRetrait(date);
+            List<PlageHoraireRetrait> plagesHorairesRetraitLendemain = plageRepasDAL.PlagesHorairesRetrait(date.AddDays(1));
+                               
             PlageHoraireRetrait plageHoraireRetrait1 = plagesHorairesRetrait.Find(p => p.RepasId == TypeRepas.Déjeuner);
             //TODO : si pas de plage trouvé objet à null => erreur.
             // tester si null et prendre le suivant et ainsi de suite
+
+           // PlageHoraireRetrait plage1 = plageRepasDAL.PlageHoraireRetrait(date); //nouvelle méthode
+
+            PlageHoraireRetrait plageTest2 = ouvertureDAL.ProchainOuvert(date);
+
 
 
             PlageHoraireRetrait plageHoraireRetrait2;
