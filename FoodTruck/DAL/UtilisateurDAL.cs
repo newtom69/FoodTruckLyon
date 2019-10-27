@@ -11,7 +11,7 @@ namespace FoodTruck.DAL
         public Utilisateur Details(int id)
         {
             Utilisateur utilisateur;
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 utilisateur = (from u in db.Utilisateur
                                where u.Id == id
@@ -27,7 +27,7 @@ namespace FoodTruck.DAL
                 mdpHash = GetHash(Hash, mdp);
 
             Utilisateur lUtilisateur = new Utilisateur();
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 lUtilisateur = (from user in db.Utilisateur
                                 where user.Email == email && user.Mdp == mdpHash
@@ -38,7 +38,7 @@ namespace FoodTruck.DAL
         public Utilisateur ConnexionCookies(string guid)
         {
             Utilisateur lUtilisateur = new Utilisateur();
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 lUtilisateur = (from user in db.Utilisateur
                                 where user.Guid == guid
@@ -52,7 +52,7 @@ namespace FoodTruck.DAL
             using (SHA256 Hash = SHA256.Create())
                 mdpHash = GetHash(Hash, mdp);
             string guid = Guid.NewGuid().ToString();
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 int id = (from user in db.Utilisateur
                           where user.Email == email || user.Guid == guid

@@ -9,7 +9,7 @@ namespace FoodTruck.DAL
     {
         public VisiteDAL(Visite laVisite)
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 db.Visite.Add(laVisite);
                 db.SaveChanges();
@@ -37,7 +37,7 @@ namespace FoodTruck.DAL
                     Navigateur = navigateur,
                     UrlOrigine = UrlOrigine
                 };
-                using (dbEntities db = new dbEntities())
+                using (FoodTruckEntities db = new FoodTruckEntities())
                 {
                     db.Visite.Add(laVisite);
                     db.SaveChanges();

@@ -140,21 +140,13 @@ namespace FoodTruck.Controllers
 
         private List<DateTime> ObtenirDatesRetraitPossibles()
         {
-            OuvertureDAL ouvertureDAL = new OuvertureDAL();
             DateTime maintenant = DateTime.Now;
-            PlageHoraireRetrait plageHoraireRetraitRepas1 = maintenant.PlageHoraireRetrait();
-            while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas1))
-            {
-                plageHoraireRetraitRepas1 = plageHoraireRetraitRepas1.PlageHoraireRetraitSuivante();
-            }
-            PlageHoraireRetrait plageHoraireRetraitRepas2 = plageHoraireRetraitRepas1.PlageHoraireRetraitSuivante();
-            while (!ouvertureDAL.EstOuvert(plageHoraireRetraitRepas2))
-            {
-                plageHoraireRetraitRepas2 = plageHoraireRetraitRepas2.PlageHoraireRetraitSuivante();
-            }
+            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
             List<DateTime> retour = new List<DateTime>();
-            retour.AddRange(plageHoraireRetraitRepas1.Creneaux);
-            retour.AddRange(plageHoraireRetraitRepas2.Creneaux);
+            foreach (var plage in plagesHorairesRetrait)
+            {
+                retour.AddRange(plage.Creneaux);
+            }
             return retour;
         }
     }

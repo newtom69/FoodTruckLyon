@@ -15,13 +15,8 @@ namespace FoodTruck.Models
     public partial class PlageRepas
     {
         public int JourSemaineId { get; set; }
-        public int RepasId { get; set; }
         public System.TimeSpan Debut { get; set; }
         public System.TimeSpan Fin { get; set; }
         public System.TimeSpan Pas { get; set; }
-    
-        public virtual PlageRepas PlageRepas1 { get; set; }
-        public virtual PlageRepas PlageRepas2 { get; set; }
-        public virtual Repas Repas { get; set; }
     }
 }

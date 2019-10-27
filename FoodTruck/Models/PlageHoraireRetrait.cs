@@ -49,7 +49,7 @@ namespace FoodTruck.Models
         {
             DateTime nouvelleDate = DernierCreneau + Pas + new TimeSpan(0, 1, 0);
             //bug sur le type de repas retourné
-            return nouvelleDate.PlageHoraireRetrait();
+            return nouvelleDate.PlageHoraireRetrait()[0];
         }
         public bool Contient(DateTime date)
         {

@@ -146,7 +146,6 @@
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
-    <Compile Include="DAL\CreneauRepasDAL.cs" />
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>

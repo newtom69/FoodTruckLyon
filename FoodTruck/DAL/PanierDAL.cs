@@ -16,7 +16,7 @@ namespace FoodTruck.DAL
 
         public List<Panier> ListerPanierUtilisateur()
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 List<Panier> paniers = (from panier in db.Panier
                                         join article in db.Article on panier.ArticleId equals article.Id
@@ -36,7 +36,7 @@ namespace FoodTruck.DAL
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
             };
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 db.Panier.Add(lePanier);
                 db.SaveChanges();
@@ -46,7 +46,7 @@ namespace FoodTruck.DAL
         ///Modifier la quantité d'un article du panier en base d'un utilisateur
         public void ModifierQuantite(Article lArticle, int quantite)
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 Panier lePanier = (from panier in db.Panier
                                    where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
@@ -60,7 +60,7 @@ namespace FoodTruck.DAL
         /// Supprimer l'article du panier en base de l'utilisateur
         public void Supprimer(Article lArticle)
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 Panier lePanier = (from panier in db.Panier
                                    where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
@@ -74,7 +74,7 @@ namespace FoodTruck.DAL
         /// Supprimer le panier en base de l'utilisateur
         public void Supprimer()
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 var lePanier = from panier in db.Panier
                                where panier.UtilisateurId == UtilisateurId
@@ -87,7 +87,7 @@ namespace FoodTruck.DAL
 
         public List<Article> ListerArticlesPanierUtilisateur()
         {
-            using (dbEntities db = new dbEntities())
+            using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 List<Article> articles = (from panier in db.Panier
                                           join article in db.Article on panier.ArticleId equals article.Id

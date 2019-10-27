@@ -14,18 +14,9 @@ namespace FoodTruck.Models
     
     public partial class Repas
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Repas()
-        {
-            this.PlageRepas = new HashSet<PlageRepas>();
-        }
-    
         public int Id { get; set; }
         public string Nom { get; set; }
         public System.TimeSpan DebutDefaut { get; set; }
         public System.TimeSpan FinDefaut { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PlageRepas> PlageRepas { get; set; }
     }
 }
