@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FoodTruck.Models
 {
@@ -12,7 +13,7 @@ namespace FoodTruck.Models
             OuvertureDAL ouvertureDAL = new OuvertureDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait>();
             PlageHoraireRetrait plage1 = ouvertureDAL.ProchainOuvert(date);
-            PlageHoraireRetrait plage2 = ouvertureDAL.ProchainOuvert(plage1.DernierCreneau.AddMinutes(1)); //TODO refaire algo pour ne pas avoir à rajouter 1 mn
+            PlageHoraireRetrait plage2 = ouvertureDAL.ProchainOuvert(plage1.Creneaux.Last().AddMinutes(1)); //TODO refaire algo pour ne pas avoir à rajouter 1 mn
             plagesHorairesRetrait.Add(plage1);
             plagesHorairesRetrait.Add(plage2);
             return plagesHorairesRetrait;

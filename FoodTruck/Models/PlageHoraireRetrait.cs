@@ -1,88 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace FoodTruck.Models
 {
     public class PlageHoraireRetrait
     {
         private TimeSpan Pas = new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]), 0);
-        public DateTime PremierCreneau { get; private set; }
-        public DateTime DernierCreneau { get; private set; }
-        public TypeRepas RepasId { get; private set; }
         public List<DateTime> Creneaux { get; private set; }
 
         public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau)
         {
-            if (premierCreneau < dernierCreneau)
+            DateTime creneauCourant = premierCreneau;
+            Creneaux = new List<DateTime>();
+            while (creneauCourant <= dernierCreneau)
             {
-                PremierCreneau = premierCreneau;
-                DernierCreneau = dernierCreneau;
+                Creneaux.Add(creneauCourant);
+                creneauCourant = ObtenirCreneauSuivant(creneauCourant);
             }
-            else
-            {
-                PremierCreneau = dernierCreneau;
-                DernierCreneau = premierCreneau;
-            }
-            ConstruireCreneaux();
-            SetTypeRepas();
         }
 
-        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau, TimeSpan pas, TypeRepas repasId)
-        {
-            if (premierCreneau < dernierCreneau)
-            {
-                PremierCreneau = premierCreneau;
-                DernierCreneau = dernierCreneau;
-            }
-            else
-            {
-                PremierCreneau = dernierCreneau;
-                DernierCreneau = premierCreneau;
-            }
-            Pas = pas;
-            ConstruireCreneaux();
-            RepasId = repasId;
-        }
-
-        public PlageHoraireRetrait PlageHoraireRetraitSuivante()
-        {
-            DateTime nouvelleDate = DernierCreneau + Pas + new TimeSpan(0, 1, 0);
-            //bug sur le type de repas retourné
-            return nouvelleDate.PlageHoraireRetrait()[0];
-        }
         public bool Contient(DateTime date)
         {
-            if (PremierCreneau <= date && date <= DernierCreneau)
+            if (Creneaux.First() <= date && date <= Creneaux.Last())
                 return true;
             else
                 return false;
         }
         public bool Apres(TimeSpan heuresMinutes)
         {
-            TimeSpan creneau = new TimeSpan(PremierCreneau.Hour, PremierCreneau.Minute, 0);
+            TimeSpan creneau = new TimeSpan(Creneaux.First().Hour, Creneaux.First().Minute, 0);
             if (creneau > heuresMinutes)
                 return true;
             else
                 return false;
         }
-        public bool Apres(DateTime date)
-        {
-            if (PremierCreneau > date)
-                return true;
-            else
-                return false;
-        }
-        private void ConstruireCreneaux()
-        {
-            DateTime creneauCourant = PremierCreneau;
-            Creneaux = new List<DateTime>();
-            while (creneauCourant <= DernierCreneau)
-            {
-                Creneaux.Add(creneauCourant);
-                creneauCourant = ObtenirCreneauSuivant(creneauCourant);
-            }
-        }
+
         private DateTime ObtenirCreneauCourant(DateTime date)
         {
             int minute = date.Minute;
@@ -92,18 +46,6 @@ namespace FoodTruck.Models
         private DateTime ObtenirCreneauSuivant(DateTime date)
         {
             return ObtenirCreneauCourant(date) + Pas;
-        }
-        private void SetTypeRepas()
-        {
-            TimeSpan seizeHeure = new TimeSpan(16, 0, 0);
-            if (Apres(seizeHeure))
-            {
-                RepasId = TypeRepas.Diner;
-            }
-            else
-            {
-                RepasId = TypeRepas.Dejeuner;
-            }
         }
 
         internal void Rogner(DateTime date)
@@ -123,7 +65,6 @@ namespace FoodTruck.Models
                 }
                 if (compteur > 0)
                     Creneaux.RemoveRange(indexMin, compteur);
-                PremierCreneau = Creneaux[0];
             }
         }
     }
