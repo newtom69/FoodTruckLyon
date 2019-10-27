@@ -193,7 +193,6 @@
     <Compile Include="Models\Repas.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TypeRepas.cs" />
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
