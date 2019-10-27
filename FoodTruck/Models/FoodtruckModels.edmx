@@ -89,15 +89,6 @@
           <Property Name="Fin" Type="time" Precision="7" Nullable="false" />
           <Property Name="Pas" Type="time" Precision="7" Nullable="false" />
         </EntityType>
-        <EntityType Name="Repas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Nom" Type="char" MaxLength="20" Nullable="false" />
-          <Property Name="DebutDefaut" Type="time" Precision="7" Nullable="false" />
-          <Property Name="FinDefaut" Type="time" Precision="7" Nullable="false" />
-        </EntityType>
         <EntityType Name="Utilisateur">
           <Key>
             <PropertyRef Name="Id" />
@@ -231,7 +222,6 @@
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PlageRepas" EntityType="Self.PlageRepas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Repas" EntityType="Self.Repas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
@@ -367,15 +357,6 @@
           <Property Name="Debut" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Fin" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Pas" Type="Time" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="Repas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Nom" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="DebutDefaut" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="FinDefaut" Type="Time" Nullable="false" Precision="7" />
         </EntityType>
         <EntityType Name="Utilisateur">
           <Key>
@@ -514,7 +495,6 @@
           <EntitySet Name="Panier" EntityType="Self.Panier" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
           <EntitySet Name="PlageRepas" EntityType="Self.PlageRepas" />
-          <EntitySet Name="Repas" EntityType="Self.Repas" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
           <EntitySet Name="Visite" EntityType="Self.Visite" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
@@ -642,16 +622,6 @@
                 <ScalarProperty Name="Debut" ColumnName="Debut" />
                 <ScalarProperty Name="Fin" ColumnName="Fin" />
                 <ScalarProperty Name="Pas" ColumnName="Pas" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Repas">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Repas">
-              <MappingFragment StoreEntitySet="Repas">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nom" ColumnName="Nom" />
-                <ScalarProperty Name="DebutDefaut" ColumnName="DebutDefaut" />
-                <ScalarProperty Name="FinDefaut" ColumnName="FinDefaut" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

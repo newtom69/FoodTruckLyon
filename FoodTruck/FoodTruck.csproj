@@ -190,9 +190,6 @@
     <Compile Include="Models\PlageRepas.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Repas.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Utilisateur.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>

@@ -33,7 +33,6 @@ namespace FoodTruck.Models
         public virtual DbSet<Panier> Panier { get; set; }
         public virtual DbSet<PanierProspect> PanierProspect { get; set; }
         public virtual DbSet<PlageRepas> PlageRepas { get; set; }
-        public virtual DbSet<Repas> Repas { get; set; }
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
         public virtual DbSet<Visite> Visite { get; set; }
     }
