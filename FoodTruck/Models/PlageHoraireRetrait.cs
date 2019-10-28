@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace FoodTruck.Models
 {
     public class PlageHoraireRetrait
     {
-        private TimeSpan Pas = new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["IntervalleCreneaux"]), 0);
+        internal TimeSpan Pas { get; private set; }
         public List<DateTime> Creneaux { get; private set; }
 
-        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau)
+        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau, TimeSpan pas)
         {
+            Pas = pas;
             DateTime creneauCourant = premierCreneau;
             Creneaux = new List<DateTime>();
             while (creneauCourant <= dernierCreneau)
@@ -24,14 +24,6 @@ namespace FoodTruck.Models
         public bool Contient(DateTime date)
         {
             if (Creneaux.First() <= date && date <= Creneaux.Last())
-                return true;
-            else
-                return false;
-        }
-        public bool Apres(TimeSpan heuresMinutes)
-        {
-            TimeSpan creneau = new TimeSpan(Creneaux.First().Hour, Creneaux.First().Minute, 0);
-            if (creneau > heuresMinutes)
                 return true;
             else
                 return false;

@@ -9,6 +9,7 @@ namespace FoodTruck.DAL
     {
         public PlageHoraireRetrait ProchainOuvert(DateTime date)
         {
+            date = date.AddMinutes(10); //TODO conf offset pour préparation min commande
             bool faireRecherche;
             PlageHoraireRetrait plageHoraireRetrait;
             do
@@ -31,11 +32,11 @@ namespace FoodTruck.DAL
                 }
                 dateAMJ = new DateTime(dateAMJ.Year, dateAMJ.Month, dateAMJ.Day);
 
-                plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin);
+                plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin, prochainOuvertHabituellement.Pas);
 
                 if (prochainOuvertExceptionnellement != null && prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainOuvertExceptionnellement.DateDebut < prochainFermeExceptionnellement.DateDebut)
                 {
-                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin);
+                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
                 }
                 if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last())
                 {
@@ -44,7 +45,7 @@ namespace FoodTruck.DAL
                 }
                 else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.Last())
                 {
-                    plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last());
+                    plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last(), plageHoraireRetrait.Pas);
                 }
             } while (faireRecherche);
             return plageHoraireRetrait;
@@ -68,6 +69,15 @@ namespace FoodTruck.DAL
                     plage = (from c in db.PlageRepas
                              orderby c.JourSemaineId, c.Debut
                              select c).First();
+                }
+                if (plage.Debut.TotalSeconds < (int)date.TimeOfDay.TotalSeconds)
+                {
+                    TimeSpan heureH = date.TimeOfDay;
+                    int pasMinutes = (int)plage.Pas.TotalMinutes;
+                    int minutes = (int)Math.Ceiling(heureH.TotalMinutes / pasMinutes) * pasMinutes;
+                    int heures = minutes / 60;
+                    minutes -= heures * 60;
+                    plage.Debut = new TimeSpan(heures, minutes, 0);
                 }
                 return plage;
             }

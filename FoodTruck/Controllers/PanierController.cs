@@ -12,7 +12,13 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            PanierViewModel.DatesRetraitPossibles = ObtenirDatesRetraitPossibles();
+            DateTime maintenant = DateTime.Now;
+            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
+            PanierViewModel.DatesRetraitPossibles = new List<DateTime>();
+            foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
+            {
+                PanierViewModel.DatesRetraitPossibles.AddRange(plage.Creneaux);
+            }
             TempData["PanierLatteralDesactive"] = true;
             return View(PanierViewModel);
         }
@@ -136,18 +142,6 @@ namespace FoodTruck.Controllers
                 ajout = true;
             }
             return ajout;
-        }
-
-        private List<DateTime> ObtenirDatesRetraitPossibles()
-        {
-            DateTime maintenant = DateTime.Now;
-            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
-            List<DateTime> retour = new List<DateTime>();
-            foreach (var plage in plagesHorairesRetrait)
-            {
-                retour.AddRange(plage.Creneaux);
-            }
-            return retour;
         }
     }
 }
