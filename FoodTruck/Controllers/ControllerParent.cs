@@ -13,12 +13,13 @@ namespace FoodTruck.Controllers
     {
         protected string ActionNom { get; set; }
         protected string ControllerNom { get; set; }
-        public Utilisateur Utilisateur { get; set; } //todo mettre protected
+        public Utilisateur Utilisateur { get; set; } //TODO mettre protected
         protected string ProspectGuid { get; set; }
-        public PanierViewModel PanierViewModel { get; set; } //todo mettre protected
+        public PanierViewModel PanierViewModel { get; set; } //TODO mettre protected
         protected bool AdminArticle { get; set; }
         protected bool AdminCommande { get; set; }
         protected bool AdminUtilisateur { get; set; }
+        protected bool AdminPlanning { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
         {
@@ -90,21 +91,16 @@ namespace FoodTruck.Controllers
             PanierViewModel.Trier();
             ViewBag.Panier = PanierViewModel;
 
-            if (Utilisateur.AdminSuper)
-            {
-                ViewBag.AdminArticle = true;
-                ViewBag.AdminCommande = true;
-                ViewBag.AdminUtilisateur = true;
-            }
-            else
-            {
-                if (Utilisateur.AdminArticle) ViewBag.AdminArticle = true;
-                else ViewBag.AdminArticle = false;
-                if (Utilisateur.AdminCommande) ViewBag.AdminCommande = true;
-                else ViewBag.AdminCommande = false;
-                if (Utilisateur.AdminUtilisateur) ViewBag.AdminUtilisateur = true;
-                else ViewBag.AdminUtilisateur = false;
-            }
+
+            if (Utilisateur.AdminArticle) ViewBag.AdminArticle = true;
+            else ViewBag.AdminArticle = false;
+            if (Utilisateur.AdminCommande) ViewBag.AdminCommande = true;
+            else ViewBag.AdminCommande = false;
+            if (Utilisateur.AdminUtilisateur) ViewBag.AdminUtilisateur = true;
+            else ViewBag.AdminUtilisateur = false;
+            if (Utilisateur.AdminPlanning) ViewBag.AdminPlanning = true;
+            else ViewBag.AdminPlanning = false;
+
         }
 
         protected void InitialiserSession()
@@ -152,12 +148,7 @@ namespace FoodTruck.Controllers
             if (Utilisateur.AdminArticle) AdminArticle = true;
             if (Utilisateur.AdminCommande) AdminCommande = true;
             if (Utilisateur.AdminUtilisateur) AdminUtilisateur = true;
-            if (Utilisateur.AdminSuper)
-            {
-                AdminArticle = true;
-                AdminCommande = true;
-                AdminUtilisateur = true;
-            }
+            if (Utilisateur.AdminPlanning) AdminPlanning = true;
         }
 
         private void RetirerLesDroitsdAcces()
