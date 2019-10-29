@@ -1,5 +1,6 @@
 ﻿using FoodTruck.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -7,9 +8,68 @@ namespace FoodTruck.DAL
 {
     public class OuvertureDAL
     {
-        public PlageHoraireRetrait ProchainOuvert(DateTime date)
+        internal List<JourExceptionnel> ListerFutursFermeturesExceptionnelles()
         {
-            date = date.AddMinutes(10); //TODO conf offset pour préparation min commande
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                DateTime date = DateTime.Now;
+                List<JourExceptionnel> jours = (from j in db.JourExceptionnel
+                                                where DbFunctions.DiffDays(date, j.DateDebut) >= 0 && !j.Ouvert
+                                                orderby j.DateDebut
+                                                select j).ToList();
+                return jours;
+            }
+        }
+
+        internal JourExceptionnel AjouterFermeture(DateTime dateDebut, DateTime dateFin)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                JourExceptionnel chevauchement = (from j in db.JourExceptionnel
+                                                  where !(DbFunctions.DiffMinutes(dateFin, j.DateDebut) >= 0 || DbFunctions.DiffMinutes(j.DateFin, dateDebut) >= 0)
+                                                  select j).FirstOrDefault();
+                if (chevauchement == null)
+                {
+                    JourExceptionnel jour = new JourExceptionnel
+                    {
+                        DateDebut = dateDebut,
+                        DateFin = dateFin,
+                        Ouvert = false
+                    };
+                    db.JourExceptionnel.Add(jour);
+                    db.SaveChanges();
+                }
+                return chevauchement;
+            }
+        }
+        internal JourExceptionnel ModifierFermeture(DateTime dateId, DateTime dateDebut, DateTime dateFin)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
+                                                    where j.DateDebut == dateId && !j.Ouvert
+                                                    select j).FirstOrDefault();
+
+                JourExceptionnel chevauchement = (from j in db.JourExceptionnel
+                                                  where j.DateDebut != jourSelectionne.DateDebut &&
+                                                  !(DbFunctions.DiffMinutes(dateFin, j.DateDebut) >= 0 || DbFunctions.DiffMinutes(j.DateFin, dateDebut) >= 0)
+                                                  select j).FirstOrDefault();
+                
+                if (chevauchement == null && jourSelectionne != null)
+                {
+                    jourSelectionne.DateDebut = dateDebut;
+                    jourSelectionne.DateFin = dateFin;
+                    jourSelectionne.Ouvert = false;
+                    db.SaveChanges();
+                }
+                return chevauchement;
+            }
+        }
+
+        internal PlageHoraireRetrait ProchainOuvert(DateTime date)
+        {
+            const int minutesMinPrepaCommande = 10; //TODO conf offset pour préparation min commande
+            date = date.AddMinutes(minutesMinPrepaCommande);
             bool faireRecherche;
             PlageHoraireRetrait plageHoraireRetrait;
             do

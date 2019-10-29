@@ -330,6 +330,7 @@
     <Content Include="Views\Compte\Commandes.cshtml" />
     <Content Include="Views\Administration\CommandesAStatuer.cshtml" />
     <Content Include="Views\Administration\Index.cshtml" />
+    <Content Include="Views\Administration\FermeturesExceptionnelles.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

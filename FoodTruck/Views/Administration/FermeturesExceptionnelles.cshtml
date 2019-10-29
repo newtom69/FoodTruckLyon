@@ -1,0 +1,77 @@
+﻿@using FoodTruck.Models;
+@model List<JourExceptionnel>
+
+<script src="~/Scripts/myJs.js"></script>
+
+@if (ViewBag.DatesIncompatibles != null)
+{
+    <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
+}
+@if (ViewBag.AjouterFermeture != null)
+{
+    if (ViewBag.AjouterFermeture)
+    {
+        <div class="messageInfo">La fermeture a bien été ajoutée</div>
+    }
+    else
+    {
+        string ouvertureFermeture;
+        if (ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+        else { ouvertureFermeture = "fermeture"; }
+        <div class="messageErreur">
+            <p>Impossible d'ajouter votre fermeture. Elle se chevauche avec une autre @ouvertureFermeture :</p>
+            <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+        </div>
+    }
+}
+@if (ViewBag.ModifierFermeture != null)
+{
+    if (ViewBag.ModifierFermeture)
+    {
+        <div class="messageInfo">La modification de la fermeture a bien été prise en compte</div>
+    }
+    else
+    {
+        string ouvertureFermeture;
+        if (ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+        else { ouvertureFermeture = "fermeture"; }
+        <div class="messageErreur">
+            <p>Impossible de modifier votre fermeture. Une autre @ouvertureFermeture se chevauche avec vos modifications :</p>
+            <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+        </div>
+    }
+}
+
+<h2>Saisir une fermeture</h2>
+@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="ccfield-prepend">
+        <input name="dateId" type="hidden" value="@DateTime.MinValue">
+        <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onchange="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
+        <input class="ccformfield" name="heureDebut" type="time" value="00:00" required>
+        <input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onchange="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
+        <input class="ccformfield" name="heureFin" type="time" value="23:59" required>
+        <input class="ccbtn" type="submit" value="Ajouter">
+    </div>
+}
+
+<h2>Liste des fermetures à venir</h2>
+@if (Model != null)
+{
+    foreach (JourExceptionnel periode in Model)
+    {
+        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input name="dateId" type="hidden" value="@periode.DateDebut">
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="dateDebut" type="date" value="@periode.DateDebut.Date.ToString("yyyy-MM-dd")" required>
+                <input class="ccformfield" name="heureDebut" type="time" value="@periode.DateDebut.TimeOfDay.ToString()" required>
+                <input class="ccformfield" name="dateFin" type="date" value="@periode.DateFin.Date.ToString("yyyy-MM-dd")" required>
+                <input class="ccformfield" name="heureFin" type="time" value="@periode.DateFin.TimeOfDay.ToString()" required>
+                <input class="ccbtn" type="submit" value="Modifier">
+            </div>
+        }
+    }
+}
+
+

@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -207,6 +208,56 @@ namespace FoodTruck.Controllers
                 }
             }
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult FermeturesExceptionnelles()
+        {
+            if (AdminPlanning)
+                return View(new OuvertureDAL().ListerFutursFermeturesExceptionnelles());
+            else
+                return View();
+        }
+        [HttpPost]
+        public ActionResult FermeturesExceptionnelles(DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, DateTime dateFin, TimeSpan heureFin)
+        {
+            if (AdminPlanning)
+            {
+                DateTime maintenant = DateTime.Now;
+                DateTime dateDebutComplete = dateDebut + heureDebut;
+                DateTime dateFinComplete = dateFin + heureFin;
+                OuvertureDAL ouvertureDAL = new OuvertureDAL();
+                if (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant)
+                {
+                    ViewBag.DatesIncompatibles = true;
+                }
+                else
+                {
+                    JourExceptionnel chevauchement;
+                    if (dateId == DateTime.MinValue)
+                    {
+                        chevauchement = ouvertureDAL.AjouterFermeture(dateDebutComplete, dateFinComplete);
+                    }
+                    else
+                    {
+                        chevauchement = ouvertureDAL.ModifierFermeture(dateId, dateDebutComplete, dateFinComplete);
+                    }
+                    if (chevauchement == null)
+                    {
+                        ViewBag.AjouterFermeture = true;
+                    }
+                    else
+                    {
+                        ViewBag.AjouterFermeture = false;
+                        ViewBag.Chevauchement = chevauchement;
+                    }
+                }
+                return View(ouvertureDAL.ListerFutursFermeturesExceptionnelles());
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
     }
 }
