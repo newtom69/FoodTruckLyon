@@ -10,11 +10,19 @@ namespace FoodTruck.DAL
     {
         internal List<JourExceptionnel> ListerFutursFermeturesExceptionnelles()
         {
+            return ListerFutursPeriodesExceptionnelles(false);
+        }
+        internal List<JourExceptionnel> ListerFutursOuverturesExceptionnelles()
+        {
+            return ListerFutursPeriodesExceptionnelles(true);
+        }
+        private List<JourExceptionnel> ListerFutursPeriodesExceptionnelles(bool ouvert)
+        {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 DateTime date = DateTime.Now;
                 List<JourExceptionnel> jours = (from j in db.JourExceptionnel
-                                                where DbFunctions.DiffDays(date, j.DateDebut) >= 0 && !j.Ouvert
+                                                where DbFunctions.DiffDays(date, j.DateDebut) >= 0 && j.Ouvert == ouvert
                                                 orderby j.DateDebut
                                                 select j).ToList();
                 return jours;
@@ -22,6 +30,14 @@ namespace FoodTruck.DAL
         }
 
         internal JourExceptionnel AjouterFermeture(DateTime dateDebut, DateTime dateFin)
+        {
+            return AjouterPeriodeExceptionnelle(dateDebut, dateFin, false);
+        }
+        internal JourExceptionnel AjouterOuverture(DateTime dateDebut, DateTime dateFin)
+        {
+            return AjouterPeriodeExceptionnelle(dateDebut, dateFin, true);
+        }
+        private JourExceptionnel AjouterPeriodeExceptionnelle(DateTime dateDebut, DateTime dateFin, bool ouvert)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
@@ -34,7 +50,7 @@ namespace FoodTruck.DAL
                     {
                         DateDebut = dateDebut,
                         DateFin = dateFin,
-                        Ouvert = false
+                        Ouvert = ouvert,
                     };
                     db.JourExceptionnel.Add(jour);
                     db.SaveChanges();
@@ -44,37 +60,67 @@ namespace FoodTruck.DAL
         }
         internal JourExceptionnel ModifierFermeture(DateTime dateId, DateTime dateDebut, DateTime dateFin)
         {
+            return ModifierPeriodeExceptionnelle(dateId, dateDebut, dateFin, false);
+        }
+        internal JourExceptionnel ModifierOuverture(DateTime dateId, DateTime dateDebut, DateTime dateFin)
+        {
+            return ModifierPeriodeExceptionnelle(dateId, dateDebut, dateFin, true);
+        }
+        private JourExceptionnel ModifierPeriodeExceptionnelle(DateTime dateId, DateTime dateDebut, DateTime dateFin, bool ouvert)
+        {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
-                                                    where j.DateDebut == dateId && !j.Ouvert
+                                                    where j.DateDebut == dateId && j.Ouvert == ouvert
                                                     select j).FirstOrDefault();
 
                 JourExceptionnel chevauchement = (from j in db.JourExceptionnel
                                                   where j.DateDebut != jourSelectionne.DateDebut &&
                                                   !(DbFunctions.DiffMinutes(dateFin, j.DateDebut) >= 0 || DbFunctions.DiffMinutes(j.DateFin, dateDebut) >= 0)
                                                   select j).FirstOrDefault();
-                
+
                 if (chevauchement == null && jourSelectionne != null)
                 {
-                    jourSelectionne.DateDebut = dateDebut;
-                    jourSelectionne.DateFin = dateFin;
-                    jourSelectionne.Ouvert = false;
+                    if (jourSelectionne.DateDebut == dateDebut)
+                    {
+                        jourSelectionne.DateFin = dateFin;
+                        jourSelectionne.Ouvert = ouvert;
+                    }
+                    else
+                    {
+                        JourExceptionnel nouveau = new JourExceptionnel
+                        {
+                            DateDebut = dateDebut,
+                            DateFin = dateFin,
+                            Ouvert = ouvert,
+                        };
+                        db.JourExceptionnel.Remove(jourSelectionne);
+                        db.JourExceptionnel.Add(nouveau);
+                    }
                     db.SaveChanges();
                 }
                 return chevauchement;
             }
         }
+
         internal bool SupprimerFermeture(DateTime dateId)
+        {
+            return SupprimerPeriodeExceptionnelle(dateId, false);
+        }
+        internal bool SupprimerOuverture(DateTime dateId)
+        {
+            return SupprimerPeriodeExceptionnelle(dateId, true);
+        }
+        private bool SupprimerPeriodeExceptionnelle(DateTime dateId, bool ouvert)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
-                                                    where j.DateDebut == dateId && !j.Ouvert
+                                                    where j.DateDebut == dateId && j.Ouvert == ouvert
                                                     select j).FirstOrDefault();
-                
+
                 db.JourExceptionnel.Remove(jourSelectionne);
-                if(db.SaveChanges() != 1)
+                if (db.SaveChanges() != 1)
                     return false;
                 else
                     return true;
@@ -160,22 +206,18 @@ namespace FoodTruck.DAL
 
         private JourExceptionnel ProchainOuvertExceptionnellement(DateTime date)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
-            {
-                JourExceptionnel jour = (from j in db.JourExceptionnel
-                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert
-                                         orderby j.DateDebut
-                                         select j).FirstOrDefault();
-                return jour;
-            }
+            return ProchainePeriodeExceptionnellement(date, true);
         }
-
         private JourExceptionnel ProchainFermeExceptionnellement(DateTime date)
+        {
+            return ProchainePeriodeExceptionnellement(date, false);
+        }
+        private JourExceptionnel ProchainePeriodeExceptionnellement(DateTime date, bool ouvert)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 JourExceptionnel jour = (from j in db.JourExceptionnel
-                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && !j.Ouvert
+                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
                                          orderby j.DateDebut
                                          select j).FirstOrDefault();
                 return jour;

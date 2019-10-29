@@ -266,5 +266,63 @@ namespace FoodTruck.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
         }
+
+        [HttpGet]
+        public ActionResult OuverturesExceptionnelles()
+        {
+            if (AdminPlanning)
+                return View(new OuvertureDAL().ListerFutursOuverturesExceptionnelles());
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+        }
+
+        [HttpPost]
+        public ActionResult OuverturesExceptionnelles(string valider, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, TimeSpan heureFin)
+        {
+            if (AdminPlanning)
+            {
+                DateTime maintenant = DateTime.Now;
+                DateTime dateDebutComplete = dateDebut + heureDebut;
+                DateTime dateFinComplete = dateDebut + heureFin;
+                OuvertureDAL ouvertureDAL = new OuvertureDAL();
+                if (heureFin <= heureDebut || dateDebutComplete < maintenant)
+                {
+                    ViewBag.DatesIncompatibles = true;
+                }
+                else
+                {
+                    JourExceptionnel chevauchement = null;
+                    if (valider == "Ajouter")
+                    {
+                        chevauchement = ouvertureDAL.AjouterOuverture(dateDebutComplete, dateFinComplete);
+                        if (chevauchement == null)
+                            ViewBag.AjouterOuverture = true;
+                        else
+                            ViewBag.AjouterOuverture = false;
+                    }
+                    else if (valider == "Modifier")
+                    {
+                        chevauchement = ouvertureDAL.ModifierOuverture(dateId, dateDebutComplete, dateFinComplete);
+                        if (chevauchement == null)
+                            ViewBag.ModifierOuverture = true;
+                        else
+                            ViewBag.ModifierOuverture = false;
+                    }
+                    else if (valider == "Supprimer")
+                    {
+                        if (ouvertureDAL.SupprimerOuverture(dateId))
+                            ViewBag.SupprimerOuverture = true;
+                        else
+                            ViewBag.SupprimerOuverture = false;
+                    }
+                    ViewBag.Chevauchement = chevauchement;
+                }
+                return View(ouvertureDAL.ListerFutursOuverturesExceptionnelles());
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+        }
     }
 }
