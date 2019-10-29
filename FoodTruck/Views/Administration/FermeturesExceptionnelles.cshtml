@@ -1,6 +1,8 @@
 ﻿@using FoodTruck.Models;
 @model List<JourExceptionnel>
-
+@{
+    ViewBag.Title = "FoodTruckLyon - Gérer les fermetures";
+}
 <script src="~/Scripts/myJs.js"></script>
 
 @if (ViewBag.DatesIncompatibles != null)
@@ -42,15 +44,16 @@
     }
 }
 
+
 <h2>Saisir une fermeture</h2>
 @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="ccfield-prepend">
         <input name="dateId" type="hidden" value="@DateTime.MinValue">
-        <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onchange="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
-        <input class="ccformfield" name="heureDebut" type="time" value="00:00" required>
-        <input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onchange="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
-        <input class="ccformfield" name="heureFin" type="time" value="23:59" required>
+        date de début de la fermeture<input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+        heure de début de la fermeture<input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateFin.value)" required>
+        date de fin de la fermeture<input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+        heure de fin de la fermeture<input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateFin.value)" required>
         <input class="ccbtn" type="submit" value="Ajouter">
     </div>
 }
@@ -64,10 +67,18 @@
         {
             <input name="dateId" type="hidden" value="@periode.DateDebut">
             <div class="ccfield-prepend">
-                <input class="ccformfield" name="dateDebut" type="date" value="@periode.DateDebut.Date.ToString("yyyy-MM-dd")" required>
-                <input class="ccformfield" name="heureDebut" type="time" value="@periode.DateDebut.TimeOfDay.ToString()" required>
-                <input class="ccformfield" name="dateFin" type="date" value="@periode.DateFin.Date.ToString("yyyy-MM-dd")" required>
-                <input class="ccformfield" name="heureFin" type="time" value="@periode.DateFin.TimeOfDay.ToString()" required>
+                @{
+                    string dateDebutId = "date"+periode.DateDebut.ToString("yyyyMMddHHmmss");
+                    string dateFinId = "date"+periode.DateFin.ToString("yyyyMMddHHmmss");
+                    string heureDebutId = "heure"+periode.DateDebut.ToString("yyyyMMddHHmmss");
+                    string heureFinId = "heure"+periode.DateFin.ToString("yyyyMMddHHmmss");
+                    string id = ".id";
+                    string value = ".value";
+                }
+                date de début de la fermeture<input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, @dateFinId@id)" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
+                heure de début de la fermeture<input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateFinId@value)" required>
+                date de fin de la fermeture<input class="ccformfield" id="@dateFinId" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, @dateDebutId@id)" value="@periode.DateFin.ToString("yyyy-MM-dd")" required>
+                heure de fin de la fermeture<input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateFinId@value)" required>
                 <input class="ccbtn" type="submit" value="Modifier">
             </div>
         }

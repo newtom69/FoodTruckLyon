@@ -11,30 +11,45 @@ function readURL(input) {
     }
 }
 
-function MiseAJourDateFin(date, dateFin) {
+function MiseAJourDateFin(date, dateFin)
+{
     var maintenant = new Date();
     var dans1an = new Date();
     dans1an.setFullYear(dans1an.getFullYear() + 1);
     var dateOk = new Date(date);
-    setTimeout(function () {
-        if (maintenant <= dateOk && dateOk <= dans1an && !(document.getElementById(dateFin).value >= date)) {
-            document.getElementById(dateFin).value = date;
-        }
-    }, 1500);
+    if (maintenant <= dateOk && dateOk <= dans1an && !(document.getElementById(dateFin).value >= date))
+    {
+        document.getElementById(dateFin).value = date;
+    }
 }
-function MiseAJourDateDebut(date, dateDebut) {
+
+function MiseAJourDateDebut(date, dateDebut)
+{
     var maintenant = new Date();
     var dans1an = new Date();
     dans1an.setFullYear(dans1an.getFullYear() + 1);
     var dateOk = new Date(date);
-    setTimeout(function () {
-        if (maintenant <= dateOk && dateOk <= dans1an && !(document.getElementById(dateDebut).value <= date)) {
-            document.getElementById(dateDebut).value = date;
-        }
-    }, 1500);
+    if (maintenant <= dateOk && dateOk <= dans1an && !(document.getElementById(dateDebut).value <= date))
+    {
+        document.getElementById(dateDebut).value = date;
+    }
 }
 
+function MiseAJourHeureFin(heure, heureFin, dateDebut, dateFin)
+{
+    if (dateDebut == dateFin && !(document.getElementById(heureFin).value >= heure))
+    {
+        document.getElementById(heureFin).value = heure;
+    }
+}
 
+function MiseAJourHeureDebut(heure, heureDebut, dateDebut, dateFin)
+{
+    if (dateDebut == dateFin && !(document.getElementById(heureDebut).value <= heure))
+    {
+        document.getElementById(heureDebut).value = heure;
+    }
+}
 
 //Use keyup to capture user input & mouse up to catch when user is changing the value with the arrows
 $('.trailing-decimal-input').on('keyup mouseup', function (e) {
