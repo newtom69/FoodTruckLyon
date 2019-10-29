@@ -216,10 +216,10 @@ namespace FoodTruck.Controllers
             if (AdminPlanning)
                 return View(new OuvertureDAL().ListerFutursFermeturesExceptionnelles());
             else
-                return View();
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
         [HttpPost]
-        public ActionResult FermeturesExceptionnelles(DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, DateTime dateFin, TimeSpan heureFin)
+        public ActionResult FermeturesExceptionnelles(string valider, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, DateTime dateFin, TimeSpan heureFin)
         {
             if (AdminPlanning)
             {
@@ -233,24 +233,31 @@ namespace FoodTruck.Controllers
                 }
                 else
                 {
-                    JourExceptionnel chevauchement;
-                    if (dateId == DateTime.MinValue)
+                    JourExceptionnel chevauchement = null;
+                    if (valider == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterFermeture(dateDebutComplete, dateFinComplete);
+                        if (chevauchement == null)
+                            ViewBag.AjouterFermeture = true;
+                        else
+                            ViewBag.AjouterFermeture = false;
                     }
-                    else
+                    else if (valider == "Modifier")
                     {
                         chevauchement = ouvertureDAL.ModifierFermeture(dateId, dateDebutComplete, dateFinComplete);
+                        if (chevauchement == null)
+                            ViewBag.ModifierFermeture = true;
+                        else
+                            ViewBag.ModifierFermeture = false;
                     }
-                    if (chevauchement == null)
+                    else if (valider == "Supprimer")
                     {
-                        ViewBag.AjouterFermeture = true;
+                        if (ouvertureDAL.SupprimerFermeture(dateId))
+                            ViewBag.SupprimerFermeture = true;
+                        else
+                            ViewBag.SupprimerFermeture = false;
                     }
-                    else
-                    {
-                        ViewBag.AjouterFermeture = false;
-                        ViewBag.Chevauchement = chevauchement;
-                    }
+                    ViewBag.Chevauchement = chevauchement;
                 }
                 return View(ouvertureDAL.ListerFutursFermeturesExceptionnelles());
             }

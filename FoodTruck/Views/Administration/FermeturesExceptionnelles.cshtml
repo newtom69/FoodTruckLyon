@@ -18,12 +18,21 @@
     else
     {
         string ouvertureFermeture;
-        if (ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
-        else { ouvertureFermeture = "fermeture"; }
+        if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+        else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
+        else { ouvertureFermeture = ""; }
         <div class="messageErreur">
-            <p>Impossible d'ajouter votre fermeture. Elle se chevauche avec une autre @ouvertureFermeture :</p>
-            <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+            @if (ouvertureFermeture != "")
+            {
+                <p>Impossible d'ajouter votre fermeture. Elle se chevauche avec une autre @ouvertureFermeture :</p>
+                <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+            }
+            else
+            {
+                <p>Une erreur est survenue lors de la modification de la fermeture. Veuillez réessayer plus tard</p>
+            }
         </div>
+
     }
 }
 @if (ViewBag.ModifierFermeture != null)
@@ -35,51 +44,101 @@
     else
     {
         string ouvertureFermeture;
-        if (ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
-        else { ouvertureFermeture = "fermeture"; }
+        if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+        else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
+        else { ouvertureFermeture = ""; }
         <div class="messageErreur">
-            <p>Impossible de modifier votre fermeture. Une autre @ouvertureFermeture se chevauche avec vos modifications :</p>
-            <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+            @if (ouvertureFermeture != "")
+            {
+                <p>Impossible de modifier votre fermeture. Une autre @ouvertureFermeture se chevauche avec vos modifications :</p>
+                <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+            }
+            else
+            {
+                <p>Une erreur est survenue lors de la modification de la fermeture. Veuillez réessayer plus tard</p>
+            }
         </div>
     }
 }
+@if (ViewBag.SupprimerFermeture != null)
+{
+    if (ViewBag.SupprimerFermeture)
+    {
+        <div class="messageInfo">La suppression de la fermeture a bien été prise en compte</div>
+    }
+    else
+    {
+        <div class="messageErreur">
+            <p>Une erreur est survenue lors de la supression de la fermeture. Veuillez réessayer plus tard</p>
+        </div>
+    }
+}
+<h2>Gestion des fermetures exceptionnelles</h2>
 
-
-<h2>Saisir une fermeture</h2>
+<h3>Saisir une fermeture</h3>
 @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="ccfield-prepend">
+    <div class="gestionFermetureOuverture">
         <input name="dateId" type="hidden" value="@DateTime.MinValue">
-        date de début de la fermeture<input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
-        heure de début de la fermeture<input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateFin.value)" required>
-        date de fin de la fermeture<input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
-        heure de fin de la fermeture<input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateFin.value)" required>
-        <input class="ccbtn" type="submit" value="Ajouter">
+        <div>
+            <div class="libelleDate">date de début</div>
+            <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+        </div>
+        <div>
+            <div class="libelleDate">heure de début</div>
+            <input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateFin.value)" required>
+        </div>
+        <div>
+            <div class="libelleDate">date de fin</div>
+            <input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+        </div>
+        <div>
+            <div class="libelleDate">heure de fin</div>
+            <input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateFin.value)" required>
+        </div>
+        <div>
+            <div>&#x2061;</div>
+            <input class="boutonModifier" type="submit" name="valider" value="Ajouter">
+        </div>
     </div>
 }
 
-<h2>Liste des fermetures à venir</h2>
+
+
+<h3>Liste des fermetures à venir</h3>
 @if (Model != null)
 {
     foreach (JourExceptionnel periode in Model)
     {
         using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            string dateDebutId = "date" + periode.DateDebut.ToString("yyyyMMddHHmmss");
+            string dateFinId = "date" + periode.DateFin.ToString("yyyyMMddHHmmss");
+            string heureDebutId = "heure" + periode.DateDebut.ToString("yyyyMMddHHmmss");
+            string heureFinId = "heure" + periode.DateFin.ToString("yyyyMMddHHmmss");
+            string id = ".id";
+            string value = ".value";
+
             <input name="dateId" type="hidden" value="@periode.DateDebut">
-            <div class="ccfield-prepend">
-                @{
-                    string dateDebutId = "date"+periode.DateDebut.ToString("yyyyMMddHHmmss");
-                    string dateFinId = "date"+periode.DateFin.ToString("yyyyMMddHHmmss");
-                    string heureDebutId = "heure"+periode.DateDebut.ToString("yyyyMMddHHmmss");
-                    string heureFinId = "heure"+periode.DateFin.ToString("yyyyMMddHHmmss");
-                    string id = ".id";
-                    string value = ".value";
-                }
-                date de début de la fermeture<input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, @dateFinId@id)" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
-                heure de début de la fermeture<input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateFinId@value)" required>
-                date de fin de la fermeture<input class="ccformfield" id="@dateFinId" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, @dateDebutId@id)" value="@periode.DateFin.ToString("yyyy-MM-dd")" required>
-                heure de fin de la fermeture<input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateFinId@value)" required>
-                <input class="ccbtn" type="submit" value="Modifier">
+            <div class="gestionFermetureOuverture">
+                <div>
+                    <input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, @dateFinId@id)" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
+                </div>
+                <div>
+                    <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateFinId@value)" required>
+                </div>
+                <div>
+                    <input class="ccformfield" id="@dateFinId" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, @dateDebutId@id)" value="@periode.DateFin.ToString("yyyy-MM-dd")" required>
+                </div>
+                <div>
+                    <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateFinId@value)" required>
+                </div>
+                <div>
+                    <input class="boutonModifier" type="submit" name="valider" value="Modifier">
+                </div>
+                <div>
+                    <input class="boutonSupprimer" type="submit" name="valider" value="Supprimer">
+                </div>
             </div>
         }
     }

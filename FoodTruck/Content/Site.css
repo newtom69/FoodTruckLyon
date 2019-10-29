@@ -213,6 +213,60 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     display: flex;
 }
 
+.gestionFermetureOuverture {
+    display: flex;
+}
+
+    .gestionFermetureOuverture .libelleDate {
+        text-align: center;
+    }
+
+    .gestionFermetureOuverture input {
+        display: block;
+        text-align: center;
+        color: #000000;
+        background: #FFFFFF;
+        border: solid 1px #95BE27;
+        width: 100%;
+        display: block;
+        font-family: 'Lato',Arial,sans-serif;
+        font-size: 16px;
+        margin-bottom: 4px;
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .gestionFermetureOuverture .boutonModifier {
+        display: block !important;
+        border: none !important;
+        background-color: #95BE27 !important;
+        color: #FFFFFF !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        font-weight: bold !important;
+        padding: 16.5px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+        margin-right: 2px;
+        text-align: center;
+    }
+
+    .gestionFermetureOuverture .boutonSupprimer {
+        display: block !important;
+        border: none !important;
+        background-color:darkred !important;
+        color: #FFFFFF !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        font-weight: bold !important;
+        padding: 16.5px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+        margin-right: 2px;
+        text-align: center;
+    }
+
+
 .gestionCommandeArticle img {
     margin-top: 5px;
     margin: 3px;
@@ -429,7 +483,6 @@ article#articleAPropos {
 .articleDescription p {
     margin: 0 0 0.3rem;
     font-size: 1.7rem;
-    /*word-wrap: break-word;*/
 }
 
     .articleDescription p:last-child {

@@ -65,6 +65,21 @@ namespace FoodTruck.DAL
                 return chevauchement;
             }
         }
+        internal bool SupprimerFermeture(DateTime dateId)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
+                                                    where j.DateDebut == dateId && !j.Ouvert
+                                                    select j).FirstOrDefault();
+                
+                db.JourExceptionnel.Remove(jourSelectionne);
+                if(db.SaveChanges() != 1)
+                    return false;
+                else
+                    return true;
+            }
+        }
 
         internal PlageHoraireRetrait ProchainOuvert(DateTime date)
         {
