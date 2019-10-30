@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace FoodTruck.DAL
 {
-    public class OuvertureDAL
+    public class PeriodeExceptionnelleDAL
     {
         internal List<JourExceptionnel> ListerFutursFermeturesExceptionnelles()
         {

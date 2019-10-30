@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,9 +8,15 @@ namespace FoodTruck.DAL
 {
     public class OuvertureHebdomadaireDAL
     {
-        internal object ListerOuverturesHebdomadaires()
+        internal List<PlageRepas> ListerOuverturesHebdomadaires()
         {
-            throw new NotImplementedException();
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                List<PlageRepas> jours = (from p in db.PlageRepas
+                                                orderby p.JourSemaineId, p.Debut
+                                                select p).ToList();
+                return jours;
+            }
         }
     }
 }

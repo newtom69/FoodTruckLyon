@@ -32,7 +32,7 @@ namespace FoodTruck.Models
 
         public static List<PlageHoraireRetrait> PlageHoraireRetrait(this DateTime date)
         {
-            OuvertureDAL ouvertureDAL = new OuvertureDAL();
+            PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait>();
             PlageHoraireRetrait plage1 = ouvertureDAL.ProchainOuvert(date);
             PlageHoraireRetrait plage2 = ouvertureDAL.ProchainOuvert(plage1.Creneaux.Last().AddMinutes(1)); //TODO refaire algo pour ne pas avoir à rajouter 1 mn

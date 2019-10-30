@@ -1,0 +1,28 @@
+﻿@using FoodTruck.Models;
+@using System.Globalization;
+
+@model List<PlageRepas>
+@{
+    ViewBag.Title = "FoodTruckLyon - Gérer les ouvertures hebdomadaires";
+}
+<script src="~/Scripts/myJs.js"></script>
+
+<h2>Gestion des ouvertures hebdomadaires</h2>
+
+@foreach (PlageRepas plage in Model)
+{
+    <div>
+
+        @DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek)(plage.JourSemaineId-1));
+        @plage.Debut
+        @plage.Fin
+        @plage.Pas
+
+
+
+    </div>
+
+
+}
+
+

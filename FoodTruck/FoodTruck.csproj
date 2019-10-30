@@ -145,7 +145,7 @@
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
-    <Compile Include="DAL\OuvertureDAL.cs" />
+    <Compile Include="DAL\PeriodeExceptionnelleDAL.cs" />
     <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
@@ -337,6 +337,7 @@
     <Content Include="Views\Administrer\Index.cshtml" />
     <Content Include="Views\AdministrerPlanning\FermeturesExceptionnelles.cshtml" />
     <Content Include="Views\AdministrerPlanning\OuverturesExceptionnelles.cshtml" />
+    <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

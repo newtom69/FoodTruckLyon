@@ -1,5 +1,6 @@
 ﻿using FoodTruck.DAL;
 using System;
+using System.Globalization;
 using System.Net;
 using System.Web.Mvc;
 
@@ -11,7 +12,7 @@ namespace FoodTruck.Controllers
         public ActionResult FermeturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new OuvertureDAL().ListerFutursFermeturesExceptionnelles());
+                return View(new PeriodeExceptionnelleDAL().ListerFutursFermeturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -23,7 +24,7 @@ namespace FoodTruck.Controllers
                 DateTime maintenant = DateTime.Now;
                 DateTime dateDebutComplete = dateDebut + heureDebut;
                 DateTime dateFinComplete = dateFin + heureFin;
-                OuvertureDAL ouvertureDAL = new OuvertureDAL();
+                PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
                 if (action != "Supprimer" && (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant))
                 {
                     ViewBag.DatesIncompatibles = true;
@@ -68,7 +69,7 @@ namespace FoodTruck.Controllers
         public ActionResult OuverturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new OuvertureDAL().ListerFutursOuverturesExceptionnelles());
+                return View(new PeriodeExceptionnelleDAL().ListerFutursOuverturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -81,7 +82,7 @@ namespace FoodTruck.Controllers
                 DateTime maintenant = DateTime.Now;
                 DateTime dateDebutComplete = dateDebut + heureDebut;
                 DateTime dateFinComplete = dateDebut + heureFin;
-                OuvertureDAL ouvertureDAL = new OuvertureDAL();
+                PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
                 if (heureFin <= heureDebut || dateDebutComplete < maintenant)
                 {
                     ViewBag.DatesIncompatibles = true;
@@ -125,6 +126,11 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult OuverturesHebdomadaires()
         {
+
+
+            string jour = DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek)1);
+
+
             if (AdminPlanning)
                 return View(new OuvertureHebdomadaireDAL().ListerOuverturesHebdomadaires());
             else
