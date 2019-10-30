@@ -184,23 +184,70 @@ namespace FoodTruck.DAL
 
                 plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin, prochainOuvertHabituellement.Pas);
 
-                if (prochainOuvertExceptionnellement != null && prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainOuvertExceptionnellement.DateDebut < prochainFermeExceptionnellement.DateDebut)
+                // Test avec ouverture exceptionnelle
+                //
+                //cas plage ouverture exceptionnelle complètement avant plage ouverture habituelle
+                if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainOuvertExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.First())
                 {
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
                 }
-                if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.Last())
+                // cas ouverture exceptionnelle commence avant plage
+                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First())
+                {
+                    DateTime fin = prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last() ? prochainOuvertExceptionnellement.DateFin : plageHoraireRetrait.Creneaux.Last();
+                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, fin, prochainOuvertHabituellement.Pas);
+                }
+                // cas ouverture exceptionnelle fini après plage
+                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.Last() && prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last())
+                {
+                    DateTime debut = prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() ? prochainOuvertExceptionnellement.DateDebut : plageHoraireRetrait.Creneaux.First();
+                    plageHoraireRetrait = new PlageHoraireRetrait(debut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
+                }
+
+                //Test avec fermeture exceptionnelle
+                //
+                // fermeture englobe complètement l'ouverture => recherche à nouveau des plages
+                if (prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.Last())
                 {
                     faireRecherche = true;
                     date = prochainFermeExceptionnellement.DateFin;
                 }
-                else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last())
+                // fermeture à cheval sur ouverture
+                else if (!(prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.First() || prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Creneaux.Last()))
                 {
-                    plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last(), plageHoraireRetrait.Pas);
+                    DateTime debut;
+                    DateTime fin;
+                    if (prochainFermeExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.Last())
+                    {
+                        debut = prochainFermeExceptionnellement.DateFin;
+                        fin = plageHoraireRetrait.Creneaux.Last();
+                    }
+                    else
+                    {
+                        debut = plageHoraireRetrait.Creneaux.First();
+                        fin = prochainFermeExceptionnellement.DateDebut;
+                    }
+                    plageHoraireRetrait = new PlageHoraireRetrait(debut, fin, prochainOuvertHabituellement.Pas);
                 }
-                else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last() && prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.Last())
-                {
-                    plageHoraireRetrait = new PlageHoraireRetrait(plageHoraireRetrait.Creneaux.First(), prochainFermeExceptionnellement.DateDebut, plageHoraireRetrait.Pas);
-                }
+
+
+                //if (prochainOuvertExceptionnellement != null && prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainOuvertExceptionnellement.DateDebut < prochainFermeExceptionnellement.DateDebut)
+                //{
+                //    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
+                //}
+                //if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.Last())
+                //{
+                //    faireRecherche = true;
+                //    date = prochainFermeExceptionnellement.DateFin;
+                //}
+                //else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last())
+                //{
+                //    plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last(), plageHoraireRetrait.Pas);
+                //}
+                //else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last() && prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.Last())
+                //{
+                //    plageHoraireRetrait = new PlageHoraireRetrait(plageHoraireRetrait.Creneaux.First(), prochainFermeExceptionnellement.DateDebut, plageHoraireRetrait.Pas);
+                //}
             } while (faireRecherche);
             return plageHoraireRetrait;
         }
@@ -238,6 +285,6 @@ namespace FoodTruck.DAL
             }
         }
 
-        
+
     }
 }
