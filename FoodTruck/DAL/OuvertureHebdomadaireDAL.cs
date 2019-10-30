@@ -18,5 +18,20 @@ namespace FoodTruck.DAL
                 return jours;
             }
         }
+
+        internal JourExceptionnel AjouterOuverture(int jourId, TimeSpan debut, TimeSpan fin)
+        {
+            throw new NotImplementedException(); // TODO
+        }
+
+        internal JourExceptionnel ModifierOuverture(int jourId, TimeSpan debut, TimeSpan fin)
+        {
+            throw new NotImplementedException(); // TODO
+        }
+
+        internal bool SupprimerOuverture(int jourId)
+        {
+            throw new NotImplementedException(); // TODO
+        }
     }
 }

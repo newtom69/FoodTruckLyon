@@ -11,18 +11,32 @@
 
 @foreach (PlageRepas plage in Model)
 {
-    <div>
+    using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        string jourSemaine = DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek)plage.JourSemaineId);
+        string jourId = "jour" + plage.JourSemaineId.ToString();
+        string heureDebutId = jourId + "heure" + plage.Debut.ToString("hhmm");
+        string heureFinId = jourId + "heure" + plage.Fin.ToString("hhmm");
 
-        @DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek)plage.JourSemaineId);
-        @plage.Debut
-        @plage.Fin
-        @plage.Pas
-
-
-
-    </div>
-
-
+        <input name="dateId" type="hidden" value="@plage.JourSemaineId@plage.Debut">
+        <div class="gestionFermetureOuverture">
+            <div>
+                <input class="ccformfield" id="@jourId" name="jourId" type="text" value="@jourSemaine" required>
+            </div>
+            <div>
+                <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" @*onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @plage.JourSemaineId@value)"*@ required>
+            </div>
+            <div>
+                <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" @*onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @plage.JourSemaineId@value)"*@ required>
+            </div>
+            <div>
+                <input class="boutonModifier" type="submit" name="action" value="Modifier">
+            </div>
+            <div>
+                <input class="boutonSupprimer" type="submit" name="action" value="Supprimer">
+            </div>
+        </div>
+    }
 }
 
 

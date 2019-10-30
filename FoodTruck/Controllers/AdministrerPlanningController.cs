@@ -126,15 +126,56 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult OuverturesHebdomadaires()
         {
-
-
-            string jour = DateTimeFormatInfo.CurrentInfo.GetDayName((DayOfWeek)1);
-
-
             if (AdminPlanning)
                 return View(new OuvertureHebdomadaireDAL().ListerOuverturesHebdomadaires());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+        }
+        [HttpPost]
+        public ActionResult OuverturesHebdomadaires(string action, string jour, TimeSpan heureDebut, TimeSpan heureFin)
+        {
+            if (AdminPlanning)
+            {
+                int jourId = 1; // TODO convertir string nom français en int
+                OuvertureHebdomadaireDAL ouvertureDAL = new OuvertureHebdomadaireDAL();
+                if (heureFin <= heureDebut)
+                {
+                    ViewBag.HeureIncompatibles = true;
+                }
+                else
+                {
+                    JourExceptionnel chevauchement = null;
+                    if (action == "Ajouter")
+                    {
+                        chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin);
+                        if (chevauchement == null)
+                            ViewBag.AjouterOuverture = true;
+                        else
+                            ViewBag.AjouterOuverture = false;
+                    }
+                    else if (action == "Modifier")
+                    {
+                        chevauchement = ouvertureDAL.ModifierOuverture(jourId, heureDebut, heureFin);
+                        if (chevauchement == null)
+                            ViewBag.ModifierOuverture = true;
+                        else
+                            ViewBag.ModifierOuverture = false;
+                    }
+                    else if (action == "Supprimer")
+                    {
+                        if (ouvertureDAL.SupprimerOuverture(jourId))
+                            ViewBag.SupprimerOuverture = true;
+                        else
+                            ViewBag.SupprimerOuverture = false;
+                    }
+                    ViewBag.Chevauchement = chevauchement;
+                }
+                return View(ouvertureDAL.ListerOuverturesHebdomadaires());
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
     }
 }
