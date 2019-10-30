@@ -127,6 +127,35 @@ namespace FoodTruck.DAL
             }
         }
 
+        private JourExceptionnel ProchaineOuvertureExceptionnelle(DateTime date)
+        {
+            return ProchainePeriodeExceptionnelle(date, true);
+        }
+        private JourExceptionnel ProchaineFermetureExceptionnelle(DateTime date)
+        {
+            return ProchainePeriodeExceptionnelle(date, false);
+        }
+        private JourExceptionnel ProchainePeriodeExceptionnelle(DateTime date, bool ouvert)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                JourExceptionnel jour = (from j in db.JourExceptionnel
+                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
+                                         orderby j.DateDebut
+                                         select j).FirstOrDefault();
+                if (jour == null)
+                {
+                    jour = new JourExceptionnel
+                    {
+                        DateDebut = DateTime.MaxValue,
+                        DateFin = DateTime.MaxValue,
+                        Ouvert = ouvert
+                    };
+                }
+                return jour;
+            }
+        }
+
         internal PlageHoraireRetrait ProchainOuvert(DateTime date)
         {
             const int minutesMinPrepaCommande = 10; //TODO conf offset pour préparation min commande
@@ -137,8 +166,8 @@ namespace FoodTruck.DAL
             {
                 faireRecherche = false;
                 PlageRepas prochainOuvertHabituellement = ProchainOuvertHabituellement(date);
-                JourExceptionnel prochainOuvertExceptionnellement = ProchainOuvertExceptionnellement(date);
-                JourExceptionnel prochainFermeExceptionnellement = ProchainFermeExceptionnellement(date);
+                JourExceptionnel prochainOuvertExceptionnellement = ProchaineOuvertureExceptionnelle(date);
+                JourExceptionnel prochainFermeExceptionnellement = ProchaineFermetureExceptionnelle(date);
 
                 DateTime dateAMJ;
                 int jourOuvertHabituellement = prochainOuvertHabituellement.JourSemaineId;
@@ -159,12 +188,12 @@ namespace FoodTruck.DAL
                 {
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
                 }
-                if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last())
+                if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.Last())
                 {
                     faireRecherche = true;
                     date = prochainFermeExceptionnellement.DateFin;
                 }
-                else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.Last())
+                else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last())
                 {
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last(), plageHoraireRetrait.Pas);
                 }
@@ -205,33 +234,6 @@ namespace FoodTruck.DAL
             }
         }
 
-        private JourExceptionnel ProchainOuvertExceptionnellement(DateTime date)
-        {
-            return ProchainePeriodeExceptionnellement(date, true);
-        }
-        private JourExceptionnel ProchainFermeExceptionnellement(DateTime date)
-        {
-            return ProchainePeriodeExceptionnellement(date, false);
-        }
-        private JourExceptionnel ProchainePeriodeExceptionnellement(DateTime date, bool ouvert)
-        {
-            using (FoodTruckEntities db = new FoodTruckEntities())
-            {
-                JourExceptionnel jour = (from j in db.JourExceptionnel
-                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
-                                         orderby j.DateDebut
-                                         select j).FirstOrDefault();
-                if (jour == null)
-                {
-                    jour = new JourExceptionnel
-                    {
-                        DateDebut = DateTime.MaxValue,
-                        DateFin = DateTime.MaxValue,
-                        Ouvert = ouvert
-                    };
-                }
-                return jour;
-            }
-        }
+        
     }
 }
