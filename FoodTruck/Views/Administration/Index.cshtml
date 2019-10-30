@@ -6,6 +6,9 @@
 
 @if (ViewBag.AdminCommande)
 {
+    <p>@TempData["Mobile"]</p> //TODO TEST
+
+
     <h3>Commandes</h3>
     <h4>@Html.ActionLink("Gérer les commandes en cours", "CommandesEnCours", "Administration")</h4>
     <h4>@Html.ActionLink("Gérer le statuts des commandes", "CommandesAStatuer", "Administration")</h4>

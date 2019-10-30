@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FoodTruck.Models
+namespace FoodTruck
 {
     using System;
     using System.Collections.Generic;
@@ -16,11 +16,12 @@ namespace FoodTruck.Models
     {
         public int Id { get; set; }
         public string AdresseIp { get; set; }
-        public Nullable<System.DateTime> DateTimeVisite { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
         public string Url { get; set; }
         public Nullable<int> UtilisateurId { get; set; }
-        public string UrlOrigine { get; set; }
         public string Navigateur { get; set; }
+        public Nullable<bool> NavigateurMobile { get; set; }
+        public string UrlOrigine { get; set; }
     
         public virtual Utilisateur Utilisateur { get; set; }
     }

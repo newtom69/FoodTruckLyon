@@ -155,7 +155,7 @@
     <Compile Include="Models\Commande_Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\Utilitaire.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

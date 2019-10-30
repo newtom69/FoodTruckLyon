@@ -31,11 +31,12 @@ namespace FoodTruck.DAL
                 Visite laVisite = new Visite
                 {
                     Url = url,
-                    DateTimeVisite = DateTime.Now,
+                    Date = DateTime.Now,
                     AdresseIp = adresseIP,
                     UtilisateurId = lUtilisateurId,
                     Navigateur = navigateur,
-                    UrlOrigine = UrlOrigine
+                    UrlOrigine = UrlOrigine,
+                    NavigateurMobile = Utilitaire.NavigateurMobile(),
                 };
                 using (FoodTruckEntities db = new FoodTruckEntities())
                 {

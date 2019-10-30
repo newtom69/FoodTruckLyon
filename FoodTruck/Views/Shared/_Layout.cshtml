@@ -17,7 +17,6 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" crossorigin="anonymous">*@
 
 </head>
 <body>
@@ -42,7 +41,7 @@
                     <li>@Html.ActionLink("A propos", "APropos", "Home")</li>
                     <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (ViewBag.AdminArticle || ViewBag.AdminCommande || ViewBag.AdminUtilisateur)
+                    @if (ViewBag.AdminArticle || ViewBag.AdminCommande || ViewBag.AdminUtilisateur || ViewBag.AdminPlanning)
                     {
                         <li>@Html.ActionLink("Administration", "Index", "Administration")</li>
                     }

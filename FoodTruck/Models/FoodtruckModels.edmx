@@ -111,11 +111,12 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AdresseIp" Type="nchar" MaxLength="15" Nullable="false" />
-          <Property Name="DateTimeVisite" Type="datetime" />
+          <Property Name="Date" Type="datetime" />
           <Property Name="Url" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="UtilisateurId" Type="int" />
-          <Property Name="UrlOrigine" Type="nchar" MaxLength="200" />
           <Property Name="Navigateur" Type="nchar" MaxLength="30" />
+          <Property Name="NavigateurMobile" Type="bit" />
+          <Property Name="UrlOrigine" Type="nchar" MaxLength="200" />
         </EntityType>
         <Association Name="FK_Article_FamilleArticle">
           <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
@@ -373,21 +374,8 @@
           <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
           <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
-          <NavigationProperty Name="Visite" Relationship="Self.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
           <Property Name="AdminPlanning" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Visite">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdresseIp" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="DateTimeVisite" Type="DateTime" Precision="3" />
-          <Property Name="Url" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UtilisateurId" Type="Int32" />
-          <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
-          <Property Name="Navigateur" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
+          <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
         </EntityType>
         <Association Name="FK_Article_FamilleArticle">
           <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
@@ -473,18 +461,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Visite_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
-          <End Role="Visite" Type="Self.Visite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visite">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FoodTruckEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Article" EntityType="Self.Article" />
           <EntitySet Name="Commande" EntityType="Self.Commande" />
@@ -495,7 +471,6 @@
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
           <EntitySet Name="PlageRepas" EntityType="Self.PlageRepas" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
-          <EntitySet Name="Visite" EntityType="Self.Visite" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
             <End Role="FamilleArticle" EntitySet="FamilleArticle" />
             <End Role="Article" EntitySet="Article" />
@@ -524,11 +499,38 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
-          <AssociationSet Name="FK_Visite_Utilisateur" Association="Self.FK_Visite_Utilisateur">
+          <EntitySet Name="Visite" EntityType="omasvui147994fr33943_foodtruckModel.Visite" />
+          <AssociationSet Name="FK_Visite_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Visite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdresseIp" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="UtilisateurId" Type="Int32" />
+          <Property Name="Navigateur" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="NavigateurMobile" Type="Boolean" />
+          <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
+        </EntityType>
+        <Association Name="FK_Visite_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="0..1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Visite" Role="Visite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visite">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -644,13 +646,14 @@
           <EntitySetMapping Name="Visite">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Visite">
               <MappingFragment StoreEntitySet="Visite">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AdresseIp" ColumnName="AdresseIp" />
-                <ScalarProperty Name="DateTimeVisite" ColumnName="DateTimeVisite" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
                 <ScalarProperty Name="UrlOrigine" ColumnName="UrlOrigine" />
+                <ScalarProperty Name="NavigateurMobile" ColumnName="NavigateurMobile" />
                 <ScalarProperty Name="Navigateur" ColumnName="Navigateur" />
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AdresseIp" ColumnName="AdresseIp" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
