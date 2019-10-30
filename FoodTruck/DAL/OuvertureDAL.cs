@@ -197,6 +197,10 @@ namespace FoodTruck.DAL
                 {
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainFermeExceptionnellement.DateFin, plageHoraireRetrait.Creneaux.Last(), plageHoraireRetrait.Pas);
                 }
+                else if (prochainFermeExceptionnellement != null && prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.Last() && prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.Last())
+                {
+                    plageHoraireRetrait = new PlageHoraireRetrait(plageHoraireRetrait.Creneaux.First(), prochainFermeExceptionnellement.DateDebut, plageHoraireRetrait.Pas);
+                }
             } while (faireRecherche);
             return plageHoraireRetrait;
         }
