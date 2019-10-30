@@ -234,7 +234,7 @@ namespace FoodTruck.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
         [HttpPost]
-        public ActionResult FermeturesExceptionnelles(string valider, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, DateTime dateFin, TimeSpan heureFin)
+        public ActionResult FermeturesExceptionnelles(string action, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, DateTime dateFin, TimeSpan heureFin)
         {
             if (AdminPlanning)
             {
@@ -242,14 +242,14 @@ namespace FoodTruck.Controllers
                 DateTime dateDebutComplete = dateDebut + heureDebut;
                 DateTime dateFinComplete = dateFin + heureFin;
                 OuvertureDAL ouvertureDAL = new OuvertureDAL();
-                if (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant)
+                if (action != "Supprimer" && (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant))
                 {
                     ViewBag.DatesIncompatibles = true;
                 }
                 else
                 {
                     JourExceptionnel chevauchement = null;
-                    if (valider == "Ajouter")
+                    if (action == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterFermeture(dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
@@ -257,7 +257,7 @@ namespace FoodTruck.Controllers
                         else
                             ViewBag.AjouterFermeture = false;
                     }
-                    else if (valider == "Modifier")
+                    else if (action == "Modifier")
                     {
                         chevauchement = ouvertureDAL.ModifierFermeture(dateId, dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
@@ -265,7 +265,7 @@ namespace FoodTruck.Controllers
                         else
                             ViewBag.ModifierFermeture = false;
                     }
-                    else if (valider == "Supprimer")
+                    else if (action == "Supprimer")
                     {
                         if (ouvertureDAL.SupprimerFermeture(dateId))
                             ViewBag.SupprimerFermeture = true;

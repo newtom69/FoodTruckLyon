@@ -22,7 +22,7 @@ namespace FoodTruck.DAL
             {
                 DateTime date = DateTime.Now;
                 List<JourExceptionnel> jours = (from j in db.JourExceptionnel
-                                                where DbFunctions.DiffDays(date, j.DateDebut) >= 0 && j.Ouvert == ouvert
+                                                where DbFunctions.DiffDays(date, j.DateFin) >= 0 && j.Ouvert == ouvert
                                                 orderby j.DateDebut
                                                 select j).ToList();
                 return jours;

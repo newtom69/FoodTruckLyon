@@ -98,7 +98,7 @@
         </div>
         <div>
             <div>&#x2061;</div>
-            <input class="boutonModifier" type="submit" name="valider" value="Ajouter">
+            <input class="boutonModifier" type="submit" name="action" value="Ajouter">
         </div>
     </div>
 }
@@ -134,10 +134,10 @@
                     <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateFinId@value)" required>
                 </div>
                 <div>
-                    <input class="boutonModifier" type="submit" name="valider" value="Modifier">
+                    <input class="boutonModifier" type="submit" name="action" value="Modifier">
                 </div>
                 <div>
-                    <input class="boutonSupprimer" type="submit" name="valider" value="Supprimer">
+                    <input class="boutonSupprimer" type="submit" name="action" value="Supprimer">
                 </div>
             </div>
         }
