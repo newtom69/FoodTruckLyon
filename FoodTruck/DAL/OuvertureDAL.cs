@@ -176,7 +176,7 @@ namespace FoodTruck.DAL
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
-                PlageRepas plage;
+                PlageRepas plage = new PlageRepas(); // TODO supprimer new
                 TimeSpan minuit = new TimeSpan(0, 0, 0);
                 int totalSecondes = 24 * 60 * 60 * ((int)date.DayOfWeek - 1) + (int)date.TimeOfDay.TotalSeconds;
 
@@ -185,13 +185,14 @@ namespace FoodTruck.DAL
                          orderby 24 * 60 * 60 * (c.JourSemaineId - 1) + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
                          select c).FirstOrDefault();
 
+                DateTime maintenant = DateTime.Now;
                 if (plage == null)
                 {
                     plage = (from c in db.PlageRepas
                              orderby c.JourSemaineId, c.Debut
                              select c).First();
                 }
-                if (plage.Debut.TotalSeconds < (int)date.TimeOfDay.TotalSeconds)
+                else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay) // TODO BUG ICI
                 {
                     TimeSpan heureH = date.TimeOfDay;
                     int pasMinutes = (int)plage.Pas.TotalMinutes;
@@ -220,6 +221,15 @@ namespace FoodTruck.DAL
                                          where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
                                          orderby j.DateDebut
                                          select j).FirstOrDefault();
+                if (jour == null)
+                {
+                    jour = new JourExceptionnel
+                    {
+                        DateDebut = DateTime.MaxValue,
+                        DateFin = DateTime.MaxValue,
+                        Ouvert = ouvert
+                    };
+                }
                 return jour;
             }
         }
