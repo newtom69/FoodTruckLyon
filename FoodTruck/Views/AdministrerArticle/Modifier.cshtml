@@ -56,7 +56,7 @@
             <p>Rentrez les nouvelles valeurs dans les champs que vous voulez modifier</p>
             <p>Décochez "visible dans la carte" pour supprimer l'article</p>
             <div>
-                @using (Html.BeginForm("ModifierArticleEtape2", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("ModifierEtape2", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <input name="id" type="hidden" value="@ViewBag.ArticleAModifier.Id">
                     <div class="ccfield-prepend">

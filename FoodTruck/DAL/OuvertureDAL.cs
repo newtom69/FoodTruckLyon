@@ -265,7 +265,5 @@ namespace FoodTruck.DAL
                 return plage;
             }
         }
-
-
     }
 }

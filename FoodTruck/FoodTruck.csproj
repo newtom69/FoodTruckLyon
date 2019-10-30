@@ -128,7 +128,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\AdministrerController.cs" />
+    <Compile Include="Controllers\AdministrerArticleController.cs" />
+    <Compile Include="Controllers\AdministrerClientController.cs" />
+    <Compile Include="Controllers\AdministrerCommandeController.cs" />
+    <Compile Include="Controllers\AdministrerPlanningController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
     <Compile Include="Controllers\CompteController.cs" />
@@ -142,6 +146,7 @@
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
     <Compile Include="DAL\OuvertureDAL.cs" />
+    <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
@@ -318,20 +323,20 @@
     <Content Include="Views\Panier\Index.cshtml" />
     <Content Include="Views\Linkedin\callback.cshtml" />
     <Content Include="Views\Linkedin\File.cshtml" />
-    <Content Include="Views\Administration\AjouterArticle.cshtml" />
-    <Content Include="Views\Administration\ModifierArticle.cshtml" />
-    <Content Include="Views\Administration\ModifierArticleEtape2.cshtml" />
+    <Content Include="Views\AdministrerArticle\Ajouter.cshtml" />
+    <Content Include="Views\AdministrerArticle\Modifier.cshtml" />
+    <Content Include="Views\AdministrerArticle\ModifierEtape2.cshtml" />
     <Content Include="Views\Compte\Connexion.cshtml" />
     <Content Include="Views\Compte\Creation.cshtml" />
     <Content Include="Views\Compte\Deconnexion.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
-    <Content Include="Views\Administration\CommandesEnCours.cshtml" />
-    <Content Include="Views\Administration\Commandes.cshtml" />
+    <Content Include="Views\AdministrerCommande\EnCours.cshtml" />
+    <Content Include="Views\AdministrerCommande\Toutes.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
-    <Content Include="Views\Administration\CommandesAStatuer.cshtml" />
-    <Content Include="Views\Administration\Index.cshtml" />
-    <Content Include="Views\Administration\FermeturesExceptionnelles.cshtml" />
-    <Content Include="Views\Administration\OuverturesExceptionnelles.cshtml" />
+    <Content Include="Views\AdministrerCommande\AStatuer.cshtml" />
+    <Content Include="Views\Administrer\Index.cshtml" />
+    <Content Include="Views\AdministrerPlanning\FermeturesExceptionnelles.cshtml" />
+    <Content Include="Views\AdministrerPlanning\OuverturesExceptionnelles.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -342,6 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="Views\AdministrerClient\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
