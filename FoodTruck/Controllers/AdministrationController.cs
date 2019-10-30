@@ -17,70 +17,77 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            if (AdminCommande || AdminArticle || AdminPlanning || AdminUtilisateur)
+                return View();
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpGet]
         public ActionResult CommandesEnCours()
         {
-            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminCommande)
-            {
-                listeCommandesViewModel = new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours());
-            }
-            return View(listeCommandesViewModel);
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours()));
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
         public ActionResult CommandesEnCours(int id, string statut)
         {
-            bool retire = false;
-            bool annule = false;
-            if (statut == "retire")
-                retire = true;
-            else if (statut == "annule")
-                annule = true;
-            new CommandeDAL().MettreAJourStatut(id, retire, annule);
-            return RedirectToAction(ActionNom);
+            if (AdminCommande)
+            {
+                bool retire = false;
+                bool annule = false;
+                if (statut == "retire")
+                    retire = true;
+                else if (statut == "annule")
+                    annule = true;
+                new CommandeDAL().MettreAJourStatut(id, retire, annule);
+                return RedirectToAction(ActionNom);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
 
         [HttpGet]
         public ActionResult CommandesAStatuer()
         {
-            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminCommande)
-            {
-                CommandeDAL commandeDAL = new CommandeDAL();
-                var commandes = commandeDAL.ListerCommandesAStatuer();
-                listeCommandesViewModel = new ListeCommandesViewModel(commandes);
-            }
-            return View(listeCommandesViewModel);
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesAStatuer()));
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
         public ActionResult CommandesAStatuer(int id, string statut)
         {
-            bool retire = false;
-            bool annule = false;
-            if (statut == "retire")
-                retire = true;
-            else if (statut == "annule")
-                annule = true;
-            new CommandeDAL().MettreAJourStatut(id, retire, annule);
-            return RedirectToAction(ActionNom);
+            if (AdminCommande)
+            {
+                bool retire = false;
+                bool annule = false;
+                if (statut == "retire")
+                    retire = true;
+                else if (statut == "annule")
+                    annule = true;
+                new CommandeDAL().MettreAJourStatut(id, retire, annule);
+                return RedirectToAction(ActionNom);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
 
         [HttpGet]
         public ActionResult Commandes()
         {
-            ListeCommandesViewModel listeCommandesViewModel = null;
             if (AdminCommande)
-            {
-                CommandeDAL commandeDAL = new CommandeDAL();
-                var commandes = commandeDAL.ListerCommandesToutes();
-                listeCommandesViewModel = new ListeCommandesViewModel(commandes);
-            }
-            return View(listeCommandesViewModel);
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesToutes()));
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpGet]
@@ -119,7 +126,7 @@ namespace FoodTruck.Controllers
                     string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
                     string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
-                    int tailleImage = Int32.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
+                    int tailleImage = int.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
                     var nouvelleImage = new Bitmap(image, tailleImage, tailleImage);
                     nouvelleImage.Save(chemin);
                     nouvelleImage.Dispose();
@@ -132,8 +139,12 @@ namespace FoodTruck.Controllers
                 {
                     TempData["Erreur"] = ex.Message;
                 }
+                return View();
             }
-            return View();
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
 
         [HttpGet]
@@ -142,7 +153,7 @@ namespace FoodTruck.Controllers
             if (AdminArticle)
                 return View(new ArticleDAL().ListerTout());
             else
-                return View();
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
@@ -155,7 +166,7 @@ namespace FoodTruck.Controllers
                 return View(articleDAL.ListerTout());
             }
             else
-                return View();
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
@@ -206,8 +217,12 @@ namespace FoodTruck.Controllers
                         TempData["Erreur"] = ex.Message;
                     }
                 }
+                return View();
             }
-            return View();
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
         }
 
         [HttpGet]
