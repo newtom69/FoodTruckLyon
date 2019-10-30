@@ -239,11 +239,11 @@ namespace FoodTruck.DAL
             {
                 PlageRepas plage = new PlageRepas(); // TODO supprimer new
                 TimeSpan minuit = new TimeSpan(0, 0, 0);
-                int totalSecondes = 24 * 60 * 60 * ((int)date.DayOfWeek - 1) + (int)date.TimeOfDay.TotalSeconds;
+                int totalSecondes = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
 
                 plage = (from c in db.PlageRepas
-                         where totalSecondes <= 24 * 60 * 60 * (c.JourSemaineId - 1) + DbFunctions.DiffSeconds(minuit, c.Fin)
-                         orderby 24 * 60 * 60 * (c.JourSemaineId - 1) + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
+                         where totalSecondes <= 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin)
+                         orderby 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
                          select c).FirstOrDefault();
 
                 DateTime maintenant = DateTime.Now;
@@ -253,7 +253,7 @@ namespace FoodTruck.DAL
                              orderby c.JourSemaineId, c.Debut
                              select c).First();
                 }
-                else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay) // TODO BUG ICI
+                else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay)
                 {
                     TimeSpan heureH = date.TimeOfDay;
                     int pasMinutes = (int)plage.Pas.TotalMinutes;
