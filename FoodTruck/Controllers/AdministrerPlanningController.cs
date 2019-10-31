@@ -132,11 +132,10 @@ namespace FoodTruck.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
         [HttpPost]
-        public ActionResult OuverturesHebdomadaires(string action, string jour, TimeSpan heureDebut, TimeSpan heureFin)
+        public ActionResult OuverturesHebdomadaires(int id, string action, int jourId, TimeSpan heureDebut, TimeSpan heureFin, TimeSpan pas)
         {
             if (AdminPlanning)
             {
-                int jourId = 1; // TODO convertir string nom français en int
                 OuvertureHebdomadaireDAL ouvertureDAL = new OuvertureHebdomadaireDAL();
                 if (heureFin <= heureDebut)
                 {
@@ -144,10 +143,10 @@ namespace FoodTruck.Controllers
                 }
                 else
                 {
-                    JourExceptionnel chevauchement = null;
+                    PlageRepas chevauchement = null;
                     if (action == "Ajouter")
                     {
-                        chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin);
+                        chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin, pas);
                         if (chevauchement == null)
                             ViewBag.AjouterOuverture = true;
                         else
@@ -155,7 +154,7 @@ namespace FoodTruck.Controllers
                     }
                     else if (action == "Modifier")
                     {
-                        chevauchement = ouvertureDAL.ModifierOuverture(jourId, heureDebut, heureFin);
+                        chevauchement = ouvertureDAL.ModifierOuverture(id, jourId, heureDebut, heureFin, pas);
                         if (chevauchement == null)
                             ViewBag.ModifierOuverture = true;
                         else
@@ -163,7 +162,7 @@ namespace FoodTruck.Controllers
                     }
                     else if (action == "Supprimer")
                     {
-                        if (ouvertureDAL.SupprimerOuverture(jourId))
+                        if (ouvertureDAL.SupprimerOuverture(id))
                             ViewBag.SupprimerOuverture = true;
                         else
                             ViewBag.SupprimerOuverture = false;

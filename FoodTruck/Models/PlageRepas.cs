@@ -14,6 +14,7 @@ namespace FoodTruck
     
     public partial class PlageRepas
     {
+        public int Id { get; set; }
         public int JourSemaineId { get; set; }
         public System.TimeSpan Debut { get; set; }
         public System.TimeSpan Fin { get; set; }

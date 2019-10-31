@@ -43,7 +43,7 @@ namespace FoodTruck.DAL
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 JourExceptionnel chevauchement = (from j in db.JourExceptionnel
-                                                  where !(DbFunctions.DiffMinutes(dateFin, j.DateDebut) >= 0 || DbFunctions.DiffMinutes(j.DateFin, dateDebut) >= 0)
+                                                  where DbFunctions.DiffMinutes(j.DateDebut, dateFin) >= 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) >= 0
                                                   select j).FirstOrDefault();
                 if (chevauchement == null)
                 {
@@ -76,8 +76,7 @@ namespace FoodTruck.DAL
                                                     select j).FirstOrDefault();
 
                 JourExceptionnel chevauchement = (from j in db.JourExceptionnel
-                                                  where j.DateDebut != jourSelectionne.DateDebut &&
-                                                  !(DbFunctions.DiffMinutes(dateFin, j.DateDebut) >= 0 || DbFunctions.DiffMinutes(j.DateFin, dateDebut) >= 0)
+                                                  where j != jourSelectionne && DbFunctions.DiffMinutes(j.DateDebut, dateFin) > 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) > 0
                                                   select j).FirstOrDefault();
 
                 if (chevauchement == null && jourSelectionne != null)

@@ -7,6 +7,56 @@
 }
 <script src="~/Scripts/myJs.js"></script>
 
+@if (ViewBag.DatesIncompatibles != null)
+{
+    <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
+}
+@if (ViewBag.AjouterOuverture != null)
+{
+    if (ViewBag.AjouterOuverture)
+    {
+        <div class="messageInfo">La plage d'ouverture a bien été ajoutée</div>
+    }
+    else
+    {
+        <div class="messageErreur">
+            @if (ViewBag.Chevauchement != null)
+            {
+                <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre plage du même jour :</p>
+                <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
+            }
+            else
+            {
+                <p>Une erreur est survenue lors de l'ajout de la plage d'ouverture. Veuillez réessayer plus tard</p>
+            }
+        </div>
+
+    }
+}
+@if (ViewBag.ModifierOuverture != null)
+{
+    if (ViewBag.ModifierOuverture)
+    {
+        <div class="messageInfo">La plage d'ouverture a bien été modifiée</div>
+    }
+    else
+    {
+        <div class="messageErreur">
+            @if (ViewBag.Chevauchement != null)
+            {
+                <p>Impossible de modifier votre plage d'ouverture. Elle se chevauche avec une autre plage du même jour :</p>
+                <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
+            }
+            else
+            {
+                <p>Une erreur est survenue lors de la modification de la plage d'ouverture. Veuillez réessayer plus tard</p>
+            }
+        </div>
+    }
+}
+
+
+
 <h2>Gestion des ouvertures hebdomadaires</h2>
 
 @foreach (PlageRepas plage in Model)
@@ -18,16 +68,30 @@
         string heureDebutId = jourId + "heure" + plage.Debut.ToString("hhmm");
         string heureFinId = jourId + "heure" + plage.Fin.ToString("hhmm");
 
-        <input name="dateId" type="hidden" value="@plage.JourSemaineId@plage.Debut">
+        <input name="id" type="hidden" value="@plage.Id">
         <div class="gestionFermetureOuverture">
-            <div>
-                <input class="ccformfield" id="@jourId" name="jourId" type="text" value="@jourSemaine" required>
+            <div class="ccfield-prepend">
+                <select class="ccformfield" name="jourId" required>
+                    @foreach (DayOfWeek jour in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        int ceJourId = (int)jour;
+                        string selected = "";
+                        if (ceJourId == plage.JourSemaineId)
+                        {
+                            selected = "selected";
+                        }
+                        <option value="@ceJourId" @selected>@DateTimeFormatInfo.CurrentInfo.GetDayName(jour)</option>
+                    }
+                </select>
             </div>
             <div>
                 <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" @*onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @plage.JourSemaineId@value)"*@ required>
             </div>
             <div>
                 <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" @*onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @plage.JourSemaineId@value)"*@ required>
+            </div>
+            <div>
+                <input class="ccformfield" name="pas" type="time" value="@plage.Pas.ToString("hh\\:mm")" @*onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @plage.JourSemaineId@value)"*@ required>
             </div>
             <div>
                 <input class="boutonModifier" type="submit" name="action" value="Modifier">
