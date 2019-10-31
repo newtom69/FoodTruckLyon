@@ -22,6 +22,7 @@
 @if (ViewBag.AdminPlanning)
 {
     <h3>Planning des ouvertures/fermetures</h3>
+    <h4>@Html.ActionLink("Gérer les ouvertures hebdomadaires", "OuverturesHebdomadaires", "AdministrerPlanning")</h4>
     <h4>@Html.ActionLink("Gérer les ouvertures exceptionnelles", "OuverturesExceptionnelles", "AdministrerPlanning")</h4>
     <h4>@Html.ActionLink("Gérer les fermetures exceptionnelles", "FermeturesExceptionnelles", "AdministrerPlanning")</h4>
 }
