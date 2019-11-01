@@ -54,7 +54,17 @@
         </div>
     }
 }
-
+@if (ViewBag.SupprimerOuverture != null)
+{
+    if (ViewBag.SupprimerOuverture)
+    {
+        <div class="messageInfo">La plage d'ouverture a bien été supprimée</div>
+    }
+    else
+    {
+        <div class="messageErreur">Une erreur est survenue lors de la suppression de la plage d'ouverture. Veuillez réessayer plus tard</div>
+    }
+}
 
 
 <h2>Gestion des ouvertures hebdomadaires</h2>
