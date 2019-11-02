@@ -1,11 +1,10 @@
-﻿@* TODO Toutes.cshtml et Avenir.cshtml même contenu -> DRY dette technique *@
-@using FoodTruck.ViewModels
+﻿@using FoodTruck.ViewModels
 @using FoodTruck.Models
 @using System.Configuration
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-    ViewBag.Title = "Toutes les commandes";
+    ViewBag.Title = "Les commandes futures";
 }
 @model ListeCommandesViewModel
 
@@ -13,7 +12,7 @@
 <h2>Administration</h2>
 @if (Model != null)
 {
-    <h3>Toutes les commandes</h3>
+    <h3>Liste des commandes futures</h3>
     <aside id="panierValide">
         <div class="choixHoraire">
             <hr />

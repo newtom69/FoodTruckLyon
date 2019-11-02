@@ -73,5 +73,14 @@ namespace FoodTruck.Controllers
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
+
+        [HttpGet]
+        public ActionResult AVenir()
+        {
+            if (AdminCommande)
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesAVenir()));
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+        }
     }
 }

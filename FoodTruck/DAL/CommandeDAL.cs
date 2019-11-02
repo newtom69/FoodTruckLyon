@@ -153,6 +153,18 @@ namespace FoodTruck.DAL
                 return commandes;
             }
         }
+        internal List<Commande> ListerCommandesAVenir()
+        {
+            DateTime maintenant = DateTime.Now;
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) > 0 && !cmd.Retrait && !cmd.Annulation
+                                            orderby cmd.Id ascending
+                                            select cmd).ToList();
+                return commandes;
+            }
+        }
 
         public List<ArticleViewModel> ListerArticles(int commandeId)
         {
