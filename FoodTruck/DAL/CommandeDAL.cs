@@ -118,6 +118,18 @@ namespace FoodTruck.DAL
                 return commandes;
             }
         }
+
+        internal int NombreCommandes(DateTime date)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                int nbCommandes = (from cmd in db.Commande
+                                   where cmd.DateRetrait == date && !cmd.Annulation && !cmd.Retrait
+                                   select cmd.Id).ToList().Count;
+                return nbCommandes;
+            }
+        }
+
         internal List<Commande> ListerCommandesEnCoursUtilisateur(int id)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())

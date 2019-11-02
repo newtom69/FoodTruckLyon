@@ -9,7 +9,7 @@ namespace FoodTruck.ViewModels
     {
         public List<ArticleViewModel> ArticlesDetailsViewModel { get; set; }
         public double PrixTotal { get; set; }
-        public List<DateTime> DatesRetraitPossibles { get; set; }
+        public List<Creneau> Creneaux { get; set; }
 
         public PanierViewModel()
         {

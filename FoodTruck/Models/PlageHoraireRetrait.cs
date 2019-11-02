@@ -7,23 +7,23 @@ namespace FoodTruck.Models
     public class PlageHoraireRetrait
     {
         internal TimeSpan Pas { get; private set; }
-        public List<DateTime> Creneaux { get; private set; }
+        public List<DateTime> Dates { get; private set; }
 
         public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau, TimeSpan pas)
         {
             Pas = pas;
             DateTime creneauCourant = premierCreneau;
-            Creneaux = new List<DateTime>();
+            Dates = new List<DateTime>();
             while (creneauCourant <= dernierCreneau)
             {
-                Creneaux.Add(creneauCourant);
+                Dates.Add(creneauCourant);
                 creneauCourant = ObtenirCreneauSuivant(creneauCourant);
             }
         }
 
         public bool Contient(DateTime date)
         {
-            if (Creneaux.First() <= date && date <= Creneaux.Last())
+            if (Dates.First() <= date && date <= Dates.Last())
                 return true;
             else
                 return false;
@@ -46,17 +46,17 @@ namespace FoodTruck.Models
             {
                 int indexMin = -1;
                 int compteur = 0;
-                foreach (DateTime creneau in Creneaux)
+                foreach (DateTime creneau in Dates)
                 {
                     if (creneau < date)
                     {
                         compteur++;
                         if (indexMin == -1)
-                            indexMin = Creneaux.IndexOf(creneau);
+                            indexMin = Dates.IndexOf(creneau);
                     }
                 }
                 if (compteur > 0)
-                    Creneaux.RemoveRange(indexMin, compteur);
+                    Dates.RemoveRange(indexMin, compteur);
             }
         }
     }

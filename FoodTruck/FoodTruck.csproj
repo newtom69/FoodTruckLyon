@@ -202,6 +202,7 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Creneau.cs" />
     <Compile Include="ViewModels\ListeCommandesViewModel.cs" />
     <Compile Include="ViewModels\CommandeViewModel.cs" />
     <Compile Include="ViewModels\ArticleIndexViewModel.cs" />

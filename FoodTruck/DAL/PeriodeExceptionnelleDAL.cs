@@ -186,44 +186,44 @@ namespace FoodTruck.DAL
                 // Test avec ouverture exceptionnelle
                 //
                 //cas plage ouverture exceptionnelle complètement avant plage ouverture habituelle
-                if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() && prochainOuvertExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.First())
+                if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First() && prochainOuvertExceptionnellement.DateFin < plageHoraireRetrait.Dates.First())
                 {
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
                 }
                 // cas ouverture exceptionnelle commence avant plage
-                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First())
+                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First())
                 {
-                    DateTime fin = prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last() ? prochainOuvertExceptionnellement.DateFin : plageHoraireRetrait.Creneaux.Last();
+                    DateTime fin = prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Dates.Last() ? prochainOuvertExceptionnellement.DateFin : plageHoraireRetrait.Dates.Last();
                     plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, fin, prochainOuvertHabituellement.Pas);
                 }
                 // cas ouverture exceptionnelle fini après plage
-                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.Last() && prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Creneaux.Last())
+                else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.Last() && prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Dates.Last())
                 {
-                    DateTime debut = prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Creneaux.First() ? prochainOuvertExceptionnellement.DateDebut : plageHoraireRetrait.Creneaux.First();
+                    DateTime debut = prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First() ? prochainOuvertExceptionnellement.DateDebut : plageHoraireRetrait.Dates.First();
                     plageHoraireRetrait = new PlageHoraireRetrait(debut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
                 }
 
                 //Test avec fermeture exceptionnelle
                 //
                 // fermeture englobe complètement l'ouverture => recherche à nouveau des plages
-                if (prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Creneaux.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Creneaux.Last())
+                if (prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Dates.First() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Dates.Last())
                 {
                     faireRecherche = true;
                     date = prochainFermeExceptionnellement.DateFin;
                 }
                 // fermeture à cheval sur ouverture
-                else if (!(prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Creneaux.First() || prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Creneaux.Last()))
+                else if (!(prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Dates.First() || prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Dates.Last()))
                 {
                     DateTime debut;
                     DateTime fin;
-                    if (prochainFermeExceptionnellement.DateFin < plageHoraireRetrait.Creneaux.Last())
+                    if (prochainFermeExceptionnellement.DateFin < plageHoraireRetrait.Dates.Last())
                     {
                         debut = prochainFermeExceptionnellement.DateFin;
-                        fin = plageHoraireRetrait.Creneaux.Last();
+                        fin = plageHoraireRetrait.Dates.Last();
                     }
                     else
                     {
-                        debut = plageHoraireRetrait.Creneaux.First();
+                        debut = plageHoraireRetrait.Dates.First();
                         fin = prochainFermeExceptionnellement.DateDebut;
                     }
                     plageHoraireRetrait = new PlageHoraireRetrait(debut, fin, prochainOuvertHabituellement.Pas);

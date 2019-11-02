@@ -52,39 +52,18 @@ else
         <div class="choixHoraire">
             <select class="ccformfield" name="dateRetrait" size="1" required>
                 <option selected disabled>créneau horaire de retrait</option>
-                @{
-                    string groupeRepas1 = "";
-                    string groupeRepas2 = "";
-                    int jourRepas1 = 0;
-                    const int heureMinPourDiner = 16;
-                }
-                @foreach (DateTime date in Model.DatesRetraitPossibles)
+                @{ DateTime dateAvant = DateTime.MinValue; }
+                @foreach (Creneau creneau in Model.Creneaux)
                 {
-                    if (groupeRepas1 == "" && date.Hour < heureMinPourDiner)
+                    if (creneau.DateRetrait > dateAvant.AddHours(1))
                     {
-                        groupeRepas1 = "Déjeuner";
-                        jourRepas1 = date.DayOfYear;
-                        <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
+                        <optgroup label="@creneau.DateRetrait.ToString("dddd dd MMMM")"></optgroup>
                     }
-                    else if (groupeRepas1 == "" && date.Hour >= heureMinPourDiner)
+                    dateAvant = creneau.DateRetrait;
+                    if (@creneau.CommandesPossiblesRestantes > 0)
                     {
-                        groupeRepas1 = "Diner";
-                        jourRepas1 = date.DayOfYear;
-                        <optgroup label="@groupeRepas1 du @date.ToString("dddd dd MMMM")"></optgroup>
+                        <option value="@creneau.DateRetrait">@creneau.DateRetrait.ToString("HH:mm").Replace(":", "h")</option>
                     }
-                    else if (groupeRepas2 == "" && date.Hour < heureMinPourDiner && (groupeRepas1 == "Diner" || date.DayOfYear != jourRepas1) )
-                    {
-                        groupeRepas2 = "Déjeuner";
-                        <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>
-
-                    }
-                    else if (groupeRepas2 == "" && date.Hour >= heureMinPourDiner && (groupeRepas1 == "Déjeuner" || date.DayOfYear != jourRepas1) )
-                    {
-                        groupeRepas2 = "Diner";
-                        <optgroup label="@groupeRepas2 du @date.ToString("dddd dd MMMM")"></optgroup>
-
-                    }
-                    <option value="@date">@date.ToString("HH:mm").Replace(":", "h")</option>
                 }
             </select>
         </div>

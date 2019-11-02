@@ -1,6 +1,7 @@
 ﻿using FoodTruck.DAL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,11 +34,12 @@ namespace FoodTruck.Models
         {
             PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait> { ouvertureDAL.ProchainOuvert(date) };
-
-
-            PlageHoraireRetrait plage2 = ouvertureDAL.ProchainOuvert(plagesHorairesRetrait.Last().Creneaux.Last().AddMinutes(1)); //TODO refaire algo pour ne pas avoir à rajouter 1 mn
-
-            plagesHorairesRetrait.Add(plage2);
+            bool memeJour = true;
+            while(memeJour)
+            {
+                plagesHorairesRetrait.Add(ouvertureDAL.ProchainOuvert(plagesHorairesRetrait.Last().Dates.Last().AddMinutes(1)));
+                memeJour = plagesHorairesRetrait.First().Dates.First().Date == plagesHorairesRetrait.Last().Dates.First().Date;
+            }
             return plagesHorairesRetrait;
         }
         public static string UrlVersNom(this string url)
