@@ -111,12 +111,12 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AdresseIp" Type="nchar" MaxLength="15" Nullable="false" />
-          <Property Name="Date" Type="datetime" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="Url" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="UtilisateurId" Type="int" />
-          <Property Name="Navigateur" Type="nchar" MaxLength="30" />
-          <Property Name="NavigateurMobile" Type="bit" />
-          <Property Name="UrlOrigine" Type="nchar" MaxLength="200" />
+          <Property Name="UtilisateurId" Type="int" Nullable="false" />
+          <Property Name="Navigateur" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="NavigateurMobile" Type="bit" Nullable="false" />
+          <Property Name="UrlOrigine" Type="nchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <Association Name="FK_Article_FamilleArticle">
           <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
@@ -203,7 +203,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Visite_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="0..1" />
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
           <End Role="Visite" Type="Self.Visite" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Utilisateur">
@@ -488,39 +488,13 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
+          <EntitySet Name="OuvertureHebdomadaire" EntityType="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire" />
           <EntitySet Name="Visite" EntityType="omasvui147994fr33943_foodtruckModel.Visite" />
           <AssociationSet Name="FK_Visite_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
-          <EntitySet Name="OuvertureHebdomadaire" EntityType="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire" />
         </EntityContainer>
-        <EntityType Name="Visite">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdresseIp" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="UtilisateurId" Type="Int32" />
-          <Property Name="Navigateur" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-          <Property Name="NavigateurMobile" Type="Boolean" />
-          <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
-        </EntityType>
-        <Association Name="FK_Visite_Utilisateur">
-          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="0..1" />
-          <End Type="omasvui147994fr33943_foodtruckModel.Visite" Role="Visite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visite">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OuvertureHebdomadaire">
           <Key>
             <PropertyRef Name="Id" />
@@ -531,6 +505,32 @@
           <Property Name="Fin" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Pas" Type="Time" Nullable="false" Precision="7" />
         </EntityType>
+        <EntityType Name="Visite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdresseIp" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
+          <Property Name="Navigateur" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="NavigateurMobile" Type="Boolean" Nullable="false" />
+          <Property Name="UrlOrigine" Type="String" Nullable="false" MaxLength="200" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
+        </EntityType>
+        <Association Name="FK_Visite_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Visite" Role="Visite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visite">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -633,6 +633,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OuvertureHebdomadaire">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire">
+              <MappingFragment StoreEntitySet="OuvertureHebdomadaire">
+                <ScalarProperty Name="Pas" ColumnName="Pas" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Debut" ColumnName="Debut" />
+                <ScalarProperty Name="JourSemaineId" ColumnName="JourSemaineId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Visite">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Visite">
               <MappingFragment StoreEntitySet="Visite">
@@ -643,17 +654,6 @@
                 <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="AdresseIp" ColumnName="AdresseIp" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OuvertureHebdomadaire">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire">
-              <MappingFragment StoreEntitySet="OuvertureHebdomadaire">
-                <ScalarProperty Name="Pas" ColumnName="Pas" />
-                <ScalarProperty Name="Fin" ColumnName="Fin" />
-                <ScalarProperty Name="Debut" ColumnName="Debut" />
-                <ScalarProperty Name="JourSemaineId" ColumnName="JourSemaineId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
