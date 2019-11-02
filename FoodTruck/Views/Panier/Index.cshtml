@@ -64,6 +64,10 @@ else
                     {
                         <option value="@creneau.DateRetrait">@creneau.DateRetrait.ToString("HH:mm").Replace(":", "h")</option>
                     }
+                    else
+                    {
+                        <option disabled value="@creneau.DateRetrait">@creneau.DateRetrait.ToString("HH:mm").Replace(":", "h") (complet)</option>
+                    }
                 }
             </select>
         </div>
