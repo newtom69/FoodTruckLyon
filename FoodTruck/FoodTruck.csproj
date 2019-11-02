@@ -238,10 +238,10 @@
     <Content Include="Content\Images\Articles\quicheLorraine.jpg" />
     <Content Include="Content\Images\Articles\Rosette.jpg" />
     <Content Include="Content\Images\Articles\saladeCesar.jpg" />
-    <Content Include="Content\Images\Articles\saladeCesarXP.jpg" />
+    <Content Include="Content\Images\Articles\saladeCesarXL.jpg" />
     <Content Include="Content\Images\Articles\SaladeDeFruits.jpg" />
     <Content Include="Content\Images\Articles\saladeVegan.jpg" />
-    <Content Include="Content\Images\Articles\saladeVeganXP.jpg" />
+    <Content Include="Content\Images\Articles\saladeVeganXL.jpg" />
     <Content Include="Content\Images\Articles\TheNoir.jpg" />
     <Content Include="Content\Images\Articles\TheVert.jpg" />
     <Content Include="Content\Images\Articles\Tiramisu.jpg" />
