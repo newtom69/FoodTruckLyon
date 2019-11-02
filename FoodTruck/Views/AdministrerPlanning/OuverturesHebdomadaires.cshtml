@@ -1,7 +1,7 @@
 ﻿@using FoodTruck.Models;
 @using System.Globalization;
 
-@model List<PlageRepas>
+@model List<OuvertureHebdomadaire>
 @{
     ViewBag.Title = "FoodTruckLyon - Gérer les ouvertures hebdomadaires";
 }
@@ -92,7 +92,7 @@
 }
 
 <h3>Liste des ouvertures hebdomadaires</h3>
-@foreach (PlageRepas plage in Model)
+@foreach (OuvertureHebdomadaire plage in Model)
 {
     using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {

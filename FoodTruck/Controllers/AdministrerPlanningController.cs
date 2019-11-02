@@ -1,6 +1,5 @@
 ﻿using FoodTruck.DAL;
 using System;
-using System.Globalization;
 using System.Net;
 using System.Web.Mvc;
 
@@ -143,7 +142,7 @@ namespace FoodTruck.Controllers
                 }
                 else
                 {
-                    PlageRepas chevauchement = null;
+                    OuvertureHebdomadaire chevauchement = null;
                     if (action == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin, pas);

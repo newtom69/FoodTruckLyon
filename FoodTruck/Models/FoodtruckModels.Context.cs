@@ -32,7 +32,7 @@ namespace FoodTruck.Models
         public virtual DbSet<JourExceptionnel> JourExceptionnel { get; set; }
         public virtual DbSet<Panier> Panier { get; set; }
         public virtual DbSet<PanierProspect> PanierProspect { get; set; }
-        public virtual DbSet<PlageRepas> PlageRepas { get; set; }
+        public virtual DbSet<OuvertureHebdomadaire> OuvertureHebdomadaire { get; set; }
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
         public virtual DbSet<Visite> Visite { get; set; }
     }

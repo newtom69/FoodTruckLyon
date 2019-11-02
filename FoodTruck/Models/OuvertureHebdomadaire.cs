@@ -12,7 +12,7 @@ namespace FoodTruck
     using System;
     using System.Collections.Generic;
     
-    public partial class PlageRepas
+    public partial class OuvertureHebdomadaire
     {
         public int Id { get; set; }
         public int JourSemaineId { get; set; }

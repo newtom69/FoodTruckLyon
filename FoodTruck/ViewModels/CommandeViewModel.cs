@@ -1,5 +1,4 @@
-﻿using FoodTruck.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FoodTruck.ViewModels
 {

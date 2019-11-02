@@ -160,7 +160,7 @@
     <Compile Include="Models\Commande_Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PlageRepas.cs">
+    <Compile Include="Models\OuvertureHebdomadaire.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Utilitaire.cs" />

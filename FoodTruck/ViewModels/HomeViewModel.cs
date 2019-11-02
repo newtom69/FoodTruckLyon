@@ -1,5 +1,4 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Models;
 using System.Collections.Generic;
 
 namespace FoodTruck.ViewModels

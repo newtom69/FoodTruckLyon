@@ -58,6 +58,16 @@
           <Property Name="DateFin" Type="datetime" Nullable="false" />
           <Property Name="Ouvert" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="OuvertureHebdomadaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JourSemaineId" Type="int" Nullable="false" />
+          <Property Name="Debut" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Fin" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Pas" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="Panier">
           <Key>
             <PropertyRef Name="UtilisateurId" />
@@ -78,16 +88,6 @@
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
           <Property Name="DateAjout" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="PlageRepas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="JourSemaineId" Type="int" Nullable="false" />
-          <Property Name="Debut" Type="time" Precision="7" Nullable="false" />
-          <Property Name="Fin" Type="time" Precision="7" Nullable="false" />
-          <Property Name="Pas" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Utilisateur">
           <Key>
@@ -220,9 +220,9 @@
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PlageRepas" EntityType="Self.PlageRepas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
@@ -493,7 +493,7 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
-          <EntitySet Name="PlageRepas" EntityType="omasvui147994fr33943_foodtruckModel.PlageRepas" />
+          <EntitySet Name="OuvertureHebdomadaire" EntityType="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire" />
         </EntityContainer>
         <EntityType Name="Visite">
           <Key>
@@ -521,7 +521,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PlageRepas">
+        <EntityType Name="OuvertureHebdomadaire">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -647,9 +647,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PlageRepas">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.PlageRepas">
-              <MappingFragment StoreEntitySet="PlageRepas">
+          <EntitySetMapping Name="OuvertureHebdomadaire">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire">
+              <MappingFragment StoreEntitySet="OuvertureHebdomadaire">
                 <ScalarProperty Name="Pas" ColumnName="Pas" />
                 <ScalarProperty Name="Fin" ColumnName="Fin" />
                 <ScalarProperty Name="Debut" ColumnName="Debut" />

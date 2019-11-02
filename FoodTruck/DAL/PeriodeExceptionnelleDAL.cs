@@ -164,7 +164,7 @@ namespace FoodTruck.DAL
             do
             {
                 faireRecherche = false;
-                PlageRepas prochainOuvertHabituellement = ProchainOuvertHabituellement(date);
+                OuvertureHebdomadaire prochainOuvertHabituellement = ProchainOuvertHabituellement(date);
                 JourExceptionnel prochainOuvertExceptionnellement = ProchaineOuvertureExceptionnelle(date);
                 JourExceptionnel prochainFermeExceptionnellement = ProchaineFermetureExceptionnelle(date);
 
@@ -232,15 +232,15 @@ namespace FoodTruck.DAL
             return plageHoraireRetrait;
         }
 
-        private PlageRepas ProchainOuvertHabituellement(DateTime date)
+        private OuvertureHebdomadaire ProchainOuvertHabituellement(DateTime date)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
-                PlageRepas plage = new PlageRepas(); // TODO supprimer new
+                OuvertureHebdomadaire plage = new OuvertureHebdomadaire(); // TODO supprimer new
                 TimeSpan minuit = new TimeSpan(0, 0, 0);
                 int totalSecondes = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
 
-                plage = (from c in db.PlageRepas
+                plage = (from c in db.OuvertureHebdomadaire
                          where totalSecondes <= 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin)
                          orderby 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
                          select c).FirstOrDefault();
@@ -248,7 +248,7 @@ namespace FoodTruck.DAL
                 DateTime maintenant = DateTime.Now;
                 if (plage == null)
                 {
-                    plage = (from c in db.PlageRepas
+                    plage = (from c in db.OuvertureHebdomadaire
                              orderby c.JourSemaineId, c.Debut
                              select c).First();
                 }
