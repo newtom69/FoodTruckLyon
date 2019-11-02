@@ -27,7 +27,7 @@ namespace FoodTruck.Controllers
                 };
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
-                    commande.PrixTotal += article.Article.Prix * article.Quantite;
+                    commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
                     ArticleDAL larticleDAL = new ArticleDAL();
                     larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
                 }

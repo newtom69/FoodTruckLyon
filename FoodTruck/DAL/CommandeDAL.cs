@@ -48,8 +48,7 @@ namespace FoodTruck.DAL
                 foreach (var article in articles)
                 {
                     int quantite = article.Quantite;
-                    double prixTotal = (article.Article.Prix * quantite);
-
+                    double prixTotal = Math.Round(article.Article.Prix * quantite, 2);
                     Commande_Article cmdArt = new Commande_Article
                     {
                         CommandeId = idCommande,
