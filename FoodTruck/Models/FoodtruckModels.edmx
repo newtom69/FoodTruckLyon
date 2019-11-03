@@ -30,6 +30,8 @@
           <Property Name="DateCommande" Type="datetime" Nullable="false" />
           <Property Name="DateRetrait" Type="datetime" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
+          <Property Name="RemiseFidelite" Type="float" Nullable="false" />
+          <Property Name="RemiseCommerciale" Type="float" Nullable="false" />
           <Property Name="Retrait" Type="bit" Nullable="false" />
           <Property Name="Annulation" Type="bit" Nullable="false" />
         </EntityType>
@@ -283,20 +285,6 @@
           <NavigationProperty Name="PanierProspect" Relationship="Self.FK_PanierProspect_Article" FromRole="Article" ToRole="PanierProspect" />
           <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Article" ToRole="Panier" />
         </EntityType>
-        <EntityType Name="Commande">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
-          <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateRetrait" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PrixTotal" Type="Double" Nullable="false" />
-          <Property Name="Retrait" Type="Boolean" Nullable="false" />
-          <Property Name="Annulation" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
-          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
-        </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
             <PropertyRef Name="CommandeId" />
@@ -307,7 +295,7 @@
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Commande_Article" ToRole="Article" />
-          <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande_Article" ToRole="Commande" />
+          <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Commande" FromRole="Commande_Article" ToRole="Commande" />
         </EntityType>
         <EntityType Name="FamilleArticle">
           <Key>
@@ -397,21 +385,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Commande_Article_Commande">
-          <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
-          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Commande">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Commande_Article">
-              <PropertyRef Name="CommandeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FoodTruckEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Article" EntityType="Self.Article" />
-          <EntitySet Name="Commande" EntityType="Self.Commande" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" />
@@ -433,17 +408,9 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
-          <AssociationSet Name="FK_Commande_Article_Commande" Association="Self.FK_Commande_Article_Commande">
-            <End Role="Commande" EntitySet="Commande" />
-            <End Role="Commande_Article" EntitySet="Commande_Article" />
-          </AssociationSet>
           <EntitySet Name="OuvertureHebdomadaire" EntityType="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire" />
           <EntitySet Name="Visite" EntityType="omasvui147994fr33943_foodtruckModel.Visite" />
           <EntitySet Name="Utilisateur" EntityType="omasvui147994fr33943_foodtruckModel.Utilisateur" />
-          <AssociationSet Name="FK_Commande_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur">
-            <End Role="Utilisateur" EntitySet="Utilisateur" />
-            <End Role="Commande" EntitySet="Commande" />
-          </AssociationSet>
           <AssociationSet Name="FK_Utilisateur_Article_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Panier" EntitySet="Panier" />
@@ -451,6 +418,15 @@
           <AssociationSet Name="FK_Visite_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
+          </AssociationSet>
+          <EntitySet Name="Commande" EntityType="omasvui147994fr33943_foodtruckModel.Commande" />
+          <AssociationSet Name="FK_Commande_Article_Commande" Association="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Commande">
+            <End Role="Commande" EntitySet="Commande" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Commande" EntitySet="Commande" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="OuvertureHebdomadaire">
@@ -493,22 +469,10 @@
           <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
           <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
           <Property Name="AdminPlanning" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
           <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
           <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
+          <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
         </EntityType>
-        <Association Name="FK_Commande_Utilisateur">
-          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
-          <End Type="omasvui147994fr33943_foodtruckModel.Commande" Role="Commande" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Commande">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Utilisateur_Article_Utilisateur">
           <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
           <End Type="omasvui147994fr33943_foodtruckModel.Panier" Role="Panier" Multiplicity="*" />
@@ -533,6 +497,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Commande">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
+          <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateRetrait" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PrixTotal" Type="Double" Nullable="false" />
+          <Property Name="RemiseFidelite" Type="Double" Nullable="false" />
+          <Property Name="RemiseCommerciale" Type="Double" Nullable="false" />
+          <Property Name="Retrait" Type="Boolean" Nullable="false" />
+          <Property Name="Annulation" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Commande_Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
+        </EntityType>
+        <Association Name="FK_Commande_Article_Commande">
+          <End Type="omasvui147994fr33943_foodtruckModel.Commande" Role="Commande" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Commande_Article" Role="Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Commande">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="CommandeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Commande" Role="Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -553,19 +557,6 @@
                 <ScalarProperty Name="Grammage" ColumnName="Grammage" />
                 <ScalarProperty Name="Litrage" ColumnName="Litrage" />
                 <ScalarProperty Name="DansCarte" ColumnName="DansCarte" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Commande">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Commande">
-              <MappingFragment StoreEntitySet="Commande">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
-                <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
-                <ScalarProperty Name="DateRetrait" ColumnName="DateRetrait" />
-                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
-                <ScalarProperty Name="Retrait" ColumnName="Retrait" />
-                <ScalarProperty Name="Annulation" ColumnName="Annulation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -657,6 +648,21 @@
                 <ScalarProperty Name="Mdp" ColumnName="Mdp" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Commande">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Commande">
+              <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="Annulation" ColumnName="Annulation" />
+                <ScalarProperty Name="Retrait" ColumnName="Retrait" />
+                <ScalarProperty Name="RemiseCommerciale" ColumnName="RemiseCommerciale" />
+                <ScalarProperty Name="RemiseFidelite" ColumnName="RemiseFidelite" />
+                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+                <ScalarProperty Name="DateRetrait" ColumnName="DateRetrait" />
+                <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

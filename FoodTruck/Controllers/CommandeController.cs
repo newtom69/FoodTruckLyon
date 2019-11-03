@@ -10,32 +10,35 @@ namespace FoodTruck.Controllers
     public class CommandeController : ControllerParent
     {
         [HttpPost]
-        public ActionResult Index(DateTime dateRetrait)
+        public ActionResult Index(DateTime dateRetrait, int? remiseFidelite, float? remiseCommerciale)
         {
+            int remiseFideliteOk = remiseFidelite ?? 0;
+            float remiseCommercialeOk = remiseCommerciale ?? 0;
             if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
             }
             else
             {
+                new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, remiseFideliteOk);
                 Commande commande = new Commande
                 {
                     UtilisateurId = Utilisateur.Id,
                     DateCommande = DateTime.Now,
                     DateRetrait = dateRetrait,
-                    PrixTotal = 0
+                    PrixTotal = 0,
+                    RemiseFidelite = remiseFideliteOk,
+                    RemiseCommerciale = remiseCommercialeOk
                 };
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
                     commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
-                    ArticleDAL larticleDAL = new ArticleDAL();
-                    larticleDAL.AugmenterQuantiteVendue(article.Article.Id, 1);
+                    new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
                 }
-                CommandeDAL commandeDal = new CommandeDAL();
-                commandeDal.Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
+                commande.PrixTotal = Math.Round(commande.PrixTotal - remiseFideliteOk - remiseCommercialeOk, 2);
+                new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
                 Mail(Utilisateur, commande, PanierViewModel);
-                PanierDAL panierDAL = new PanierDAL(Utilisateur.Id);
-                panierDAL.Supprimer();
+                new PanierDAL(Utilisateur.Id).Supprimer();
                 ViewBag.Panier = null; //todo
                 return View(commande);
             }

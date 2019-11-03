@@ -25,6 +25,8 @@ namespace FoodTruck
         public System.DateTime DateCommande { get; set; }
         public System.DateTime DateRetrait { get; set; }
         public double PrixTotal { get; set; }
+        public double RemiseFidelite { get; set; }
+        public double RemiseCommerciale { get; set; }
         public bool Retrait { get; set; }
         public bool Annulation { get; set; }
     

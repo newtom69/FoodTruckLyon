@@ -43,6 +43,7 @@ namespace FoodTruck.Controllers
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
+            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
             return View(Utilisateur);
         }
 

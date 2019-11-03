@@ -25,6 +25,7 @@ else
     string prenom = @Model.Prenom.Trim();
     string telephone = @Model.Telephone.Trim();
     <div class="messageInfo">Bienvenue @Model.Prenom @Model.Nom. Vous avez @Model.Points point(s) de fidélité</div>
+    <div class="messageInfo">Depuis votre inscription, vous avez eu @ViewBag.RemiseTotalUtilisateur.ToString("C2", new CultureInfo("fr-FR")) de remises sur vos commandes </div>
     <h3>Vos coordonnées</h3>
     if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
     {

@@ -46,6 +46,20 @@ namespace FoodTruck.DAL
             }
             return lUtilisateur;
         }
+
+        internal int RetirerPointsFidelite(int id, int points)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                var utilisateur = (from user in db.Utilisateur
+                                where user.Id == id
+                                select user).FirstOrDefault();
+
+                utilisateur.Points -= points;
+                return db.SaveChanges();
+            }
+        }
+
         public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
         {
             string mdpHash;

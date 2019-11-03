@@ -21,27 +21,17 @@ namespace FoodTruck.DAL
         }
         internal void Annuler(int id)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
-            {
-                Commande commande = (from cmd in db.Commande
-                                     where cmd.Id == id
-                                     select cmd).FirstOrDefault();
-                if (commande != null)
-                {
-                    commande.Annulation = true;
-                    db.SaveChanges();
-                }
-            }
+            MettreAJourStatut(id, false, true);
         }
 
-        public void Ajouter(Commande laCommande, List<ArticleViewModel> articles)
+        public void Ajouter(Commande commande, List<ArticleViewModel> articles)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
-                db.Commande.Add(laCommande);
+                db.Commande.Add(commande);
                 db.SaveChanges();
                 int idCommande = (from cmd in db.Commande
-                                  where cmd.UtilisateurId == laCommande.UtilisateurId
+                                  where cmd.UtilisateurId == commande.UtilisateurId
                                   orderby cmd.Id descending
                                   select cmd.Id).FirstOrDefault();
 
@@ -72,15 +62,13 @@ namespace FoodTruck.DAL
                 {
                     commande.Annulation = annule;
                     commande.Retrait = retire;
-                    Utilisateur utilisateur;
+                    Utilisateur utilisateur = (from u in db.Utilisateur
+                                               where u.Id == commande.UtilisateurId
+                                               select u).FirstOrDefault();
                     if (commande.Retrait)
-                    {
-                        utilisateur = (from u in db.Utilisateur
-                                      where u.Id == commande.UtilisateurId
-                                      select u).FirstOrDefault();
-
                         utilisateur.Points += (int)commande.PrixTotal / 10;
-                    }
+                    if (commande.Annulation)
+                        utilisateur.Points += (int)commande.RemiseFidelite;
                     db.SaveChanges();
                 }
             }
@@ -126,6 +114,18 @@ namespace FoodTruck.DAL
             }
         }
 
+        internal double RemiseTotaleUtilisateur(int id)
+        {
+            double remise = 0;
+            List<Commande> commandes = ListerCommandesUtilisateur(id);
+            foreach (Commande commande in commandes)
+            {
+                remise += commande.RemiseCommerciale + commande.RemiseFidelite;
+            }
+            remise = Math.Round(remise, 2);
+            return remise;
+        }
+
         internal int NombreCommandes(DateTime date)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
@@ -167,7 +167,7 @@ namespace FoodTruck.DAL
             {
                 List<Commande> commandes = (from cmd in db.Commande
                                             where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) > 0 && !cmd.Retrait && !cmd.Annulation
-                                            orderby cmd.Id
+                                            orderby cmd.DateRetrait
                                             select cmd).ToList();
                 return commandes;
             }
