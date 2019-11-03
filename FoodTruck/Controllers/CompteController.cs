@@ -39,6 +39,54 @@ namespace FoodTruck.Controllers
                 TempData["PanierViewModelSauv"] = null;
                 return RedirectToAction(ActionNom, ControllerNom);
             }
+
+            CommandeDAL commandeDAL = new CommandeDAL();
+            List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
+            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
+            return View(Utilisateur);
+        }
+
+        [HttpPost]
+        public ActionResult Profil(int id, string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
+        {
+            UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            Utilisateur utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
+            if (utilisateur == null)
+            {
+                // mauvais ancien mot de passe renseigné => aucune modif prise en compte
+                ViewBag.MauvaisEmailMdp = true;
+            }
+            else if (utilisateur.Id != id)
+            {
+                //tentative de piratage ! ALERT !!!
+            }
+            else
+            {
+                string nouveauMdp;
+                if (mdp == "" && mdp2 == "")
+                    nouveauMdp = ancienMdp;
+                else if (VerifMdp(mdp, mdp2))
+                    nouveauMdp = mdp;
+                else
+                    nouveauMdp = "";
+
+                if (nouveauMdp != "")
+                {
+                    if (utilisateurDAL.Modification(id, email, nouveauMdp, nom, prenom, telephone) == 1)
+                    {
+                        ViewBag.Modification = true;
+                        Utilisateur = utilisateurDAL.Connexion(email, nouveauMdp);
+                    }
+                }
+                else
+                {
+                    ViewBag.MdpIncorrect = true;
+                    ViewBag.Nom = nom;
+                    ViewBag.Prenom = prenom;
+                    ViewBag.Email = email;
+                    ViewBag.Telephone = telephone;
+                }
+            }
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
@@ -118,9 +166,9 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Connexion(string Email, string Mdp, bool connexionAuto)
+        public ActionResult Connexion(string email, string mdp, bool connexionAuto)
         {
-            Utilisateur utilisateur = new UtilisateurDAL().Connexion(Email, Mdp);
+            Utilisateur utilisateur = new UtilisateurDAL().Connexion(email, mdp);
             if (utilisateur != null)
             {
                 ViewBag.Utilisateur = utilisateur;
@@ -176,30 +224,29 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Creation(string Email, string Mdp, string Mdp2, string Nom, string Prenom, string Telephone)
+        public ActionResult Creation(string email, string mdp, string mdp2, string nom, string prenom, string telephone)
         {
-            Utilisateur utilisateur;
+            Utilisateur utilisateur = Utilisateur;
             if (Utilisateur.Id == 0)
             {
-                if (!VerifMdp(Mdp, Mdp2))
+                if (VerifMdp(mdp, mdp2))
+                {
+                    utilisateur = new UtilisateurDAL().Creation(email, mdp, nom, prenom, telephone);
+                }
+                else
                 {
                     ViewBag.MdpIncorrect = true;
-                    ViewBag.Nom = Nom;
-                    ViewBag.Prenom = Prenom;
-                    ViewBag.Email = Email;
-                    ViewBag.Telephone = Telephone;
+                    ViewBag.Nom = nom;
+                    ViewBag.Prenom = prenom;
+                    ViewBag.Email = email;
+                    ViewBag.Telephone = telephone;
                     return View();
                 }
-                utilisateur = new UtilisateurDAL().Creation(Email, Mdp, Nom, Prenom, Telephone);
             }
-            else
-            {
-                utilisateur = Utilisateur;
-            }
+
             if (utilisateur != null)
             {
                 Session["UtilisateurId"] = utilisateur.Id;
-                //ViewBag.Utilisateur = utilisateur;
                 return RedirectToAction("Profil");
             }
             else
@@ -210,12 +257,12 @@ namespace FoodTruck.Controllers
             }
         }
 
-        bool VerifMdp(string mdp1, string mdp2)
+        private bool VerifMdp(string mdp1, string mdp2)
         {
-            bool valeurRetour = true;
-            if (mdp1 != mdp2) valeurRetour = false;
-            if (mdp1.Length < 8) valeurRetour = false;
-            return valeurRetour;
+            if (mdp1 != mdp2 || mdp1.Length < 8)
+                return false;
+            else
+                return true;
         }
     }
 }

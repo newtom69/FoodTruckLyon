@@ -66,7 +66,8 @@ namespace FoodTruck.DAL
                         Mdp = mdpHash,
                         Nom = nom,
                         Prenom = prenom,
-                        Telephone = telephone
+                        Telephone = telephone,
+                        Points = 0
                     };
                     db.Utilisateur.Add(lUtilisateur);
                     db.SaveChanges();
@@ -76,6 +77,24 @@ namespace FoodTruck.DAL
                 {
                     return null;
                 }
+            }
+        }
+
+        internal int Modification(int id, string email, string mdp, string nom, string prenom, string telephone)
+        {
+            using (FoodTruckEntities db = new FoodTruckEntities())
+            {
+                Utilisateur utilisateur = (from user in db.Utilisateur
+                                           where user.Id == id
+                                           select user).FirstOrDefault();
+
+                using (SHA256 Hash = SHA256.Create())
+                    utilisateur.Mdp = GetHash(Hash, mdp);
+                utilisateur.Nom = nom;
+                utilisateur.Prenom = prenom;
+                utilisateur.Email = email;
+                utilisateur.Telephone = telephone;
+                return db.SaveChanges();
             }
         }
 

@@ -15,7 +15,7 @@
 @while (i < Model.Articles.Count)
 {
     <hr />
-    <div @*id="@familles[indexId].Id"*@><h2 class="familleNotreCarte">@familles[indexId].Nom</h2></div>
+    <div><h2 class="familleNotreCarte">@familles[indexId].Nom</h2></div>
     List<ArticleViewModel> articles = new List<ArticleViewModel>();
     while (i < Model.Articles.Count && Model.Articles[i].Article.FamilleId == familleId)
     {

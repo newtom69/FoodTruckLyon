@@ -10,8 +10,9 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult EnCours()
         {
+            const int fouchetteHeures = 4;
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours(fouchetteHeures)));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -21,13 +22,7 @@ namespace FoodTruck.Controllers
         {
             if (AdminCommande)
             {
-                bool retire = false;
-                bool annule = false;
-                if (statut == "retire")
-                    retire = true;
-                else if (statut == "annule")
-                    annule = true;
-                new CommandeDAL().MettreAJourStatut(id, retire, annule);
+                new CommandeDAL().MettreAJourStatut(id, statut == "retire", statut == "annule");
                 return RedirectToAction(ActionNom);
             }
             else
@@ -50,13 +45,7 @@ namespace FoodTruck.Controllers
         {
             if (AdminCommande)
             {
-                bool retire = false;
-                bool annule = false;
-                if (statut == "retire")
-                    retire = true;
-                else if (statut == "annule")
-                    annule = true;
-                new CommandeDAL().MettreAJourStatut(id, retire, annule);
+                new CommandeDAL().MettreAJourStatut(id, statut == "retire", statut == "annule");
                 return RedirectToAction(ActionNom);
             }
             else

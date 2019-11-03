@@ -39,7 +39,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Ajouter(string nom, string ancre)
+        public ActionResult Ajouter(string nom, string ancre, bool? home)
         {
             ArticleDAL lArticleDAL = new ArticleDAL();
             Article lArticle = lArticleDAL.Details(nom);
@@ -51,7 +51,11 @@ namespace FoodTruck.Controllers
                     ViewBag.Panier = PanierViewModel;
                 }
             }
-            return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
+            bool testHome = home ?? false;
+            if (!testHome)
+                return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
+            else
+                return Redirect("/Article"+ancre);
         }
 
         [HttpPost]

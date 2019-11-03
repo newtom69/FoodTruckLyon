@@ -20,12 +20,60 @@
 }
 else
 {
-    <ul>
-        <li>@Model.Nom</li>
-        <li>@Model.Prenom </li>
-        <li>@Model.Email</li>
-        <li>@Model.Telephone</li>
-    </ul>
+    string email = @Model.Email.Trim();
+    string nom = @Model.Nom.Trim();
+    string prenom = @Model.Prenom.Trim();
+    string telephone = @Model.Telephone.Trim();
+    <div class="messageInfo">Bienvenue @Model.Prenom @Model.Nom. Vous avez @Model.Points point(s) de fidélité</div>
+    <h3>Vos coordonnées</h3>
+    if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
+    {
+        <div class="messageErreur">Mauvais choix de mots de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
+    }
+    if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
+    {
+        <div class="messageErreur">L'ancien mot de passe n'est pas correct.</div>
+    }
+    if (ViewBag.Modification != null && ViewBag.Modification)
+    {
+        <div class="messageInfo">La modification du profil a bien été prise en compte.</div>
+    }
+    using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
+    {
+        if (ViewBag.Email != null) { email = ViewBag.Email; }
+        if (ViewBag.Nom != null) { nom = ViewBag.Nom; }
+        if (ViewBag.Prenom != null) { prenom = ViewBag.Prenom; }
+        if (ViewBag.Telephone != null) { telephone = ViewBag.Telephone; }
+
+        <input name="id" type="hidden" value="@Model.Id">
+        <input name="ancienEmail" type="hidden" value="@Model.Email">
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required value="@email">
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="ancienMdp" type="password" placeholder="Ancien mot de passe" maxlength='20' required>
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required value="@nom">
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="prenom" type="text" placeholder="Prénom" maxlength='30' required value="@prenom">
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="telephone" type="tel" placeholder="Téléphone" maxlength='10' required value="@telephone">
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="mdp" type="password" placeholder="Nouveau mot de passe (si souhaité)" maxlength='20'>
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccformfield" name="mdp2" type="password" placeholder="Confirmer le mot de passe" maxlength='20'>
+        </div>
+        <div class="ccfield-prepend">
+            <input class="ccbtn" type="submit" value="Modifier">
+        </div>
+    }
+
+
 
     if (listeCommandesEnCours != null)
     {

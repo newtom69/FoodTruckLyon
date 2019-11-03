@@ -163,6 +163,9 @@
     <Compile Include="Models\OuvertureHebdomadaire.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Utilisateur.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Utilitaire.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -195,9 +198,6 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlageHoraireRetrait.cs" />
-    <Compile Include="Models\Utilisateur.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Visite.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>

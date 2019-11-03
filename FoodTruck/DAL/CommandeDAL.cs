@@ -72,8 +72,17 @@ namespace FoodTruck.DAL
                 {
                     commande.Annulation = annule;
                     commande.Retrait = retire;
+                    Utilisateur utilisateur;
+                    if (commande.Retrait)
+                    {
+                        utilisateur = (from u in db.Utilisateur
+                                      where u.Id == commande.UtilisateurId
+                                      select u).FirstOrDefault();
+
+                        utilisateur.Points += (int)commande.PrixTotal / 10;
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
         }
 
@@ -91,14 +100,13 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Commande> ListerCommandesEnCours()
+        public List<Commande> ListerCommandesEnCours(int fourchetteHeures)
         {
             using (FoodTruckEntities db = new FoodTruckEntities())
             {
                 DateTime now = DateTime.Now;
-                const int intervalleMax = 5;
                 var commandes = (from cmd in db.Commande
-                                 where !cmd.Retrait && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < intervalleMax
+                                 where !cmd.Retrait && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < Math.Abs(fourchetteHeures)
                                  orderby cmd.DateRetrait
                                  select cmd).ToList();
                 return commandes;
@@ -124,7 +132,7 @@ namespace FoodTruck.DAL
             {
                 int nbCommandes = (from cmd in db.Commande
                                    where cmd.DateRetrait == date && !cmd.Annulation && !cmd.Retrait
-                                   select cmd.Id).ToList().Count;
+                                   select cmd.Id).Count();
                 return nbCommandes;
             }
         }
@@ -159,7 +167,7 @@ namespace FoodTruck.DAL
             {
                 List<Commande> commandes = (from cmd in db.Commande
                                             where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) > 0 && !cmd.Retrait && !cmd.Annulation
-                                            orderby cmd.Id ascending
+                                            orderby cmd.Id
                                             select cmd).ToList();
                 return commandes;
             }

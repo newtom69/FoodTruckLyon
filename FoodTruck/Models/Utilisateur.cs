@@ -29,6 +29,7 @@ namespace FoodTruck
         public string Nom { get; set; }
         public string Prenom { get; set; }
         public string Telephone { get; set; }
+        public int Points { get; set; }
         public bool AdminCommande { get; set; }
         public bool AdminUtilisateur { get; set; }
         public bool AdminArticle { get; set; }
