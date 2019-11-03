@@ -11,7 +11,7 @@ namespace FoodTruck.DAL
     {
         internal Commande Detail(int id)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 Commande commande = (from cmd in db.Commande
                                      where cmd.Id == id
@@ -26,7 +26,7 @@ namespace FoodTruck.DAL
 
         public void Ajouter(Commande commande, List<ArticleViewModel> articles)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.Commande.Add(commande);
                 db.SaveChanges();
@@ -53,7 +53,7 @@ namespace FoodTruck.DAL
         }
         internal void MettreAJourStatut(int id, bool retire, bool annule)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 Commande commande = (from cmd in db.Commande
                                      where cmd.Id == id
@@ -76,7 +76,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesAStatuer()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
                 const int intervalleMax = 1;
@@ -90,7 +90,7 @@ namespace FoodTruck.DAL
 
         public List<Commande> ListerCommandesEnCours(int fourchetteHeures)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
                 var commandes = (from cmd in db.Commande
@@ -103,7 +103,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesUtilisateur(int id)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
@@ -128,7 +128,7 @@ namespace FoodTruck.DAL
 
         internal int NombreCommandes(DateTime date)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 int nbCommandes = (from cmd in db.Commande
                                    where cmd.DateRetrait == date && !cmd.Annulation && !cmd.Retrait
@@ -139,7 +139,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesEnCoursUtilisateur(int id)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
@@ -152,7 +152,7 @@ namespace FoodTruck.DAL
 
         internal List<Commande> ListerCommandesToutes()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
                                             orderby cmd.Id descending
@@ -163,10 +163,10 @@ namespace FoodTruck.DAL
         internal List<Commande> ListerCommandesAVenir()
         {
             DateTime maintenant = DateTime.Now;
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) > 0 && !cmd.Retrait && !cmd.Annulation
+                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
                                             orderby cmd.DateRetrait
                                             select cmd).ToList();
                 return commandes;
@@ -175,7 +175,7 @@ namespace FoodTruck.DAL
 
         public List<ArticleViewModel> ListerArticles(int commandeId)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 var listArticlesQuantites = (from cmd in db.Commande
                                              join ca in db.Commande_Article on cmd.Id equals ca.CommandeId

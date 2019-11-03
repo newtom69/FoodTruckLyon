@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FoodTruck
+namespace FoodTruck.Models
 {
     using System;
     using System.Collections.Generic;
@@ -17,9 +17,9 @@ namespace FoodTruck
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Utilisateur()
         {
+            this.Commande = new HashSet<Commande>();
             this.Panier = new HashSet<Panier>();
             this.Visite = new HashSet<Visite>();
-            this.Commande = new HashSet<Commande>();
         }
     
         public int Id { get; set; }
@@ -36,10 +36,10 @@ namespace FoodTruck
         public bool AdminPlanning { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Commande> Commande { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Panier> Panier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Visite> Visite { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Commande> Commande { get; set; }
     }
 }

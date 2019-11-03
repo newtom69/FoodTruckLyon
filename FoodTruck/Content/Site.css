@@ -254,7 +254,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     .gestionFermetureOuverture .boutonSupprimer {
         display: block !important;
         border: none !important;
-        background-color:darkred !important;
+        background-color: darkred !important;
         color: #FFFFFF !important;
         cursor: pointer !important;
         text-decoration: none !important;
@@ -391,11 +391,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     width: 75%;
 }
 
-.ChoixHoraire {
-    margin-bottom: 10px;
-    width: 75%;
-}
-
 .ccform-addon {
     color: #95BE27;
     float: left;
@@ -416,13 +411,18 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     font-size: 14px;
 }
 
+#remiseFidelite, #remiseCommerciale, #choixHoraire {
+    margin-bottom: 10px;
+    width: 350px;
+}
+
+
 .ccfield-input {
     width: 100%;
 }
 
 input, textarea, img, select, option {
-    width: inherit !important;
-    max-width: 100%;
+    max-width: 150%;
 }
 
 

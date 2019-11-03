@@ -12,10 +12,13 @@ namespace FoodTruck.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class JourExceptionnel
+    public partial class CodePromo
     {
-        public System.DateTime DateDebut { get; set; }
-        public System.DateTime DateFin { get; set; }
-        public bool Ouvert { get; set; }
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public double Remise { get; set; }
+        public Nullable<double> MontantMinimumCommande { get; set; }
+        public Nullable<System.DateTime> DateDebut { get; set; }
+        public Nullable<System.DateTime> DateFin { get; set; }
     }
 }

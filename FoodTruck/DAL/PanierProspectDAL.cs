@@ -17,7 +17,7 @@ namespace FoodTruck.DAL
 
         public List<PanierProspect> ListerPanierProspect()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<PanierProspect> paniers = (from panier in db.PanierProspect
                                                 join article in db.Article on panier.ArticleId equals article.Id
@@ -38,7 +38,7 @@ namespace FoodTruck.DAL
                 PrixTotal = Math.Round(quantite * lArticle.Prix, 2),
                 DateAjout = DateTime.Now,
             };
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.PanierProspect.Add(panierProspect);
                 db.SaveChanges();
@@ -48,7 +48,7 @@ namespace FoodTruck.DAL
         ///Modifier la quantité d'un article du panier en base d'un utilisateur
         public void ModifierQuantite(Article lArticle, int quantite)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 PanierProspect panierProspect = (from panier in db.PanierProspect
                                                  where panier.ProspectGuid == ProspectGuid && panier.ArticleId == lArticle.Id
@@ -63,7 +63,7 @@ namespace FoodTruck.DAL
         /// Supprimer l'article du panier en base de l'utilisateur
         public void Supprimer(Article lArticle)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 PanierProspect panierProspect = (from panier in db.PanierProspect
                                                  where panier.ProspectGuid == ProspectGuid && panier.ArticleId == lArticle.Id
@@ -77,7 +77,7 @@ namespace FoodTruck.DAL
         /// Supprimer le panier en base de l'utilisateur
         public void Supprimer()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 var panierProspect = from panier in db.PanierProspect
                                      where panier.ProspectGuid == ProspectGuid
@@ -90,7 +90,7 @@ namespace FoodTruck.DAL
 
         public List<Article> ListerArticlesPanierProspect()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from panier in db.PanierProspect
                                           join article in db.Article on panier.ArticleId equals article.Id
@@ -106,7 +106,7 @@ namespace FoodTruck.DAL
         /// <returns></returns>
         public int Purger(int ageEnJours)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime now = DateTime.Now;
 

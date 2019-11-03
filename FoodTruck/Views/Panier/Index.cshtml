@@ -9,6 +9,21 @@
     Utilisateur utilisateur = ViewBag.Utilisateur;
 }
 <script src="~/Scripts/myJs.js"></script>
+<script>
+    function MiseAJourPrixTotal(remise, prix) {
+        document.getElementById("prixTotalApresRemise").innerHTML = "Total : " + (Number(prix) - remise).toFixed(2) + " €";
+    }
+
+    function MajMontantRemise(remise, id) { //TODO
+        if (remise != 0) {
+            document.getElementById("montantRemiseFidelite").innerHTML = "- " + Number(remise).toFixed(2) + " €";
+        }
+        else {
+            document.getElementById("montantRemiseFidelite").innerHTML = "";
+        }
+    }
+
+</script>
 
 <h3>Votre panier :</h3>
 <dl class="dl-horizontal"></dl>
@@ -55,11 +70,16 @@ else
 
     using (Html.BeginForm("Index", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
     {
+        <aside id="panierValide">
+            <div class="listePanier">
+                <div id="prixTotalAvantRemise" class="sousTotal">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+            </div>
+        </aside>
+
         if (utilisateur.Points >= 10 && Model.PrixTotal >= 10)
         {
-            <div class="choixHoraire">
-                @*TODO faire classe*@
-                <select class="ccformfield" name="remiseFidelite" size="1" onchange="MiseAJourPrixTotal(this.value, @Model.PrixTotal.ToString(), prixTotalApresRemise.id)">
+            <div>
+                <select id="remiseFidelite" class="ccformfield" name="remiseFidelite" size="1" onchange="MajMontantRemise(this.value, montantRemiseFidelite.id)">
                     <option selected value="0">remise fidélité</option>
                     @for (int iRemise = 10; iRemise <= (utilisateur.Points <= Model.PrixTotal ? utilisateur.Points : Model.PrixTotal); iRemise++)
                     {
@@ -68,9 +88,20 @@ else
                 </select>
             </div>
         }
-        <h3 class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
-        <div class="choixHoraire">
-            <select class="ccformfield" name="dateRetrait" size="1" required>
+        <aside id="panierValide"><div class="listePanier"><div id="montantRemiseFidelite" class="sousTotal"></div></div></aside>
+        <div>
+            <input id="remiseCommerciale" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="" size="1">
+            <input type="submit" name="action" value="Vérifier">
+        </div>
+        string remiseCommerciale = "";
+        if (TempData["RemiseCommerciale"] != null)
+        {
+            remiseCommerciale = TempData["RemiseCommerciale"] as string;
+        }
+        <aside id="panierValide"><div class="listePanier"><div id="montantRemiseCommerciale" class="sousTotal">@remiseCommerciale</div></div></aside>
+        <h3 id="prixTotalApresRemise" class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
+        <div>
+            <select id="choixHoraire" class="ccformfield" name="dateRetrait" size="1" required>
                 <option selected disabled>créneau horaire de retrait</option>
                 @{ DateTime dateAvant = DateTime.MinValue; }
                 @foreach (Creneau creneau in Model.Creneaux)
@@ -93,7 +124,7 @@ else
         </div>
 
         <h3 class="total">
-            <button class="validerPanier" type="submit">Commander</button>
+            <input class="validerPanier" type="submit" name="action" value="Commander">
         </h3>
     }
 
@@ -104,3 +135,5 @@ else
     }
 
 }
+
+

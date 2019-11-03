@@ -19,7 +19,7 @@ namespace FoodTruck.DAL
         }
         private List<JourExceptionnel> ListerFutursPeriodesExceptionnelles(bool ouvert)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime date = DateTime.Now;
                 List<JourExceptionnel> jours = (from j in db.JourExceptionnel
@@ -40,7 +40,7 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel AjouterPeriodeExceptionnelle(DateTime dateDebut, DateTime dateFin, bool ouvert)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 JourExceptionnel chevauchement = (from j in db.JourExceptionnel
                                                   where DbFunctions.DiffMinutes(j.DateDebut, dateFin) >= 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) >= 0
@@ -69,7 +69,7 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel ModifierPeriodeExceptionnelle(DateTime dateId, DateTime dateDebut, DateTime dateFin, bool ouvert)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
                                                     where j.DateDebut == dateId && j.Ouvert == ouvert
@@ -113,7 +113,7 @@ namespace FoodTruck.DAL
         }
         private bool SupprimerPeriodeExceptionnelle(DateTime dateId, bool ouvert)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
                                                     where j.DateDebut == dateId && j.Ouvert == ouvert
@@ -137,7 +137,7 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel ProchainePeriodeExceptionnelle(DateTime date, bool ouvert)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 JourExceptionnel jour = (from j in db.JourExceptionnel
                                          where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
@@ -234,7 +234,7 @@ namespace FoodTruck.DAL
 
         private OuvertureHebdomadaire ProchainOuvertHabituellement(DateTime date)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 OuvertureHebdomadaire plage = new OuvertureHebdomadaire(); // TODO supprimer new
                 TimeSpan minuit = new TimeSpan(0, 0, 0);

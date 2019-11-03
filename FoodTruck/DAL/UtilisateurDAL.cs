@@ -11,7 +11,7 @@ namespace FoodTruck.DAL
         public Utilisateur Details(int id)
         {
             Utilisateur utilisateur;
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 utilisateur = (from u in db.Utilisateur
                                where u.Id == id
@@ -27,7 +27,7 @@ namespace FoodTruck.DAL
                 mdpHash = GetHash(Hash, mdp);
 
             Utilisateur lUtilisateur = new Utilisateur();
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 lUtilisateur = (from user in db.Utilisateur
                                 where user.Email == email && user.Mdp == mdpHash
@@ -38,7 +38,7 @@ namespace FoodTruck.DAL
         public Utilisateur ConnexionCookies(string guid)
         {
             Utilisateur lUtilisateur = new Utilisateur();
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 lUtilisateur = (from user in db.Utilisateur
                                 where user.Guid == guid
@@ -49,7 +49,7 @@ namespace FoodTruck.DAL
 
         internal int RetirerPointsFidelite(int id, int points)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 var utilisateur = (from user in db.Utilisateur
                                 where user.Id == id
@@ -66,7 +66,7 @@ namespace FoodTruck.DAL
             using (SHA256 Hash = SHA256.Create())
                 mdpHash = GetHash(Hash, mdp);
             string guid = Guid.NewGuid().ToString();
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 int id = (from user in db.Utilisateur
                           where user.Email == email || user.Guid == guid
@@ -96,7 +96,7 @@ namespace FoodTruck.DAL
 
         internal int Modification(int id, string email, string mdp, string nom, string prenom, string telephone)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 Utilisateur utilisateur = (from user in db.Utilisateur
                                            where user.Id == id

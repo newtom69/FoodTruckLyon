@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Globalization;
@@ -10,37 +11,71 @@ namespace FoodTruck.Controllers
     public class CommandeController : ControllerParent
     {
         [HttpPost]
-        public ActionResult Index(DateTime dateRetrait, int? remiseFidelite, float? remiseCommerciale)
+        public ActionResult Index(string action, string codePromo, DateTime dateRetrait, int? remiseFidelite, float? remiseCommerciale)
         {
-            int remiseFideliteOk = remiseFidelite ?? 0;
-            float remiseCommercialeOk = remiseCommerciale ?? 0;
-            if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
+            if (action == "Vérifier")
             {
-                return View(new Commande());
+                //string codePromoOk = codePromo ?? "";
+                CodePromoDAL codePromoDAL = new CodePromoDAL();
+                CodePromo code = codePromoDAL.Detail(codePromo);
+                DateTime maintenant = DateTime.Now;
+                if (code != null)
+                {
+                    if (code.DateDebut > maintenant)
+                    {
+
+                    }
+                    else if (code.DateFin < maintenant)
+                    {
+
+                    }
+                    else if (code.MontantMinimumCommande > PanierViewModel.PrixTotal)
+                    {
+
+                    }
+                    else
+                    {
+                        TempData["RemiseCommerciale"] = "-" + code.Remise.ToString("C2", new CultureInfo("fr-FR"));
+                    }
+                }
+                else
+                {
+                    ViewBag.CodePromoInexistant = true;
+                }
+                return Redirect("/Panier/Index");
             }
             else
             {
-                new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, remiseFideliteOk);
-                Commande commande = new Commande
+                int remiseFideliteOk = remiseFidelite ?? 0;
+                float remiseCommercialeOk = remiseCommerciale ?? 0;
+                if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
                 {
-                    UtilisateurId = Utilisateur.Id,
-                    DateCommande = DateTime.Now,
-                    DateRetrait = dateRetrait,
-                    PrixTotal = 0,
-                    RemiseFidelite = remiseFideliteOk,
-                    RemiseCommerciale = remiseCommercialeOk
-                };
-                foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
-                {
-                    commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
-                    new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
+                    return View(new Commande());
                 }
-                commande.PrixTotal = Math.Round(commande.PrixTotal - remiseFideliteOk - remiseCommercialeOk, 2);
-                new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
-                Mail(Utilisateur, commande, PanierViewModel);
-                new PanierDAL(Utilisateur.Id).Supprimer();
-                ViewBag.Panier = null; //todo
-                return View(commande);
+                else
+                {
+                    new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, remiseFideliteOk);
+                    Commande commande = new Commande
+                    {
+                        UtilisateurId = Utilisateur.Id,
+                        DateCommande = DateTime.Now,
+                        DateRetrait = dateRetrait,
+                        PrixTotal = 0,
+                        RemiseFidelite = remiseFideliteOk,
+                        RemiseCommerciale = remiseCommercialeOk
+                    };
+                    foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
+                    {
+                        commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
+                        new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
+                    }
+                    commande.PrixTotal = Math.Round(commande.PrixTotal - remiseFideliteOk - remiseCommercialeOk, 2);
+                    new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
+                    Mail(Utilisateur, commande, PanierViewModel);
+                    new PanierDAL(Utilisateur.Id).Supprimer();
+                    ViewBag.Panier = null; //todo
+                    return View(commande);
+                }
             }
         }
 
