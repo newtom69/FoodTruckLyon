@@ -39,8 +39,36 @@ namespace FoodTruck.Controllers
             return View(PanierViewModel);
         }
 
+        [HttpGet]
+        public ActionResult IndexTest()
+        {
+            DateTime maintenant = DateTime.Now;
+            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
+
+            // obtention nombre de commandes à retirer dans chaque creneaux ouvert et desactivation si = nombre max
+            int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
+            CommandeDAL commandeDAL = new CommandeDAL();
+
+            PanierViewModel.Creneaux = new List<Creneau>();
+            foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
+            {
+                int maxCommandesCreneau = (int)Math.Ceiling(maxCommandesHeure * plage.Pas.TotalMinutes / 60);
+                foreach (DateTime date in plage.Dates)
+                {
+                    Creneau creneau = new Creneau
+                    {
+                        DateRetrait = date,
+                        CommandesPossiblesRestantes = maxCommandesCreneau - commandeDAL.NombreCommandes(date)
+                    };
+                    PanierViewModel.Creneaux.Add(creneau);
+                }
+            }
+            TempData["PanierLatteralDesactive"] = true;
+            return View(PanierViewModel);
+        }
+
         [HttpPost]
-        public ActionResult Index(string codePromo)
+        public ActionResult IndexTest(string codePromo)
         {
             CodePromoDAL codePromoDAL = new CodePromoDAL();
             CodePromo code = codePromoDAL.Detail(codePromo);
@@ -69,7 +97,7 @@ namespace FoodTruck.Controllers
                 TempData["CodePromoInexistant"] = true;
             }
             TempData["CodePromo"] = codePromo;
-            return RedirectToAction("Index", "Panier");
+            return RedirectToAction("IndexTest", "Panier");
         }
 
         [HttpPost]

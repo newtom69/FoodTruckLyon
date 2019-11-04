@@ -9,6 +9,9 @@ namespace FoodTruck
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("PanierIndexTest", "Panier/IndexTest", //TODO supprimer
+            defaults: new { controller = "Panier", action = "IndexTest" });
+
             routes.MapRoute("PanierIndex", "Panier/Index",
             defaults: new { controller = "Panier", action = "Index" });
 
