@@ -4,6 +4,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -39,6 +40,39 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
+        public ActionResult Index(string codePromo)
+        {
+            CodePromoDAL codePromoDAL = new CodePromoDAL();
+            CodePromo code = codePromoDAL.Detail(codePromo);
+            DateTime maintenant = DateTime.Now;
+            if (code != null)
+            {
+                if (code.DateDebut > maintenant)
+                {
+
+                }
+                else if (code.DateFin < maintenant)
+                {
+
+                }
+                else if (code.MontantMinimumCommande > PanierViewModel.PrixTotal)
+                {
+
+                }
+                else
+                {
+                    TempData["RemiseCommerciale"] = "- " + code.Remise.ToString("C2", new CultureInfo("fr-FR"));
+                }
+            }
+            else
+            {
+                TempData["CodePromoInexistant"] = true;
+            }
+            TempData["CodePromo"] = codePromo;
+            return RedirectToAction("Index", "Panier");
+        }
+
+        [HttpPost]
         public ActionResult Ajouter(string nom, string ancre, bool? home)
         {
             ArticleDAL lArticleDAL = new ArticleDAL();
@@ -55,7 +89,7 @@ namespace FoodTruck.Controllers
             if (!testHome)
                 return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
             else
-                return Redirect("/Article"+ancre);
+                return Redirect("/Article" + ancre);
         }
 
         [HttpPost]

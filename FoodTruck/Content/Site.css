@@ -411,7 +411,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     font-size: 14px;
 }
 
-#remiseFidelite, #remiseCommerciale, #choixHoraire {
+#remiseFidelite, #codePromo, #choixHoraire {
     margin-bottom: 10px;
     width: 350px;
 }
