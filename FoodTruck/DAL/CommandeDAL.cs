@@ -144,7 +144,7 @@ namespace FoodTruck.DAL
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.UtilisateurId == id && !cmd.Annulation && !cmd.Retrait && DbFunctions.DiffHours(now, cmd.DateRetrait) > -1
-                                            orderby Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
+                                            orderby Math.Abs((int)DbFunctions.DiffMinutes(now, cmd.DateRetrait))
                                             select cmd).ToList();
                 return commandes;
             }
