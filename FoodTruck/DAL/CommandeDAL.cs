@@ -94,7 +94,7 @@ namespace FoodTruck.DAL
             {
                 DateTime now = DateTime.Now;
                 var commandes = (from cmd in db.Commande
-                                 where !cmd.Retrait && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < Math.Abs(fourchetteHeures)
+                                 where !cmd.Retrait && !cmd.Annulation && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < Math.Abs(fourchetteHeures)
                                  orderby cmd.DateRetrait
                                  select cmd).ToList();
                 return commandes;
