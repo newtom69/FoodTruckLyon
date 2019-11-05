@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using System;
 using System.Net;
 using System.Web.Mvc;

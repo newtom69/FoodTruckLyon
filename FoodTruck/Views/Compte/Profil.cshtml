@@ -79,7 +79,7 @@ else
     if (listeCommandesEnCours != null)
     {
         <h3>Vos commandes en cours</h3>
-        <aside id="panierValide">
+        <div id="panierValide">
             <div>
                 @if (listeCommandesEnCours.Commandes.Count == 0)
                 {
@@ -133,7 +133,7 @@ else
                     </div>
                 }
             </div>
-        </aside>
+        </div>
     }
 
     <h3>@Html.ActionLink("Voir toutes vos commandes", "Commandes", "Compte")</h3>

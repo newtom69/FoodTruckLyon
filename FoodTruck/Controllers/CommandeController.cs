@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Globalization;
@@ -10,32 +11,47 @@ namespace FoodTruck.Controllers
     public class CommandeController : ControllerParent
     {
         [HttpPost]
-        public ActionResult Index(DateTime dateRetrait, int? remiseFidelite, float? remiseCommerciale)
+        public ActionResult Index(string codePromo, DateTime dateRetrait, int? remiseFidelite)
         {
-            int remiseFideliteOk = remiseFidelite ?? 0;
-            float remiseCommercialeOk = remiseCommerciale ?? 0;
+            int montantRemiseFidelite = remiseFidelite ?? 0;
+            double montantRemiseCommerciale = 0;
+            CodePromoDAL codePromoDAL = new CodePromoDAL();
+            codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemiseCommerciale);
+
             if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
             }
             else
             {
-                new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, remiseFideliteOk);
+                int soldePoints = new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, montantRemiseFidelite);
+                if (soldePoints == -1)
+                    montantRemiseFidelite = 0;
+
                 Commande commande = new Commande
                 {
                     UtilisateurId = Utilisateur.Id,
                     DateCommande = DateTime.Now,
                     DateRetrait = dateRetrait,
                     PrixTotal = 0,
-                    RemiseFidelite = remiseFideliteOk,
-                    RemiseCommerciale = remiseCommercialeOk
+                    RemiseFidelite = montantRemiseFidelite,
+                    RemiseCommerciale = montantRemiseCommerciale
                 };
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
                     commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
                     new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
                 }
-                commande.PrixTotal = Math.Round(commande.PrixTotal - remiseFideliteOk - remiseCommercialeOk, 2);
+                if (commande.PrixTotal > montantRemiseFidelite + montantRemiseCommerciale)
+                {
+                    commande.PrixTotal = Math.Round(commande.PrixTotal - montantRemiseFidelite - montantRemiseCommerciale, 2);
+                }
+                else
+                {
+                    commande.RemiseCommerciale = Math.Round(commande.PrixTotal - montantRemiseFidelite, 2);
+                    commande.PrixTotal = 0;
+                }
+
                 new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
                 Mail(Utilisateur, commande, PanierViewModel);
                 new PanierDAL(Utilisateur.Id).Supprimer();
@@ -57,8 +73,13 @@ namespace FoodTruck.Controllers
             string numeroCommande = laCommande.Id.ToString();
             string corpsDuMailEnCommunClientFoodtruck =
                 $"Nom : {nomClient}\nPrénom : {prenomClient}\nEmail : {emailClient}\n\nArticles :{lesArticlesDansLeMail}" +
-                $"\nTotal de la commande : {laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}";
-
+                $"\nTotal de la commande : {laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}\n";
+            
+            if (laCommande.RemiseFidelite > 0)
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {laCommande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))}";
+            if (laCommande.RemiseCommerciale > 0)
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise commerciale : {laCommande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))}";
+            
             try
             {
                 using (MailMessage message = new MailMessage())

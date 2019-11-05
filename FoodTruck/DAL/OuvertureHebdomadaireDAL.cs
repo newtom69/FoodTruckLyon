@@ -10,7 +10,7 @@ namespace FoodTruck.DAL
     {
         internal List<OuvertureHebdomadaire> ListerOuverturesHebdomadaires()
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<OuvertureHebdomadaire> ouvertures = (from p in db.OuvertureHebdomadaire
                                                           orderby p.JourSemaineId, p.Debut
@@ -21,7 +21,7 @@ namespace FoodTruck.DAL
 
         internal OuvertureHebdomadaire AjouterOuverture(int jourId, TimeSpan debut, TimeSpan fin, TimeSpan pas)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 OuvertureHebdomadaire chevauchement = (from p in db.OuvertureHebdomadaire
                                                        where p.JourSemaineId == jourId && DbFunctions.DiffMinutes(p.Debut, fin) > 0 && DbFunctions.DiffMinutes(debut, p.Fin) > 0
@@ -45,7 +45,7 @@ namespace FoodTruck.DAL
 
         internal OuvertureHebdomadaire ModifierOuverture(int id, int jourId, TimeSpan debut, TimeSpan fin, TimeSpan pas)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 OuvertureHebdomadaire ouverture = (from p in db.OuvertureHebdomadaire
                                                    where p.Id == id
@@ -69,7 +69,7 @@ namespace FoodTruck.DAL
 
         internal bool SupprimerOuverture(int id)
         {
-            using (FoodTruckEntities db = new FoodTruckEntities())
+            using (foodtruckEntities db = new foodtruckEntities())
             {
                 OuvertureHebdomadaire ouverture = (from p in db.OuvertureHebdomadaire
                                                    where p.Id == id

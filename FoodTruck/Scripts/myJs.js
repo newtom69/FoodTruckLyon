@@ -51,13 +51,6 @@ function MiseAJourHeureDebut(heure, heureDebut, dateDebut, dateFin)
     }
 }
 
-function MiseAJourPrixTotal(remise, prix, idPrixTotal)
-{
-    var nouveauPrix = prix - remise; //TODO prendre avec virgule
-    alert(nouveauPrix);
-    document.getElementById(idPrixTotal).value = nouveauPrix.toString();
-}
-
 //Use keyup to capture user input & mouse up to catch when user is changing the value with the arrows
 $('.trailing-decimal-input').on('keyup mouseup', function (e) {
 

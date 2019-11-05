@@ -141,6 +141,7 @@
     <Compile Include="Controllers\LinkedinController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
+    <Compile Include="DAL\CodePromoDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
@@ -154,21 +155,14 @@
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CodePromo.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Commande.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Commande_Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OuvertureHebdomadaire.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Utilisateur.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Utilitaire.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FamilleArticle.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
@@ -191,13 +185,24 @@
     <Compile Include="Models\JourExceptionnel.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OuvertureHebdomadaire.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Panier.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PanierProspect.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Utilisateur.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Utilitaire.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\PlageHoraireRetrait.cs" />
+    <Compile Include="Models\ValiditeCodePromo.cs" />
     <Compile Include="Models\Visite.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>

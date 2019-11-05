@@ -4,6 +4,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -39,6 +40,38 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
+        public ActionResult Index(string codePromo)
+        {
+            TempData["CodePromo"] = codePromo;
+            TempData["RemiseCommercialeValide"] = false;
+            TempData["RemiseCommercialeMontant"] = (double) 0 ;
+            double montantRemise = 0;
+            CodePromoDAL codePromoDAL = new CodePromoDAL();
+            ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemise);
+            switch (code)
+            {
+                case ValiditeCodePromo.Valide:
+                    TempData["RemiseCommercialeValide"] = true;
+                    TempData["RemiseCommercialeInfo"] = "code valide";
+                    TempData["RemiseCommercialeMontant"] = montantRemise;
+                    break;
+                case ValiditeCodePromo.Inconnu:
+                    TempData["RemiseCommercialeInfo"] = "code inconnu";
+                    break;
+                case ValiditeCodePromo.DateDepasse:
+                    TempData["RemiseCommercialeInfo"] = "ce code n'est plus valable";
+                    break;
+                case ValiditeCodePromo.DateFuture:
+                    TempData["RemiseCommercialeInfo"] = "ce code n'est pas encore valable";
+                    break;
+                case ValiditeCodePromo.MontantInsuffisant:
+                    TempData["RemiseCommercialeInfo"] = "le montant de la commande est insuffisant";
+                    break;
+            }
+            return RedirectToAction("Index", "Panier");
+        }
+
+        [HttpPost]
         public ActionResult Ajouter(string nom, string ancre, bool? home)
         {
             ArticleDAL lArticleDAL = new ArticleDAL();
@@ -55,7 +88,7 @@ namespace FoodTruck.Controllers
             if (!testHome)
                 return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
             else
-                return Redirect("/Article"+ancre);
+                return Redirect("/Article" + ancre);
         }
 
         [HttpPost]
