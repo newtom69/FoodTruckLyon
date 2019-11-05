@@ -39,72 +39,36 @@ namespace FoodTruck.Controllers
             return View(PanierViewModel);
         }
 
-        [HttpGet]
-        public ActionResult IndexTest()
-        {
-            DateTime maintenant = DateTime.Now;
-            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
-
-            // obtention nombre de commandes à retirer dans chaque creneaux ouvert et desactivation si = nombre max
-            int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
-            CommandeDAL commandeDAL = new CommandeDAL();
-
-            PanierViewModel.Creneaux = new List<Creneau>();
-            foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
-            {
-                int maxCommandesCreneau = (int)Math.Ceiling(maxCommandesHeure * plage.Pas.TotalMinutes / 60);
-                foreach (DateTime date in plage.Dates)
-                {
-                    Creneau creneau = new Creneau
-                    {
-                        DateRetrait = date,
-                        CommandesPossiblesRestantes = maxCommandesCreneau - commandeDAL.NombreCommandes(date)
-                    };
-                    PanierViewModel.Creneaux.Add(creneau);
-                }
-            }
-            TempData["PanierLatteralDesactive"] = true;
-            return View(PanierViewModel);
-        }
-
         [HttpPost]
-        public ActionResult IndexTest(string codePromo)
+        public ActionResult Index(string codePromo)
         {
             TempData["CodePromo"] = codePromo;
+            TempData["RemiseCommercialeValide"] = false;
+            TempData["RemiseCommercialeMontant"] = (double) 0 ;
             double montantRemise = 0;
             CodePromoDAL codePromoDAL = new CodePromoDAL();
             ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemise);
             switch (code)
             {
                 case ValiditeCodePromo.Valide:
-                    TempData["RemiseCommercialeInfo"] = "Code valide";
-                    TempData["RemiseCommerciale"] = montantRemise;
+                    TempData["RemiseCommercialeValide"] = true;
+                    TempData["RemiseCommercialeInfo"] = "code valide";
+                    TempData["RemiseCommercialeMontant"] = montantRemise;
                     break;
                 case ValiditeCodePromo.Inconnu:
-                    TempData["RemiseCommercialeInfo"] = "Code inconnu";
+                    TempData["RemiseCommercialeInfo"] = "code inconnu";
                     break;
                 case ValiditeCodePromo.DateDepasse:
-                    TempData["RemiseCommercialeInfo"] = "Ce code n'est plus valable";
+                    TempData["RemiseCommercialeInfo"] = "ce code n'est plus valable";
                     break;
                 case ValiditeCodePromo.DateFuture:
-                    TempData["RemiseCommercialeInfo"] = "Ce code n'est pas encore valable";
+                    TempData["RemiseCommercialeInfo"] = "ce code n'est pas encore valable";
                     break;
                 case ValiditeCodePromo.MontantInsuffisant:
-                    TempData["RemiseCommercialeInfo"] = "Le montant de la commande est insuffisant";
+                    TempData["RemiseCommercialeInfo"] = "le montant de la commande est insuffisant";
                     break;
             }
-
-            {
-
-            }
-
-
-            //TODO
-
-
-
-            
-            return RedirectToAction("IndexTest", "Panier");
+            return RedirectToAction("Index", "Panier");
         }
 
         [HttpPost]

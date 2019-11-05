@@ -415,11 +415,13 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     margin-bottom: 10px;
     margin-top: 10px;
     width: 220px;
+    /*float: left;*/
 }
 
 #codePromoUtilisateur {
     margin-top: 10px;
     width: 220px;
+    /*float: left;*/
 }
 
 .ccfield-input {
@@ -568,7 +570,7 @@ button.annulerCommande {
     padding: 8px;
 }
 
-#panierValide {
+#panierValide, #panierValide2, #panierValide4 {
     width: 350px;
 }
 
@@ -576,12 +578,33 @@ button.annulerCommande {
         height: 90px;
     }
 
-    #panierValide .listePanier > div, .sousTotal {
+    #panierValide .listePanier > div {
         font-size: large;
     }
 
-h3.total {
+#panierValide3 {
     width: 350px;
+}
+    #panierValide3 .listePanier {
+        font-size: large;
+        display: flex;
+        justify-content: space-between;
+    }
+
+#panierValide2 .listePanier {
+    font-size: large;
+    display: flex;
+    justify-content: space-between;
+}
+
+.verifierAfficherValiditeRemise {
+    display: flex;
+    justify-content:left;
+    margin-top:4px;
+}
+
+h3.total {
+    width: 345px;
     text-align: right;
 }
 
@@ -624,6 +647,15 @@ h3.total {
 .sousTotal {
     text-align: right;
     margin-right: 5px;
+    font-size: large;
+    align-items: center;
+    display: grid;
+}
+
+.sousTotalLateral {
+    text-align: right;
+    margin-right: 5px;
+    font-size: large;
 }
 
 .validerPanier {
@@ -633,6 +665,14 @@ h3.total {
     padding: 0.6rem;
     border: solid 1px #95BE27;
     border-radius: 1.5rem;
+}
+
+.verifierCodeRemise {
+    display: flex;
+    background-color: #95BE27;
+    border: solid 1px #95BE27;
+    border-radius: 1.5rem;
+    font-size:smaller;
 }
 
 #choixAffichage form {
@@ -705,6 +745,22 @@ h3.total {
 .messageInfo {
     color: green;
     font-size: medium;
+}
+
+.remiseCommercialeValide {
+    color: green;
+    font-size: smaller;
+    margin-left: 6px;
+    align-items: center;
+    display: grid;
+}
+
+.remiseCommercialeNonValide {
+    color: red;
+    font-size: smaller;
+    margin-left: 6px;
+    align-items: center;
+    display: grid;
 }
 
 select.ccformfield option.red {

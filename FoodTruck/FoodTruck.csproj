@@ -326,7 +326,7 @@
     <Content Include="Views\Article\Details.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Commande\Index.cshtml" />
-    <Content Include="Views\Panier\IndexTest.cshtml" />
+    <Content Include="Views\Panier\Index.cshtml" />
     <Content Include="Views\Linkedin\callback.cshtml" />
     <Content Include="Views\Linkedin\File.cshtml" />
     <Content Include="Views\AdministrerArticle\Ajouter.cshtml" />
@@ -345,7 +345,6 @@
     <Content Include="Views\AdministrerPlanning\OuverturesExceptionnelles.cshtml" />
     <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
     <Content Include="Views\AdministrerCommande\AVenir.cshtml" />
-    <Content Include="Views\Panier\Index.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
