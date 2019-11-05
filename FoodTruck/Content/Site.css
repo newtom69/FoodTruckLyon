@@ -411,11 +411,16 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     font-size: 14px;
 }
 
-#remiseFidelite, #codePromo, #choixHoraire {
+#remiseFidelite, #choixHoraire {
     margin-bottom: 10px;
-    width: 350px;
+    margin-top: 10px;
+    width: 220px;
 }
 
+#codePromoUtilisateur {
+    margin-top: 10px;
+    width: 220px;
+}
 
 .ccfield-input {
     width: 100%;

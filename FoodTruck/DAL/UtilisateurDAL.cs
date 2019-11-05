@@ -47,6 +47,13 @@ namespace FoodTruck.DAL
             return lUtilisateur;
         }
 
+        /// <summary>
+        /// Si le solde est suffisant, retire "points" points de fidélité à l'utilisateur d'id "id" et retourne le solde restant
+        /// Si le solde de points est insuffisant retourne -1 sans rien modifier
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
         internal int RetirerPointsFidelite(int id, int points)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -54,9 +61,16 @@ namespace FoodTruck.DAL
                 var utilisateur = (from user in db.Utilisateur
                                 where user.Id == id
                                 select user).FirstOrDefault();
-
-                utilisateur.Points -= points;
-                return db.SaveChanges();
+                if (points <= utilisateur.Points)
+                {
+                    utilisateur.Points -= points;
+                    db.SaveChanges();
+                    return utilisateur.Points;
+                }
+                else
+                {
+                    return -1;
+                }
             }
         }
 

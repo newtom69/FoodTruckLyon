@@ -7,16 +7,27 @@
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     Utilisateur utilisateur = ViewBag.Utilisateur;
+
+    double remiseCommerciale = 0;
+    string afficheRemiseCommerciale = "";
+    if (TempData["RemiseCommerciale"] != null)
+    {
+        remiseCommerciale = (double)TempData["RemiseCommerciale"];
+        afficheRemiseCommerciale = "- " + remiseCommerciale.ToString("C2", new CultureInfo("fr-FR"));
+    }
 }
 <script src="~/Scripts/myJs.js"></script>
 <script>
-    function MiseAJourPrixTotal(remise, prix) {
-        document.getElementById("prixTotalApresRemise").innerHTML = "Total : " + (Number(prix) - remise).toFixed(2) + " €";
+    function MiseAJourPrixTotal(prix, remise) {
+        var nouveauPrix = (prix - remise).toFixed(2);
+        if (nouveauPrix < 0) nouveauPrix = 0;
+        document.getElementById("prixTotalApresRemise").innerHTML = "Total à régler : " + nouveauPrix + " €";
     }
 
     function MajMontantRemise(remise, id) { //TODO
         if (remise != 0) {
             document.getElementById("montantRemiseFidelite").innerHTML = "- " + Number(remise).toFixed(2).replace(".", ",") + " €";
+            MiseAJourPrixTotal(document.getElementById("prixRemiseCommercialeDeduite").value.replace(",", "."), remise);
         }
         else {
             document.getElementById("montantRemiseFidelite").innerHTML = "";
@@ -24,20 +35,10 @@
     }
 
     function MajCodePromo() {
-        alert("toto");
-        //this.value = document.getElementById("codePromo").value;
+        document.getElementById("codePromo").value = document.getElementById("codePromoUtilisateur").value;
     }
-
-    //document.getElementById("codePromo").addEventListener(, myFunction);
-
-    //function myFunction() {
-    //    document.getElementById("demo").innerHTML = "Iframe is loaded.";
-    //}
 </script>
 
-
-
-<p id="demo"></p>
 <h3>Votre panier :</h3>
 <dl class="dl-horizontal"></dl>
 
@@ -75,17 +76,17 @@
 }
 else
 {
-    if (utilisateur.Points >= 10 && Model.PrixTotal < 10)
-    {
-        string reste = (10 - @Model.PrixTotal).ToString("C2", new CultureInfo("fr-FR"));
-        <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser vos points de fidélité</div>
-    }
-
     <aside id="panierValide">
         <div class="listePanier">
             <div id="prixTotalAvantRemise" class="sousTotal">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
         </div>
     </aside>
+
+    if (utilisateur.Points >= 10 && Model.PrixTotal < 10)
+    {
+        string reste = (10 - @Model.PrixTotal).ToString("C2", new CultureInfo("fr-FR"));
+        <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser vos points de fidélité</div>
+    }
 
     using (Html.BeginForm("IndexTest", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
     {
@@ -95,20 +96,20 @@ else
             codePromo = TempData["CodePromo"] as string;
         }
         <div>
-            <input required id="codePromo" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="@codePromo" size="1">
-            <button type="submit">Vérifier</button>
+            <input id="codePromoUtilisateur" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="@codePromo" size="1">
+            <button class="validerPanier" type="submit">Vérifier</button>
         </div>
-        string remiseCommerciale = "";
-        if (TempData["RemiseCommerciale"] != null)
-        {
-            remiseCommerciale = TempData["RemiseCommerciale"] as string;
-        }
-        <aside id="panierValide"><div class="listePanier"><div id="montantRemiseCommerciale" class="sousTotal">@remiseCommerciale</div></div></aside>
+        <aside id="panierValide">
+            <div class="listePanier">
+                <div id="montantRemiseCommerciale" class="sousTotal">@afficheRemiseCommerciale</div>
+            </div>
+        </aside>
+        <input hidden id="hiddenRemiseCommerciale" value="@remiseCommerciale">
     }
 
     using (Html.BeginForm("Index", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
     {
-        <input onload="MajCodePromo()" hidden name="codePromo" value=""> //TODO
+        <input hidden id="codePromo" name="codePromo">
 
         if (utilisateur.Points >= 10 && Model.PrixTotal >= 10)
         {
@@ -124,8 +125,9 @@ else
         }
         <aside id="panierValide"><div class="listePanier"><div id="montantRemiseFidelite" class="sousTotal"></div></div></aside>
 
-
-        <h3 id="prixTotalApresRemise" class="total">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</h3>
+        double prixRemiseCommercialeDeduite = Model.PrixTotal - remiseCommerciale;
+        <input hidden id="prixRemiseCommercialeDeduite" value="@prixRemiseCommercialeDeduite">
+        <h3 id="prixTotalApresRemise" class="total">Total à régler : @prixRemiseCommercialeDeduite.ToString("C2", new CultureInfo("fr-FR"))</h3>
         <div>
             <select id="choixHoraire" class="ccformfield" name="dateRetrait" size="1" required>
                 <option selected disabled>créneau horaire de retrait</option>
@@ -149,16 +151,18 @@ else
             </select>
         </div>
 
+        if (utilisateur.Id == 0)
+        {
+            <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais vous ne bénéficierez pas du programme de fidélité, votre commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>
+        }
+
         <h3 class="total">
-            <input class="validerPanier" type="submit" name="action" value="Commander">
+            <button class="validerPanier" type="submit" onclick="MajCodePromo()">Commander</button>
         </h3>
     }
 
 
-    if (utilisateur.Id == 0)
-    {
-        <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais la commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>
-    }
+
 
 }
 

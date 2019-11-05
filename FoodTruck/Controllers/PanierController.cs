@@ -70,33 +70,40 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult IndexTest(string codePromo)
         {
-            CodePromoDAL codePromoDAL = new CodePromoDAL();
-            CodePromo code = codePromoDAL.Detail(codePromo);
-            DateTime maintenant = DateTime.Now;
-            if (code != null)
-            {
-                if (code.DateDebut > maintenant)
-                {
-
-                }
-                else if (code.DateFin < maintenant)
-                {
-
-                }
-                else if (code.MontantMinimumCommande > PanierViewModel.PrixTotal)
-                {
-
-                }
-                else
-                {
-                    TempData["RemiseCommerciale"] = "- " + code.Remise.ToString("C2", new CultureInfo("fr-FR"));
-                }
-            }
-            else
-            {
-                TempData["CodePromoInexistant"] = true;
-            }
             TempData["CodePromo"] = codePromo;
+            double montantRemise = 0;
+            CodePromoDAL codePromoDAL = new CodePromoDAL();
+            ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemise);
+            switch (code)
+            {
+                case ValiditeCodePromo.Valide:
+                    TempData["RemiseCommercialeInfo"] = "Code valide";
+                    TempData["RemiseCommerciale"] = montantRemise;
+                    break;
+                case ValiditeCodePromo.Inconnu:
+                    TempData["RemiseCommercialeInfo"] = "Code inconnu";
+                    break;
+                case ValiditeCodePromo.DateDepasse:
+                    TempData["RemiseCommercialeInfo"] = "Ce code n'est plus valable";
+                    break;
+                case ValiditeCodePromo.DateFuture:
+                    TempData["RemiseCommercialeInfo"] = "Ce code n'est pas encore valable";
+                    break;
+                case ValiditeCodePromo.MontantInsuffisant:
+                    TempData["RemiseCommercialeInfo"] = "Le montant de la commande est insuffisant";
+                    break;
+            }
+
+            {
+
+            }
+
+
+            //TODO
+
+
+
+            
             return RedirectToAction("IndexTest", "Panier");
         }
 
