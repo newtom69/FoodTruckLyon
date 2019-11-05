@@ -26,46 +26,46 @@ namespace FoodTruck.DAL
             using (SHA256 Hash = SHA256.Create())
                 mdpHash = GetHash(Hash, mdp);
 
-            Utilisateur lUtilisateur = new Utilisateur();
+            Utilisateur utilisateur = new Utilisateur();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                lUtilisateur = (from user in db.Utilisateur
+                utilisateur = (from user in db.Utilisateur
                                 where user.Email == email && user.Mdp == mdpHash
                                 select user).FirstOrDefault();
             }
-            return lUtilisateur;
+            return utilisateur;
         }
         public Utilisateur ConnexionCookies(string guid)
         {
-            Utilisateur lUtilisateur = new Utilisateur();
+            Utilisateur utilisateur = new Utilisateur();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                lUtilisateur = (from user in db.Utilisateur
+                utilisateur = (from user in db.Utilisateur
                                 where user.Guid == guid
                                 select user).FirstOrDefault();
             }
-            return lUtilisateur;
+            return utilisateur;
         }
 
         /// <summary>
-        /// Si le solde est suffisant, retire "points" points de fidélité à l'utilisateur d'id "id" et retourne le solde restant
-        /// Si le solde de points est insuffisant retourne -1 sans rien modifier
+        /// Si le solde est suffisant, retire "montant" euros de la cagnotte à l'utilisateur d'id "id" et retourne le solde restant
+        /// Si le solde de la cagnotte est insuffisant retourne -1 sans rien modifier
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="points"></param>
+        /// <param name="montant"></param>
         /// <returns></returns>
-        internal int RetirerPointsFidelite(int id, int points)
+        internal int RetirerCagnotte(int id, int montant)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 var utilisateur = (from user in db.Utilisateur
                                 where user.Id == id
                                 select user).FirstOrDefault();
-                if (points <= utilisateur.Points)
+                if (montant <= utilisateur.Cagnotte)
                 {
-                    utilisateur.Points -= points;
+                    utilisateur.Cagnotte -= montant;
                     db.SaveChanges();
-                    return utilisateur.Points;
+                    return utilisateur.Cagnotte;
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace FoodTruck.DAL
                           select user.Id).FirstOrDefault();
                 if (id == 0)
                 {
-                    Utilisateur lUtilisateur = new Utilisateur
+                    Utilisateur utilisateur = new Utilisateur
                     {
                         Guid = guid,
                         Email = email,
@@ -95,9 +95,9 @@ namespace FoodTruck.DAL
                         Nom = nom,
                         Prenom = prenom,
                         Telephone = telephone,
-                        Points = 0
+                        Cagnotte = 0
                     };
-                    db.Utilisateur.Add(lUtilisateur);
+                    db.Utilisateur.Add(utilisateur);
                     db.SaveChanges();
                     return Connexion(email, mdp);
                 }
@@ -134,7 +134,6 @@ namespace FoodTruck.DAL
             {
                 sBuilder.Append(data[i].ToString("x2"));
             }
-
             return sBuilder.ToString();
         }
     }

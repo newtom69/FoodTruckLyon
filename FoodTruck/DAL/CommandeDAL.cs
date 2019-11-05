@@ -66,9 +66,9 @@ namespace FoodTruck.DAL
                                                where u.Id == commande.UtilisateurId
                                                select u).FirstOrDefault();
                     if (commande.Retrait)
-                        utilisateur.Points += (int)commande.PrixTotal / 10;
+                        utilisateur.Cagnotte += (int)commande.PrixTotal / 10;
                     if (commande.Annulation)
-                        utilisateur.Points += (int)commande.RemiseFidelite;
+                        utilisateur.Cagnotte += (int)commande.RemiseFidelite;
                     db.SaveChanges();
                 }
             }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FoodTruck.Models
+namespace FoodTruck
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace FoodTruck.Models
         public string Nom { get; set; }
         public string Prenom { get; set; }
         public string Telephone { get; set; }
-        public int Points { get; set; }
+        public int Cagnotte { get; set; }
         public bool AdminCommande { get; set; }
         public bool AdminUtilisateur { get; set; }
         public bool AdminArticle { get; set; }

@@ -24,8 +24,8 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                int soldePoints = new UtilisateurDAL().RetirerPointsFidelite(Utilisateur.Id, montantRemiseFidelite);
-                if (soldePoints == -1)
+                int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Utilisateur.Id, montantRemiseFidelite);
+                if (soldeCagnotte == -1)
                     montantRemiseFidelite = 0;
 
                 Commande commande = new Commande

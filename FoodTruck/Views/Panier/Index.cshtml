@@ -89,10 +89,10 @@ else
     <div id="panierValide2">
         <div id="prixTotalAvantRemise" class="sousTotal">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
         <div class="listePanier">
-            @if (utilisateur.Points >= 10 && Model.PrixTotal < 10)
+            @if (utilisateur.Cagnotte >= 10 && Model.PrixTotal < 10)
             {
                 string reste = (10 - @Model.PrixTotal).ToString("C2", new CultureInfo("fr-FR"));
-                <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser vos points de fidélité</div>
+                <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser votre cagnotte fidélité</div>
             }
             @using (Html.BeginForm("Index", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
             {
@@ -111,11 +111,11 @@ else
         <div id="panierValide3">
             <input hidden id="codePromo" name="codePromo">
             <div class="listePanier">
-                @if (utilisateur.Points >= 10 && Model.PrixTotal >= 10)
+                @if (utilisateur.Cagnotte >= 10 && Model.PrixTotal >= 10)
                 {
                     <select id="remiseFidelite" class="ccformfield" name="remiseFidelite" size="1" onchange="MajMontantRemise(this.value, montantRemiseFidelite.id)">
                         <option selected value="0">remise fidélité</option>
-                        @for (int iRemise = 10; iRemise <= (utilisateur.Points <= Model.PrixTotal ? utilisateur.Points : Model.PrixTotal); iRemise++)
+                        @for (int iRemise = 10; iRemise <= (utilisateur.Cagnotte <= Model.PrixTotal ? utilisateur.Cagnotte : Model.PrixTotal); iRemise++)
                         {
                             <option value="@iRemise">remise fidélité de @iRemise €</option>
                         }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="omasvui147994fr33943_foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="omasvui147994fr33943_foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Article">
           <Key>
             <PropertyRef Name="Id" />
@@ -113,7 +113,7 @@
           <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Telephone" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="Points" Type="int" Nullable="false" />
+          <Property Name="Cagnotte" Type="int" Nullable="false" />
           <Property Name="AdminCommande" Type="bit" Nullable="false" />
           <Property Name="AdminUtilisateur" Type="bit" Nullable="false" />
           <Property Name="AdminArticle" Type="bit" Nullable="false" />
@@ -273,8 +273,7 @@
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="omasvui147994fr33943_foodtruckModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -323,7 +322,7 @@
           <Property Name="Retrait" Type="Boolean" Nullable="false" />
           <Property Name="Annulation" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
-          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Utilisateur" />
         </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
@@ -373,7 +372,7 @@
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Panier" ToRole="Article" />
-          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Panier" ToRole="Utilisateur" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur" FromRole="Panier" ToRole="Utilisateur" />
         </EntityType>
         <EntityType Name="PanierProspect">
           <Key>
@@ -387,26 +386,6 @@
           <Property Name="DateAjout" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Article" Relationship="Self.FK_PanierProspect_Article" FromRole="PanierProspect" ToRole="Article" />
         </EntityType>
-        <EntityType Name="Utilisateur">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Guid" Type="String" MaxLength="36" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Mdp" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Prenom" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Telephone" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Points" Type="Int32" Nullable="false" />
-          <Property Name="AdminCommande" Type="Boolean" Nullable="false" />
-          <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
-          <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
-          <Property Name="AdminPlanning" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
-          <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
-          <NavigationProperty Name="Visite" Relationship="Self.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
-        </EntityType>
         <EntityType Name="Visite">
           <Key>
             <PropertyRef Name="Id" />
@@ -419,7 +398,7 @@
           <Property Name="Navigateur" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="NavigateurMobile" Type="Boolean" Nullable="false" />
           <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Utilisateur" Relationship="Self.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
         </EntityType>
         <Association Name="FK_Article_FamilleArticle">
           <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
@@ -481,42 +460,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Commande_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
-          <End Role="Commande" Type="Self.Commande" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Commande">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Utilisateur_Article_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
-          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Panier">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Visite_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
-          <End Role="Visite" Type="Self.Visite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visite">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="foodtruckEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Article" EntityType="Self.Article" />
           <EntitySet Name="CodePromo" EntityType="Self.CodePromo" />
@@ -527,7 +470,6 @@
           <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" />
           <EntitySet Name="Panier" EntityType="Self.Panier" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
-          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
           <EntitySet Name="Visite" EntityType="Self.Visite" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
             <End Role="FamilleArticle" EntitySet="FamilleArticle" />
@@ -549,19 +491,76 @@
             <End Role="Commande" EntitySet="Commande" />
             <End Role="Commande_Article" EntitySet="Commande_Article" />
           </AssociationSet>
-          <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
+          <EntitySet Name="Utilisateur" EntityType="omasvui147994fr33943_foodtruckModel.Utilisateur" />
+          <AssociationSet Name="FK_Commande_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Commande" EntitySet="Commande" />
           </AssociationSet>
-          <AssociationSet Name="FK_Utilisateur_Article_Utilisateur" Association="Self.FK_Utilisateur_Article_Utilisateur">
+          <AssociationSet Name="FK_Utilisateur_Article_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
-          <AssociationSet Name="FK_Visite_Utilisateur" Association="Self.FK_Visite_Utilisateur">
+          <AssociationSet Name="FK_Visite_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Guid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="true" Unicode="true" />
+          <Property Name="Mdp" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="true" />
+          <Property Name="Nom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Prenom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Telephone" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Cagnotte" Type="Int32" Nullable="false" />
+          <Property Name="AdminCommande" Type="Boolean" Nullable="false" />
+          <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
+          <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
+          <Property Name="AdminPlanning" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
+          <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
+          <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
+        </EntityType>
+        <Association Name="FK_Commande_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Commande" Role="Commande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Panier" Role="Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Visite_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Visite" Role="Visite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visite">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -672,24 +671,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Utilisateur">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Utilisateur">
-              <MappingFragment StoreEntitySet="Utilisateur">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Guid" ColumnName="Guid" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Mdp" ColumnName="Mdp" />
-                <ScalarProperty Name="Nom" ColumnName="Nom" />
-                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="AdminCommande" ColumnName="AdminCommande" />
-                <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />
-                <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
-                <ScalarProperty Name="AdminPlanning" ColumnName="AdminPlanning" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Visite">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Visite">
               <MappingFragment StoreEntitySet="Visite">
@@ -701,6 +682,24 @@
                 <ScalarProperty Name="Navigateur" ColumnName="Navigateur" />
                 <ScalarProperty Name="NavigateurMobile" ColumnName="NavigateurMobile" />
                 <ScalarProperty Name="UrlOrigine" ColumnName="UrlOrigine" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilisateur">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Utilisateur">
+              <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="AdminPlanning" ColumnName="AdminPlanning" />
+                <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
+                <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />
+                <ScalarProperty Name="AdminCommande" ColumnName="AdminCommande" />
+                <ScalarProperty Name="Cagnotte" ColumnName="Cagnotte" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Mdp" ColumnName="Mdp" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
