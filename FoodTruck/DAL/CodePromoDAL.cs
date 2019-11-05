@@ -40,7 +40,7 @@ namespace FoodTruck.DAL
                 }
                 else if (codePromo.DateFin < maintenant)
                 {
-                    validite = ValiditeCodePromo.DateDepasse;
+                    validite = ValiditeCodePromo.DateDepassee;
                 }
                 else if (codePromo.MontantMinimumCommande > montantCommande)
                 {

@@ -27,13 +27,15 @@
 <script src="~/Scripts/myJs.js"></script>
 <script>
     function MiseAJourPrixTotal(prix, remise) {
-        var nouveauPrix = (prix - remise).toFixed(2);
-        if (nouveauPrix < 0) nouveauPrix = 0;
+        var nouveauPrix = prix.replace(",", ".") - remise;
+        if (nouveauPrix < 0)
+            nouveauPrix = 0;
+        nouveauPrix = nouveauPrix.toFixed(2);
         document.getElementById("prixTotalApresRemise").innerHTML = "Total à régler : " + nouveauPrix.replace(".", ",") + " €";
     }
 
     function MajMontantRemise(remise) {
-        MiseAJourPrixTotal(document.getElementById("prixRemiseCommercialeDeduite").value.replace(",", "."), remise);
+        MiseAJourPrixTotal(document.getElementById("prixRemiseCommercialeDeduite").value, remise);
         if (remise != 0) {
             document.getElementById("montantRemiseFidelite").innerHTML = "- " + Number(remise).toFixed(2).replace(".", ",") + " €";
         }

@@ -58,7 +58,7 @@ namespace FoodTruck.Controllers
                 case ValiditeCodePromo.Inconnu:
                     TempData["RemiseCommercialeInfo"] = "code inconnu";
                     break;
-                case ValiditeCodePromo.DateDepasse:
+                case ValiditeCodePromo.DateDepassee:
                     TempData["RemiseCommercialeInfo"] = "ce code n'est plus valable";
                     break;
                 case ValiditeCodePromo.DateFuture:
@@ -68,7 +68,7 @@ namespace FoodTruck.Controllers
                     TempData["RemiseCommercialeInfo"] = "le montant de la commande est insuffisant";
                     break;
             }
-            return RedirectToAction("Index", "Panier");
+            return Redirect("~/Panier/Index#remiseFidelite");
         }
 
         [HttpPost]

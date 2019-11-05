@@ -9,7 +9,7 @@ namespace FoodTruck.Models
     {
         Inconnu,
         Valide,
-        DateDepasse,
+        DateDepassee,
         DateFuture,
         MontantInsuffisant,
     }
