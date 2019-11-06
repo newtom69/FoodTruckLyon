@@ -5,21 +5,9 @@
 }
 <h2>Connexion</h2>
 <dl class="dl-horizontal"></dl>
-@if (utilisateur.Id != 0)
-{
-    <ul>
-        <li>@utilisateur.Nom</li>
-        <li>@utilisateur.Prenom </li>
-        <li>@utilisateur.Email</li>
-        <li>@utilisateur.Telephone</li>
-    </ul>
-}
-else
-{
-    <p>Connectez-vous à votre compte pour profiter de tous les servives de votre foodtruck.</p>
-    <p>Si vous n'avez pas de compte, pour pouvez en créer un en <a href="/Compte/Creation">suivant ce lien</a>.</p>
-    <dl class="dl-horizontal"></dl>
-}
+<p>Connectez-vous à votre compte pour profiter de tous les servives de votre foodtruck.</p>
+<p>Si vous n'avez pas de compte, pour pouvez en créer un en <a href="/Compte/Creation">suivant ce lien</a>.</p>
+<dl class="dl-horizontal"></dl>
 
 @if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
 {
@@ -46,5 +34,14 @@ else
     </div>
     <div class="ccfield-prepend">
         <input class="ccbtn" type="submit" value="Connexion">
+    </div>
+}
+@using (Html.BeginForm("OubliMotDePasse", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
+{
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="email" type="email" placeholder="Email" required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccbtn" type="submit" value="Mot de passe oublié">
     </div>
 }

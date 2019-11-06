@@ -20,6 +20,18 @@ namespace FoodTruck.DAL
             return utilisateur;
         }
 
+        public Utilisateur Details(string email)
+        {
+            Utilisateur utilisateur;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                utilisateur = (from u in db.Utilisateur
+                               where u.Email == email
+                               select u).FirstOrDefault();
+            }
+            return utilisateur;
+        }
+
         public Utilisateur Connexion(string email, string mdp)
         {
             string mdpHash;
