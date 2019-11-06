@@ -14,6 +14,7 @@ namespace FoodTruck
     
     public partial class JourExceptionnel
     {
+        public int Id { get; set; }
         public System.DateTime DateDebut { get; set; }
         public System.DateTime DateFin { get; set; }
         public bool Ouvert { get; set; }

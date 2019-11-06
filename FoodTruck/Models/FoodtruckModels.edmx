@@ -65,8 +65,9 @@
         </EntityType>
         <EntityType Name="JourExceptionnel">
           <Key>
-            <PropertyRef Name="DateDebut" />
+            <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateDebut" Type="datetime" Nullable="false" />
           <Property Name="DateFin" Type="datetime" Nullable="false" />
           <Property Name="Ouvert" Type="bit" Nullable="false" />
@@ -370,14 +371,6 @@
           <Property Name="Nom" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
         </EntityType>
-        <EntityType Name="JourExceptionnel">
-          <Key>
-            <PropertyRef Name="DateDebut" />
-          </Key>
-          <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Ouvert" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="OuvertureHebdomadaire">
           <Key>
             <PropertyRef Name="Id" />
@@ -492,7 +485,6 @@
           <EntitySet Name="Commande" EntityType="Self.Commande" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" />
-          <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" />
           <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" />
           <EntitySet Name="Panier" EntityType="Self.Panier" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
@@ -535,6 +527,7 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="UtilisateurOubliMotDePasse" EntitySet="UtilisateurOubliMotDePasse" />
           </AssociationSet>
+          <EntitySet Name="JourExceptionnel" EntityType="omasvui147994fr33943_foodtruckModel.JourExceptionnel" />
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -615,6 +608,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="JourExceptionnel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Ouvert" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -680,15 +682,6 @@
               <MappingFragment StoreEntitySet="FamilleArticle">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="JourExceptionnel">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.JourExceptionnel">
-              <MappingFragment StoreEntitySet="JourExceptionnel">
-                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
-                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
-                <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -763,6 +756,16 @@
                 <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
                 <ScalarProperty Name="Guid" ColumnName="Guid" />
                 <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JourExceptionnel">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.JourExceptionnel">
+              <MappingFragment StoreEntitySet="JourExceptionnel">
+                <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

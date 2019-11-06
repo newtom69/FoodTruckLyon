@@ -76,27 +76,14 @@ namespace FoodTruck.DAL
                                                     select j).FirstOrDefault();
 
                 JourExceptionnel chevauchement = (from j in db.JourExceptionnel
-                                                  where j != jourSelectionne && DbFunctions.DiffMinutes(j.DateDebut, dateFin) > 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) > 0
+                                                  where j.DateDebut != jourSelectionne.DateDebut && DbFunctions.DiffMinutes(j.DateDebut, dateFin) > 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) > 0
                                                   select j).FirstOrDefault();
 
                 if (chevauchement == null && jourSelectionne != null)
                 {
-                    if (jourSelectionne.DateDebut == dateDebut)
-                    {
-                        jourSelectionne.DateFin = dateFin;
-                        jourSelectionne.Ouvert = ouvert;
-                    }
-                    else
-                    {
-                        JourExceptionnel nouveau = new JourExceptionnel
-                        {
-                            DateDebut = dateDebut,
-                            DateFin = dateFin,
-                            Ouvert = ouvert,
-                        };
-                        db.JourExceptionnel.Remove(jourSelectionne);
-                        db.JourExceptionnel.Add(nouveau);
-                    }
+                    jourSelectionne.DateDebut = dateDebut;
+                    jourSelectionne.DateFin = dateFin;
+                    jourSelectionne.Ouvert = ouvert;
                     db.SaveChanges();
                 }
                 return chevauchement;
