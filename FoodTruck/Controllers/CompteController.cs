@@ -272,7 +272,7 @@ namespace FoodTruck.Controllers
                 {
                     string sujetMail = "Votre nouveau mot de passe";
                     string message = "Bonjour\n" +
-                        "Vous avez demandé un nouvot mot de passe.\n" +
+                        "Vous avez demandé un nouveau mot de passe.\n" +
                         "Le voilà : \n\n" +
                         nouveauMotdePasse +
                         "\n\nNous vous conseillons de vous connecter avec dès que possible et de le changer aussitôt";
