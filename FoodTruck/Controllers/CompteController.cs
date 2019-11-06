@@ -56,7 +56,6 @@ namespace FoodTruck.Controllers
             Utilisateur utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
             if (utilisateur == null)
             {
-                // mauvais ancien mot de passe renseigné => aucune modif prise en compte
                 ViewBag.MauvaisEmailMdp = true;
             }
             else
@@ -92,6 +91,7 @@ namespace FoodTruck.Controllers
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
+            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
             return View(Utilisateur);
         }
 
@@ -264,12 +264,11 @@ namespace FoodTruck.Controllers
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
             Utilisateur utilisateur = utilisateurDAL.Details(email);
-            bool verif = new UtilisateurOubliMotDePasseDAL().Verifier(utilisateur.Id, guid);
-            if (verif)
+            if (new UtilisateurOubliMotDePasseDAL().Verifier(utilisateur.Id, guid))
             {
                 string nouveauMotdePasse = Guid.NewGuid().ToString("n").Substring(0, 10);
-                int change = utilisateurDAL.Modification(utilisateur.Id, utilisateur.Email, nouveauMotdePasse, utilisateur.Nom, utilisateur.Prenom, utilisateur.Telephone);
-                if (change == 1)
+                int changement = utilisateurDAL.Modification(utilisateur.Id, utilisateur.Email, nouveauMotdePasse, utilisateur.Nom, utilisateur.Prenom, utilisateur.Telephone);
+                if (changement == 1)
                 {
                     try
                     {
@@ -277,7 +276,7 @@ namespace FoodTruck.Controllers
                         {
                             message.From = new MailAddress("info@foodtrucklyon.fr");
                             message.To.Add(email);
-                            message.Subject = "Génération d'un nouveau mot de passe";
+                            message.Subject = "Votre nouveau mot de passe";
                             message.Body = nouveauMotdePasse;
                             message.IsBodyHtml = false;
                             using (SmtpClient client = new SmtpClient())
@@ -286,7 +285,7 @@ namespace FoodTruck.Controllers
                                 client.Send(message);
                             }
                         }
-                        ViewBag.MailEnvoye = "Un email avec un lien de génération de nouveau mot de passe vient de vous être envoyé";
+                        ViewBag.MailEnvoye = "Un email contenant votre nouveau mot de passe vient de vous être envoyé";
                     }
                     catch (Exception)
                     {
@@ -320,7 +319,7 @@ namespace FoodTruck.Controllers
                 {
                     message.From = new MailAddress("info@foodtrucklyon.fr");
                     message.To.Add(email);
-                    message.Subject = "Génération d'un nouveau mot de passe";
+                    message.Subject = "Procédure de génération d'un nouveau mot de passe";
 
                     message.Body = url;
                     message.IsBodyHtml = false;
