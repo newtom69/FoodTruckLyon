@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -79,6 +80,32 @@ namespace FoodTruck.Models
                 return "Oui";
             else
                 return "Non";
+        }
+
+        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage)
+        {
+            try
+            {
+                using (MailMessage message = new MailMessage())
+                {
+                    message.From = new MailAddress("info@foodtrucklyon.fr");
+                    message.To.Add(destinataire);
+                    message.Subject = objet;
+
+                    message.Body = corpsMessage;
+                    message.IsBodyHtml = false;
+                    using (SmtpClient client = new SmtpClient())
+                    {
+                        client.EnableSsl = false;
+                        client.Send(message);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

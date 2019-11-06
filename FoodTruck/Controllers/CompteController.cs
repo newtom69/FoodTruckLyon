@@ -270,37 +270,23 @@ namespace FoodTruck.Controllers
                 int changement = utilisateurDAL.Modification(utilisateur.Id, utilisateur.Email, nouveauMotdePasse, utilisateur.Nom, utilisateur.Prenom, utilisateur.Telephone);
                 if (changement == 1)
                 {
-                    try
-                    {
-                        using (MailMessage message = new MailMessage())
-                        {
-                            message.From = new MailAddress("info@foodtrucklyon.fr");
-                            message.To.Add(email);
-                            message.Subject = "Votre nouveau mot de passe";
-                            message.Body = nouveauMotdePasse;
-                            message.IsBodyHtml = false;
-                            using (SmtpClient client = new SmtpClient())
-                            {
-                                client.EnableSsl = false;
-                                client.Send(message);
-                            }
-                        }
-                        ViewBag.MailEnvoye = "Un email contenant votre nouveau mot de passe vient de vous être envoyé";
-                    }
-                    catch (Exception)
-                    {
-                        Response.StatusCode = 400;
-                        ViewBag.MailErreur = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
-                        ViewBag.MailEnvoye = "";
-                    }
+                    string sujetMail = "Votre nouveau mot de passe";
+                    string message = "Bonjour\n" +
+                        "Vous avez demandé un nouvot mot de passe.\n" +
+                        "Le voilà : \n\n" +
+                        nouveauMotdePasse +
+                        "\n\nNous vous conseillons de vous connecter avec dès que possible et de le changer aussitôt";
+
+                    if (Utilitaire.EnvoieMail(email, sujetMail, message))
+                        TempData["mailEnvoyeNouveauMdpOk"] = "Un email contenant votre nouveau mot de passe vient de vous être envoyé";
+                    else
+                        TempData["mailEnvoyeNouveauMdpKo"] = "L'envoi du mail contenant votre nouveau mot de passe a échoué";
                 }
             }
             else
-            {
+                TempData["mailEnvoyeNouveauMdpKo"] = "Le lien de génération du nouveau mot de passe n'est plus valide";
 
-            }
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Connexion", "Compte");
 
         }
 
@@ -311,33 +297,28 @@ namespace FoodTruck.Controllers
             string url = HttpContext.Request.Url.ToString() + "?email=" + email + "&guid=" + guid;
 
             Utilisateur utilisateur = new UtilisateurDAL().Details(email);
-            new UtilisateurOubliMotDePasseDAL().Ajouter(utilisateur.Id, guid, DateTime.Now.AddMinutes(10));
-
-            try
+            if (utilisateur != null)
             {
-                using (MailMessage message = new MailMessage())
-                {
-                    message.From = new MailAddress("info@foodtrucklyon.fr");
-                    message.To.Add(email);
-                    message.Subject = "Procédure de génération d'un nouveau mot de passe";
+                new UtilisateurOubliMotDePasseDAL().Ajouter(utilisateur.Id, guid, DateTime.Now.AddMinutes(10));
 
-                    message.Body = url;
-                    message.IsBodyHtml = false;
-                    using (SmtpClient client = new SmtpClient())
-                    {
-                        client.EnableSsl = false;
-                        client.Send(message);
-                    }
-                }
-                ViewBag.MailEnvoye = "Un email avec un lien de génération de nouveau mot de passe vient de vous être envoyé";
+                string sujetMail = "Procédure de génération d'un nouveau mot de passe";
+                string message = "Bonjour\n" +
+                    "Vous avez oublié votre mot de passe et avez demandé à en recevoir un nouveau.\n" +
+                    "Si vous êtes bien à l'origine de cette demande, veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur :\n" +
+                    "\n" +
+                    url +
+                    "\n\nUn nouveau mot de passe vous sera envoyé aussitôt";
+
+                if (Utilitaire.EnvoieMail(email, sujetMail, message))
+                    TempData["mailEnvoyeLienGenerationMdpOk"] = "Un email avec un lien de génération de nouveau mot de passe vient de vous être envoyé";
+                else
+                    TempData["mailEnvoyeLienGenerationMdpKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
             }
-            catch (Exception)
+            else
             {
-                Response.StatusCode = 400;
-                ViewBag.MailErreur = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
-                ViewBag.MailEnvoye = "";
+                TempData["mailEnvoyeLienGenerationMdpKo"] = "Nous n'avons pas de compte client avec cette adresse email. Merci de vérifier votre saisie";
             }
-            return RedirectToAction("Index", "Home"); //TODO afficher que le mail est envoyé
+            return RedirectToAction("Connexion", "Compte");
         }
 
         private bool VerifMdp(string mdp1, string mdp2)
