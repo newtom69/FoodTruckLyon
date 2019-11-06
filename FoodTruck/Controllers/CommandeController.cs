@@ -24,10 +24,12 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Utilisateur.Id, montantRemiseFidelite);
-                if (soldeCagnotte == -1)
-                    montantRemiseFidelite = 0;
-
+                if (montantRemiseFidelite != 0 && Utilisateur.Id != 0)
+                {
+                    int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Utilisateur.Id, montantRemiseFidelite);
+                    if (soldeCagnotte == -1)
+                        montantRemiseFidelite = 0;
+                }
                 Commande commande = new Commande
                 {
                     UtilisateurId = Utilisateur.Id,
@@ -67,9 +69,9 @@ namespace FoodTruck.Controllers
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
                                          (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
-            string nomClient = lUtilisateur.Nom;
-            string prenomClient = lUtilisateur.Prenom;
-            string emailClient = lUtilisateur.Email;
+            string nomClient = lUtilisateur.Nom ?? "non renseigné";
+            string prenomClient = lUtilisateur.Prenom ?? "non renseigné";
+            string emailClient = lUtilisateur.Email ?? "non@renseigne";
             string numeroCommande = laCommande.Id.ToString();
             string corpsDuMailEnCommunClientFoodtruck =
                 $"Nom : {nomClient}\nPrénom : {prenomClient}\nEmail : {emailClient}\n\nArticles :{lesArticlesDansLeMail}" +
