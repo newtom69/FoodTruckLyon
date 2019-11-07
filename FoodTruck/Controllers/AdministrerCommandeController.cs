@@ -73,16 +73,16 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
-        public ActionResult PendantFermeturesExceptionnelles()
+        public ActionResult PendantFermetures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesPendantFermeturesExceptionnelles()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesPendantFermetures()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
-        public ActionResult PendantFermeturesExceptionnelles(int id, string statut)
+        public ActionResult PendantFermetures(int id, string statut)
         {
             if (AdminCommande)
             {

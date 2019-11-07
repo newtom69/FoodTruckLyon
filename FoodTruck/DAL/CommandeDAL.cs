@@ -172,8 +172,14 @@ namespace FoodTruck.DAL
                 return commandes;
             }
         }
+        internal List<Commande> ListerCommandesPendantFermetures()
+        {
+            List<Commande> commandesPendatsFermetures = ListerCommandesPendantFermeturesExceptionnelles();
+            commandesPendatsFermetures.AddRange(ListerCommandesPendantFermeturesHabituelles());
+            return commandesPendatsFermetures;
+        }
 
-        internal List<Commande> ListerCommandesPendantFermeturesExceptionnelles()
+        private List<Commande> ListerCommandesPendantFermeturesExceptionnelles()
         {
             DateTime maintenant = DateTime.Now;
             using (foodtruckEntities db = new foodtruckEntities())
@@ -192,6 +198,29 @@ namespace FoodTruck.DAL
                 {
                     commandesDansFermeture.AddRange(commandes.FindAll(c => fermeture.DateDebut <= c.DateRetrait && c.DateRetrait <= fermeture.DateFin));
                 }
+                return commandesDansFermeture;
+            }
+        }
+
+        private List<Commande> ListerCommandesPendantFermeturesHabituelles()
+        {
+            DateTime maintenant = DateTime.Now;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            orderby cmd.DateRetrait
+                                            select cmd).ToList();
+
+                List<OuvertureHebdomadaire> ouvertures = (from o in db.OuvertureHebdomadaire
+                                                          select o).ToList();
+
+                List<Commande> commandesDansOuvertures = new List<Commande>();
+                foreach (OuvertureHebdomadaire ouverture in ouvertures)
+                {
+                    commandesDansOuvertures.AddRange(commandes.FindAll(c => (int)c.DateRetrait.DayOfWeek == ouverture.JourSemaineId && ouverture.Debut <= c.DateRetrait.TimeOfDay && c.DateRetrait.TimeOfDay <= ouverture.Fin));
+                }
+                List<Commande> commandesDansFermeture = commandes.Except(commandesDansOuvertures).ToList();
                 return commandesDansFermeture;
             }
         }

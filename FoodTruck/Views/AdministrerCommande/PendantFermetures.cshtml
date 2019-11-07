@@ -4,7 +4,7 @@
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-    ViewBag.Title = "Commandes pendant fermetures exceptionnelles";
+    ViewBag.Title = "Commandes pendant fermetures";
 }
 @model ListeCommandesViewModel
 
@@ -12,12 +12,12 @@
 <h2>Administration</h2>
 @if (Model != null)
 {
-    <h3>Liste des commandes dont la date de retrait est pendant une fermeture exceptionnelle</h3>
+    <h3>Liste des commandes dont la date de retrait est pendant une fermeture</h3>
     <div id="panierValide">
         <div class="choixHoraire">
             @if (Model.Commandes.Count == 0)
             {
-                <div class="messageInfo">Aucune commande passée à statuer</div>
+                <div class="messageInfo">Aucune commande</div>
             }
             @foreach (var c in Model.Commandes)
             {
