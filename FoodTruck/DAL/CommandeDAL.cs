@@ -1,5 +1,4 @@
-﻿using FoodTruck.Models;
-using FoodTruck.ViewModels;
+﻿using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

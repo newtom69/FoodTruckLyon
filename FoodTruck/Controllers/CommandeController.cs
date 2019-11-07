@@ -3,7 +3,6 @@ using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Globalization;
-using System.Net.Mail;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -15,8 +14,7 @@ namespace FoodTruck.Controllers
         {
             int montantRemiseFidelite = remiseFidelite ?? 0;
             double montantRemiseCommerciale = 0;
-            CodePromoDAL codePromoDAL = new CodePromoDAL();
-            codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemiseCommerciale);
+            new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemiseCommerciale);
 
             if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
@@ -66,31 +64,30 @@ namespace FoodTruck.Controllers
         {
             string lesArticlesDansLeMail = "";
             foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
-                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
-                                         (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
+                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " + (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
+            CultureInfo cultureinfoFr = new CultureInfo("fr-FR");
             string nomClient = utilisateur.Nom ?? "non renseigné";
             string prenomClient = utilisateur.Prenom ?? "non renseigné";
             string emailClient = utilisateur.Email ?? "non@renseigne";
-            string numeroCommande = commande.Id.ToString();
             string corpsDuMailEnCommunClientFoodtruck =
                 $"Nom : {nomClient}\n" +
                 $"Prénom : {prenomClient}\n" +
                 $"Email : {emailClient}\n\n" +
                 $"Articles :{lesArticlesDansLeMail}\n" +
-                $"Total de la commande : {commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}\n";
+                $"Total de la commande : {commande.PrixTotal.ToString("C2", cultureinfoFr)}\n";
             if (commande.RemiseFidelite > 0)
-                corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))}";
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {commande.RemiseFidelite.ToString("C2", cultureinfoFr)}";
             if (commande.RemiseCommerciale > 0)
-                corpsDuMailEnCommunClientFoodtruck += $"\nRemise commerciale : {commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))}";
-            
-            string sujet = $"Nouvelle commande numéro {numeroCommande}";
-            string corpsMail = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise commerciale : {commande.RemiseCommerciale.ToString("C2", cultureinfoFr)}";
+
+            string sujet = $"Nouvelle commande numéro {commande.Id}";
+            string corpsMail = $"Nouvelle commande {commande.Id}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
 
             Utilitaire.EnvoieMail("info@foodtrucklyon.fr", sujet, corpsMail);
             if (utilisateur.Id != 0)
             {
-                string sujetMail2 = $"Nouvelle commande numéro {numeroCommande} prise en compte";
+                string sujetMail2 = $"Nouvelle commande numéro {commande.Id} prise en compte";
                 string corpsMail2 = $"Bonjour {utilisateur.Prenom}\n" +
                     $"Votre dernière commande a bien été prise en compte." +
                     $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +

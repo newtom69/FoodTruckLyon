@@ -3,7 +3,6 @@ using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -124,11 +123,10 @@ namespace FoodTruck.Controllers
             if (commande != null && commande.UtilisateurId == Utilisateur.Id)
             {
                 List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
-                PanierDAL panierDAL = new PanierDAL(Utilisateur.Id);
                 if (viderPanier)
                 {
-                    panierDAL.Supprimer();
-                    PanierViewModel = new PanierViewModel(); //dette technique faire plus compréhensible et méthode dédiée ?
+                    new PanierDAL(Utilisateur.Id).Supprimer();
+                    PanierViewModel.Initialiser();
                     ViewBag.Panier = null; //todo
                 }
                 using (PanierController panierController = new PanierController()) // TODO plus propre

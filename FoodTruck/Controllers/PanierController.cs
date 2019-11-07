@@ -4,7 +4,6 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -44,7 +43,7 @@ namespace FoodTruck.Controllers
         {
             TempData["CodePromo"] = codePromo;
             TempData["RemiseCommercialeValide"] = false;
-            TempData["RemiseCommercialeMontant"] = (double) 0 ;
+            TempData["RemiseCommercialeMontant"] = (double)0;
             double montantRemise = 0;
             CodePromoDAL codePromoDAL = new CodePromoDAL();
             ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemise);

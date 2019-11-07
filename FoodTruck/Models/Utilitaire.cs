@@ -1,7 +1,6 @@
 ﻿using FoodTruck.DAL;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -36,7 +35,7 @@ namespace FoodTruck.Models
             PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait> { ouvertureDAL.ProchainOuvert(date) };
             bool memeJour = true;
-            while(memeJour)
+            while (memeJour)
             {
                 plagesHorairesRetrait.Add(ouvertureDAL.ProchainOuvert(plagesHorairesRetrait.Last().Dates.Last().AddMinutes(1)));
                 memeJour = plagesHorairesRetrait.First().Dates.First().Date == plagesHorairesRetrait.Last().Dates.First().Date;
@@ -82,7 +81,7 @@ namespace FoodTruck.Models
                 return "Non";
         }
 
-        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA="info@foodtrucklyon.fr")
+        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA = "info@foodtrucklyon.fr")
         {
             try
             {

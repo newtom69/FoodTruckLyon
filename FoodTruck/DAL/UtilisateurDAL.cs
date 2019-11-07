@@ -1,5 +1,4 @@
-﻿using FoodTruck.Models;
-using System;
+﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -42,8 +41,8 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 utilisateur = (from user in db.Utilisateur
-                                where user.Email == email && user.Mdp == mdpHash
-                                select user).FirstOrDefault();
+                               where user.Email == email && user.Mdp == mdpHash
+                               select user).FirstOrDefault();
             }
             return utilisateur;
         }
@@ -53,8 +52,8 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 utilisateur = (from user in db.Utilisateur
-                                where user.Guid == guid
-                                select user).FirstOrDefault();
+                               where user.Guid == guid
+                               select user).FirstOrDefault();
             }
             return utilisateur;
         }
@@ -71,8 +70,8 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 var utilisateur = (from user in db.Utilisateur
-                                where user.Id == id
-                                select user).FirstOrDefault();
+                                   where user.Id == id
+                                   select user).FirstOrDefault();
                 if (montant <= utilisateur.Cagnotte)
                 {
                     utilisateur.Cagnotte -= montant;

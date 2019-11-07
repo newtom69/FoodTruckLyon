@@ -1,6 +1,4 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,37 +10,39 @@ namespace FoodTruck.ViewModels
         public double PrixTotal { get; set; }
         public List<Creneau> Creneaux { get; set; }
 
-        public PanierViewModel()
+        internal PanierViewModel()
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
         }
 
-        public PanierViewModel(List<Panier> panierUtilisateur)
+        internal PanierViewModel(List<Panier> panierUtilisateur)
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
-            foreach (Panier lePanier in panierUtilisateur)
+            foreach (Panier panier in panierUtilisateur)
             {
-                PrixTotal += lePanier.PrixTotal;
-                ArticleViewModel article = ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
-                ArticleDAL articleDAL = new ArticleDAL();
-                ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                PrixTotal += panier.PrixTotal;
+                ArticlesDetailsViewModel.Add(new ArticleViewModel(new ArticleDAL().Details(panier.ArticleId), panier.Quantite));
             }
         }
 
-        public PanierViewModel(List<PanierProspect> panierProspect)
+        internal PanierViewModel(List<PanierProspect> panierProspect)
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
-            foreach (PanierProspect lePanier in panierProspect)
+            foreach (PanierProspect panier in panierProspect)
             {
-                PrixTotal += lePanier.PrixTotal;
-                ArticleViewModel article = ArticlesDetailsViewModel.Find(art => art.Article.Id == lePanier.ArticleId);
-                ArticleDAL articleDAL = new ArticleDAL();
-                ArticlesDetailsViewModel.Add(new ArticleViewModel(articleDAL.Details(lePanier.ArticleId), lePanier.Quantite));
+                PrixTotal += panier.PrixTotal;
+                ArticlesDetailsViewModel.Add(new ArticleViewModel(new ArticleDAL().Details(panier.ArticleId), panier.Quantite));
             }
         }
 
+        internal void Initialiser()
+        {
+            ArticlesDetailsViewModel = new List<ArticleViewModel>();
+            Creneaux = new List<Creneau>();
+            PrixTotal = 0;
+        }
 
-        public void Trier()
+        internal void Trier()
         {
             ArticlesDetailsViewModel = ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
         }

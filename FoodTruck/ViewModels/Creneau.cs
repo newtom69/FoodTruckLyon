@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FoodTruck.ViewModels
 {
@@ -9,6 +6,6 @@ namespace FoodTruck.ViewModels
     {
         public DateTime DateRetrait { get; set; }
         public int CommandesPossiblesRestantes { get; set; }
-        
+
     }
 }
