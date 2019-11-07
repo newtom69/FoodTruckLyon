@@ -62,65 +62,42 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void Mail(Utilisateur lUtilisateur, Commande laCommande, PanierViewModel panier)
+        private void Mail(Utilisateur utilisateur, Commande commande, PanierViewModel panier)
         {
             string lesArticlesDansLeMail = "";
             foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " +
                                          (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
-            string nomClient = lUtilisateur.Nom ?? "non renseigné";
-            string prenomClient = lUtilisateur.Prenom ?? "non renseigné";
-            string emailClient = lUtilisateur.Email ?? "non@renseigne";
-            string numeroCommande = laCommande.Id.ToString();
+            string nomClient = utilisateur.Nom ?? "non renseigné";
+            string prenomClient = utilisateur.Prenom ?? "non renseigné";
+            string emailClient = utilisateur.Email ?? "non@renseigne";
+            string numeroCommande = commande.Id.ToString();
             string corpsDuMailEnCommunClientFoodtruck =
-                $"Nom : {nomClient}\nPrénom : {prenomClient}\nEmail : {emailClient}\n\nArticles :{lesArticlesDansLeMail}" +
-                $"\nTotal de la commande : {laCommande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}\n";
+                $"Nom : {nomClient}\n" +
+                $"Prénom : {prenomClient}\n" +
+                $"Email : {emailClient}\n\n" +
+                $"Articles :{lesArticlesDansLeMail}\n" +
+                $"Total de la commande : {commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))}\n";
+            if (commande.RemiseFidelite > 0)
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))}";
+            if (commande.RemiseCommerciale > 0)
+                corpsDuMailEnCommunClientFoodtruck += $"\nRemise commerciale : {commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))}";
             
-            if (laCommande.RemiseFidelite > 0)
-                corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {laCommande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))}";
-            if (laCommande.RemiseCommerciale > 0)
-                corpsDuMailEnCommunClientFoodtruck += $"\nRemise commerciale : {laCommande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))}";
-            
-            try
+            string sujet = $"Nouvelle commande numéro {numeroCommande}";
+            string corpsMail = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
+
+            Utilitaire.EnvoieMail("info@foodtrucklyon.fr", sujet, corpsMail);
+            if (utilisateur.Id != 0)
             {
-                using (MailMessage message = new MailMessage())
-                {
-                    message.From = new MailAddress("info@foodtrucklyon.fr");
-                    message.To.Add("info@foodtrucklyon.fr");
-                    message.ReplyToList.Add(emailClient);
-                    message.Subject = "Nouvelle commande numéro " + numeroCommande;
-                    message.Body = $"Nouvelle commande {numeroCommande}. Merci de la préparer pour le {laCommande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
-                    using (SmtpClient client = new SmtpClient())
-                    {
-                        client.EnableSsl = false;
-                        client.Send(message);
-                    }
-                }
-                if (lUtilisateur.Id != 0)
-                {
-                    using (MailMessage message = new MailMessage())
-                    {
-                        message.From = new MailAddress("info@foodtrucklyon.fr");
-                        message.To.Add(emailClient);
-                        message.Subject = " Nouvelle commande FoodTruckLyon prise en compte";
-                        message.Body = $"Bonjour {lUtilisateur.Prenom}\nVotre dernière commande a bien été prise en compte." +
-                            $"\nVous pourrez venir la chercher le {laCommande.DateRetrait.ToString("dddd dd MMMM")}" +
-                            $" à partir de {laCommande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
-                                       $"\nMerci de votre confiance\n\n" +
-                                       "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
-                        using (SmtpClient client = new SmtpClient())
-                        {
-                            client.EnableSsl = false;
-                            client.Send(message);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Response.StatusCode = 400;
-                ViewBag.Mail = "Erreur dans l'envoi de la commande veuillez rééssayer s'il vous plait";
+                string sujetMail2 = $"Nouvelle commande numéro {numeroCommande} prise en compte";
+                string corpsMail2 = $"Bonjour {utilisateur.Prenom}\n" +
+                    $"Votre dernière commande a bien été prise en compte." +
+                    $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
+                    $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
+                    $"\nMerci de votre confiance\n\n" +
+                    "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
+                Utilitaire.EnvoieMail(emailClient, sujetMail2, corpsMail2);
             }
         }
     }

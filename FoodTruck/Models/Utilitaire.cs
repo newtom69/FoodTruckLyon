@@ -82,7 +82,7 @@ namespace FoodTruck.Models
                 return "Non";
         }
 
-        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage)
+        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA="info@foodtrucklyon.fr")
         {
             try
             {
@@ -91,7 +91,7 @@ namespace FoodTruck.Models
                     message.From = new MailAddress("info@foodtrucklyon.fr");
                     message.To.Add(destinataire);
                     message.Subject = objet;
-
+                    message.ReplyToList.Add(reponseA);
                     message.Body = corpsMessage;
                     message.IsBodyHtml = false;
                     using (SmtpClient client = new SmtpClient())
