@@ -71,5 +71,28 @@ namespace FoodTruck.Controllers
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
+
+        [HttpGet]
+        public ActionResult PendantFermeturesExceptionnelles()
+        {
+            if (AdminCommande)
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesPendantFermeturesExceptionnelles()));
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+        }
+
+        [HttpPost]
+        public ActionResult PendantFermeturesExceptionnelles(int id, string statut)
+        {
+            if (AdminCommande)
+            {
+                new CommandeDAL().MettreAJourStatut(id, statut == "retire", statut == "annule");
+                return RedirectToAction(ActionNom);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+        }
     }
 }

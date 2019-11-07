@@ -223,14 +223,13 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                OuvertureHebdomadaire plage = new OuvertureHebdomadaire(); // TODO supprimer new
                 TimeSpan minuit = new TimeSpan(0, 0, 0);
                 int totalSecondes = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
 
-                plage = (from c in db.OuvertureHebdomadaire
-                         where totalSecondes <= 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin)
-                         orderby 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
-                         select c).FirstOrDefault();
+                OuvertureHebdomadaire plage = (from c in db.OuvertureHebdomadaire
+                                               where totalSecondes <= 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin)
+                                               orderby 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
+                                               select c).FirstOrDefault();
 
                 DateTime maintenant = DateTime.Now;
                 if (plage == null)

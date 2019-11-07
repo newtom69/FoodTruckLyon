@@ -349,6 +349,7 @@
     <Content Include="Views\AdministrerPlanning\OuverturesExceptionnelles.cshtml" />
     <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
     <Content Include="Views\AdministrerCommande\AVenir.cshtml" />
+    <Content Include="Views\AdministrerCommande\PendantFermeturesExceptionnelles.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,62 @@
+﻿@using FoodTruck.ViewModels
+@using FoodTruck.Models
+@using System.Configuration
+@using System.Globalization
+@{
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    ViewBag.Title = "Commandes pendant fermetures exceptionnelles";
+}
+@model ListeCommandesViewModel
+
+
+<h2>Administration</h2>
+@if (Model != null)
+{
+    <h3>Liste des commandes dont la date de retrait est pendant une fermeture exceptionnelle</h3>
+    <div id="panierValide">
+        <div class="choixHoraire">
+            @if (Model.Commandes.Count == 0)
+            {
+                <div class="messageInfo">Aucune commande passée à statuer</div>
+            }
+            @foreach (var c in Model.Commandes)
+            {
+                <div class="gestionCommandeArticle">
+                    <h4>Commande n° : @c.Commande.Id</h4>
+                    <div>pour le : @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                    <div>Client : @c.Utilisateur.Prenom @c.Utilisateur.Nom</div>
+                    <div>Retirée : @c.Commande.Retrait.OuiNon()</div>
+                    <div>Annulée : @c.Commande.Annulation.OuiNon()</div>
+                    <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="imagesGestionCommande">
+                        @foreach (var a in c.ListArticlesVM)
+                        {
+                            <div>
+                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                <p>@a.Quantite x @a.Article.Nom</p>
+                            </div>
+                        }
+                    </div>
+                    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input name="id" type="hidden" value="@c.Commande.Id">
+                        <div>
+                            <input name="statut" type="radio" value="retire" checked>
+                            Marquer la commande Retirée
+                        </div>
+                        <div>
+                            <input name="statut" type="radio" value="annule">
+                            Marquer la commande Annulée
+                        </div>
+                        <div class="ccfield-prepend">
+                            <input class="ccbtn" type="submit" value="Mettre à jour">
+                        </div>
+                    }
+                    <hr />
+                </div>
+            }
+        </div>
+    </div>
+}

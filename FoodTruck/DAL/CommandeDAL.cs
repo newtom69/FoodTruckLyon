@@ -173,6 +173,28 @@ namespace FoodTruck.DAL
             }
         }
 
+        internal List<Commande> ListerCommandesPendantFermeturesExceptionnelles()
+        {
+            DateTime maintenant = DateTime.Now;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            orderby cmd.DateRetrait
+                                            select cmd).ToList();
+
+                List<JourExceptionnel> fermetures = (from j in db.JourExceptionnel
+                                                     where DbFunctions.DiffDays(maintenant, j.DateFin) >= 0 && !j.Ouvert
+                                                     select j).ToList();
+
+                List<Commande> commandesDansFermeture = new List<Commande>();
+                foreach (JourExceptionnel fermeture in fermetures)
+                {
+                    commandesDansFermeture.AddRange(commandes.FindAll(c => fermeture.DateDebut <= c.DateRetrait && c.DateRetrait <= fermeture.DateFin));
+                }
+                return commandesDansFermeture;
+            }
+        }
         public List<ArticleViewModel> ListerArticles(int commandeId)
         {
             using (foodtruckEntities db = new foodtruckEntities())
