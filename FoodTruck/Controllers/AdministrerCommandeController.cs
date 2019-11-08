@@ -1,5 +1,7 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 
@@ -86,8 +88,35 @@ namespace FoodTruck.Controllers
         {
             if (AdminCommande)
             {
-                new CommandeDAL().MettreAJourStatut(id, statut == "retire", statut == "annule");
-                return RedirectToAction(ActionNom);
+                if (id != 0)
+                {
+                    new CommandeDAL().MettreAJourStatut(id, statut == "retire", statut == "annule");
+                    return RedirectToAction(ActionNom);
+                }
+                else
+                {
+                    List<Commande> commandes = new CommandeDAL().ListerCommandesPendantFermetures();
+                    foreach (Commande commande in commandes)
+                    {
+                        int commandeId = commande.Id;
+                        int clientId = commande.UtilisateurId;
+                        if (clientId != 0)
+                        {
+                            Utilisateur utilisateur = new UtilisateurDAL().Details(clientId);
+                            string objetMail = $"Problème commande {commandeId} : Fermeture de votre foodtruck";
+                            string corpsMessage = $"Bonjour {utilisateur.Prenom}\n\n" +
+                                $"Vous avez passé la commande numéro {commandeId} pour le {commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")} et nous vous en remercions.\n\n" +
+                                $"Malheureusement nous ne sommes plus ouvert pendant votre horaire de retrait.\n\n" +
+                                $"Nous vous invitons donc à choisir un autre créneau de retrait en dupliquant votre commande que vous aurez préalablement annulée.\n\n" +
+                                $"Nous vous prions de nous excuser pour la gène occasionnée.\n\n" +
+                                $"Bien cordialement\n" +
+                                $"Votre équipe Foodtrucklyon";
+                            string adresseMailClient = utilisateur.Email;
+                            Utilitaire.EnvoieMail(adresseMailClient, objetMail, corpsMessage);
+                        }
+                    }
+                    return RedirectToAction(ActionNom);
+                }
             }
             else
             {
