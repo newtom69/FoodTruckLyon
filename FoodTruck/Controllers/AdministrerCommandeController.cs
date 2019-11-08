@@ -72,10 +72,10 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
-        public ActionResult AVenir()
+        public ActionResult Futures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesAVenir()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesFutures()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }

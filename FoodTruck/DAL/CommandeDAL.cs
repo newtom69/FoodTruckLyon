@@ -164,13 +164,13 @@ namespace FoodTruck.DAL
                 return commandes;
             }
         }
-        internal List<Commande> ListerCommandesAVenir()
+        internal List<Commande> ListerCommandesFutures()
         {
             DateTime maintenant = DateTime.Now;
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            where DbFunctions.DiffMinutes(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
                                             orderby cmd.DateRetrait
                                             select cmd).ToList();
                 return commandes;
@@ -180,8 +180,8 @@ namespace FoodTruck.DAL
         {
             List<Commande> commandesPendantFermetures = ListerCommandesPendantFermeturesExceptionnelles();
             commandesPendantFermetures.AddRange(ListerCommandesPendantFermeturesHabituelles());
-            List<Commande> commandesPendantOuvertures = ListerCommandesPendantOuverturesExceptionnelles();
-            commandesPendantFermetures.RemoveAll(c => commandesPendantOuvertures.Contains(c));
+            List<Commande> commandesPendantOuverturesExceptionnelles = ListerCommandesPendantOuverturesExceptionnelles();
+            commandesPendantFermetures.RemoveAll(cf => commandesPendantOuverturesExceptionnelles.Exists(co => co.Id == cf.Id));
             return commandesPendantFermetures;
         }
 

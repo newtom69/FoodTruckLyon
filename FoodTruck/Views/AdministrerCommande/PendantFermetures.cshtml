@@ -34,8 +34,6 @@
                         <h4>Commande n° : @c.Commande.Id</h4>
                         <div>pour le : @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
                         <div>Client : @c.Utilisateur.Prenom @c.Utilisateur.Nom</div>
-                        <div>Retirée : @c.Commande.Retrait.OuiNon()</div>
-                        <div>Annulée : @c.Commande.Annulation.OuiNon()</div>
                         <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
                         <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
                         <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
