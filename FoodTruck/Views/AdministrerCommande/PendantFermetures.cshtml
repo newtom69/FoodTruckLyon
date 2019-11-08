@@ -25,7 +25,7 @@
                 {
                     <input name="id" type="hidden" value="0">
                     <div class="ccfield-prepend">
-                        <input class="ccbtn" type="submit" value="Alerter les clients">
+                        <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
                     </div>
                 }
                 foreach (var c in Model.Commandes)
@@ -48,21 +48,6 @@
                                 </div>
                             }
                         </div>
-                        @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <input name="id" type="hidden" value="@c.Commande.Id">
-                            <div>
-                                <input name="statut" type="radio" value="retire" checked>
-                                Marquer la commande Retirée
-                            </div>
-                            <div>
-                                <input name="statut" type="radio" value="annule">
-                                Marquer la commande Annulée
-                            </div>
-                            <div class="ccfield-prepend">
-                                <input class="ccbtn" type="submit" value="Mettre à jour">
-                            </div>
-                        }
                         <hr />
                     </div>
                 }
@@ -71,7 +56,7 @@
                 {
                     <input name="id" type="hidden" value="0">
                     <div class="ccfield-prepend">
-                        <input class="ccbtn" type="submit" value="Alerter les clients">
+                        <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
                     </div>
                 }
             }

@@ -18,10 +18,6 @@ namespace FoodTruck.DAL
                 return commande;
             }
         }
-        internal void Annuler(int id)
-        {
-            MettreAJourStatut(id, false, true);
-        }
 
         public void Ajouter(Commande commande, List<ArticleViewModel> articles)
         {
@@ -50,7 +46,16 @@ namespace FoodTruck.DAL
                 db.SaveChanges();
             }
         }
-        internal void MettreAJourStatut(int id, bool retire, bool annule)
+        internal void Annuler(int id)
+        {
+            MettreAJourStatut(id, false, true);
+        }
+        internal void Retirer(int id)
+        {
+            MettreAJourStatut(id, true, false);
+        }
+
+        private void MettreAJourStatut(int id, bool retrait, bool annule)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -60,7 +65,7 @@ namespace FoodTruck.DAL
                 if (commande != null)
                 {
                     commande.Annulation = annule;
-                    commande.Retrait = retire;
+                    commande.Retrait = retrait;
                     Utilisateur utilisateur = (from u in db.Utilisateur
                                                where u.Id == commande.UtilisateurId
                                                select u).FirstOrDefault();
@@ -173,9 +178,11 @@ namespace FoodTruck.DAL
         }
         internal List<Commande> ListerCommandesPendantFermetures()
         {
-            List<Commande> commandesPendatsFermetures = ListerCommandesPendantFermeturesExceptionnelles();
-            commandesPendatsFermetures.AddRange(ListerCommandesPendantFermeturesHabituelles());
-            return commandesPendatsFermetures;
+            List<Commande> commandesPendantFermetures = ListerCommandesPendantFermeturesExceptionnelles();
+            commandesPendantFermetures.AddRange(ListerCommandesPendantFermeturesHabituelles());
+            List<Commande> commandesPendantOuvertures = ListerCommandesPendantOuverturesExceptionnelles();
+            commandesPendantFermetures.RemoveAll(c => commandesPendantOuvertures.Contains(c));
+            return commandesPendantFermetures;
         }
 
         private List<Commande> ListerCommandesPendantFermeturesExceptionnelles()
@@ -184,12 +191,12 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            where DbFunctions.DiffMinutes(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
                                             orderby cmd.DateRetrait
                                             select cmd).ToList();
 
                 List<JourExceptionnel> fermetures = (from j in db.JourExceptionnel
-                                                     where DbFunctions.DiffDays(maintenant, j.DateFin) >= 0 && !j.Ouvert
+                                                     where DbFunctions.DiffMinutes(maintenant, j.DateFin) >= 0 && !j.Ouvert
                                                      select j).ToList();
 
                 List<Commande> commandesDansFermeture = new List<Commande>();
@@ -201,13 +208,36 @@ namespace FoodTruck.DAL
             }
         }
 
+        private List<Commande> ListerCommandesPendantOuverturesExceptionnelles()
+        {
+            DateTime maintenant = DateTime.Now;
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                List<Commande> commandes = (from cmd in db.Commande
+                                            where DbFunctions.DiffMinutes(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            orderby cmd.DateRetrait
+                                            select cmd).ToList();
+
+                List<JourExceptionnel> ouvertures = (from j in db.JourExceptionnel
+                                                     where DbFunctions.DiffMinutes(maintenant, j.DateFin) >= 0 && j.Ouvert
+                                                     select j).ToList();
+
+                List<Commande> commandesDansOuvertures = new List<Commande>();
+                foreach (JourExceptionnel fermeture in ouvertures)
+                {
+                    commandesDansOuvertures.AddRange(commandes.FindAll(c => fermeture.DateDebut <= c.DateRetrait && c.DateRetrait <= fermeture.DateFin));
+                }
+                return commandesDansOuvertures;
+            }
+        }
+
         private List<Commande> ListerCommandesPendantFermeturesHabituelles()
         {
             DateTime maintenant = DateTime.Now;
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where DbFunctions.DiffDays(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
+                                            where DbFunctions.DiffMinutes(maintenant, cmd.DateRetrait) >= 0 && !cmd.Retrait && !cmd.Annulation
                                             orderby cmd.DateRetrait
                                             select cmd).ToList();
 
@@ -223,6 +253,7 @@ namespace FoodTruck.DAL
                 return commandesDansFermeture;
             }
         }
+
         public List<ArticleViewModel> ListerArticles(int commandeId)
         {
             using (foodtruckEntities db = new foodtruckEntities())
