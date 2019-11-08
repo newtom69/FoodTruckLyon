@@ -37,6 +37,15 @@
         <input class="ccformfield" name="telephone" type="tel" placeholder="Téléphone" maxlength='10' required value="@if(ViewBag.Telephone != null) {@ViewBag.Telephone}">
     </div>
     <div class="ccfield-prepend">
+        <div class="ccformfield">
+            <div>
+                <input name="connexionAuto" type="checkbox" value="true" checked>
+                <input name="connexionAuto" type="hidden" value="false">
+                Connexion automatique
+            </div>
+        </div>
+    </div>
+    <div class="ccfield-prepend">
         <input class="ccbtn" type="submit" value="Creation">
     </div>
 }

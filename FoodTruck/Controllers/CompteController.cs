@@ -224,7 +224,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Creation(string email, string mdp, string mdp2, string nom, string prenom, string telephone)
+        public ActionResult Creation(string email, string mdp, string mdp2, string nom, string prenom, string telephone, bool connexionAuto)
         {
             Utilisateur utilisateur = Utilisateur;
             if (Utilisateur.Id == 0)
@@ -246,7 +246,7 @@ namespace FoodTruck.Controllers
 
             if (utilisateur != null)
             {
-                Session["UtilisateurId"] = utilisateur.Id;
+                Connexion(email, mdp, connexionAuto);
                 return RedirectToAction("Profil");
             }
             else
