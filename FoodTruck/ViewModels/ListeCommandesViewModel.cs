@@ -17,7 +17,7 @@ namespace FoodTruck.ViewModels
                 {
                     Commande = commande,
                     Utilisateur = utilisateur,
-                    ListArticlesVM = new CommandeDAL().ListerArticles(commande.Id),
+                    ListArticlesVM = new CommandeDAL().Articles(commande.Id),
                 };
                 Commandes.Add(commandeVM);
             }

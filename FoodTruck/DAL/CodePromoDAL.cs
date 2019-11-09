@@ -18,42 +18,45 @@ namespace FoodTruck.DAL
         }
 
         /// <summary>
-        /// Teste la validité d'un code promo. Renseigne dans "montantRemise" le montant de la remise lorsque le code est valide
+        /// Teste la validité d'un code promo. Renseigne dans "montantRemise" le montant de la remise lorsque le code est valide. 0 sinon
         /// </summary>
         /// <param name="code"></param>
         /// <param name="montantCommande"></param>
         /// <param name="montantRemise"></param>
         /// <returns></returns>
-        internal ValiditeCodePromo Validite(string code, double montantCommande, ref double montantRemise)
+        internal ValiditeCodePromo Validite(string code, double montantCommande, out double montantRemise)
         {
+            montantRemise = 0;
             ValiditeCodePromo validite;
-            DateTime maintenant = DateTime.Now;
-            CodePromo codePromo = Detail(code);
-            if (codePromo != null)
+            if (code.Length >= 3)
             {
-                if (codePromo.DateDebut > maintenant)
+                DateTime maintenant = DateTime.Now;
+                CodePromo codePromo = Detail(code);
+                if (codePromo != null)
                 {
-                    validite = ValiditeCodePromo.DateFuture;
-                }
-                else if (codePromo.DateFin < maintenant)
-                {
-                    validite = ValiditeCodePromo.DateDepassee;
-                }
-                else if (codePromo.MontantMinimumCommande > montantCommande)
-                {
-                    validite = ValiditeCodePromo.MontantInsuffisant;
+                    if (codePromo.DateDebut > maintenant)
+                        validite = ValiditeCodePromo.DateFuture;
+                    else if (codePromo.DateFin < maintenant)
+                        validite = ValiditeCodePromo.DateDepassee;
+                    else if (codePromo.MontantMinimumCommande > montantCommande)
+                        validite = ValiditeCodePromo.MontantInsuffisant;
+                    else
+                    {
+                        validite = ValiditeCodePromo.Valide;
+                        montantRemise = codePromo.Remise;
+                    }
                 }
                 else
                 {
-                    validite = ValiditeCodePromo.Valide;
-                    montantRemise = codePromo.Remise;
+                    validite = ValiditeCodePromo.Inconnu;
                 }
+                return validite;
             }
             else
             {
                 validite = ValiditeCodePromo.Inconnu;
+                return validite;
             }
-            return validite;
         }
     }
 }

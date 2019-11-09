@@ -73,7 +73,7 @@ namespace FoodTruck.Controllers
         public ActionResult Modifier()
         {
             if (AdminArticle)
-                return View(new ArticleDAL().ListerTout());
+                return View(new ArticleDAL().Tous());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -85,7 +85,7 @@ namespace FoodTruck.Controllers
             {
                 ArticleDAL articleDAL = new ArticleDAL();
                 ViewBag.ArticleAModifier = articleDAL.Details(id);
-                return View(articleDAL.ListerTout());
+                return View(articleDAL.Tous());
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);

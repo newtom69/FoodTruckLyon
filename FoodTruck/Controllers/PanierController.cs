@@ -44,9 +44,8 @@ namespace FoodTruck.Controllers
             TempData["CodePromo"] = codePromo;
             TempData["RemiseCommercialeValide"] = false;
             TempData["RemiseCommercialeMontant"] = (double)0;
-            double montantRemise = 0;
             CodePromoDAL codePromoDAL = new CodePromoDAL();
-            ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemise);
+            ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemise);
             switch (code)
             {
                 case ValiditeCodePromo.Valide:
@@ -142,7 +141,7 @@ namespace FoodTruck.Controllers
             return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 
-        internal bool Ajouter(Article lArticle, int quantite = 1)
+        internal bool Ajouter(Article article, int quantite = 1)
         {
             bool ajout;
             bool sauvPanierClient = false;
@@ -151,28 +150,28 @@ namespace FoodTruck.Controllers
                 sauvPanierClient = true;
             else
                 sauvPanierProspect = true;
-            PanierDAL lePanierDAL;
-            PanierProspectDAL lePanierProspectDAL;
-            if (!lArticle.DansCarte)
+            PanierDAL panierDAL;
+            PanierProspectDAL panierProspectDAL;
+            if (!article.DansCarte)
             {
                 ajout = false;
             }
             else
             {
-                ArticleViewModel artcl = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == lArticle.Id);
+                ArticleViewModel artcl = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == article.Id);
                 if (artcl == null)
                 {
-                    ArticleViewModel article = new ArticleViewModel(lArticle);
-                    PanierViewModel.ArticlesDetailsViewModel.Add(article);
+                    ArticleViewModel articleViewModel = new ArticleViewModel(article);
+                    PanierViewModel.ArticlesDetailsViewModel.Add(articleViewModel);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(Utilisateur.Id);
-                        lePanierDAL.Ajouter(lArticle, quantite);
+                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL.Ajouter(article, quantite);
                     }
                     else if (sauvPanierProspect)
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        lePanierProspectDAL.Ajouter(lArticle, quantite);
+                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        panierProspectDAL.Ajouter(article, quantite);
                     }
                 }
                 else
@@ -181,13 +180,13 @@ namespace FoodTruck.Controllers
                     artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(Utilisateur.Id);
-                        lePanierDAL.ModifierQuantite(lArticle, quantite);
+                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL.ModifierQuantite(article, quantite);
                     }
                     else if (sauvPanierProspect)
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        lePanierProspectDAL.ModifierQuantite(lArticle, quantite);
+                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        panierProspectDAL.ModifierQuantite(article, quantite);
                     }
                 }
                 ajout = true;

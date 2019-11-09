@@ -5,13 +5,13 @@
     ViewBag.Title = "FoodTruckLyon - Commande";
 }
 
-@if (Model.PrixTotal==0) //DETTE TECHNIQUE -> une commande peut potentiellement avoir un prix à 0 avec remise et cie => mettre Model.DateCommande==0 ??
+@if (Model.Id==0)
 {
     <h4>Vous ne pouvez pas commander si votre panier est vide.</h4>
     <h4>Venez le remplir en <a href="/Article">découvrant notre carte.</a></h4>
 }
 
-@if (Model.PrixTotal!=0)
+@if (Model.Id!=0)
 {
     <h3>Commande numéro <b>@Model.Id</b> confirmée. Merci !</h3>
     <td>

@@ -11,7 +11,7 @@ namespace FoodTruck.Controllers
         public ActionResult FermeturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new PeriodeExceptionnelleDAL().ListerFutursFermeturesExceptionnelles());
+                return View(new PeriodeExceptionnelleDAL().FutursFermeturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -56,7 +56,7 @@ namespace FoodTruck.Controllers
                     }
                     ViewBag.Chevauchement = chevauchement;
                 }
-                return View(ouvertureDAL.ListerFutursFermeturesExceptionnelles());
+                return View(ouvertureDAL.FutursFermeturesExceptionnelles());
             }
             else
             {
@@ -68,7 +68,7 @@ namespace FoodTruck.Controllers
         public ActionResult OuverturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new PeriodeExceptionnelleDAL().ListerFutursOuverturesExceptionnelles());
+                return View(new PeriodeExceptionnelleDAL().FutursOuverturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -114,7 +114,7 @@ namespace FoodTruck.Controllers
                     }
                     ViewBag.Chevauchement = chevauchement;
                 }
-                return View(ouvertureDAL.ListerFutursOuverturesExceptionnelles());
+                return View(ouvertureDAL.FutursOuverturesExceptionnelles());
             }
             else
             {
@@ -126,7 +126,7 @@ namespace FoodTruck.Controllers
         public ActionResult OuverturesHebdomadaires()
         {
             if (AdminPlanning)
-                return View(new OuvertureHebdomadaireDAL().ListerOuverturesHebdomadaires());
+                return View(new OuvertureHebdomadaireDAL().OuverturesHebdomadaires());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -168,7 +168,7 @@ namespace FoodTruck.Controllers
                     }
                     ViewBag.Chevauchement = chevauchement;
                 }
-                return View(ouvertureDAL.ListerOuverturesHebdomadaires());
+                return View(ouvertureDAL.OuverturesHebdomadaires());
             }
             else
             {

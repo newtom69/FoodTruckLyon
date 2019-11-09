@@ -28,13 +28,13 @@ namespace FoodTruck.Controllers
                 if (utilisateurId != 0)
                 {
                     PanierDAL lePanierDal = new PanierDAL(utilisateurId);
-                    foreach (ArticleViewModel lArticle in (TempData["PanierViewModelSauv"] as PanierViewModel).ArticlesDetailsViewModel)
+                    foreach (ArticleViewModel article in (TempData["PanierViewModelSauv"] as PanierViewModel).ArticlesDetailsViewModel)
                     {
-                        Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
+                        Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
                         if (panier == null)
-                            lePanierDal.Ajouter(lArticle.Article, lArticle.Quantite);
+                            lePanierDal.Ajouter(article.Article, article.Quantite);
                         else
-                            lePanierDal.ModifierQuantite(lArticle.Article, lArticle.Quantite);
+                            lePanierDal.ModifierQuantite(article.Article, article.Quantite);
                     }
                 }
                 TempData["PanierViewModelSauv"] = null;
@@ -42,7 +42,7 @@ namespace FoodTruck.Controllers
             }
 
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
             ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
             return View(Utilisateur);
@@ -88,7 +88,7 @@ namespace FoodTruck.Controllers
                 }
             }
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesEnCoursUtilisateur(Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
             ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
             return View(Utilisateur);
@@ -98,7 +98,7 @@ namespace FoodTruck.Controllers
         public ActionResult Commandes()
         {
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.ListerCommandesUtilisateur(Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.CommandesUtilisateur(Utilisateur.Id);
             ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
             return View(listeCommandesViewModel);
         }
@@ -122,7 +122,7 @@ namespace FoodTruck.Controllers
             Commande commande = commandeDAL.Detail(commandeId);
             if (commande != null && commande.UtilisateurId == Utilisateur.Id)
             {
-                List<ArticleViewModel> articles = commandeDAL.ListerArticles(commandeId);
+                List<ArticleViewModel> articles = commandeDAL.Articles(commandeId);
                 if (viderPanier)
                 {
                     new PanierDAL(Utilisateur.Id).Supprimer();

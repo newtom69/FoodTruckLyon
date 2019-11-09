@@ -9,15 +9,15 @@ namespace FoodTruck.DAL
 {
     public class PeriodeExceptionnelleDAL
     {
-        internal List<JourExceptionnel> ListerFutursFermeturesExceptionnelles()
+        internal List<JourExceptionnel> FutursFermeturesExceptionnelles()
         {
-            return ListerFutursPeriodesExceptionnelles(false);
+            return FutursPeriodesExceptionnelles(false);
         }
-        internal List<JourExceptionnel> ListerFutursOuverturesExceptionnelles()
+        internal List<JourExceptionnel> FutursOuverturesExceptionnelles()
         {
-            return ListerFutursPeriodesExceptionnelles(true);
+            return FutursPeriodesExceptionnelles(true);
         }
-        private List<JourExceptionnel> ListerFutursPeriodesExceptionnelles(bool ouvert)
+        private List<JourExceptionnel> FutursPeriodesExceptionnelles(bool ouvert)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

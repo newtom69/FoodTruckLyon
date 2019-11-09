@@ -341,7 +341,7 @@
     <Content Include="Views\Compte\Deconnexion.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
     <Content Include="Views\AdministrerCommande\EnCours.cshtml" />
-    <Content Include="Views\AdministrerCommande\Toutes.cshtml" />
+    <Content Include="Views\AdministrerCommande\Recherche.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
     <Content Include="Views\AdministrerCommande\AStatuer.cshtml" />
     <Content Include="Views\Administrer\Index.cshtml" />

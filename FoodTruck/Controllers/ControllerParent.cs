@@ -123,13 +123,13 @@ namespace FoodTruck.Controllers
             if (Utilisateur != null && Utilisateur.Id != 0)
             {
                 PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
-                foreach (ArticleViewModel lArticle in PanierViewModel.ArticlesDetailsViewModel)
+                foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
-                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == lArticle.Article.Id);
+                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
                     if (panier == null)
-                        lePanierDal.Ajouter(lArticle.Article, lArticle.Quantite);
+                        lePanierDal.Ajouter(article.Article, article.Quantite);
                     else
-                        lePanierDal.ModifierQuantite(lArticle.Article, lArticle.Quantite);
+                        lePanierDal.ModifierQuantite(article.Article, article.Quantite);
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace FoodTruck.Controllers
 
         private void RetirerLesDroitsdAcces()
         {
-            AdminArticle = AdminCommande = AdminUtilisateur = false;
+            AdminArticle = AdminCommande = AdminUtilisateur = AdminPlanning = false;
         }
         private void MettrelUrlEnSession()
         {

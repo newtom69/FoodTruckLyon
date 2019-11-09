@@ -7,7 +7,7 @@ namespace FoodTruck.DAL
 {
     public class OuvertureHebdomadaireDAL
     {
-        internal List<OuvertureHebdomadaire> ListerOuverturesHebdomadaires()
+        internal List<OuvertureHebdomadaire> OuverturesHebdomadaires()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

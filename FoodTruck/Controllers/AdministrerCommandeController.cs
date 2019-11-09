@@ -1,9 +1,11 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace FoodTruck.Controllers
 {
@@ -14,7 +16,7 @@ namespace FoodTruck.Controllers
         {
             const int fouchetteHeures = 4;
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesEnCours(fouchetteHeures)));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesEnCours(fouchetteHeures)));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -40,7 +42,7 @@ namespace FoodTruck.Controllers
         public ActionResult AStatuer()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesAStatuer()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -63,10 +65,39 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
-        public ActionResult Toutes()
+        public ActionResult Recherche()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesToutes()));
+            {
+                ViewBag.DateDebut = DateTime.Today;
+                ViewBag.DateFin = DateTime.Today;
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesToutes("", DateTime.Today, DateTime.Today.AddDays(3))));
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+        }
+
+        [HttpPost]
+        public ActionResult Recherche(string recherche, DateTime? dateDebut, DateTime? dateFin)
+        {
+            if (AdminCommande)
+            {
+                ViewBag.Recherche = recherche;
+                ViewBag.DateDebut = dateDebut;
+                ViewBag.DateFin = dateFin;
+
+                string[] tabRecherche = recherche.Split(' ');
+                List<Commande>[] tabCommandes = new List<Commande>[tabRecherche.Length];
+                
+                for (int i = 0; i < tabRecherche.Length; i++)
+                    tabCommandes[i] = new CommandeDAL().CommandesToutes(tabRecherche[i], dateDebut, dateFin);
+
+                List<Commande> commandes = tabCommandes[0];
+                for (int i = 1; i < tabCommandes.Length; i++)
+                    commandes = commandes.Intersect(tabCommandes[i], new CommandeEqualityComparer()).ToList();
+
+                return View(new ListeCommandesViewModel(commandes));
+            }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -75,7 +106,7 @@ namespace FoodTruck.Controllers
         public ActionResult Futures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesFutures()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesFutures()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -84,7 +115,7 @@ namespace FoodTruck.Controllers
         public ActionResult PendantFermetures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().ListerCommandesPendantFermetures()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesPendantFermetures()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -95,7 +126,7 @@ namespace FoodTruck.Controllers
             if (AdminCommande && id == 0)
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
-                List<Commande> commandes = commandeDAL.ListerCommandesPendantFermetures();
+                List<Commande> commandes = commandeDAL.CommandesPendantFermetures();
                 foreach (Commande commande in commandes)
                 {
                     int commandeId = commande.Id;

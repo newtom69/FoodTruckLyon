@@ -13,7 +13,7 @@ namespace FoodTruck.ViewModels
         public ArticleIndexViewModel(bool dansCarte)
         {
             Articles = new List<ArticleViewModel>();
-            foreach (Article article in new ArticleDAL().ListerArticles(dansCarte))
+            foreach (Article article in new ArticleDAL().Articles(dansCarte))
             {
                 Articles.Add(new ArticleViewModel(article));
             }
@@ -24,7 +24,7 @@ namespace FoodTruck.ViewModels
         public ArticleIndexViewModel()
         {
             Articles = new List<ArticleViewModel>();
-            foreach (Article article in new ArticleDAL().ListerTousArticles())
+            foreach (Article article in new ArticleDAL().TousArticles())
             {
                 Articles.Add(new ArticleViewModel(article));
             }

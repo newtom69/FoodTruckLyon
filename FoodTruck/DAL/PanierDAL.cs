@@ -84,7 +84,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Article> ListerArticlesPanierUtilisateur()
+        public List<Article> ArticlesPanierUtilisateur()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

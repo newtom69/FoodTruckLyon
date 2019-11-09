@@ -13,8 +13,7 @@ namespace FoodTruck.Controllers
         public ActionResult Index(string codePromo, DateTime dateRetrait, int? remiseFidelite)
         {
             int montantRemiseFidelite = remiseFidelite ?? 0;
-            double montantRemiseCommerciale = 0;
-            new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, ref montantRemiseCommerciale);
+            new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemiseCommerciale);
 
             if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
