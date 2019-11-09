@@ -498,7 +498,7 @@ article#articleAPropos {
 
 #ajoutPanier {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
     #ajoutPanier form {
