@@ -1,11 +1,12 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Linq;
 
 namespace FoodTruck.Controllers
 {
@@ -88,7 +89,7 @@ namespace FoodTruck.Controllers
 
                 string[] tabRecherche = recherche.Split(' ');
                 List<Commande>[] tabCommandes = new List<Commande>[tabRecherche.Length];
-                
+
                 for (int i = 0; i < tabRecherche.Length; i++)
                     tabCommandes[i] = new CommandeDAL().CommandesToutes(tabRecherche[i], dateDebut, dateFin);
 
