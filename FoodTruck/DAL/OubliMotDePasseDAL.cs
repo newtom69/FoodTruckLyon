@@ -7,29 +7,29 @@ namespace FoodTruck.DAL
 {
     public class OubliMotDePasseDAL
     {
-        internal UtilisateurOubliMotDePasse Details(int utilisateurId, string guid)
+        internal OubliMotDePasse Details(string identifiant)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime maintenant = DateTime.Now;
-                var oubliMotDePasse = (from u in db.UtilisateurOubliMotDePasse
-                                       where u.UtilisateurId == utilisateurId && u.Guid == guid && DbFunctions.DiffMinutes(maintenant, u.DateFinValidite) >= 0
+                var oubliMotDePasse = (from u in db.OubliMotDePasse
+                                       where u.CodeVerification == identifiant && DbFunctions.DiffMinutes(maintenant, u.DateFinValidite) >= 0
                                        select u).FirstOrDefault();
                 return oubliMotDePasse;
             }
         }
-        internal void Ajouter(int utilisateurId, string guid, DateTime dateFinValidite)
+        internal void Ajouter(int utilisateurId, string codeVerification, DateTime dateFinValidite)
         {
             Supprimer(utilisateurId);
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                UtilisateurOubliMotDePasse oubliMotDePasse = new UtilisateurOubliMotDePasse
+                OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
                 {
                     UtilisateurId = utilisateurId,
-                    Guid = guid,
+                    CodeVerification = codeVerification,
                     DateFinValidite = dateFinValidite
                 };
-                db.UtilisateurOubliMotDePasse.Add(oubliMotDePasse);
+                db.OubliMotDePasse.Add(oubliMotDePasse);
                 db.SaveChanges();
             }
         }
@@ -38,37 +38,37 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                List<UtilisateurOubliMotDePasse> listeOubliMotDePasse =
-                    (from u in db.UtilisateurOubliMotDePasse
+                List<OubliMotDePasse> listeOubliMotDePasse =
+                    (from u in db.OubliMotDePasse
                      where u.UtilisateurId == utilisateurId
                      select u).ToList();
-                db.UtilisateurOubliMotDePasse.RemoveRange(listeOubliMotDePasse);
+                db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
                 db.SaveChanges();
             }
         }
 
-        internal bool Verifier(int utilisateurId, string guid)
+        internal int Verifier(string identifiant)
         {
-            UtilisateurOubliMotDePasse oubliMotDePasse = Details(utilisateurId, guid);
+            OubliMotDePasse oubliMotDePasse = Details(identifiant);
             if (oubliMotDePasse != null)
             {
-                Supprimer(utilisateurId);
-                return true;
+                Supprimer(oubliMotDePasse.UtilisateurId);
+                return oubliMotDePasse.UtilisateurId;
             }
             else
             {
-                return false;
+                return 0;
             }
         }
         internal int Purger()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                IQueryable<UtilisateurOubliMotDePasse> listeOubliMotDePasse = from u in db.UtilisateurOubliMotDePasse
+                IQueryable<OubliMotDePasse> listeOubliMotDePasse = from u in db.OubliMotDePasse
                                                                               where DbFunctions.DiffMinutes(u.DateFinValidite, DateTime.Now) > 0
                                                                               select u;
 
-                db.UtilisateurOubliMotDePasse.RemoveRange(listeOubliMotDePasse);
+                db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
                 return db.SaveChanges();
             }
         }

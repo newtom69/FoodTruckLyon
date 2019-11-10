@@ -1,4 +1,5 @@
 ﻿using FoodTruck.Models;
+using FoodTruck.Outils;
 using System;
 
 namespace FoodTruck.ViewModels

@@ -20,7 +20,7 @@ namespace FoodTruck
             this.Commande = new HashSet<Commande>();
             this.Panier = new HashSet<Panier>();
             this.Visite = new HashSet<Visite>();
-            this.UtilisateurOubliMotDePasse = new HashSet<UtilisateurOubliMotDePasse>();
+            this.OubliMotDePasse = new HashSet<OubliMotDePasse>();
         }
     
         public int Id { get; set; }
@@ -43,6 +43,6 @@ namespace FoodTruck
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Visite> Visite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UtilisateurOubliMotDePasse> UtilisateurOubliMotDePasse { get; set; }
+        public virtual ICollection<OubliMotDePasse> OubliMotDePasse { get; set; }
     }
 }

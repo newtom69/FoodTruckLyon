@@ -59,6 +59,7 @@ else if (TempData["mailEnvoyeNouveauMdpKo"] != null)
 }
 @using (Html.BeginForm("OubliMotDePasse", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
 {
+    <input name="action" type="hidden" value="generationMail">
     <div class="ccfield-prepend">
         <input class="ccformfield" name="email" type="email" placeholder="Email" required>
     </div>

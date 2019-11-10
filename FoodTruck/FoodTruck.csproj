@@ -186,6 +186,9 @@
     <Compile Include="Models\JourExceptionnel.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OubliMotDePasse.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\OuvertureHebdomadaire.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
@@ -196,9 +199,6 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Utilisateur.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UtilisateurOubliMotDePasse.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Outils\CommandeEqualityComparer.cs" />
@@ -350,6 +350,8 @@
     <Content Include="Views\AdministrerCommande\Futures.cshtml" />
     <Content Include="Views\AdministrerCommande\PendantFermetures.cshtml" />
     <Content Include="Views\AdministrerBdd\PurgerBdd.cshtml" />
+    <Content Include="Views\AdministrerClient\Index.cshtml" />
+    <Content Include="Views\Compte\OubliMotDePasse.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -360,7 +362,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Views\AdministrerClient\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

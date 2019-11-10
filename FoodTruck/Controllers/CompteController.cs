@@ -1,8 +1,11 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -49,7 +52,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Profil(int id, string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
+        public ActionResult Profil(string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
             Utilisateur utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
@@ -59,9 +62,6 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                if (utilisateur.Id != id)  //tentative de piratage --> modification du profil leurre Thomas Vuille id = 1
-                    id = 1;
-
                 string nouveauMdp;
                 if (mdp == "" && mdp2 == "")
                     nouveauMdp = ancienMdp;
@@ -72,7 +72,7 @@ namespace FoodTruck.Controllers
 
                 if (nouveauMdp != "")
                 {
-                    if (utilisateurDAL.Modification(id, email, nouveauMdp, nom, prenom, telephone) == 1)
+                    if (utilisateurDAL.Modification(utilisateur.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
                     {
                         ViewBag.Modification = true;
                         Utilisateur = utilisateurDAL.Connexion(email, nouveauMdp);
@@ -168,28 +168,22 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string email, string mdp, bool connexionAuto)
         {
-            Utilisateur utilisateur = new UtilisateurDAL().Connexion(email, mdp);
-            if (utilisateur != null)
+            Utilisateur = new UtilisateurDAL().Connexion(email, mdp);
+            if (Utilisateur != null)
             {
-                ViewBag.Utilisateur = utilisateur;
-                HttpCookie cookie;
+                ViewBag.Utilisateur = Utilisateur;
+                Session["UtilisateurId"] = Utilisateur.Id;
                 if (connexionAuto)
                 {
-                    cookie = new HttpCookie("GuidClient")
+                    HttpCookie cookie = new HttpCookie("GuidClient")
                     {
-                        Value = utilisateur.Guid,
+                        Value = Utilisateur.Guid,
                         Expires = DateTime.Now.AddDays(30)
                     };
                     Response.Cookies.Add(cookie);
                 }
-                PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
-                panierProspectDAL.Supprimer();
-                cookie = new HttpCookie("Prospect")
-                {
-                    Expires = DateTime.Now.AddDays(-30)
-                };
-                Response.Cookies.Add(cookie);
+                RecupererPanierProspectPuisSupprimer();
+                SupprimerCookieProspect();
                 return RedirectToAction("Profil", "Compte");
             }
             else
@@ -258,65 +252,81 @@ namespace FoodTruck.Controllers
         }
 
         [HttpGet]
-        public ActionResult OubliMotDePasse(string email, string guid)
+        public ActionResult OubliMotDePasse(string codeVerification)
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
-            Utilisateur utilisateur = utilisateurDAL.Details(email);
-            if (new OubliMotDePasseDAL().Verifier(utilisateur.Id, guid))
+            int utilisateurId = new OubliMotDePasseDAL().Verifier(codeVerification);
+            if (utilisateurId != 0)
             {
-                string nouveauMotdePasse = Guid.NewGuid().ToString("n").Substring(0, 10);
-                int changement = utilisateurDAL.Modification(utilisateur.Id, utilisateur.Email, nouveauMotdePasse, utilisateur.Nom, utilisateur.Prenom, utilisateur.Telephone);
-                if (changement == 1)
-                {
-                    string sujetMail = "Votre nouveau mot de passe";
-                    string message = "Bonjour\n" +
-                        "Vous avez demandé un nouveau mot de passe.\n" +
-                        "Le voilà : \n\n" +
-                        nouveauMotdePasse +
-                        "\n\nNous vous conseillons de vous connecter avec dès que possible et de le changer aussitôt";
-
-                    if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                        TempData["mailEnvoyeNouveauMdpOk"] = "Un email contenant votre nouveau mot de passe vient de vous être envoyé";
-                    else
-                        TempData["mailEnvoyeNouveauMdpKo"] = "L'envoi du mail contenant votre nouveau mot de passe a échoué";
-                }
+                Utilisateur = utilisateurDAL.Details(utilisateurId);
+                ViewBag.Utilisateur = Utilisateur;
+                Session["UtilisateurId"] = Utilisateur.Id;
+                RecupererPanierProspectPuisSupprimer();
+                SupprimerCookieProspect();
+                return View();
             }
             else
-                TempData["mailEnvoyeNouveauMdpKo"] = "Le lien de génération du nouveau mot de passe n'est plus valide";
-
-            return RedirectToAction("Connexion", "Compte");
-
+            {
+                TempData["mailEnvoyeNouveauMdpKo"] = "Le lien de redéfinition du mot de passe n'est plus valide. Refaite une demande";
+                return RedirectToAction("Connexion", "Compte");
+            }
         }
 
         [HttpPost]
-        public ActionResult OubliMotDePasse(string email)
+        public ActionResult OubliMotDePasse(string action, string email, string mdp, string mdp2)
         {
-            string guid = Guid.NewGuid().ToString();
-            string url = HttpContext.Request.Url.ToString() + "?email=" + email + "&guid=" + guid;
-
-            Utilisateur utilisateur = new UtilisateurDAL().Details(email);
-            if (utilisateur != null)
+            if (action == "generationMail")
             {
-                new OubliMotDePasseDAL().Ajouter(utilisateur.Id, guid, DateTime.Now.AddMinutes(10));
+                string codeVerification = Guid.NewGuid().ToString("n") + email.GetHash();
+                string url = HttpContext.Request.Url.ToString() + '/' + codeVerification;
+                Utilisateur utilisateur = new UtilisateurDAL().Details(email);
+                if (utilisateur != null)
+                {
+                    new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(10));
 
-                string sujetMail = "Procédure de génération d'un nouveau mot de passe";
-                string message = "Bonjour\n" +
-                    "Vous avez oublié votre mot de passe et avez demandé à en recevoir un nouveau.\n" +
-                    "Si vous êtes bien à l'origine de cette demande, veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur :\n" +
-                    "\n" +
-                    url +
-                    "\n\nUn nouveau mot de passe vous sera envoyé aussitôt";
+                    string sujetMail = "Procédure de génération d'un nouveau mot de passe";
+                    string message = "Bonjour\n" +
+                        "Vous avez oublié votre mot de passe et avez demandé à en redéfinir un nouveau.\n" +
+                        "Si vous êtes bien à l'origine de cette demande, veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur :\n" +
+                        "\n" +
+                        url +
+                        "\n\nVous serez redirigé vers une page de rédéfinition de votre mot de passe";
 
-                if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                    TempData["mailEnvoyeLienGenerationMdpOk"] = "Un email avec un lien de génération de nouveau mot de passe vient de vous être envoyé";
+                    if (Utilitaire.EnvoieMail(email, sujetMail, message))
+                        TempData["mailEnvoyeLienGenerationMdpOk"] = "Un email avec un lien de redéfinition de votre mot de passe vient de vous être envoyé";
+                    else
+                        TempData["mailEnvoyeLienGenerationMdpKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
+                }
                 else
-                    TempData["mailEnvoyeLienGenerationMdpKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
+                {
+                    TempData["mailEnvoyeLienGenerationMdpKo"] = "Nous n'avons pas de compte client avec cette adresse email. Merci de vérifier votre saisie";
+                }
+                return RedirectToAction("Connexion", "Compte");
+            }
+            else if (action == "changementMotDePasse")
+            {
+                if (VerifMdp(mdp, mdp2))
+                {
+                    UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+                    if (utilisateurDAL.Modification(Utilisateur.Id, mdp) == 1)
+                    {
+                        ViewBag.Modification = true;
+                    }
+                }
+                else
+                {
+                    ViewBag.MdpIncorrect = true;
+                    return View();
+                }
+
+                CommandeDAL commandeDAL = new CommandeDAL();
+                List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
+                ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
+                ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
+                return RedirectToAction("Connexion", "Compte");
             }
             else
-            {
-                TempData["mailEnvoyeLienGenerationMdpKo"] = "Nous n'avons pas de compte client avec cette adresse email. Merci de vérifier votre saisie";
-            }
-            return RedirectToAction("Connexion", "Compte");
+                return RedirectToAction("Connexion", "Compte");
         }
 
         private bool VerifMdp(string mdp1, string mdp2)
@@ -326,5 +336,22 @@ namespace FoodTruck.Controllers
             else
                 return true;
         }
+
+        private void SupprimerCookieProspect()
+        {
+            HttpCookie cookie = new HttpCookie("Prospect")
+            {
+                Expires = DateTime.Now.AddDays(-30)
+            };
+            Response.Cookies.Add(cookie);
+        }
+
+        private void RecupererPanierProspectPuisSupprimer()
+        {
+            PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+            TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
+            panierProspectDAL.Supprimer();
+        }
+
     }
 }

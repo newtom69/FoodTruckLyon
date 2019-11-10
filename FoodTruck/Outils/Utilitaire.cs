@@ -1,13 +1,16 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace FoodTruck.Models
+namespace FoodTruck.Outils
 {
     public static class Utilitaire
     {
@@ -105,6 +108,20 @@ namespace FoodTruck.Models
             {
                 return false;
             }
+        }
+        public static string GetHash(this string input)
+        {
+            using (SHA256 hash = SHA256.Create())
+            {
+                byte[] data = hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+                return sBuilder.ToString();
+            }
+            
         }
     }
 }

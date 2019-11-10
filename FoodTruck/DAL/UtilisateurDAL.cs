@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodTruck.Outils;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -33,10 +34,7 @@ namespace FoodTruck.DAL
 
         public Utilisateur Connexion(string email, string mdp)
         {
-            string mdpHash;
-            using (SHA256 Hash = SHA256.Create())
-                mdpHash = GetHash(Hash, mdp);
-
+            string mdpHash = mdp.GetHash();
             Utilisateur utilisateur = new Utilisateur();
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -87,9 +85,7 @@ namespace FoodTruck.DAL
 
         public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
         {
-            string mdpHash;
-            using (SHA256 Hash = SHA256.Create())
-                mdpHash = GetHash(Hash, mdp);
+            string mdpHash = mdp.GetHash();
             string guid = Guid.NewGuid().ToString();
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -119,7 +115,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal int Modification(int id, string email, string mdp, string nom, string prenom, string telephone)
+        internal int Modification(int id, string mdp, string email = null, string nom = null, string prenom = null, string telephone = null)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -127,25 +123,17 @@ namespace FoodTruck.DAL
                                            where user.Id == id
                                            select user).FirstOrDefault();
 
-                using (SHA256 Hash = SHA256.Create())
-                    utilisateur.Mdp = GetHash(Hash, mdp);
-                utilisateur.Nom = nom;
-                utilisateur.Prenom = prenom;
-                utilisateur.Email = email;
-                utilisateur.Telephone = telephone;
+                utilisateur.Mdp = mdp.GetHash();
+                if (email != null)
+                    utilisateur.Email = email;
+                if (nom != null)
+                    utilisateur.Nom = nom;
+                if (prenom != null)
+                    utilisateur.Prenom = prenom;
+                if (telephone != null)
+                    utilisateur.Telephone = telephone;
                 return db.SaveChanges();
             }
-        }
-
-        private static string GetHash(HashAlgorithm hashAlgorithm, string input)
-        {
-            byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
-            StringBuilder sBuilder = new StringBuilder();
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-            return sBuilder.ToString();
         }
     }
 }

@@ -72,6 +72,15 @@
           <Property Name="DateFin" Type="datetime" Nullable="false" />
           <Property Name="Ouvert" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="OubliMotDePasse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UtilisateurId" Type="int" Nullable="false" />
+          <Property Name="CodeVerification" Type="char" MaxLength="96" Nullable="false" />
+          <Property Name="DateFinValidite" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="OuvertureHebdomadaire">
           <Key>
             <PropertyRef Name="Id" />
@@ -120,15 +129,6 @@
           <Property Name="AdminArticle" Type="bit" Nullable="false" />
           <Property Name="AdminPlanning" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="UtilisateurOubliMotDePasse">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UtilisateurId" Type="int" Nullable="false" />
-          <Property Name="Guid" Type="char" MaxLength="36" Nullable="false" />
-          <Property Name="DateFinValidite" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="Visite">
           <Key>
             <PropertyRef Name="Id" />
@@ -151,18 +151,6 @@
             </Principal>
             <Dependent Role="Article">
               <PropertyRef Name="FamilleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CodeOubliMotDePasse_Utilisateur">
-          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
-          <End Role="UtilisateurOubliMotDePasse" Type="Self.UtilisateurOubliMotDePasse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UtilisateurOubliMotDePasse">
-              <PropertyRef Name="UtilisateurId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -198,6 +186,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Commande">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OubliMotDePasse_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="OubliMotDePasse" Type="Self.OubliMotDePasse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OubliMotDePasse">
               <PropertyRef Name="UtilisateurId" />
             </Dependent>
           </ReferentialConstraint>
@@ -257,19 +257,15 @@
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OubliMotDePasse" EntityType="Self.OubliMotDePasse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UtilisateurOubliMotDePasse" EntityType="Self.UtilisateurOubliMotDePasse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
             <End Role="FamilleArticle" EntitySet="FamilleArticle" />
             <End Role="Article" EntitySet="Article" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CodeOubliMotDePasse_Utilisateur" Association="Self.FK_CodeOubliMotDePasse_Utilisateur">
-            <End Role="Utilisateur" EntitySet="Utilisateur" />
-            <End Role="UtilisateurOubliMotDePasse" EntitySet="UtilisateurOubliMotDePasse" />
           </AssociationSet>
           <AssociationSet Name="FK_Commande_Article_Article" Association="Self.FK_Commande_Article_Article">
             <End Role="Article" EntitySet="Article" />
@@ -282,6 +278,10 @@
           <AssociationSet Name="FK_Commande_Utilisateur" Association="Self.FK_Commande_Utilisateur">
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Commande" EntitySet="Commande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OubliMotDePasse_Utilisateur" Association="Self.FK_OubliMotDePasse_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="OubliMotDePasse" EntitySet="OubliMotDePasse" />
           </AssociationSet>
           <AssociationSet Name="FK_PanierProspect_Article" Association="Self.FK_PanierProspect_Article">
             <End Role="Article" EntitySet="Article" />
@@ -522,12 +522,12 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="Visite" EntitySet="Visite" />
           </AssociationSet>
-          <EntitySet Name="UtilisateurOubliMotDePasse" EntityType="omasvui147994fr33943_foodtruckModel.UtilisateurOubliMotDePasse" />
-          <AssociationSet Name="FK_CodeOubliMotDePasse_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_CodeOubliMotDePasse_Utilisateur">
-            <End Role="Utilisateur" EntitySet="Utilisateur" />
-            <End Role="UtilisateurOubliMotDePasse" EntitySet="UtilisateurOubliMotDePasse" />
-          </AssociationSet>
           <EntitySet Name="JourExceptionnel" EntityType="omasvui147994fr33943_foodtruckModel.JourExceptionnel" />
+          <EntitySet Name="OubliMotDePasse" EntityType="omasvui147994fr33943_foodtruckModel.OubliMotDePasse" />
+          <AssociationSet Name="FK_OubliMotDePasse_Utilisateur" Association="omasvui147994fr33943_foodtruckModel.FK_OubliMotDePasse_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="OubliMotDePasse" EntitySet="OubliMotDePasse" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -548,7 +548,7 @@
           <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Utilisateur" ToRole="Commande" />
           <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur" FromRole="Utilisateur" ToRole="Panier" />
           <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Utilisateur" ToRole="Visite" />
-          <NavigationProperty Name="UtilisateurOubliMotDePasse" Relationship="omasvui147994fr33943_foodtruckModel.FK_CodeOubliMotDePasse_Utilisateur" FromRole="Utilisateur" ToRole="UtilisateurOubliMotDePasse" />
+          <NavigationProperty Name="OubliMotDePasse" Relationship="omasvui147994fr33943_foodtruckModel.FK_OubliMotDePasse_Utilisateur" FromRole="Utilisateur" ToRole="OubliMotDePasse" />
         </EntityType>
         <Association Name="FK_Commande_Utilisateur">
           <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
@@ -586,28 +586,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UtilisateurOubliMotDePasse">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
-          <Property Name="Guid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
-          <Property Name="DateFinValidite" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_CodeOubliMotDePasse_Utilisateur" FromRole="UtilisateurOubliMotDePasse" ToRole="Utilisateur" />
-        </EntityType>
-        <Association Name="FK_CodeOubliMotDePasse_Utilisateur">
-          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
-          <End Type="omasvui147994fr33943_foodtruckModel.UtilisateurOubliMotDePasse" Role="UtilisateurOubliMotDePasse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Utilisateur">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UtilisateurOubliMotDePasse">
-              <PropertyRef Name="UtilisateurId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="JourExceptionnel">
           <Key>
             <PropertyRef Name="Id" />
@@ -617,6 +595,28 @@
           <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Ouvert" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="OubliMotDePasse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UtilisateurId" Type="Int32" Nullable="false" />
+          <Property Name="CodeVerification" Type="String" Nullable="false" MaxLength="96" FixedLength="true" Unicode="false" />
+          <Property Name="DateFinValidite" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_OubliMotDePasse_Utilisateur" FromRole="OubliMotDePasse" ToRole="Utilisateur" />
+        </EntityType>
+        <Association Name="FK_OubliMotDePasse_Utilisateur">
+          <End Type="omasvui147994fr33943_foodtruckModel.Utilisateur" Role="Utilisateur" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.OubliMotDePasse" Role="OubliMotDePasse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OubliMotDePasse">
+              <PropertyRef Name="UtilisateurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -750,22 +750,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UtilisateurOubliMotDePasse">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.UtilisateurOubliMotDePasse">
-              <MappingFragment StoreEntitySet="UtilisateurOubliMotDePasse">
-                <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
-                <ScalarProperty Name="Guid" ColumnName="Guid" />
-                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="JourExceptionnel">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.JourExceptionnel">
               <MappingFragment StoreEntitySet="JourExceptionnel">
                 <ScalarProperty Name="Ouvert" ColumnName="Ouvert" />
                 <ScalarProperty Name="DateFin" ColumnName="DateFin" />
                 <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OubliMotDePasse">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OubliMotDePasse">
+              <MappingFragment StoreEntitySet="OubliMotDePasse">
+                <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
+                <ScalarProperty Name="CodeVerification" ColumnName="CodeVerification" />
+                <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

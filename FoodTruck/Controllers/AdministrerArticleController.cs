@@ -1,5 +1,5 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Models;
+using FoodTruck.Outils;
 using System;
 using System.Configuration;
 using System.Drawing;

@@ -1,5 +1,6 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;

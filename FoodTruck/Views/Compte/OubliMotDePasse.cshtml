@@ -1,0 +1,23 @@
+﻿@model Utilisateur
+@{
+    ViewBag.Title = "FoodTruckLyon - Récupération de votre compte";
+}
+
+<h2>Redéfinissez votre mot de passe</h2>
+@if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
+{
+    <div class="messageErreur">Mauvais choix de mot de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
+}
+@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
+{
+    <input name="action" type="hidden" value="changementMotDePasse">
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="mdp" type="password" placeholder="Nouveau mot de passe" maxlength='20' required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccformfield" name="mdp2" type="password" placeholder="Confirmer le mot de passe" maxlength='20' required>
+    </div>
+    <div class="ccfield-prepend">
+        <input class="ccbtn" type="submit" value="Valider">
+    </div>
+}

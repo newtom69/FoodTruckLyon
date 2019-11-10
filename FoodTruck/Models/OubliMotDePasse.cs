@@ -12,11 +12,11 @@ namespace FoodTruck
     using System;
     using System.Collections.Generic;
     
-    public partial class UtilisateurOubliMotDePasse
+    public partial class OubliMotDePasse
     {
         public int Id { get; set; }
         public int UtilisateurId { get; set; }
-        public string Guid { get; set; }
+        public string CodeVerification { get; set; }
         public System.DateTime DateFinValidite { get; set; }
     
         public virtual Utilisateur Utilisateur { get; set; }

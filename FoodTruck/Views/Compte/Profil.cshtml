@@ -1,5 +1,4 @@
 ﻿@using FoodTruck.ViewModels;
-@using FoodTruck.Models;
 @using System.Configuration;
 @using System.Globalization;
 @{
@@ -30,7 +29,7 @@ else
     <h3>Vos coordonnées</h3>
     if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
     {
-        <div class="messageErreur">Mauvais choix de mots de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
+        <div class="messageErreur">Mauvais choix de mot de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
     }
     if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
     {
@@ -47,7 +46,6 @@ else
         if (ViewBag.Prenom != null) { prenom = ViewBag.Prenom; }
         if (ViewBag.Telephone != null) { telephone = ViewBag.Telephone; }
 
-        <input name="id" type="hidden" value="@Model.Id">
         <input name="ancienEmail" type="hidden" value="@Model.Email">
         <div class="ccfield-prepend">
             <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required value="@email">
@@ -74,9 +72,7 @@ else
             <input class="ccbtn" type="submit" value="Modifier">
         </div>
     }
-
-
-
+       
     if (listeCommandesEnCours != null)
     {
         <h3>Vos commandes en cours</h3>
