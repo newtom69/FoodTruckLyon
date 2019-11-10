@@ -31,6 +31,12 @@
 
 @if (ViewBag.AdminUtilisateur)
 {
+    <h3>Maintenance</h3>
+    <h4>@Html.ActionLink("Purger base de données", "PurgerBdd", "AdministrerBdd")</h4>
+}
+
+@if (ViewBag.AdminUtilisateur)
+{
     <h3>Clients</h3>
-    <h4>@Html.ActionLink("Voir un client", "Utilisateur", "AdministerClient")</h4>
+    <h4>@Html.ActionLink("Voir un client", "Utilisateur", "AdministrerClient")</h4>
 }

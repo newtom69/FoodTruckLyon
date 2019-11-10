@@ -11,7 +11,7 @@ namespace FoodTruck.Controllers
         public ActionResult FermeturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new PeriodeExceptionnelleDAL().FutursFermeturesExceptionnelles());
+                return View(new JourExceptionnelDAL().FutursFermeturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -23,7 +23,7 @@ namespace FoodTruck.Controllers
                 DateTime maintenant = DateTime.Now;
                 DateTime dateDebutComplete = dateDebut + heureDebut;
                 DateTime dateFinComplete = dateFin + heureFin;
-                PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
+                JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
                 if (action != "Supprimer" && (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant))
                 {
                     ViewBag.DatesIncompatibles = true;
@@ -68,7 +68,7 @@ namespace FoodTruck.Controllers
         public ActionResult OuverturesExceptionnelles()
         {
             if (AdminPlanning)
-                return View(new PeriodeExceptionnelleDAL().FutursOuverturesExceptionnelles());
+                return View(new JourExceptionnelDAL().FutursOuverturesExceptionnelles());
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
                 DateTime maintenant = DateTime.Now;
                 DateTime dateDebutComplete = dateDebut + heureDebut;
                 DateTime dateFinComplete = dateDebut + heureFin;
-                PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
+                JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
                 if (heureFin <= heureDebut || dateDebutComplete < maintenant)
                 {
                     ViewBag.DatesIncompatibles = true;

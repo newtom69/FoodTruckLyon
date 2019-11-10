@@ -107,27 +107,16 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                DateTime now = DateTime.Now;
+                IQueryable<string> GuidsAGarder = (from panier in db.PanierProspect
+                                                   where DbFunctions.DiffDays(panier.DateAjout, DateTime.Today) < ageEnJours
+                                                   select panier.ProspectGuid).Distinct();
 
-                // requête SQL :
-                //select*
-                //from PanierProspect
-                //where ProspectGuid not in (SELECT DISTINCT ProspectGuid
-                //                          from PanierProspect
-                //                          where DATEDIFF(day, DateAjout, CURRENT_TIMESTAMP) < ageEnJours)
-
-                var GuidsAGarder = (from panier in db.PanierProspect
-                                    where DbFunctions.DiffDays(panier.DateAjout, now) < ageEnJours
-                                    select panier.ProspectGuid).Distinct();
-
-                var paniersAPurger = (from panier in db.PanierProspect
-                                      where !GuidsAGarder.Any(guid => panier.ProspectGuid.Contains(guid))
-                                      select panier).ToList();
-
+                List<PanierProspect> paniersAPurger = (from panier in db.PanierProspect
+                                                       where !GuidsAGarder.Any(guid => panier.ProspectGuid.Contains(guid))
+                                                       select panier).ToList();
 
                 db.PanierProspect.RemoveRange(paniersAPurger);
-                db.SaveChanges();
-                return paniersAPurger.Count;
+                return db.SaveChanges();
             }
         }
     }

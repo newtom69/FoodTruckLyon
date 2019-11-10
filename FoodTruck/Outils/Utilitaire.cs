@@ -32,7 +32,7 @@ namespace FoodTruck.Models
 
         public static List<PlageHoraireRetrait> PlageHoraireRetrait(this DateTime date)
         {
-            PeriodeExceptionnelleDAL ouvertureDAL = new PeriodeExceptionnelleDAL();
+            JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait> { ouvertureDAL.ProchainOuvert(date) };
             bool memeJour = true;
             while (memeJour)

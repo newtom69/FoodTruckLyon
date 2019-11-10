@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdministrerBddController.cs" />
     <Compile Include="Controllers\AdministrerController.cs" />
     <Compile Include="Controllers\AdministrerArticleController.cs" />
     <Compile Include="Controllers\AdministrerClientController.cs" />
@@ -145,12 +146,12 @@
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
-    <Compile Include="DAL\PeriodeExceptionnelleDAL.cs" />
+    <Compile Include="DAL\JourExceptionnelDAL.cs" />
     <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\UtilisateurDAL.cs" />
-    <Compile Include="DAL\UtilisateurOubliMotDePasseDAL.cs" />
+    <Compile Include="DAL\OubliMotDePasseDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
@@ -348,6 +349,7 @@
     <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
     <Content Include="Views\AdministrerCommande\Futures.cshtml" />
     <Content Include="Views\AdministrerCommande\PendantFermetures.cshtml" />
+    <Content Include="Views\AdministrerBdd\PurgerBdd.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

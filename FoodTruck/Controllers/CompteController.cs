@@ -262,7 +262,7 @@ namespace FoodTruck.Controllers
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
             Utilisateur utilisateur = utilisateurDAL.Details(email);
-            if (new UtilisateurOubliMotDePasseDAL().Verifier(utilisateur.Id, guid))
+            if (new OubliMotDePasseDAL().Verifier(utilisateur.Id, guid))
             {
                 string nouveauMotdePasse = Guid.NewGuid().ToString("n").Substring(0, 10);
                 int changement = utilisateurDAL.Modification(utilisateur.Id, utilisateur.Email, nouveauMotdePasse, utilisateur.Nom, utilisateur.Prenom, utilisateur.Telephone);
@@ -297,7 +297,7 @@ namespace FoodTruck.Controllers
             Utilisateur utilisateur = new UtilisateurDAL().Details(email);
             if (utilisateur != null)
             {
-                new UtilisateurOubliMotDePasseDAL().Ajouter(utilisateur.Id, guid, DateTime.Now.AddMinutes(10));
+                new OubliMotDePasseDAL().Ajouter(utilisateur.Id, guid, DateTime.Now.AddMinutes(10));
 
                 string sujetMail = "Procédure de génération d'un nouveau mot de passe";
                 string message = "Bonjour\n" +

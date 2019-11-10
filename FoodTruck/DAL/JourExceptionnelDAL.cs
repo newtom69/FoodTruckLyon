@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace FoodTruck.DAL
 {
-    public class PeriodeExceptionnelleDAL
+    public class JourExceptionnelDAL
     {
         internal List<JourExceptionnel> FutursFermeturesExceptionnelles()
         {
@@ -248,6 +248,18 @@ namespace FoodTruck.DAL
                     plage.Debut = new TimeSpan(heures, minutes, 0);
                 }
                 return plage;
+            }
+        }
+
+        internal int Purger()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                IQueryable<JourExceptionnel> joursExceptionnels = from j in db.JourExceptionnel
+                                                                  where DbFunctions.DiffMinutes(j.DateFin, DateTime.Now) > 0
+                                                                  select j;
+                db.JourExceptionnel.RemoveRange(joursExceptionnels);
+                return db.SaveChanges();
             }
         }
     }

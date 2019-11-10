@@ -16,7 +16,10 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Ajouter()
         {
-            return View();
+            if (AdminArticle)
+                return View();
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
         [HttpPost]
         public ActionResult Ajouter(string nom, string description, string prix, int? grammage, int? litrage, string allergenes, int familleId, bool dansCarte, HttpPostedFileBase file)

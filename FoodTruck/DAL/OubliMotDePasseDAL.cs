@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
 namespace FoodTruck.DAL
 {
-    public class UtilisateurOubliMotDePasseDAL
+    public class OubliMotDePasseDAL
     {
         internal UtilisateurOubliMotDePasse Details(int utilisateurId, string guid)
         {
@@ -37,10 +38,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                var listOubliMotDePasse = (from u in db.UtilisateurOubliMotDePasse
-                                           where u.UtilisateurId == utilisateurId
-                                           select u).ToList();
-                db.UtilisateurOubliMotDePasse.RemoveRange(listOubliMotDePasse);
+                List<UtilisateurOubliMotDePasse> listeOubliMotDePasse =
+                    (from u in db.UtilisateurOubliMotDePasse
+                     where u.UtilisateurId == utilisateurId
+                     select u).ToList();
+                db.UtilisateurOubliMotDePasse.RemoveRange(listeOubliMotDePasse);
                 db.SaveChanges();
             }
         }
@@ -56,6 +58,18 @@ namespace FoodTruck.DAL
             else
             {
                 return false;
+            }
+        }
+        internal int Purger()
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                IQueryable<UtilisateurOubliMotDePasse> listeOubliMotDePasse = from u in db.UtilisateurOubliMotDePasse
+                                                                              where DbFunctions.DiffMinutes(u.DateFinValidite, DateTime.Now) > 0
+                                                                              select u;
+
+                db.UtilisateurOubliMotDePasse.RemoveRange(listeOubliMotDePasse);
+                return db.SaveChanges();
             }
         }
     }
