@@ -4,6 +4,7 @@ using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Web;
@@ -277,23 +278,25 @@ namespace FoodTruck.Controllers
         {
             if (action == "generationMail")
             {
+                int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienReinitialisationMotDePasse"]);
                 string codeVerification = Guid.NewGuid().ToString("n") + email.GetHash();
                 string url = HttpContext.Request.Url.ToString() + '/' + codeVerification;
                 Utilisateur utilisateur = new UtilisateurDAL().Details(email);
                 if (utilisateur != null)
                 {
-                    new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(10));
-
-                    string sujetMail = "Procédure de génération d'un nouveau mot de passe";
+                    new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
+                    string sujetMail = "Procédure de réinitialisation de votre mot de passe";
                     string message = "Bonjour\n" +
                         "Vous avez oublié votre mot de passe et avez demandé à en redéfinir un nouveau.\n" +
                         "Si vous êtes bien à l'origine de cette demande, veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur :\n" +
                         "\n" +
                         url +
-                        "\n\nVous serez redirigé vers une page de rédéfinition de votre mot de passe";
+                        "\n\nVous serez alors redirigé vers une page de réinitialisation de votre mot de passe.\n" +
+                        $"Attention, ce lien expirera dans {dureeValidite} minutes.";
+
 
                     if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                        TempData["mailEnvoyeLienGenerationMdpOk"] = "Un email avec un lien de redéfinition de votre mot de passe vient de vous être envoyé";
+                        TempData["mailEnvoyeLienGenerationMdpOk"] = $"Un email de réinitialisation de votre mot de passe vient de vous être envoyé. Il expirera dans {dureeValidite} minutes";
                     else
                         TempData["mailEnvoyeLienGenerationMdpKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
                 }

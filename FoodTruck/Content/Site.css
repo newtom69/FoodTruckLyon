@@ -3,6 +3,12 @@
     padding-bottom: 20px;
 }
 
+.renderBody {
+    margin-top: 140px;
+    margin-right: 150px;
+    margin-left:5%;
+}
+
 div:target {
     padding-top: 180px;
     margin-top: -180px;
@@ -111,7 +117,7 @@ textarea {
 
 #client {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-around;
 }
 
 .carouselContainer {
@@ -564,18 +570,21 @@ button.annulerCommande {
 
 #panier {
     position: fixed;
-    right: 10px;
+    right: 1px;
     top: 190px;
     border: solid 1px #95BE27;
-    padding: 8px;
+    padding: 4px;
+    max-width: 150px;
 }
 
 #panierValide, #panierValide2 {
     width: 350px;
 }
+
     #panierValide img {
         height: 90px;
     }
+
     #panierValide .listePanier > div {
         font-size: large;
     }

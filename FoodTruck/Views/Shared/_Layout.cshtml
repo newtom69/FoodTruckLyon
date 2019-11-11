@@ -16,45 +16,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">
-                    <img src="@dossierImagesSysteme/logo.png" alt="Logo FoodTruckLyon" class="d-inline-block align-top logo-full">
-                    <img src="@dossierImagesSysteme/logo-only.png" alt="Logo FoodTruckLyon" class="d-inline-block align-top logo-only">
-                </a>
+        @*<div class="container">*@
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="@dossierImagesSysteme/logo.png" alt="Logo FoodTruckLyon" class="d-inline-block align-top logo-full">
+                <img src="@dossierImagesSysteme/logo-only.png" alt="Logo FoodTruckLyon" class="d-inline-block align-top logo-only">
+            </a>
 
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-
-                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
-                    <li>@Html.ActionLink("A propos", "APropos", "Home")</li>
-                    <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (ViewBag.AdminArticle || ViewBag.AdminCommande || ViewBag.AdminUtilisateur || ViewBag.AdminPlanning)
-                    {
-                        <li>@Html.ActionLink("Administration", "Index", "Administrer")</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Votre compte", "Index", "Compte")</li>
-                    }
-                    <li>@Html.ActionLink("Panier", "Index", "Panier")</li>
-                </ul>
-            </div>
         </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+
+                <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                <li>@Html.ActionLink("A propos", "APropos", "Home")</li>
+                <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                @if (ViewBag.AdminArticle || ViewBag.AdminCommande || ViewBag.AdminUtilisateur || ViewBag.AdminPlanning)
+                {
+                    <li>@Html.ActionLink("Administration", "Index", "Administrer")</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Votre compte", "Index", "Compte")</li>
+                }
+                <li>@Html.ActionLink("Panier", "Index", "Panier")</li>
+            </ul>
+        </div>
+        @*</div>*@
     </div>
-    <div class="container body-content">
+    @*<div class="container body-content">*@
+    <div class="renderBody">
         <section id="client">
             @if (utilisateur.Id != 0)
             {
@@ -112,7 +111,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
 </body>
 </html>
