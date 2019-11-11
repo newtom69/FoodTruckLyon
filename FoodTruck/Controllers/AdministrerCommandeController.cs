@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class AdministrerCommandeController : ControllerParent
+    public class AdministrerCommandeController : ControllerParentAdministrer
     {
         [HttpGet]
         public ActionResult EnCours()
@@ -139,7 +139,7 @@ namespace FoodTruck.Controllers
                         string corpsMessage = $"Bonjour {utilisateur.Prenom}\n\n" +
                             $"Vous avez passé la commande numéro {commandeId} pour le {commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")} et nous vous en remercions.\n\n" +
                             $"Malheureusement nous ne sommes plus ouvert pendant votre horaire de retrait et nous avons été contraint de l'annuler.\n\n" +
-                            $"Nous vous invitons à choisir un autre créneau de retrait (vous pouvons dupliquer votre commande annulée dans votre espace client).\n\n" +
+                            $"Nous vous invitons à choisir un autre créneau de retrait (vous pouvez dupliquer votre commande annulée dans votre espace client).\n\n" +
                             $"Nous vous prions de nous excuser pour la gène occasionnée.\n\n" +
                             $"Bien cordialement\n" +
                             $"Votre équipe Foodtrucklyon";

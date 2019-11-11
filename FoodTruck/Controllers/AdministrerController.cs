@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class AdministrerController : ControllerParent
+    public class AdministrerController : ControllerParentAdministrer
     {
         [HttpGet]
         public ActionResult Index()

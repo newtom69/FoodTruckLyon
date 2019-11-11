@@ -6,7 +6,7 @@
 .renderBody {
     margin-top: 140px;
     margin-right: 150px;
-    margin-left:5%;
+    margin-left:4%;
 }
 
 div:target {
@@ -578,7 +578,7 @@ button.annulerCommande {
 }
 
 #panierValide, #panierValide2 {
-    width: 350px;
+    width: 345px;
 }
 
     #panierValide img {

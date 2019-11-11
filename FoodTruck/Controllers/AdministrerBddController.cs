@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class AdministrerBddController : ControllerParent
+    public class AdministrerBddController : ControllerParentAdministrer
     {
         public ActionResult PurgerBdd()
         {

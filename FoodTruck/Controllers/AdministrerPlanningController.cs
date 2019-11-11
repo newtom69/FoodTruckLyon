@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class AdministrerPlanningController : ControllerParent
+    public class AdministrerPlanningController : ControllerParentAdministrer
     {
         [HttpGet]
         public ActionResult FermeturesExceptionnelles()

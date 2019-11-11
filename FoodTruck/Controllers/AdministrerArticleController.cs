@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
 {
-    public class AdministrerArticleController : ControllerParent
+    public class AdministrerArticleController : ControllerParentAdministrer
     {
         [HttpGet]
         public ActionResult Ajouter()

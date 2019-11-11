@@ -35,7 +35,7 @@ namespace FoodTruck.Controllers
                     PanierViewModel.Creneaux.Add(creneau);
                 }
             }
-            TempData["PanierLatteralDesactive"] = true;
+            ViewBag.PanierLatteralDesactive = true;
             return View(PanierViewModel);
         }
 

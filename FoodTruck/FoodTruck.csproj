@@ -138,6 +138,7 @@
     <Compile Include="Controllers\CommandeController.cs" />
     <Compile Include="Controllers\CompteController.cs" />
     <Compile Include="Controllers\ControllerParent.cs" />
+    <Compile Include="Controllers\ControllerParentAdministrer.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
@@ -362,6 +363,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="Views\ControllerParentAdministrer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
