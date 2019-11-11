@@ -356,6 +356,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
 
 .adminArticle {
     max-width: 700px;
+    min-width: 335px;
     margin: 0 auto;
 }
 
