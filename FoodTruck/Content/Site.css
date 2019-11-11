@@ -6,8 +6,50 @@
 .renderBody {
     margin-top: 140px;
     margin-right: 150px;
-    margin-left:4%;
+    margin-left: 4%;
 }
+
+#lateral {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 1px;
+    top: 1px;
+    max-width: 150px;
+    height: 99%;
+    overflow-y: hidden;
+}
+
+#lateralEnTete {
+    min-height: 185px;
+}
+
+#panier {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    border: solid 1px #95BE27;
+    padding: 4px;
+    max-width: 152px;
+    overflow-y: hidden;
+}
+
+    #panier .listePanier {
+        overflow-y: auto;
+        
+    }
+
+    #panier h4 {
+        margin-top: 0;
+        font-size: 2rem;
+        color: #452B1A
+    }
+
+    #panier .total {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1.9rem;
+    }
 
 div:target {
     padding-top: 180px;
@@ -201,6 +243,8 @@ section.notreCarte {
     section.notreCarte .indexArticle {
         margin-right: 1%;
         margin-left: 1%;
+        min-width: 180px;
+        max-width: 200px;
     }
 
         section.notreCarte .indexArticle img {
@@ -392,11 +436,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     width: 100%;
 }
 
-.ModifArticle {
-    margin-bottom: 10px;
-    width: 75%;
-}
-
 .ccform-addon {
     color: #95BE27;
     float: left;
@@ -568,15 +607,6 @@ button.annulerCommande {
     border-radius: 1.5rem;
 }
 
-#panier {
-    position: fixed;
-    right: 1px;
-    top: 190px;
-    border: solid 1px #95BE27;
-    padding: 4px;
-    max-width: 150px;
-}
-
 #panierValide, #panierValide2 {
     width: 345px;
 }
@@ -606,16 +636,6 @@ h3.total {
     text-align: right;
 }
 
-#panier .listePanier {
-    max-height: 450px;
-    overflow-y: scroll;
-}
-
-#panier h4 {
-    margin-top: 0;
-    font-size: 2rem;
-    color: #452B1A
-}
 
 #panier hr, #panierValide hr {
     margin-top: 3px;
@@ -636,7 +656,7 @@ h3.total {
     font-size: 1.2rem;
 }
 
-#panier > p, #panierValide > p {
+#panierValide > p {
     display: flex;
     justify-content: flex-end;
     font-size: 1.6rem;
@@ -767,4 +787,11 @@ select.ccformfield option.red {
 
 .image-upload > input {
     display: none;
+}
+
+.adminArticle .testLargeur {
+    min-width: 335px;
+    max-width: 335px;
+    display: flex;
+    flex-direction: column;
 }

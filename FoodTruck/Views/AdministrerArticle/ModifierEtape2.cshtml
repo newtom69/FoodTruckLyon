@@ -5,19 +5,12 @@
 <dl class="dl-horizontal"></dl>
 
 <div class="adminArticle">
-    @if (!ViewBag.AdminArticle)
+    @if ((string)TempData["Erreur"] != "")
     {
-        <div><p class="messageErreur">Vous ne pouvez pas modifier d'article du catalogue !</p></div>
+    <div class="messageErreur">@TempData["Erreur"]</div>
     }
-    else
+    @if ((string)TempData["ModifOK"] != "")
     {
-        if ((string)TempData["Erreur"] != "")
-        {
-            <div class="messageErreur">@TempData["Erreur"]</div>
-        }
-        if ((string)TempData["ModifOK"] != "")
-        {
-            <div class="messageInfo">@TempData["ModifOK"]</div>
-        }
+    <div class="messageInfo">@TempData["ModifOK"]</div>
     }
 </div>

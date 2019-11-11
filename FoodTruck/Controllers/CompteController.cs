@@ -287,12 +287,12 @@ namespace FoodTruck.Controllers
                     new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
                     string sujetMail = "Procédure de réinitialisation de votre mot de passe";
                     string message = "Bonjour\n" +
-                        "Vous avez oublié votre mot de passe et avez demandé à en redéfinir un nouveau.\n" +
+                        "Vous avez oublié votre mot de passe et avez demandé à le réinitialiser.\n" +
                         "Si vous êtes bien à l'origine de cette demande, veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur :\n" +
                         "\n" +
                         url +
                         "\n\nVous serez alors redirigé vers une page de réinitialisation de votre mot de passe.\n" +
-                        $"Attention, ce lien expirera dans {dureeValidite} minutes.";
+                        $"Attention, ce lien expirera dans {dureeValidite} minutes et n'est valable qu'une seule fois";
 
 
                     if (Utilitaire.EnvoieMail(email, sujetMail, message))

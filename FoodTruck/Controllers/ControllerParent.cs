@@ -90,15 +90,11 @@ namespace FoodTruck.Controllers
             PanierViewModel.Trier();
             ViewBag.Panier = PanierViewModel;
 
+            if (Utilisateur.AdminArticle || Utilisateur.AdminCommande || Utilisateur.AdminUtilisateur || Utilisateur.AdminPlanning)
+                ViewBag.MenuAdmin = true;
+            if (Utilisateur.AdminArticle)
+                ViewBag.AdminArticle = true;
 
-            if (Utilisateur.AdminArticle) ViewBag.AdminArticle = true;
-            else ViewBag.AdminArticle = false;
-            if (Utilisateur.AdminCommande) ViewBag.AdminCommande = true;
-            else ViewBag.AdminCommande = false;
-            if (Utilisateur.AdminUtilisateur) ViewBag.AdminUtilisateur = true;
-            else ViewBag.AdminUtilisateur = false;
-            if (Utilisateur.AdminPlanning) ViewBag.AdminPlanning = true;
-            else ViewBag.AdminPlanning = false;
 
         }
 

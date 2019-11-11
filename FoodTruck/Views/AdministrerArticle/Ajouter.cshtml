@@ -6,9 +6,10 @@
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
 }
 <script src="~/Scripts/myJs.js"></script>
-<h2>Ajouter un article au catalogue</h2>
-<dl class="dl-horizontal"></dl>
+
 <div class="adminArticle">
+    <h2>Ajouter un article au catalogue</h2>
+    <dl class="dl-horizontal"></dl>
     @if ((string)TempData["Erreur"] != "")
     {
         <div class="messageErreur">@TempData["Erreur"]</div>

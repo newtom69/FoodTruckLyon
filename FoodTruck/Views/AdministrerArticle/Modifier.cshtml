@@ -9,33 +9,24 @@
 @model List<Article>
 
 <script src="~/Scripts/myJs.js"></script>
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>*@
 <meta charset=utf-8 />
-<h2>Modifier un article</h2>
-<dl class="dl-horizontal"></dl>
 <div class="adminArticle">
-    @if (!ViewBag.AdminArticle)
-    {
-        <div><p class="messageErreur">Vous ne pouvez pas modifier/supprimer d'article du catalogue !</p></div>
-    }
-    else
-    {
-        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    <h2>Modifier un article</h2>
+    <dl class="dl-horizontal"></dl>
+    <div class="testLargeur">
+        @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <div class="ModifArticle">
+            <div class="ccfield-prepend">
                 <select class="ccformfield" name="id" size="1" onchange="this.form.submit()" required>
                     <option selected disabled>Sélectionnez l'article</option>
                     @{
-                        int i = 0;
+                        int id = 0;
                         foreach (Article article in Model)
                         {
-                            if (article.FamilleId != i)
+                            if (article.FamilleId != id)
                             {
-                                i = article.FamilleId;
-                                string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == i).Nom;
+                                id = article.FamilleId;
+                                string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == id).Nom;
                                 <optgroup label="@nomFamille"></optgroup>
                             }
                             string redOrNothing = "";
@@ -51,7 +42,7 @@
             </div>
             <input class="ccbtn" type="hidden" value="Sélectionner">
         }
-        if (ViewBag.ArticleAModifier != null)
+        @if (ViewBag.ArticleAModifier != null)
         {
             <p>Rentrez les nouvelles valeurs dans les champs que vous voulez modifier</p>
             <p>Décochez "visible dans la carte" pour supprimer l'article</p>
@@ -126,6 +117,6 @@
                 }
             </div>
         }
-    }
-</div>
+    </div>
 
+</div>
