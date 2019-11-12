@@ -28,9 +28,6 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Vous avez des questions sur nos produits ?" +
-                " Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous " +
-                "et un membre de notre équipe vous répondra dans les plus brefs délais.";
             ViewBag.MailEnvoye = "";
             ViewBag.MailErreur = "";
             return View();
@@ -39,8 +36,6 @@ namespace FoodTruck.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Contact(string nom, string prenom, string email, string comments)
         {
-            ViewBag.Message = "Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous" +
-                              " et un membre de notre équipe vous répondra dans les plus brefs délais.";
             string nomOk = Server.HtmlEncode(nom);
             string prenomOk = Server.HtmlEncode(prenom);
             string commentsOk = Server.HtmlEncode(comments);

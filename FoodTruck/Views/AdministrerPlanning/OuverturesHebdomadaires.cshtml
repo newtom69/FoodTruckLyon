@@ -7,131 +7,131 @@
 }
 <script src="~/Scripts/myJs.js"></script>
 
-@if (ViewBag.DatesIncompatibles != null)
-{
-    <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
-}
-@if (ViewBag.AjouterOuverture != null)
-{
-    if (ViewBag.AjouterOuverture)
+<div class="adminPlanning">
+    @if (ViewBag.DatesIncompatibles != null)
     {
-        <div class="messageInfo">La plage d'ouverture a bien été ajoutée</div>
+        <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
     }
-    else
+    @if (ViewBag.AjouterOuverture != null)
     {
-        <div class="messageErreur">
-            @if (ViewBag.Chevauchement != null)
-            {
-                <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre plage du même jour :</p>
-                <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
-            }
-            else
-            {
-                <p>Une erreur est survenue lors de l'ajout de la plage d'ouverture. Veuillez réessayer plus tard</p>
-            }
-        </div>
-
-    }
-}
-@if (ViewBag.ModifierOuverture != null)
-{
-    if (ViewBag.ModifierOuverture)
-    {
-        <div class="messageInfo">La plage d'ouverture a bien été modifiée</div>
-    }
-    else
-    {
-        <div class="messageErreur">
-            @if (ViewBag.Chevauchement != null)
-            {
-                <p>Impossible de modifier votre plage d'ouverture. Elle se chevauche avec une autre plage du même jour :</p>
-                <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
-            }
-            else
-            {
-                <p>Une erreur est survenue lors de la modification de la plage d'ouverture. Veuillez réessayer plus tard</p>
-            }
-        </div>
-    }
-}
-@if (ViewBag.SupprimerOuverture != null)
-{
-    if (ViewBag.SupprimerOuverture)
-    {
-        <div class="messageInfo">La plage d'ouverture a bien été supprimée</div>
-    }
-    else
-    {
-        <div class="messageErreur">Une erreur est survenue lors de la suppression de la plage d'ouverture. Veuillez réessayer plus tard</div>
-    }
-}
-
-
-<h2>Gestion des ouvertures hebdomadaires</h2>
-
-<h3>Saisir une ouverture hebdomadaire</h3>
-@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <input name="id" type="hidden" value="0">
-    <div class="gestionFermetureOuverture">
-        <div class="ccfield-prepend">
-            <select class="ccformfield" name="jourId" required>
-                <option selected disabled>Sélection du jour</option>
-                @foreach (DayOfWeek jour in Enum.GetValues(typeof(DayOfWeek)))
+        if (ViewBag.AjouterOuverture)
+        {
+            <div class="messageInfo">La plage d'ouverture a bien été ajoutée</div>
+        }
+        else
+        {
+            <div class="messageErreur">
+                @if (ViewBag.Chevauchement != null)
                 {
-                    int ceJourId = (int)jour;
-                    <option value="@ceJourId">@DateTimeFormatInfo.CurrentInfo.GetDayName(jour)</option>
+                    <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre plage du même jour :</p>
+                    <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
                 }
-            </select>
-        </div>
-        <div><input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, 0, 0)" required></div>
-        <div><input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, 0, 0)" required></div>
-        <div><input class="ccformfield" name="pas" type="time" value="00:15" required></div>
-        <div><input class="boutonModifier" type="submit" name="action" value="Ajouter"></div>
-    </div>
-}
+                else
+                {
+                    <p>Une erreur est survenue lors de l'ajout de la plage d'ouverture. Veuillez réessayer plus tard</p>
+                }
+            </div>
 
-<h3>Liste des ouvertures hebdomadaires</h3>
-@foreach (OuvertureHebdomadaire plage in Model)
-{
-    using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        }
+    }
+    @if (ViewBag.ModifierOuverture != null)
     {
-        string heureDebutId = "h" + plage.Id + plage.Debut.ToString("hhmm");
-        string heureFinId = "h" + plage.Id + plage.Fin.ToString("hhmm");
-        string id = ".id";
-        <input name="id" type="hidden" value="@plage.Id">
+        if (ViewBag.ModifierOuverture)
+        {
+            <div class="messageInfo">La plage d'ouverture a bien été modifiée</div>
+        }
+        else
+        {
+            <div class="messageErreur">
+                @if (ViewBag.Chevauchement != null)
+                {
+                    <p>Impossible de modifier votre plage d'ouverture. Elle se chevauche avec une autre plage du même jour :</p>
+                    <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
+                }
+                else
+                {
+                    <p>Une erreur est survenue lors de la modification de la plage d'ouverture. Veuillez réessayer plus tard</p>
+                }
+            </div>
+        }
+    }
+    @if (ViewBag.SupprimerOuverture != null)
+    {
+        if (ViewBag.SupprimerOuverture)
+        {
+            <div class="messageInfo">La plage d'ouverture a bien été supprimée</div>
+        }
+        else
+        {
+            <div class="messageErreur">Une erreur est survenue lors de la suppression de la plage d'ouverture. Veuillez réessayer plus tard</div>
+        }
+    }
+
+
+    <h2>Gestion des ouvertures hebdomadaires</h2>
+
+    <h3>Saisir une ouverture hebdomadaire</h3>
+    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input name="id" type="hidden" value="0">
         <div class="gestionFermetureOuverture">
             <div class="ccfield-prepend">
                 <select class="ccformfield" name="jourId" required>
+                    <option selected disabled>Sélection du jour</option>
                     @foreach (DayOfWeek jour in Enum.GetValues(typeof(DayOfWeek)))
                     {
                         int ceJourId = (int)jour;
-                        string selected = "";
-                        if (ceJourId == plage.JourSemaineId)
-                        {
-                            selected = "selected";
-                        }
-                        <option value="@ceJourId" @selected>@DateTimeFormatInfo.CurrentInfo.GetDayName(jour)</option>
+                        <option value="@ceJourId">@DateTimeFormatInfo.CurrentInfo.GetDayName(jour)</option>
                     }
                 </select>
             </div>
-            <div>
-                <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, 0, 0" required>
-            </div>
-            <div>
-                <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, 0, 0" required>
-            </div>
-            <div>
-                <input class="ccformfield" name="pas" type="time" value="@plage.Pas.ToString("hh\\:mm")" required>
-            </div>
-            <div>
-                <input class="boutonModifier" type="submit" name="action" value="Modifier">
-            </div>
-            <div>
-                <input class="boutonSupprimer" type="submit" name="action" value="Supprimer">
-            </div>
+            <div><input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, 0, 0)" required></div>
+            <div><input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, 0, 0)" required></div>
+            <div><input class="ccformfield" name="pas" type="time" value="00:15" required></div>
+            <div><input class="boutonAjouter" type="submit" name="action" value="Ajouter"></div>
         </div>
     }
-}
 
-
+    <h3>Liste des ouvertures hebdomadaires</h3>
+    @foreach (OuvertureHebdomadaire plage in Model)
+    {
+        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            string heureDebutId = "h" + plage.Id + plage.Debut.ToString("hhmm");
+            string heureFinId = "h" + plage.Id + plage.Fin.ToString("hhmm");
+            string id = ".id";
+            <input name="id" type="hidden" value="@plage.Id">
+            <div class="gestionFermetureOuverture">
+                <div class="ccfield-prepend">
+                    <select class="ccformfield" name="jourId" required>
+                        @foreach (DayOfWeek jour in Enum.GetValues(typeof(DayOfWeek)))
+                        {
+                            int ceJourId = (int)jour;
+                            string selected = "";
+                            if (ceJourId == plage.JourSemaineId)
+                            {
+                                selected = "selected";
+                            }
+                            <option value="@ceJourId" @selected>@DateTimeFormatInfo.CurrentInfo.GetDayName(jour)</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, 0, 0" required>
+                </div>
+                <div>
+                    <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, 0, 0" required>
+                </div>
+                <div>
+                    <input class="ccformfield" name="pas" type="time" value="@plage.Pas.ToString("hh\\:mm")" required>
+                </div>
+                <div>
+                    <input class="boutonModifier" type="submit" name="action" value="Modifier">
+                </div>
+                <div>
+                    <input class="boutonSupprimer" type="submit" name="action" value="Supprimer">
+                </div>
+            </div>
+        }
+    }
+</div>

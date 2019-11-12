@@ -10,7 +10,7 @@
 
 <script src="~/Scripts/myJs.js"></script>
 
-<div class="adminArticle">
+<div class="admin">
     <h2>Modifier un article</h2>
     <dl class="dl-horizontal"></dl>
         @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))

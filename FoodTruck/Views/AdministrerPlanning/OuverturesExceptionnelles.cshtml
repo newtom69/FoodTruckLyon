@@ -5,140 +5,140 @@
 }
 <script src="~/Scripts/myJs.js"></script>
 
+<div class="adminPlanning">
+    <h2>Gestion des ouvertures exceptionnelles</h2>
 
-<h2>Gestion des ouvertures exceptionnelles</h2>
+    <h3>Saisir une ouverture</h3>
+    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="gestionFermetureOuverture">
+            <input name="dateId" type="hidden" value="@DateTime.MinValue">
+            <div>
+                <div class="libelleDate">date de début</div>
+                <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+            </div>
+            <div>
+                <div class="libelleDate">heure de début</div>
+                <input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateDebut.value)" required>
+            </div>
+            <div>
+                <div class="libelleDate">heure de fin</div>
+                <input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateDebut.value)" required>
+            </div>
+            <div>
+                <div>&#x2061;</div>
+                <input class="boutonModifier" type="submit" name="valider" value="Ajouter">
+            </div>
+        </div>
+    }
 
-<h3>Saisir une ouverture</h3>
-@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div class="gestionFermetureOuverture">
-        <input name="dateId" type="hidden" value="@DateTime.MinValue">
-        <div>
-            <div class="libelleDate">date de début</div>
-            <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
-        </div>
-        <div>
-            <div class="libelleDate">heure de début</div>
-            <input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateDebut.value)" required>
-        </div>
-        <div>
-            <div class="libelleDate">heure de fin</div>
-            <input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateDebut.value)" required>
-        </div>
-        <div>
-            <div>&#x2061;</div>
-            <input class="boutonModifier" type="submit" name="valider" value="Ajouter">
-        </div>
-    </div>
-}
+    <h3>Liste des ouvertures à venir</h3>
 
-<h3>Liste des ouvertures à venir</h3>
-
-@if (ViewBag.DatesIncompatibles != null)
-{
-    <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
-}
-@if (ViewBag.AjouterOuverture != null)
-{
-    if (ViewBag.AjouterOuverture)
+    @if (ViewBag.DatesIncompatibles != null)
     {
-        <div class="messageInfo">L'ouverture a bien été ajoutée</div>
+        <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
     }
-    else
+    @if (ViewBag.AjouterOuverture != null)
     {
-        string ouvertureFermeture;
-        if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
-        else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
-        else { ouvertureFermeture = ""; }
-        <div class="messageErreur">
-            @if (ouvertureFermeture != "")
-            {
-                <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre @ouvertureFermeture :</p>
-                <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
-            }
-            else
-            {
-                <p>Une erreur est survenue lors de la modification de l'ouverture. Veuillez réessayer plus tard</p>
-            }
-        </div>
-
-    }
-}
-@if (ViewBag.ModifierOuverture != null)
-{
-    if (ViewBag.ModifierOuverture)
-    {
-        <div class="messageInfo">La modification de l'ouverture a bien été prise en compte</div>
-    }
-    else
-    {
-        string ouvertureFermeture;
-        if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
-        else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
-        else { ouvertureFermeture = ""; }
-        <div class="messageErreur">
-            @if (ouvertureFermeture != "")
-            {
-                <p>Impossible de modifier votre ouverture. Une autre @ouvertureFermeture se chevauche avec vos modifications :</p>
-                <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
-            }
-            else
-            {
-                <p>Une erreur est survenue lors de la modification de l'ouverture. Veuillez réessayer plus tard</p>
-            }
-        </div>
-    }
-}
-@if (ViewBag.SupprimerOuverture != null)
-{
-    if (ViewBag.SupprimerOuverture)
-    {
-        <div class="messageInfo">La suppression de l'ouverture a bien été prise en compte</div>
-    }
-    else
-    {
-        <div class="messageErreur">
-            <p>Une erreur est survenue lors de la supression de l'ouverture. Veuillez réessayer plus tard</p>
-        </div>
-    }
-}
-
-@if (Model != null)
-{
-    if (Model.Count == 0)
-    {
-        <p>Aucune ouverture à venir</p>
-    }
-    foreach (JourExceptionnel periode in Model)
-    {
-        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        if (ViewBag.AjouterOuverture)
         {
-            string dateDebutId = "date" + periode.DateDebut.ToString("yyyyMMddHHmmss");
-            string heureDebutId = "heure" + periode.DateDebut.ToString("yyyyMMddHHmmss");
-            string heureFinId = "heure" + periode.DateFin.ToString("yyyyMMddHHmmss");
-            string id = ".id";
-            string value = ".value";
+            <div class="messageInfo">L'ouverture a bien été ajoutée</div>
+        }
+        else
+        {
+            string ouvertureFermeture;
+            if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+            else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
+            else { ouvertureFermeture = ""; }
+            <div class="messageErreur">
+                @if (ouvertureFermeture != "")
+                {
+                    <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre @ouvertureFermeture :</p>
+                    <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+                }
+                else
+                {
+                    <p>Une erreur est survenue lors de la modification de l'ouverture. Veuillez réessayer plus tard</p>
+                }
+            </div>
 
-            <input name="dateId" type="hidden" value="@periode.DateDebut">
-            <div class="gestionFermetureOuverture">
-                <div>
-                    <input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
-                </div>
-                <div>
-                    <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateDebutId@value)" required>
-                </div>
-                <div>
-                    <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateDebutId@value)" required>
-                </div>
-                <div>
-                    <input class="boutonModifier" type="submit" name="valider" value="Modifier">
-                </div>
-                <div>
-                    <input class="boutonSupprimer" type="submit" name="valider" value="Supprimer">
-                </div>
+        }
+    }
+    @if (ViewBag.ModifierOuverture != null)
+    {
+        if (ViewBag.ModifierOuverture)
+        {
+            <div class="messageInfo">La modification de l'ouverture a bien été prise en compte</div>
+        }
+        else
+        {
+            string ouvertureFermeture;
+            if (ViewBag.Chevauchement != null && ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "ouverture"; }
+            else if (ViewBag.Chevauchement != null && !ViewBag.Chevauchement.Ouvert) { ouvertureFermeture = "fermeture"; }
+            else { ouvertureFermeture = ""; }
+            <div class="messageErreur">
+                @if (ouvertureFermeture != "")
+                {
+                    <p>Impossible de modifier votre ouverture. Une autre @ouvertureFermeture se chevauche avec vos modifications :</p>
+                    <p>@ViewBag.Chevauchement.DateDebut.ToString() - @ViewBag.Chevauchement.DateFin.ToString()</p>
+                }
+                else
+                {
+                    <p>Une erreur est survenue lors de la modification de l'ouverture. Veuillez réessayer plus tard</p>
+                }
             </div>
         }
     }
-}
+    @if (ViewBag.SupprimerOuverture != null)
+    {
+        if (ViewBag.SupprimerOuverture)
+        {
+            <div class="messageInfo">La suppression de l'ouverture a bien été prise en compte</div>
+        }
+        else
+        {
+            <div class="messageErreur">
+                <p>Une erreur est survenue lors de la supression de l'ouverture. Veuillez réessayer plus tard</p>
+            </div>
+        }
+    }
 
+    @if (Model != null)
+    {
+        if (Model.Count == 0)
+        {
+            <p>Aucune ouverture à venir</p>
+        }
+        foreach (JourExceptionnel periode in Model)
+        {
+            using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                string dateDebutId = "date" + periode.DateDebut.ToString("yyyyMMddHHmmss");
+                string heureDebutId = "heure" + periode.DateDebut.ToString("yyyyMMddHHmmss");
+                string heureFinId = "heure" + periode.DateFin.ToString("yyyyMMddHHmmss");
+                string id = ".id";
+                string value = ".value";
+
+                <input name="dateId" type="hidden" value="@periode.DateDebut">
+                <div class="gestionFermetureOuverture">
+                    <div>
+                        <input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
+                    </div>
+                    <div>
+                        <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateDebutId@value)" required>
+                    </div>
+                    <div>
+                        <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateDebutId@value)" required>
+                    </div>
+                    <div>
+                        <input class="boutonModifier" type="submit" name="valider" value="Modifier">
+                    </div>
+                    <div>
+                        <input class="boutonSupprimer" type="submit" name="valider" value="Supprimer">
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
 

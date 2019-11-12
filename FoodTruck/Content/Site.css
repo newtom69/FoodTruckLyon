@@ -1,6 +1,25 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 180px;
+    padding-top: 150px;
+    position: relative;
+}
+
+.bandeauClient {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 140px;
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-bottom: 1em;
+}
+
+.titreAccueil {
+    text-align: center;
 }
 
 .imageAccueil {
@@ -13,14 +32,6 @@
     .imageAccueil img {
         max-width: 100%;
     }
-
-.bandeauClient {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 140px;
-    margin-right: 150px;
-    margin-left: 1%;
-}
 
 .principalQuandPanierLateralPresent {
     margin-right: 150px;
@@ -36,10 +47,6 @@
     max-width: 150px;
     height: 99%;
     overflow-y: hidden;
-}
-
-#lateralEnTete {
-    min-height: 185px;
 }
 
 #panier {
@@ -94,25 +101,11 @@ figcaption {
     padding: 3px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 180px;
-    padding-top: 150px;
-    position: relative;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
+input, select, textarea {
     max-width: 280px;
 }
 
@@ -122,37 +115,6 @@ textarea {
 
 .navbar-brand > img.logo-only {
     display: none;
-}
-
-@media (min-width: 768px) {
-    .navbar-nav {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar-brand > img.logo-full {
-        display: none;
-    }
-
-    .navbar-brand > img.logo-only {
-        display: block;
-        height: 52px;
-    }
-
-    .navbar-brand {
-        margin-top: 8px;
-        margin-bottom: 8px;
-        height: 67px !important;
-        border-radius: 42px !important;
-        padding: 2px;
-    }
-
-    .body-content {
-        padding-top: 48px;
-    }
 }
 
 .navbar-nav > li > a {
@@ -209,7 +171,7 @@ section.bestsellers {
         section.notreCarte a.pasDansCarte {
             opacity: .4;
         }
-        
+
 .familleNotreCarte {
     margin-top: 0;
 }
@@ -284,36 +246,50 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
         max-width: 150px;
     }
 
+    .gestionFermetureOuverture .boutonAjouter {
+        display: block;
+        border: none;
+        background-color: #95BE27;
+        color: #FFFFFF;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 16.5px;
+        min-width: 222px;
+        max-width: 222px;
+        margin-right: 2px;
+        text-align: center;
+    }
+
     .gestionFermetureOuverture .boutonModifier {
-        display: block !important;
-        border: none !important;
-        background-color: #95BE27 !important;
-        color: #FFFFFF !important;
-        cursor: pointer !important;
-        text-decoration: none !important;
-        font-weight: bold !important;
-        padding: 16.5px !important;
-        min-width: 110px !important;
-        max-width: 110px !important;
+        display: block;
+        border: none;
+        background-color: #95BE27;
+        color: #FFFFFF;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 16.5px;
+        min-width: 110px;
+        max-width: 110px;
         margin-right: 2px;
         text-align: center;
     }
 
     .gestionFermetureOuverture .boutonSupprimer {
-        display: block !important;
-        border: none !important;
-        background-color: darkred !important;
-        color: #FFFFFF !important;
-        cursor: pointer !important;
-        text-decoration: none !important;
-        font-weight: bold !important;
-        padding: 16.5px !important;
-        min-width: 110px !important;
-        max-width: 110px !important;
+        display: block;
+        border: none;
+        background-color: darkred;
+        color: #FFFFFF;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 16.5px;
+        min-width: 110px;
+        max-width: 110px;
         margin-right: 2px;
         text-align: center;
     }
-
 
 .gestionCommandeArticle img {
     margin-top: 5px;
@@ -339,7 +315,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     color: green;
 }
 
-
 .gestionCommandeArticle .titreCommandeBlack {
     color: black;
 }
@@ -352,19 +327,53 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     color: green;
 }
 
-.adminArticle {
+.contact {
     margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-width: 335px;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panier {
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
     min-width: 335px;
     max-width: 335px;
     display: flex;
     flex-direction: column;
 }
 
-    .adminArticle > div {
+.adminPlanning {
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-width: 335px;
+    max-width: 840px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin {
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-width: 335px;
+    max-width: 480px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+    .admin > div {
         display: flex;
     }
 
-    .adminArticle img {
+    .admin img {
         margin: 0px;
         padding: 0px;
         width: 300px;
@@ -372,21 +381,21 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
         max-width: 300px;
     }
 
-    .adminArticle figure {
+    .admin figure {
         padding: 0px;
         margin: 0px;
     }
 
-    .adminArticle label {
+    .admin label {
         padding: 0px;
         margin: 0px;
     }
 
-    .adminArticle h2 {
+    .admin h2 {
         margin-top: 0;
     }
 
-    .adminArticle a {
+    .admin a {
         text-decoration: none;
     }
 
@@ -460,13 +469,11 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     margin-bottom: 10px;
     margin-top: 10px;
     width: 220px;
-    /*float: left;*/
 }
 
 #codePromoUtilisateur {
     margin-top: 10px;
     width: 220px;
-    /*float: left;*/
 }
 
 .ccfield-input {
@@ -476,7 +483,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
 input, textarea, img, select, option {
     max-width: 150%;
 }
-
 
 .ccbtn {
     display: block;
@@ -493,33 +499,33 @@ input, textarea, img, select, option {
         background: #9FC92A;
     }
 
-article#articleAPropos {
+#aPropos {
     margin: 0 auto;
     width: 600px;
 }
 
-    article#articleAPropos img {
+    #aPropos img {
         margin-bottom: 20px;
     }
 
-    article#articleAPropos li {
+    #aPropos li {
         list-style-type: square;
     }
 
-        article#articleAPropos li span {
+        #aPropos li span {
             font-weight: bold;
         }
 
-    article#articleAPropos p {
+    #aPropos p {
         text-align: justify;
     }
 
-        article#articleAPropos p:last-child {
+        #aPropos p:last-child {
             font-style: italic;
             margin-top: 30px;
         }
 
-    article#articleAPropos a {
+    #aPropos a {
         text-decoration: underline;
     }
 
@@ -636,7 +642,6 @@ h3.total {
     text-align: right;
 }
 
-
 #panier hr, #panierValide hr {
     margin-top: 3px;
     margin-bottom: 3px;
@@ -723,11 +728,6 @@ h3.total {
     width: 307px;
 }
 
-.ccform.contact {
-    margin: 0;
-    width: 400px;
-}
-
 .ccform.creationCompte {
     width: 345px;
 }
@@ -738,7 +738,7 @@ h3.total {
     justify-content: flex-end;
 }
 
-.connexion .ccform-addon, .contact .ccform-addon {
+.connexion .ccform-addon {
     float: none;
     display: flex;
     justify-content: center;
@@ -746,14 +746,6 @@ h3.total {
     width: auto;
     padding: 8px 13px;
 }
-
-    .contact .ccform-addon.iconTextarea {
-        align-items: flex-start;
-    }
-
-        .contact .ccform-addon.iconTextarea i {
-            margin-top: 6px;
-        }
 
 .messageErreur {
     color: red;
@@ -787,4 +779,46 @@ select.ccformfield option.red {
 
 .image-upload > input {
     display: none;
+}
+
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    #lateralEnTete {
+        min-height: 185px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-brand > img.logo-full {
+        display: none;
+    }
+
+    .navbar-brand > img.logo-only {
+        display: block;
+        height: 52px;
+    }
+
+    .navbar-brand {
+        height: 60px !important;
+        border-radius: 42px !important;
+        padding: 2px;
+    }
+
+    .body-content {
+        padding-top: 48px;
+    }
+
+    #lateralEnTete {
+        min-height: 85px;
+    }
+
+    .bandeauClient {
+        margin-top: 16px;
+    }
 }

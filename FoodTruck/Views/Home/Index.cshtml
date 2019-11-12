@@ -9,10 +9,11 @@
 <div class="imageAccueil">
     <img src="@dossierImagesArticles/food-truck.jpg" alt="Notre Foodtruck">
 </div>
-
-<h3><a href="../Article">Voir notre carte</a></h3>
-<hr />
-<h3>3 de nos produits stars !</h3>
+<div class="titreAccueil">
+    <h3><a href="../Article">Voir notre carte</a></h3>
+    <hr />
+    <h3>3 de nos produits stars !</h3>
+</div>
 <section class="bestsellers">
     @foreach (var article in Model.ArticlesTopRandom)
     {
