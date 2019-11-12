@@ -92,21 +92,6 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Article> Articles(string nomFamille, bool dansCarte, int nombreMax = 200)
-        {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                List<Article> articles = (from article in db.Article
-                                          join famille in db.FamilleArticle on article.FamilleId equals famille.Id
-                                          where article.DansCarte == dansCarte && famille.Nom == nomFamille
-                                          orderby article.Nom
-                                          select article)
-                                          .Take(nombreMax)
-                                          .ToList();
-                return articles;
-            }
-        }
-
         public List<Article> Articles(bool dansCarteSeulement)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -114,19 +99,11 @@ namespace FoodTruck.DAL
                 List<Article> articles = (from article in db.Article
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
                                           where article.DansCarte || article.DansCarte == dansCarteSeulement
-                                          orderby article.FamilleId, article.DansCarte, article.Nom
+                                          orderby article.FamilleId, article.DansCarte descending, article.Nom
                                           select article)
                                           .ToList();
                 return articles;
             }
-        }
-        public List<Article> TousArticles()
-        {
-            var articles = Articles(true);
-            var articlesPasDansCarte = Articles(false);
-            articles.AddRange(articlesPasDansCarte);
-            articles = articles.OrderBy(a => a.FamilleId).ThenBy(a => a.Nom).ToList();
-            return articles;
         }
 
         internal bool NomExiste(string nom, int id = 0)

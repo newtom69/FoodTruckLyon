@@ -48,65 +48,66 @@
             </ul>
         </div>
     </div>
-    <div class="renderBody">
-        <section id="client">
-            @if (utilisateur.Id != 0)
-            {
-                <p>Bienvenue <a href="/Compte/Profil">@utilisateur.Prenom @utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></p>
-            }
-            else
-            {
-                <p><a href="/Compte/Connexion/">Connexion</a> - <a href="/Compte/Creation/">Création de compte</a></p>
-            }
-        </section>
-
-        @RenderBody()
-
-        @if (panier != null && panier.PrixTotal != 0 && ViewBag.PanierLatteralDesactive == null)
+    <div class="bandeauClient">
+        <div></div>
+        <div></div>
+        @if (utilisateur.Id != 0)
         {
-    <div id="lateral">
-        <div id="lateralEnTete"></div>
-        <div id="panier">
-            <h4>Panier</h4>
-            <div class="listePanier">
-                @{int i = 0;
-                }
-                @foreach (var article in panier.ArticlesDetailsViewModel)
-                {
-                    double prixTotalArticle = article.Article.Prix * article.Quantite;
-                    <div>
-                        @article.Quantite
-                        <span>x </span><a href="/Article/@article.NomPourUrl">
-                            @article.Article.Nom
-                        </a>
-                    </div>
-                    using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
-                    {
-                        <input name="id" value="@i" hidden>
-                        <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
-                    }
-                    using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
-                    {
-                        <input name="nom" value="@article.Article.Nom" hidden>
-                        <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
-                    }
-                    <p class="sousTotalLateral">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
-                    <hr />
-                    i++;
-                }
-            </div>
-            <hr />
-            <div class="total">Total : @panier.PrixTotal.ToString("F2") &nbsp;&euro;</div>
-            <a class="validerPanier" href="/Panier">Valider votre panier</a>
-        </div>
-    </div>
+            <div>Bienvenue <a href="/Compte/Profil">@utilisateur.Prenom @utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></div>
         }
-
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - <a href="mailto:info@foodtrucklyon.fr">FoodTruckLyon.fr</a></p>
-        </footer>
+        else
+        {
+            <div><a href="/Compte/Connexion/">Connexion</a> - <a href="/Compte/Creation/">Création de compte</a></div>
+        }
     </div>
+
+    @if (panier != null && panier.PrixTotal != 0 && ViewBag.PanierLatteralDesactive == null)
+    {
+        <div id="lateral">
+            <div id="lateralEnTete"></div>
+            <div id="panier">
+                <h4>Panier</h4>
+                <div class="listePanier">
+                    @{int i = 0;
+                    }
+                    @foreach (var article in panier.ArticlesDetailsViewModel)
+                    {
+                        double prixTotalArticle = article.Article.Prix * article.Quantite;
+                        <div>
+                            @article.Quantite
+                            <span>x </span><a href="/Article/@article.NomPourUrl">
+                                @article.Article.Nom
+                            </a>
+                        </div>
+                        using (Html.BeginForm("Retirer", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                        {
+                            <input name="id" value="@i" hidden>
+                            <button class="ajoutSupprPanierTexte" type="submit">retirer</button>
+                        }
+                        using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "plus_moins" }))
+                        {
+                            <input name="nom" value="@article.Article.Nom" hidden>
+                            <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
+                        }
+                        <p class="sousTotalLateral">@prixTotalArticle.ToString("F2") &nbsp;&euro;</p>
+                        <hr />
+                        i++;
+                    }
+                </div>
+                <hr />
+                <div class="total">Total : @panier.PrixTotal.ToString("F2") &nbsp;&euro;</div>
+                <a class="validerPanier" href="/Panier">Valider votre panier</a>
+            </div>
+        </div>
+    }
+
+    @RenderBody()
+
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - <a href="mailto:info@foodtrucklyon.fr">FoodTruckLyon.fr</a></p>
+    </footer>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

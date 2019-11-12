@@ -6,62 +6,63 @@
 @{
     bool affichageArticle = Model.Article != null ? true : false;
 }
-
-@if (!affichageArticle)
-{
-    ViewBag.Title = "FoodTruckLyon - Erreur";
-    <div class="messageErreur">Article non trouvé !</div>
-}
-else
-{
-    ViewBag.Title = "FoodTruckLyon - " + Model.Article.Nom;
-    if (!Model.Article.DansCarte)
+<div class="principalQuandPanierLateralPresent">
+    @if (!affichageArticle)
     {
-        <div class="messageErreur">L'article choisi n'est plus disponible dans votre foodtruck</div>
-        ViewBag.Title += "- indisponible";
+        ViewBag.Title = "FoodTruckLyon - Erreur";
+        <div class="messageErreur">Article non trouvé !</div>
     }
-    <div class="detailArticle">
-        <div>
-            <img src="@dossierImagesArticles/@Model.Article.Image" alt="@Model.Article.Nom" />
-            <div class="articleDescription">
-                <h2>@Model.Article.Nom</h2>
-                <h4>@Model.Article.Description</h4>
-                <p><i>Liste des allergènes&nbsp;:</i> @Model.Article.Allergenes</p>
-                @if (Model.Article.Grammage != 0)
-                {
-                    <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @Model.Article.Grammage&nbsp; g
-                    </p>
-                }
-                @if (Model.Article.Litrage != 0)
-                {
-                    <p class="grow">
-                        <i>Valeur nutritionnelle :</i> @Model.Article.Litrage&nbsp; ml
-                    </p>
-                }
-                <div class="prix_submit">
-                    <span class="prix">@Model.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
-                    <div id="ajoutPanier">
-                        @if (Model.Article.DansCarte)
-                        {
+    else
+    {
+        ViewBag.Title = "FoodTruckLyon - " + Model.Article.Nom;
+        if (!Model.Article.DansCarte)
+        {
+            <div class="messageErreur">L'article choisi n'est plus disponible dans votre foodtruck</div>
+            ViewBag.Title += "- indisponible";
+        }
+        <div class="detailArticle">
+            <div>
+                <img src="@dossierImagesArticles/@Model.Article.Image" alt="@Model.Article.Nom" />
+                <div class="articleDescription">
+                    <h2>@Model.Article.Nom</h2>
+                    <h4>@Model.Article.Description</h4>
+                    <p><i>Liste des allergènes&nbsp;:</i> @Model.Article.Allergenes</p>
+                    @if (Model.Article.Grammage != 0)
+                    {
+                        <p class="grow">
+                            <i>Valeur nutritionnelle :</i> @Model.Article.Grammage&nbsp; g
+                        </p>
+                    }
+                    @if (Model.Article.Litrage != 0)
+                    {
+                        <p class="grow">
+                            <i>Valeur nutritionnelle :</i> @Model.Article.Litrage&nbsp; ml
+                        </p>
+                    }
+                    <div class="prix_submit">
+                        <span class="prix">@Model.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
+                        <div id="ajoutPanier">
+                            @if (Model.Article.DansCarte)
+                            {
 
-                            using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
-                            {
-                                <input name="nom" value="@Model.Article.Nom" hidden>
-                                <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                                using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))
+                                {
+                                    <input name="nom" value="@Model.Article.Nom" hidden>
+                                    <button class="ajoutPanier" type="submit">Ajouter au panier</button>
+                                }
                             }
-                        }
-                        @if (ViewBag.AdminArticle)
-                        {
-                            using (Html.BeginForm("Modifier", "AdministrerArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                            @if (ViewBag.AdminArticle)
                             {
-                                <input type="hidden" name="id" value="@Model.Article.Id">
-                                <button class="modifierArticle" type="submit">Modifier l'article</button>
+                                using (Html.BeginForm("Modifier", "AdministrerArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
+                                {
+                                    <input type="hidden" name="id" value="@Model.Article.Id">
+                                    <button class="modifierArticle" type="submit">Modifier l'article</button>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>

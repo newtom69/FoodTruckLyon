@@ -8,6 +8,11 @@ namespace FoodTruck.Controllers
 {
     public class HomeController : ControllerParent
     {
+        public HomeController()
+        {
+            ViewBag.PanierLatteralDesactive = true;
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
