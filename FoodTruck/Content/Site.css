@@ -19,11 +19,12 @@
     justify-content: space-evenly;
     margin-top: 140px;
     margin-right: 150px;
+    margin-left: 1%;
 }
 
 .principalQuandPanierLateralPresent {
     margin-right: 150px;
-    margin-left: 4%;
+    margin-left: 1%;
 }
 
 #lateral {
@@ -175,21 +176,40 @@ textarea {
     border-color: black;
 }
 
-section#bestsellers, section.notreCarte {
+section.notreCarte {
     display: flex;
-    justify-content: space-around;
+    justify-content: start;
+    flex-flow: wrap;
 }
 
-    section#bestsellers img, section.notreCarte img {
-        height: 200px;
+section.bestsellers {
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: wrap;
+}
+
+    section.notreCarte .indexArticle, section.bestsellers .indexArticle {
+        margin-right: 1%;
+        margin-left: 1%;
+        min-width: 180px;
+        max-width: 200px;
     }
 
-    section#bestsellers a, section.notreCarte a {
+    section.notreCarte img, section.bestsellers img {
+        height: 200px;
+        margin-top: 15px;
+    }
+
+    section.notreCarte a, section.bestsellers a {
         text-decoration: none;
         width: 200px;
         display: flex;
     }
 
+        section.notreCarte a.pasDansCarte {
+            opacity: .4;
+        }
+        
 .familleNotreCarte {
     margin-top: 0;
 }
@@ -232,32 +252,6 @@ section#bestsellers, section.notreCarte {
         margin-left: 0 !important;
         align-self: flex-end !important;
     }
-
-section.notreCarte {
-    flex-wrap: wrap;
-    justify-content: start;
-    display: flex;
-    flex-flow: wrap;
-}
-
-    section.notreCarte > div {
-        width: 200px;
-    }
-
-    section.notreCarte .indexArticle {
-        margin-right: 1%;
-        margin-left: 1%;
-        min-width: 180px;
-        max-width: 200px;
-    }
-
-        section.notreCarte .indexArticle img {
-            margin-top: 15px;
-        }
-
-        section.notreCarte .indexArticle a.pasDansCarte {
-            opacity: .4;
-        }
 
 section.imagesGestionCommande .indexArticle a.pasDansCarte {
     opacity: .4;

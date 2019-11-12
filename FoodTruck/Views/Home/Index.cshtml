@@ -6,7 +6,6 @@
 @{
     ViewBag.Title = "FoodTruckLyon";
 }
-
 <div class="imageAccueil">
     <img src="@dossierImagesArticles/food-truck.jpg" alt="Notre Foodtruck">
 </div>
@@ -14,7 +13,7 @@
 <h3><a href="../Article">Voir notre carte</a></h3>
 <hr />
 <h3>3 de nos produits stars !</h3>
-<section class="notreCarte">
+<section class="bestsellers">
     @foreach (var article in Model.ArticlesTopRandom)
     {
         <div id="@article.NomPourUrl" class="indexArticle">
@@ -36,4 +35,3 @@
         </div>
     }
 </section>
-
