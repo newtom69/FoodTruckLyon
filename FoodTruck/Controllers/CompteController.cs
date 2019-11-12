@@ -1,12 +1,9 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,6 +11,11 @@ namespace FoodTruck.Controllers
 {
     public class CompteController : ControllerParent
     {
+        public CompteController()
+        {
+            ViewBag.PanierLatteralDesactive = true;
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
