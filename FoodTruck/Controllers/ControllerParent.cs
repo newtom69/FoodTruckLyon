@@ -12,9 +12,9 @@ namespace FoodTruck.Controllers
     {
         protected string ActionNom { get; set; }
         protected string ControllerNom { get; set; }
-        public Utilisateur Utilisateur { get; set; } //TODO mettre protected
+        protected Utilisateur Utilisateur { get; set; }
         protected string ProspectGuid { get; set; }
-        public PanierViewModel PanierViewModel { get; set; } //TODO mettre protected
+        protected PanierViewModel PanierViewModel { get; set; } 
         protected bool AdminArticle { get; set; }
         protected bool AdminCommande { get; set; }
         protected bool AdminUtilisateur { get; set; }

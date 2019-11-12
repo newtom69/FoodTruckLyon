@@ -132,30 +132,17 @@ namespace FoodTruck.Controllers
                     PanierViewModel.Initialiser();
                     ViewBag.Panier = null; //todo
                 }
-                using (PanierController panierController = new PanierController()) // TODO plus propre
+                List<Article> articlesKo = new List<Article>();
+                foreach (var a in articles)
                 {
-                    panierController.Utilisateur = Utilisateur;
-                    panierController.PanierViewModel = PanierViewModel;
-
-                    List<Article> articlesKo = new List<Article>();
-                    foreach (var a in articles)
-                    {
-                        if (panierController.Ajouter(a.Article, a.Quantite))
-                        {
-                            PanierViewModel.PrixTotal += a.Quantite * a.Article.Prix;
-                            ViewBag.Panier = PanierViewModel;
-                        }
-                        else
-                        {
-                            articlesKo.Add(a.Article);
-                        }
-                    }
-
-                    TempData["ArticlesNonAjoutes"] = articlesKo;
+                    if (!PanierViewModel.Ajouter(a.Article, a.Quantite, Utilisateur.Id, ProspectGuid))
+                        articlesKo.Add(a.Article);
                 }
-                RecupererPanierEnBase();
                 ViewBag.Panier = PanierViewModel;
+                TempData["ArticlesNonAjoutes"] = articlesKo;
             }
+            RecupererPanierEnBase();
+            ViewBag.Panier = PanierViewModel;
             return RedirectToAction("Commandes", "Compte");
         }
 

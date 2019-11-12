@@ -73,15 +73,18 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Ajouter(string nom, string ancre, bool? home)
         {
-            ArticleDAL lArticleDAL = new ArticleDAL();
-            Article lArticle = lArticleDAL.Details(nom);
-            if (lArticle != null && lArticle.DansCarte)
+            Article article = new ArticleDAL().Details(nom);
+            if (article != null && article.DansCarte)
             {
-                if (Ajouter(lArticle))
-                {
-                    PanierViewModel.PrixTotal += lArticle.Prix;
-                    ViewBag.Panier = PanierViewModel;
-                }
+                //if (Ajouter(article))
+                //{
+                //    ViewBag.Panier = PanierViewModel;
+                //}
+                PanierViewModel.Ajouter(article, 1, Utilisateur.Id, ProspectGuid);
+                ViewBag.Panier = PanierViewModel;
+
+
+
             }
             bool testHome = home ?? false;
             if (!testHome)
@@ -93,20 +96,13 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Retirer(int id)
         {
-            bool sauvPanierClient = false;
-            bool sauvPanierProspect = false;
-            if (Utilisateur.Id != 0)
-                sauvPanierClient = true;
-            else
-                sauvPanierProspect = true;
-
-            ArticleDAL lArticleDAL = new ArticleDAL();
+            bool sauvPanierClient = Utilisateur.Id != 0 ? true : false;
             if (id < PanierViewModel.ArticlesDetailsViewModel.Count)
             {
-                Article lArticle = lArticleDAL.Details(PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
-                PanierDAL lePanierDAL;
-                PanierProspectDAL lePanierProspectDAL;
-                PanierViewModel.PrixTotal = Math.Round(PanierViewModel.PrixTotal - lArticle.Prix, 2);
+                Article article = new ArticleDAL().Details(PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
+                PanierDAL panierDAL;
+                PanierProspectDAL panierProspectDAL;
+                PanierViewModel.PrixTotal = Math.Round(PanierViewModel.PrixTotal - article.Prix, 2);
 
                 if (PanierViewModel.ArticlesDetailsViewModel[id].Quantite > 1)
                 {
@@ -114,13 +110,13 @@ namespace FoodTruck.Controllers
                     PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal = Math.Round(PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal - PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(Utilisateur.Id);
-                        lePanierDAL.ModifierQuantite(lArticle, -1);
+                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL.ModifierQuantite(article, -1);
                     }
-                    else if (sauvPanierProspect)
+                    else
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        lePanierProspectDAL.ModifierQuantite(lArticle, -1);
+                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        panierProspectDAL.ModifierQuantite(article, -1);
                     }
                 }
                 else
@@ -128,71 +124,18 @@ namespace FoodTruck.Controllers
                     PanierViewModel.ArticlesDetailsViewModel.RemoveAt(id);
                     if (sauvPanierClient)
                     {
-                        lePanierDAL = new PanierDAL(Utilisateur.Id);
-                        lePanierDAL.Supprimer(lArticle);
+                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL.Supprimer(article);
                     }
-                    else if (sauvPanierProspect)
+                    else
                     {
-                        lePanierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        lePanierProspectDAL.Supprimer(lArticle);
+                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
+                        panierProspectDAL.Supprimer(article);
                     }
                 }
                 ViewBag.Panier = PanierViewModel;
             }
             return Redirect(Request.UrlReferrer.AbsolutePath);
-        }
-
-        internal bool Ajouter(Article article, int quantite = 1)
-        {
-            bool ajout;
-            bool sauvPanierClient = false;
-            bool sauvPanierProspect = false;
-            if (Utilisateur.Id != 0)
-                sauvPanierClient = true;
-            else
-                sauvPanierProspect = true;
-            PanierDAL panierDAL;
-            PanierProspectDAL panierProspectDAL;
-            if (!article.DansCarte)
-            {
-                ajout = false;
-            }
-            else
-            {
-                ArticleViewModel artcl = PanierViewModel.ArticlesDetailsViewModel.Find(art => art.Article.Id == article.Id);
-                if (artcl == null)
-                {
-                    ArticleViewModel articleViewModel = new ArticleViewModel(article);
-                    PanierViewModel.ArticlesDetailsViewModel.Add(articleViewModel);
-                    if (sauvPanierClient)
-                    {
-                        panierDAL = new PanierDAL(Utilisateur.Id);
-                        panierDAL.Ajouter(article, quantite);
-                    }
-                    else if (sauvPanierProspect)
-                    {
-                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        panierProspectDAL.Ajouter(article, quantite);
-                    }
-                }
-                else
-                {
-                    artcl.Quantite += quantite;
-                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
-                    if (sauvPanierClient)
-                    {
-                        panierDAL = new PanierDAL(Utilisateur.Id);
-                        panierDAL.ModifierQuantite(article, quantite);
-                    }
-                    else if (sauvPanierProspect)
-                    {
-                        panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-                        panierProspectDAL.ModifierQuantite(article, quantite);
-                    }
-                }
-                ajout = true;
-            }
-            return ajout;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,6 +46,38 @@ namespace FoodTruck.ViewModels
         internal void Trier()
         {
             ArticlesDetailsViewModel = ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
+        }
+
+
+
+        internal bool Ajouter(Article article, int quantite = 1, int utilisateurId = 0, string prospectGuid = "")
+        {
+            bool ajout = article.DansCarte ? true : false;
+            if (ajout)
+            {
+                bool sauvPanierClient = utilisateurId != 0 ? true : false;
+                ArticleViewModel artcl = ArticlesDetailsViewModel.Find(art => art.Article.Id == article.Id);
+                if (artcl == null)
+                {
+                    ArticleViewModel articleViewModel = new ArticleViewModel(article);
+                    ArticlesDetailsViewModel.Add(articleViewModel);
+                    if (sauvPanierClient)
+                        new PanierDAL(utilisateurId).Ajouter(article, quantite);
+                    else
+                        new PanierProspectDAL(prospectGuid).Ajouter(article, quantite);
+                }
+                else
+                {
+                    artcl.Quantite += quantite;
+                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
+                    if (sauvPanierClient)
+                        new PanierDAL(utilisateurId).ModifierQuantite(article, quantite);
+                    else
+                        new PanierProspectDAL(prospectGuid).ModifierQuantite(article, quantite);
+                }
+                PrixTotal += quantite * article.Prix;
+            }
+            return ajout;
         }
     }
 }
