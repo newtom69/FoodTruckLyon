@@ -36,7 +36,6 @@
 
     #panier .listePanier {
         overflow-y: auto;
-        
     }
 
     #panier h4 {
@@ -355,9 +354,11 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
 }
 
 .adminArticle {
-    max-width: 700px;
-    min-width: 335px;
     margin: 0 auto;
+    min-width: 335px;
+    max-width: 335px;
+    display: flex;
+    flex-direction: column;
 }
 
     .adminArticle > div {
@@ -389,7 +390,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     .adminArticle a {
         text-decoration: none;
     }
-
 
 .prix {
     font-size: 3rem;
@@ -575,7 +575,7 @@ div.ajoutPanier {
     justify-content: space-between;
 }
 
-button.adminArticle {
+button.modifierArticle {
     background-color: orangered;
     padding: 0.6rem;
     border: solid 1px orangered;
@@ -788,11 +788,4 @@ select.ccformfield option.red {
 
 .image-upload > input {
     display: none;
-}
-
-.adminArticle .testLargeur {
-    min-width: 335px;
-    max-width: 335px;
-    display: flex;
-    flex-direction: column;
 }

@@ -106,32 +106,24 @@ namespace FoodTruck.DAL
                 return articles;
             }
         }
-        public List<Article> TousArticles(string nomFamille, int nombreMax = 200)
-        {
-            var articles = Articles(nomFamille, true, nombreMax);
-            var articlesPasDansCarte = Articles(nomFamille, false, nombreMax);
-            articles.AddRange(articlesPasDansCarte);
-            articles = articles.OrderBy(a => a.Nom).ToList();
-            return articles;
-        }
-        public List<Article> Articles(bool dansCarte, int nombreMax = 200)
+
+        public List<Article> Articles(bool dansCarteSeulement)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from article in db.Article
                                           join famille in db.FamilleArticle on article.FamilleId equals famille.Id
-                                          where article.DansCarte == dansCarte
-                                          orderby article.FamilleId, article.Nom
+                                          where article.DansCarte || article.DansCarte == dansCarteSeulement
+                                          orderby article.FamilleId, article.DansCarte, article.Nom
                                           select article)
-                                          .Take(nombreMax)
                                           .ToList();
                 return articles;
             }
         }
-        public List<Article> TousArticles(int nombreMax = 200)
+        public List<Article> TousArticles()
         {
-            var articles = Articles(true, nombreMax);
-            var articlesPasDansCarte = Articles(false, nombreMax);
+            var articles = Articles(true);
+            var articlesPasDansCarte = Articles(false);
             articles.AddRange(articlesPasDansCarte);
             articles = articles.OrderBy(a => a.FamilleId).ThenBy(a => a.Nom).ToList();
             return articles;

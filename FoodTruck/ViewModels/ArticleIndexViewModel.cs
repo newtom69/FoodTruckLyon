@@ -8,23 +8,12 @@ namespace FoodTruck.ViewModels
         public List<ArticleViewModel> Articles { get; set; }
 
         /// <summary>
-        /// retourne les articles dans carte ou non selon dansCarte
+        /// retourne tous les articles ou seulement ceux dans la carte selon dansCarteSeulement
         /// </summary>
-        public ArticleIndexViewModel(bool dansCarte)
+        public ArticleIndexViewModel(bool dansCarteSeulement)
         {
             Articles = new List<ArticleViewModel>();
-            foreach (Article article in new ArticleDAL().Articles(dansCarte))
-            {
-                Articles.Add(new ArticleViewModel(article));
-            }
-        }
-        /// <summary>
-        /// retourne tous les articles qu'ils soient ou non dans la carte
-        /// </summary>
-        public ArticleIndexViewModel()
-        {
-            Articles = new List<ArticleViewModel>();
-            foreach (Article article in new ArticleDAL().TousArticles())
+            foreach (Article article in new ArticleDAL().Articles(dansCarteSeulement))
             {
                 Articles.Add(new ArticleViewModel(article));
             }

@@ -11,7 +11,7 @@ namespace FoodTruck.Controllers
         public ActionResult Index()
         {
             if (AdminArticle)
-                return View(new ArticleIndexViewModel());
+                return View(new ArticleIndexViewModel(false));
             else
                 return View(new ArticleIndexViewModel(true));
         }

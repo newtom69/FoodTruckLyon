@@ -9,11 +9,10 @@
 @model List<Article>
 
 <script src="~/Scripts/myJs.js"></script>
-<meta charset=utf-8 />
+
 <div class="adminArticle">
     <h2>Modifier un article</h2>
     <dl class="dl-horizontal"></dl>
-    <div class="testLargeur">
         @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="ccfield-prepend">
@@ -117,6 +116,4 @@
                 }
             </div>
         }
-    </div>
-
 </div>

@@ -57,12 +57,12 @@
                             <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                         }
                     }
-                    @if (ViewBag.AdminArticle)
+                    @if (ViewBag.AdminArticle != null)
                     {
                         using (Html.BeginForm("Modifier", "AdministrerArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                         {
                             <input type="hidden" name="id" value="@a.Article.Id">
-                            <button class="adminArticle" type="submit">Modifier</button>
+                            <button class="modifierArticle" type="submit">Modifier</button>
                         }
                     }
                 </div>
