@@ -48,8 +48,6 @@ namespace FoodTruck.ViewModels
             ArticlesDetailsViewModel = ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
         }
 
-
-
         internal bool Ajouter(Article article, int quantite = 1, int utilisateurId = 0, string prospectGuid = "")
         {
             bool ajout = article.DansCarte ? true : false;

@@ -94,8 +94,6 @@ namespace FoodTruck.Controllers
                 ViewBag.MenuAdmin = true;
             if (Utilisateur.AdminArticle)
                 ViewBag.AdminArticle = true;
-
-
         }
 
         protected void InitialiserSession()

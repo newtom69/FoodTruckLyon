@@ -110,10 +110,10 @@
                     @if (utilisateur.Cagnotte >= 10 && Model.PrixTotal >= 10)
                     {
                         <select id="remiseFidelite" class="ccformfield" name="remiseFidelite" size="1" onchange="MajMontantRemise(this.value, montantRemiseFidelite.id)">
-                            <option selected value="0">remise fidélité</option>
+                            <option selected value="0">cagnotte fidélité</option>
                             @for (int iRemise = 10; iRemise <= (utilisateur.Cagnotte <= Model.PrixTotal ? utilisateur.Cagnotte : Model.PrixTotal); iRemise++)
                             {
-                                <option value="@iRemise">remise fidélité de @iRemise €</option>
+                                <option value="@iRemise">cagnotte fidélité de @iRemise €</option>
                             }
                         </select>
                     }
