@@ -7,9 +7,12 @@
     Utilisateur utilisateur = ViewBag.Utilisateur;
     PanierViewModel panier = ViewBag.Panier;
     int nombreArticlesDansPanier = 0;
-    foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
+    if (panier != null)
     {
-        nombreArticlesDansPanier += article.Quantite;
+        foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
+        {
+            nombreArticlesDansPanier += article.Quantite;
+        }
     }
 }
 <!DOCTYPE html>

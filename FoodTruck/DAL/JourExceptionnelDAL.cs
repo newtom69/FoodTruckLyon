@@ -139,6 +139,10 @@ namespace FoodTruck.DAL
                         Ouvert = ouvert
                     };
                 }
+                else if (jour.DateDebut < DateTime.Now)
+                {
+                    jour.DateDebut = jour.DateDebut.Add(RecalculHeureDebut(date));
+                }
                 return jour;
             }
         }
@@ -240,12 +244,7 @@ namespace FoodTruck.DAL
                 }
                 else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay)
                 {
-                    TimeSpan heureH = date.TimeOfDay;
-                    int pasMinutes = (int)plage.Pas.TotalMinutes;
-                    int minutes = (int)Math.Ceiling(heureH.TotalMinutes / pasMinutes) * pasMinutes;
-                    int heures = minutes / 60;
-                    minutes -= heures * 60;
-                    plage.Debut = new TimeSpan(heures, minutes, 0);
+                    plage.Debut = RecalculHeureDebut(date, (int)plage.Pas.TotalMinutes);
                 }
                 return plage;
             }
@@ -261,6 +260,14 @@ namespace FoodTruck.DAL
                 db.JourExceptionnel.RemoveRange(joursExceptionnels);
                 return db.SaveChanges();
             }
+        }
+
+        private TimeSpan RecalculHeureDebut(DateTime date, int pasMinutes = 15) //todo valeur du pas à indiquer dans les ouvertures exceptionnelles
+        {
+            int minutes = (int)Math.Ceiling(date.TimeOfDay.TotalMinutes / pasMinutes) * pasMinutes;
+            int heures = minutes / 60;
+            minutes -= heures * 60;
+            return new TimeSpan(heures, minutes, 0);
         }
     }
 }

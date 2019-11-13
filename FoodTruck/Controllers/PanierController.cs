@@ -76,15 +76,8 @@ namespace FoodTruck.Controllers
             Article article = new ArticleDAL().Details(nom);
             if (article != null && article.DansCarte)
             {
-                //if (Ajouter(article))
-                //{
-                //    ViewBag.Panier = PanierViewModel;
-                //}
                 PanierViewModel.Ajouter(article, 1, Utilisateur.Id, ProspectGuid);
                 ViewBag.Panier = PanierViewModel;
-
-
-
             }
             bool testHome = home ?? false;
             if (!testHome)

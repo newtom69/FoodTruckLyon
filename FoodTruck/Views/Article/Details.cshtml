@@ -51,7 +51,7 @@
                                     <button class="ajoutPanier" type="submit">Ajouter au panier</button>
                                 }
                             }
-                            @if (ViewBag.AdminArticle)
+                            @if (ViewBag.AdminArticle != null)
                             {
                                 using (Html.BeginForm("Modifier", "AdministrerArticle", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "admin_article" }))
                                 {
