@@ -40,7 +40,7 @@ namespace FoodTruck.Controllers
 
             string sujetMail = "Vous avez les droits d'administration";
             string message = $"Bonjour {prenom} {nom}\n\n" +
-                "Un administrateur de foodtrcklyon vous a donné les droits d'accès administrateur au site.\n" +
+                "Un administrateur de foodtrucklyon vous a donné les droits d'accès administrateur au site.\n" +
                 "Veuillez cliquer sur le lien suivant ou recopier l'adresse dans votre navigateur afin de valider l'action:\n" +
                 "\n" +
                 url +
