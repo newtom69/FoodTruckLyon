@@ -135,5 +135,18 @@ namespace FoodTruck.DAL
                 return db.SaveChanges();
             }
         }
+
+        internal int DonnerDroitAdmin(int id)
+        {
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                Utilisateur utilisateur = (from user in db.Utilisateur
+                                           where user.Id == id
+                                           select user).FirstOrDefault();
+
+                utilisateur.AdminArticle = utilisateur.AdminCommande = utilisateur.AdminPlanning = true;
+                return db.SaveChanges();
+            }
+        }
     }
 }

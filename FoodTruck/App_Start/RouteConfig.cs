@@ -39,6 +39,9 @@ namespace FoodTruck
             routes.MapRoute("OublieMotDePasse", "Compte/OubliMotDePasse/{codeVerification}",
             defaults: new { controller = "Compte", action = "OubliMotDePasse", codeVerification = UrlParameter.Optional });
 
+            routes.MapRoute("ObtenirDroitsAdmin", "Compte/ObtenirDroitsAdmin/{codeVerification}",
+            defaults: new { controller = "Compte", action = "ObtenirDroitsAdmin", codeVerification = UrlParameter.Optional });
+
             routes.MapRoute("Default", "{controller}/{action}/{id}",
             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
 

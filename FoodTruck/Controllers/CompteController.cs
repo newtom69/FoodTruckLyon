@@ -326,6 +326,42 @@ namespace FoodTruck.Controllers
                 return RedirectToAction("Connexion", "Compte");
         }
 
+        [HttpGet]
+        public ActionResult ObtenirDroitsAdmin(string codeVerification)
+        {
+            UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            AdminTemporaire adminTemporaire = new AdminTemporaireDAL().Verifier(codeVerification);
+            if (adminTemporaire != null)
+            {
+                Utilisateur = utilisateurDAL.Details(adminTemporaire.Email);
+                if (Utilisateur == null)
+                {
+                    string mdp = "rtbhthbr1489"; //TODO faire aléatoire
+                    mdp = mdp.GetHash();
+                    string telephone = "0600000000";
+                    Utilisateur = utilisateurDAL.Creation(adminTemporaire.Email, mdp, adminTemporaire.Nom, adminTemporaire.Prenom, telephone);
+                }
+                utilisateurDAL.DonnerDroitAdmin(Utilisateur.Id);
+                {
+                    string emailFoodtruck = "info@foodtrucklyon.fr"; // todo passer dans config
+                    string objet = $"{Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a abtenu les droit admin";
+                    string message = $"l'utilisateur {Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a obtenu les droits admin";
+                    Utilitaire.EnvoieMail(emailFoodtruck, objet, message);
+                }
+                ViewBag.Utilisateur = Utilisateur;
+                Session["UtilisateurId"] = Utilisateur.Id;
+                RecupererPanierProspectPuisSupprimer();
+                SupprimerCookieProspect();
+                TempData["lienOk"] = "Félicitation ! Vous êtes maintenant administrateur du site. Vous pouvez accéder au menu Administration";
+                return View();
+            }
+            else
+            {
+                TempData["lienKo"] = "Le lien de droit administration n'est plus valable. Refaite une demande";
+                return View();
+            }
+        }
+
         private bool VerifMdp(string mdp1, string mdp2)
         {
             if (mdp1 != mdp2 || mdp1.Length < 8)

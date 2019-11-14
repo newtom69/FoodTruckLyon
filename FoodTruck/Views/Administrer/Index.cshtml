@@ -1,28 +1,29 @@
 ﻿@{
     ViewBag.Title = "Administration";
 }
-<div class="admin">
-    <h2>Administration</h2>
+    <div class="admin">
+        <h2>Administration</h2>
 
-    <h3>Commandes</h3>
-    <h4>@Html.ActionLink("Gérer les commandes en cours", "EnCours", "AdministrerCommande")</h4>
-    <h4>@Html.ActionLink("Voir les commandes futures", "Futures", "AdministrerCommande")</h4>
-    <h4>@Html.ActionLink("Gérer le statut des commandes passées", "AStatuer", "AdministrerCommande")</h4>
-    <h4>@Html.ActionLink("Voir les commandes pendant les fermetures", "PendantFermetures", "AdministrerCommande")</h4>
-    <h4>@Html.ActionLink("Recherche de commandes", "Recherche", "AdministrerCommande")</h4>
+        <h3>Commandes</h3>
+        <h4>@Html.ActionLink("Gérer les commandes en cours", "EnCours", "AdministrerCommande")</h4>
+        <h4>@Html.ActionLink("Voir les commandes futures", "Futures", "AdministrerCommande")</h4>
+        <h4>@Html.ActionLink("Gérer le statut des commandes passées", "AStatuer", "AdministrerCommande")</h4>
+        <h4>@Html.ActionLink("Voir les commandes pendant les fermetures", "PendantFermetures", "AdministrerCommande")</h4>
+        <h4>@Html.ActionLink("Recherche de commandes", "Recherche", "AdministrerCommande")</h4>
 
-    <h3>Articles</h3>
-    <h4>@Html.ActionLink("Ajouter un article à la carte", "Ajouter", "AdministrerArticle")</h4>
-    <h4>@Html.ActionLink("Modifier un article de la carte", "Modifier", "AdministrerArticle")</h4>
+        <h3>Articles</h3>
+        <h4>@Html.ActionLink("Ajouter un article à la carte", "Ajouter", "AdministrerArticle")</h4>
+        <h4>@Html.ActionLink("Modifier un article de la carte", "Modifier", "AdministrerArticle")</h4>
 
-    <h3>Planning des ouvertures/fermetures</h3>
-    <h4>@Html.ActionLink("Gérer les ouvertures hebdomadaires", "OuverturesHebdomadaires", "AdministrerPlanning")</h4>
-    <h4>@Html.ActionLink("Gérer les ouvertures exceptionnelles", "OuverturesExceptionnelles", "AdministrerPlanning")</h4>
-    <h4>@Html.ActionLink("Gérer les fermetures exceptionnelles", "FermeturesExceptionnelles", "AdministrerPlanning")</h4>
+        <h3>Planning des ouvertures/fermetures</h3>
+        <h4>@Html.ActionLink("Gérer les ouvertures hebdomadaires", "OuverturesHebdomadaires", "AdministrerPlanning")</h4>
+        <h4>@Html.ActionLink("Gérer les ouvertures exceptionnelles", "OuverturesExceptionnelles", "AdministrerPlanning")</h4>
+        <h4>@Html.ActionLink("Gérer les fermetures exceptionnelles", "FermeturesExceptionnelles", "AdministrerPlanning")</h4>
 
-    <h3>Maintenance</h3>
-    <h4>@Html.ActionLink("Purger base de données", "PurgerBdd", "AdministrerBdd")</h4>
+        <h3>Maintenance</h3>
+        <h4>@Html.ActionLink("Purger base de données", "PurgerBdd", "AdministrerBdd")</h4>
 
-    <h3>Clients</h3>
-    <h4>@Html.ActionLink("Voir un client", "Client", "AdministrerClient")</h4>
-</div>
+        <h3>Clients</h3>
+        <h4>@Html.ActionLink("Voir un client", "Client", "AdministrerClient")</h4>
+        <h4>@Html.ActionLink("Donner les droits d'administration", "DonnerDroitsAdmin", "AdministrerClient")</h4>
+    </div>

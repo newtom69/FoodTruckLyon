@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="omasvui147994fr33943_foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdminTemporaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="CodeVerification" Type="char" MaxLength="96" Nullable="false" />
+          <Property Name="DateFinValidite" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Article">
           <Key>
             <PropertyRef Name="Id" />
@@ -251,6 +262,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="omasvui147994fr33943_foodtruckModelStoreContainer">
+          <EntitySet Name="AdminTemporaire" EntityType="Self.AdminTemporaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CodePromo" EntityType="Self.CodePromo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
@@ -528,6 +540,7 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="OubliMotDePasse" EntitySet="OubliMotDePasse" />
           </AssociationSet>
+          <EntitySet Name="AdminTemporaire" EntityType="omasvui147994fr33943_foodtruckModel.AdminTemporaire" />
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -617,6 +630,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdminTemporaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="true" Unicode="true" />
+          <Property Name="Nom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Prenom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="CodeVerification" Type="String" Nullable="false" MaxLength="96" FixedLength="true" Unicode="false" />
+          <Property Name="DateFinValidite" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -766,6 +790,18 @@
                 <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
                 <ScalarProperty Name="CodeVerification" ColumnName="CodeVerification" />
                 <ScalarProperty Name="UtilisateurId" ColumnName="UtilisateurId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdminTemporaire">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.AdminTemporaire">
+              <MappingFragment StoreEntitySet="AdminTemporaire">
+                <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
+                <ScalarProperty Name="CodeVerification" ColumnName="CodeVerification" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
