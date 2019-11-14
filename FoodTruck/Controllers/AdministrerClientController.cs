@@ -4,7 +4,7 @@ namespace FoodTruck.Controllers
 {
     public class AdministrerClientController : ControllerParentAdministrer
     {
-        public ActionResult Index()
+        public ActionResult Client()
         {
             return View();
         }

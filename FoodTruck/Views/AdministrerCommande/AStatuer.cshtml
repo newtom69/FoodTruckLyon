@@ -8,11 +8,13 @@
 }
 @model ListeCommandesViewModel
 
-<h2>Administration</h2>
 @if (Model != null)
 {
-    <h3>Gérer le statut des commandes passées</h3>
-    <div id="panierValide">
+    <div class="adminCommandes">
+        <h2>Administration</h2>
+        <h3>Gérer le statut des commandes passées</h3>
+    </div>
+    <div id="panierEnLigne">
         <div class="choixHoraire">
             @if (Model.Commandes.Count == 0)
             {

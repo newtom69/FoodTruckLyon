@@ -221,6 +221,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
 
 .imagesGestionCommande {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .gestionFermetureOuverture {
@@ -347,12 +348,31 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     flex-direction: column;
 }
 
+.compte {
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-width: 335px;
+    max-width: 800px;
+}
+
 .adminPlanning {
     margin: 0 auto;
     padding-left: 1%;
     padding-right: 1%;
     min-width: 335px;
     max-width: 850px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.adminCommandes {
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-width: 335px;
+    max-width: 800px;
     width: auto;
     display: flex;
     flex-direction: column;
@@ -613,6 +633,20 @@ button.annulerCommande {
     border-radius: 1.5rem;
 }
 
+#panierEnLigne {
+    display: flex;
+    justify-content: left;
+    margin: 0 auto;
+    padding-left: 1%;
+    padding-right: 1%;
+    max-width: 800px;
+    min-width: 335px;
+}
+
+    #panierEnLigne img {
+        height: 90px;
+    }
+
 #panierValide, #panierValide2 {
     width: 345px;
 }
@@ -781,7 +815,7 @@ select.ccformfield option.red {
     display: none;
 }
 
-
+/*ATTENTION CSS REDEFINI POUR ECRAN TYPE MOBILE*/
 @media (min-width: 768px) {
     .navbar-nav {
         position: absolute;
@@ -820,5 +854,22 @@ select.ccformfield option.red {
 
     .bandeauClient {
         margin-top: 16px;
+    }
+
+    .principalQuandPanierLateralPresent {
+        margin-right: 1%;
+        margin-left: 1%;
+    }
+
+    #lateral {
+        display: none;
+    }
+
+    section.notreCarte {
+        justify-content: space-evenly;
+    }
+
+    .detailArticle > div {
+        flex-flow: column nowrap;
     }
 }

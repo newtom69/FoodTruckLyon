@@ -4,6 +4,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -100,10 +101,14 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Commandes()
         {
-            CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.CommandesUtilisateur(Utilisateur.Id);
-            ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
-            return View(listeCommandesViewModel);
+            if (Utilisateur.Id != 0)
+            {
+                List<Commande> commandes = new CommandeDAL().CommandesUtilisateur(Utilisateur.Id);
+                ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
+                return View(listeCommandesViewModel);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
         [HttpPost]
@@ -344,6 +349,5 @@ namespace FoodTruck.Controllers
             TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
             panierProspectDAL.Supprimer();
         }
-
     }
 }

@@ -45,8 +45,7 @@ namespace FoodTruck.Controllers
             TempData["CodePromo"] = codePromo;
             TempData["RemiseCommercialeValide"] = false;
             TempData["RemiseCommercialeMontant"] = (double)0;
-            CodePromoDAL codePromoDAL = new CodePromoDAL();
-            ValiditeCodePromo code = codePromoDAL.Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemise);
+            ValiditeCodePromo code = new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemise);
             switch (code)
             {
                 case ValiditeCodePromo.Valide:
@@ -67,7 +66,7 @@ namespace FoodTruck.Controllers
                     TempData["RemiseCommercialeInfo"] = "le montant de la commande est insuffisant";
                     break;
             }
-            return Redirect("~/Panier/Index#remiseFidelite");
+            return Redirect("~/Panier/Index#codePromoUtilisateur");
         }
 
         [HttpPost]

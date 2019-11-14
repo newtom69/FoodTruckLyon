@@ -9,101 +9,103 @@
 }
 @model ListeCommandesViewModel
 
-@if (articlesNonAjoutes != null && articlesNonAjoutes.Count > 0)
-{
-    <div class="messageInfo">Les articles suivants ne peuvent pas être repris car ils ne sont pas disponibles :</div>
-    <div class="gestionCommandeArticle">
-        <section class="imagesGestionCommande">
-            @foreach (Article article in articlesNonAjoutes)
-            {
-                <div class="indexArticle">
-                    <img src="@dossierImagesArticles/@article.Image" alt="@article.Nom" />
-                    <p>@article.Nom</p>
-                </div>
-            }
-        </section>
-    </div>
-}
-
-<h2>Votre Compte</h2>
-@if (Model != null)
-{
-    <h3>Vos commandes</h3>
-    <div id="panierValide">
-        <div>
-            @if (Model.Commandes.Count == 0)
-            {
-                <div class="messageInfo">Vous n'avez pas encore effectué de commande</div>
-            }
-            @foreach (var c in Model.Commandes)
-            {
-                string classDate = "class=commandeAnnulee";
-                string preDate = "";
-                bool enCours = false;
-                if (@c.Commande.Annulation)
+<div class="compte">
+    @if (articlesNonAjoutes != null && articlesNonAjoutes.Count > 0)
+    {
+        <div class="messageInfo">Les articles suivants ne peuvent pas être repris car ils ne sont pas disponibles :</div>
+        <div class="gestionCommandeArticle">
+            <section class="imagesGestionCommande">
+                @foreach (Article article in articlesNonAjoutes)
                 {
-                    preDate = "Commande annulée. Le retrait été prévu le ";
-                    classDate = "class=commandeAnnulee";
+                    <div class="indexArticle">
+                        <img src="@dossierImagesArticles/@article.Image" alt="@article.Nom" />
+                        <p>@article.Nom</p>
+                    </div>
                 }
-                else if (c.Commande.Retrait)
-                {
-                    preDate = "Retirée le ";
-                    classDate = "class=commandeRetiree";
-                }
-                else
-                {
-                    preDate = "A retirer le ";
-                    classDate = "class=commandeARetirer";
-                    if (c.Commande.DateRetrait > DateTime.Now)
-                    {
-                        enCours = true;
-                    }
-                }
-                <div class="gestionCommandeArticle">
-                    <h4>Commande n° : @c.Commande.Id</h4>
-                    @if (enCours)
-                    {
-                        using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                            <div class="ccfield-prepend">
-                                <button class="annulerCommande" type="submit">Annuler cette commande</button>
-                            </div>
-                        }
-                    }
-                    <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                    <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <section class="imagesGestionCommande">
-                        @foreach (var a in c.ListArticlesVM)
-                        {
-                            string effet = "";
-                            if (!a.Article.DansCarte)
-                            {
-                                effet = "class=pasDansCarte";
-                            }
-                            <div class="indexArticle">
-                                <a @effet href="/Article/@a.NomPourUrl">
-                                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                                </a>
-                                <p>@a.Quantite x @a.Article.Nom</p>
-                            </div>
-                        }
-                    </section>
-                    @using (Html.BeginForm("ReprendreArticlesCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                        <div>
-                            <input name="viderPanier" type="checkbox" value="true">
-                            <input name="viderPanier" type="hidden" value="false">
-                            Vider panier puis
-                        </div>
-                        <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                        <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
-
-                    }
-
-                    <hr />
-                </div>
-            }
+            </section>
         </div>
-    </div>
-}
+    }
+
+    <h2>Votre Compte</h2>
+    @if (Model != null)
+    {
+        <h3>Vos commandes</h3>
+        <div id="panierValide">
+            <div>
+                @if (Model.Commandes.Count == 0)
+                {
+                    <div class="messageInfo">Vous n'avez pas encore effectué de commande</div>
+                }
+                @foreach (var c in Model.Commandes)
+                {
+                    string classDate = "class=commandeAnnulee";
+                    string preDate = "";
+                    bool enCours = false;
+                    if (@c.Commande.Annulation)
+                    {
+                        preDate = "Commande annulée. Le retrait été prévu le ";
+                        classDate = "class=commandeAnnulee";
+                    }
+                    else if (c.Commande.Retrait)
+                    {
+                        preDate = "Retirée le ";
+                        classDate = "class=commandeRetiree";
+                    }
+                    else
+                    {
+                        preDate = "A retirer le ";
+                        classDate = "class=commandeARetirer";
+                        if (c.Commande.DateRetrait > DateTime.Now)
+                        {
+                            enCours = true;
+                        }
+                    }
+                    <div class="gestionCommandeArticle">
+                        <h4>Commande n° : @c.Commande.Id</h4>
+                        @if (enCours)
+                        {
+                            using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                                <div class="ccfield-prepend">
+                                    <button class="annulerCommande" type="submit">Annuler cette commande</button>
+                                </div>
+                            }
+                        }
+                        <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                        <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                        <section class="imagesGestionCommande">
+                            @foreach (var a in c.ListArticlesVM)
+                            {
+                                string effet = "";
+                                if (!a.Article.DansCarte)
+                                {
+                                    effet = "class=pasDansCarte";
+                                }
+                                <div class="indexArticle">
+                                    <a @effet href="/Article/@a.NomPourUrl">
+                                        <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                    </a>
+                                    <p>@a.Quantite x @a.Article.Nom</p>
+                                </div>
+                            }
+                        </section>
+                        @using (Html.BeginForm("ReprendreArticlesCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div>
+                                <input name="viderPanier" type="checkbox" value="true">
+                                <input name="viderPanier" type="hidden" value="false">
+                                Vider panier puis
+                            </div>
+                            <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                            <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
+
+                        }
+
+                        <hr />
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
