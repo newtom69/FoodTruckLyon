@@ -289,6 +289,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
         min-width: 110px;
         max-width: 110px;
         margin-right: 2px;
+        margin-bottom: 3%;
         text-align: center;
     }
 
@@ -871,5 +872,27 @@ select.ccformfield option.red {
 
     .detailArticle > div {
         flex-flow: column nowrap;
+    }
+
+    .gestionFermetureOuverture {
+        flex-flow: column;
+        justify-content: center;
+    }
+
+    .ccformfield {
+        width: 335px;
+    }
+
+    .gestionFermetureOuverture input, .gestionFermetureOuverture .boutonAjouter, .gestionFermetureOuverture .boutonModifier, .gestionFermetureOuverture .boutonSupprimer, .gestionFermetureOuverture .libelleDate {
+        min-width: 335px;
+        max-width: 335px;
+    }
+
+    .gestionFermetureOuverture .boutonSupprimer {
+        margin-bottom: 15px;
+    }
+
+    .ccfield-prepend {
+        margin-bottom: 4px;
     }
 }
