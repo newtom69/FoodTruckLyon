@@ -28,7 +28,7 @@ namespace FoodTruck.Controllers
         {
             int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienDroitsAdmin"]);
             string codeVerification = Guid.NewGuid().ToString("n");
-            string url = $"www.foodtrucklyon.fr/Compte/ObtenirDroitAdmin/{codeVerification}"; //TODO plus propre
+            string url = $"www.foodtrucklyon.fr/Compte/ObtenirDroitsAdmin/{codeVerification}"; //TODO plus propre
             Utilisateur utilisateur = new Utilisateur
             {
                 Email = email,

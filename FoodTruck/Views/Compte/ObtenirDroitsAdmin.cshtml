@@ -7,10 +7,10 @@
 
     @if (TempData["lienKo"] != null)
     {
-        <div class="messageErreur">TempData["lienKo"]</div>
+        <div class="messageErreur">@TempData["lienKo"]</div>
     }
     else if (TempData["lienOk"] != null)
     {
-    <div class="messageInfo">TempData["lienOk"]</div>
+    <div class="messageInfo">@TempData["lienOk"]</div>
     }
 </div>
