@@ -36,7 +36,7 @@ namespace FoodTruck.Controllers
                 Prenom = prenom,
                 Telephone = telephone,
             };
-            new AdminTemporaireDAL().Ajouter(utilisateur, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
+            new CreerAdminDAL().Ajouter(utilisateur, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
 
             string sujetMail = "Vous avez les droits d'administration";
             string message = $"Bonjour {prenom} {nom}\n\n" +

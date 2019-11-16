@@ -156,7 +156,7 @@
     <Compile Include="Controllers\ControllerParentAdministrer.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
-    <Compile Include="DAL\AdminTemporaireDAL.cs" />
+    <Compile Include="DAL\CreerAdminDAL.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\CodePromoDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
@@ -170,9 +170,6 @@
     <Compile Include="DAL\UtilisateurDAL.cs" />
     <Compile Include="DAL\OubliMotDePasseDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
-    <Compile Include="Models\AdminTemporaire.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
@@ -183,6 +180,9 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Commande_Article.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CreerAdmin.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FamilleArticle.cs">

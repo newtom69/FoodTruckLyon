@@ -6,17 +6,17 @@ using System.Web;
 
 namespace FoodTruck.DAL
 {
-    public class AdminTemporaireDAL
+    public class CreerAdminDAL
     {
-        internal AdminTemporaire Details(string identifiant)
+        internal CreerAdmin Details(string identifiant)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 DateTime maintenant = DateTime.Now;
-                var adminTemporaire = (from u in db.AdminTemporaire
+                var creerAdmin = (from u in db.CreerAdmin
                                        where u.CodeVerification == identifiant && DbFunctions.DiffMinutes(maintenant, u.DateFinValidite) >= 0
                                        select u).FirstOrDefault();
-                return adminTemporaire;
+                return creerAdmin;
             }
         }
         internal void Ajouter(Utilisateur utilisateur, string codeVerification, DateTime dateFinValidite)
@@ -25,7 +25,7 @@ namespace FoodTruck.DAL
             Supprimer(utilisateur.Email);
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                AdminTemporaire adminTemporaire = new AdminTemporaire
+                CreerAdmin creerAdmin = new CreerAdmin
                 {
                     Email = utilisateur.Email,
                     Nom = utilisateur.Nom,
@@ -33,29 +33,29 @@ namespace FoodTruck.DAL
                     CodeVerification = codeVerification,
                     DateFinValidite = dateFinValidite
                 };
-                db.AdminTemporaire.Add(adminTemporaire);
+                db.CreerAdmin.Add(creerAdmin);
                 db.SaveChanges();
             }
         }
 
-        internal AdminTemporaire Verifier(string identifiant)
+        internal CreerAdmin Verifier(string identifiant)
         {
-            AdminTemporaire adminTemporaire = Details(identifiant);
-            if (adminTemporaire != null)
+            CreerAdmin creerAdmin = Details(identifiant);
+            if (creerAdmin != null)
             {
-                Supprimer(adminTemporaire.Email);
+                Supprimer(creerAdmin.Email);
             }
-            return adminTemporaire;
+            return creerAdmin;
         }
         internal void Supprimer(string email)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                List<AdminTemporaire> listeAdminTemporaire =
-                    (from a in db.AdminTemporaire
+                List<CreerAdmin> listeAdminTemporaire =
+                    (from a in db.CreerAdmin
                      where a.Email == email
                      select a).ToList();
-                db.AdminTemporaire.RemoveRange(listeAdminTemporaire);
+                db.CreerAdmin.RemoveRange(listeAdminTemporaire);
                 db.SaveChanges();
             }
         }

@@ -37,6 +37,6 @@ namespace FoodTruck
         public virtual DbSet<Utilisateur> Utilisateur { get; set; }
         public virtual DbSet<JourExceptionnel> JourExceptionnel { get; set; }
         public virtual DbSet<OubliMotDePasse> OubliMotDePasse { get; set; }
-        public virtual DbSet<AdminTemporaire> AdminTemporaire { get; set; }
+        public virtual DbSet<CreerAdmin> CreerAdmin { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace FoodTruck
     using System;
     using System.Collections.Generic;
     
-    public partial class AdminTemporaire
+    public partial class CreerAdmin
     {
         public int Id { get; set; }
         public string Email { get; set; }

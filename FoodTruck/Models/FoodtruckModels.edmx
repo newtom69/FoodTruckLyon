@@ -5,17 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="omasvui147994fr33943_foodtruckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AdminTemporaire">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
-          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
-          <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
-          <Property Name="CodeVerification" Type="char" MaxLength="96" Nullable="false" />
-          <Property Name="DateFinValidite" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="Article">
           <Key>
             <PropertyRef Name="Id" />
@@ -66,6 +55,17 @@
           <Property Name="ArticleId" Type="int" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreerAdmin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="CodeVerification" Type="char" MaxLength="32" Nullable="false" />
+          <Property Name="DateFinValidite" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="FamilleArticle">
           <Key>
@@ -262,11 +262,11 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="omasvui147994fr33943_foodtruckModelStoreContainer">
-          <EntitySet Name="AdminTemporaire" EntityType="Self.AdminTemporaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CodePromo" EntityType="Self.CodePromo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande" EntityType="Self.Commande" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreerAdmin" EntityType="Self.CreerAdmin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourExceptionnel" EntityType="Self.JourExceptionnel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OubliMotDePasse" EntityType="Self.OubliMotDePasse" Schema="dbo" store:Type="Tables" />
@@ -540,7 +540,7 @@
             <End Role="Utilisateur" EntitySet="Utilisateur" />
             <End Role="OubliMotDePasse" EntitySet="OubliMotDePasse" />
           </AssociationSet>
-          <EntitySet Name="AdminTemporaire" EntityType="omasvui147994fr33943_foodtruckModel.AdminTemporaire" />
+          <EntitySet Name="CreerAdmin" EntityType="omasvui147994fr33943_foodtruckModel.CreerAdmin" />
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -630,7 +630,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="AdminTemporaire">
+        <EntityType Name="CreerAdmin">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -638,7 +638,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="true" Unicode="true" />
           <Property Name="Nom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Prenom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
-          <Property Name="CodeVerification" Type="String" Nullable="false" MaxLength="96" FixedLength="true" Unicode="false" />
+          <Property Name="CodeVerification" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
           <Property Name="DateFinValidite" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
@@ -794,9 +794,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AdminTemporaire">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.AdminTemporaire">
-              <MappingFragment StoreEntitySet="AdminTemporaire">
+          <EntitySetMapping Name="CreerAdmin">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.CreerAdmin">
+              <MappingFragment StoreEntitySet="CreerAdmin">
                 <ScalarProperty Name="DateFinValidite" ColumnName="DateFinValidite" />
                 <ScalarProperty Name="CodeVerification" ColumnName="CodeVerification" />
                 <ScalarProperty Name="Prenom" ColumnName="Prenom" />

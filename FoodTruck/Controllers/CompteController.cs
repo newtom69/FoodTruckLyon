@@ -330,16 +330,16 @@ namespace FoodTruck.Controllers
         public ActionResult ObtenirDroitsAdmin(string codeVerification)
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
-            AdminTemporaire adminTemporaire = new AdminTemporaireDAL().Verifier(codeVerification);
-            if (adminTemporaire != null)
+            CreerAdmin creerAdmin = new CreerAdminDAL().Verifier(codeVerification);
+            if (creerAdmin != null)
             {
-                Utilisateur = utilisateurDAL.Details(adminTemporaire.Email);
+                Utilisateur = utilisateurDAL.Details(creerAdmin.Email);
                 if (Utilisateur == null)
                 {
                     string mdp = "rtbhthbr1489"; //TODO faire aléatoire
                     mdp = mdp.GetHash();
                     string telephone = "0600000000";
-                    Utilisateur = utilisateurDAL.Creation(adminTemporaire.Email, mdp, adminTemporaire.Nom, adminTemporaire.Prenom, telephone);
+                    Utilisateur = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }
                 utilisateurDAL.DonnerDroitAdmin(Utilisateur.Id);
                 {
