@@ -34,7 +34,7 @@ namespace FoodTruck.Controllers
                 string allergenesOk = allergenes ?? "";
                 int familleIdOk = familleId;
                 bool dansCarteOk = dansCarte;
-                Article lArticle = new Article
+                Article article = new Article
                 {
                     Nom = nomOk,
                     Description = descriptionOk,
@@ -52,12 +52,21 @@ namespace FoodTruck.Controllers
                     string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
                     int tailleImage = int.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
-                    var nouvelleImage = new Bitmap(image, tailleImage, tailleImage);
+                    int largeur = tailleImage;
+                    int hauteur = tailleImage;
+                    if (image.Height >= image.Width)
+                        hauteur = tailleImage * image.Height / image.Width;
+                    else
+                        largeur = tailleImage * image.Width / image.Height;
+                    Bitmap imageTemp = new Bitmap(image, largeur, hauteur);
+                    Rectangle recadrage = new Rectangle((largeur - tailleImage) / 2, (hauteur - tailleImage) / 2, tailleImage, tailleImage);
+                    Bitmap nouvelleImage = imageTemp.Clone(recadrage, imageTemp.PixelFormat);
+                    imageTemp.Dispose();
                     nouvelleImage.Save(chemin);
                     nouvelleImage.Dispose();
                     image.Dispose();
-                    lArticle.Image = fileName;
-                    new ArticleDAL().Ajouter(lArticle);
+                    article.Image = fileName;
+                    new ArticleDAL().Ajouter(article);
                     TempData["AjoutOK"] = "Votre article a bien été ajouté";
                 }
                 catch (Exception ex)
