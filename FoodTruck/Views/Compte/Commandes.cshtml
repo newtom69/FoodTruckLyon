@@ -1,31 +1,13 @@
 ﻿@using FoodTruck.ViewModels
-@using FoodTruck.Models
 @using System.Configuration
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Vos commandes";
-    List<Article> articlesNonAjoutes = TempData["ArticlesNonAjoutes"] as List<Article>;
 }
 @model ListeCommandesViewModel
 
 <div class="compte">
-    @if (articlesNonAjoutes != null && articlesNonAjoutes.Count > 0)
-    {
-        <div class="messageInfo">Les articles suivants ne peuvent pas être repris car ils ne sont pas disponibles :</div>
-        <div class="gestionCommandeArticle">
-            <section class="imagesGestionCommande">
-                @foreach (Article article in articlesNonAjoutes)
-                {
-                    <div class="indexArticle">
-                        <img src="@dossierImagesArticles/@article.Image" alt="@article.Nom" />
-                        <p>@article.Nom</p>
-                    </div>
-                }
-            </section>
-        </div>
-    }
-
     <h2>Votre Compte</h2>
     @if (Model != null)
     {
@@ -99,9 +81,7 @@
                             </div>
                             <input name="commandeId" type="hidden" value="@c.Commande.Id">
                             <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
-
                         }
-
                         <hr />
                     </div>
                 }

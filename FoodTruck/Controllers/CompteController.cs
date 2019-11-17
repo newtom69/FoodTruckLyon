@@ -62,7 +62,7 @@ namespace FoodTruck.Controllers
             Utilisateur utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
             if (utilisateur == null)
             {
-                ViewBag.MauvaisEmailMdp = true;
+                TempData["message"] = new Message("L'ancien mot de passe n'est pas correct.\nAucune modification n'a été prise en compte.", TypeMessage.Erreur);
             }
             else
             {
@@ -78,13 +78,13 @@ namespace FoodTruck.Controllers
                 {
                     if (utilisateurDAL.Modification(utilisateur.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
                     {
-                        ViewBag.Modification = true;
+                        TempData["message"] = new Message("La modification du profil a bien été prise en compte.", TypeMessage.Ok);
                         Utilisateur = utilisateurDAL.Connexion(email, nouveauMdp);
                     }
                 }
                 else
                 {
-                    ViewBag.MdpIncorrect = true;
+                    TempData["message"] = new Message("Mauvais choix de mots de passe.\nVeuillez réessayer s'il vous plait (minimum 8 caractères et identiques)", TypeMessage.Erreur);
                     ViewBag.Nom = nom;
                     ViewBag.Prenom = prenom;
                     ViewBag.Email = email;
@@ -145,6 +145,23 @@ namespace FoodTruck.Controllers
                 }
                 ViewBag.Panier = PanierViewModel;
                 TempData["ArticlesNonAjoutes"] = articlesKo;
+                if (articlesKo.Count > 0)
+                {
+                    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+                    string message = "Les articles suivants ne peuvent pas être repris car ils ne sont plus disponibles :" +
+                    "<div class=\"gestionCommandeArticle\">" +
+                    "<section class=\"imagesGestionCommande\">";
+                    foreach (Article article in articlesKo)
+                    {
+                        message += "<div class=\"indexArticle\">" +
+                        $"<img src=\"{dossierImagesArticles}/{article.Image}\" alt=\"{article.Nom}\" /> " +
+                        $"<p>{article.Nom}</p>" +
+                        $"</div>";
+                    }
+                    message += "</section>" +
+                    "</div>";
+                    TempData["message"] = new Message(message, TypeMessage.Info); // TODO faire plus propre et ailleurs (formatage html propre à la vue)
+                }
             }
             RecupererPanierEnBase();
             ViewBag.Panier = PanierViewModel;
@@ -184,7 +201,7 @@ namespace FoodTruck.Controllers
             else
             {
                 ViewBag.Utilisateur = new Utilisateur();
-                ViewBag.MauvaisEmailMdp = true;
+                TempData["message"] = new Message("Email ou mot de passe incorrect.\nVeuillez réessayer.", TypeMessage.Erreur);
                 return View();
             }
         }
@@ -203,7 +220,6 @@ namespace FoodTruck.Controllers
                 ViewBag.Panier = null; // todo
             }
             return Redirect(Session["Url"] as string);
-
         }
 
         [HttpGet]
@@ -224,7 +240,7 @@ namespace FoodTruck.Controllers
                 }
                 else
                 {
-                    ViewBag.MdpIncorrect = true;
+                    TempData["message"] = new Message("Mauvais choix de mots de passe.\nVeuillez réessayer (minimum 8 caractères et identiques)", TypeMessage.Erreur);
                     ViewBag.Nom = nom;
                     ViewBag.Prenom = prenom;
                     ViewBag.Email = email;
@@ -241,7 +257,7 @@ namespace FoodTruck.Controllers
             else
             {
                 ViewBag.Utilisateur = new Utilisateur();
-                ViewBag.MauvaisEmailMdp = true;
+                TempData["message"] = new Message("Compte déjà existant.\nVeuillez saisir une autre adresse mail ou vous <a href=\"/Compte/Connexion\">connecter</a>", TypeMessage.Erreur);
                 return View();
             }
         }
@@ -262,7 +278,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                TempData["mailEnvoyeNouveauMdpKo"] = "Le lien de redéfinition du mot de passe n'est plus valide. Refaite une demande";
+                TempData["message"] = new Message("Le lien de redéfinition du mot de passe n'est plus valide.\nVeuillez refaire une demande", TypeMessage.Interdit);
                 return RedirectToAction("Connexion", "Compte");
             }
         }
@@ -288,16 +304,14 @@ namespace FoodTruck.Controllers
                         "\n\nVous serez alors redirigé vers une page de réinitialisation de votre mot de passe.\n" +
                         $"Attention, ce lien expirera dans {dureeValidite} minutes et n'est valable qu'une seule fois";
 
-
                     if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                        TempData["mailEnvoyeLienGenerationMdpOk"] = $"Un email de réinitialisation de votre mot de passe vient de vous être envoyé. Il expirera dans {dureeValidite} minutes";
+                        TempData["message"] = new Message($"Un email de réinitialisation de votre mot de passe vient de vous être envoyé.\nIl expirera dans {dureeValidite} minutes.", TypeMessage.Info);
                     else
-                        TempData["mailEnvoyeLienGenerationMdpKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
+                        TempData["message"] = new Message("Erreur dans l'envoi du mail.\nVeuillez réessayer dans quelques instants", TypeMessage.Erreur);
                 }
                 else
-                {
-                    TempData["mailEnvoyeLienGenerationMdpKo"] = "Nous n'avons pas de compte client avec cette adresse email. Merci de vérifier votre saisie";
-                }
+                    TempData["message"] = new Message("Nous n'avons pas de compte client avec cette adresse email.\nMerci de vérifier votre saisie", TypeMessage.Erreur);
+
                 return RedirectToAction("Connexion", "Compte");
             }
             else if (action == "changementMotDePasse")
@@ -307,12 +321,12 @@ namespace FoodTruck.Controllers
                     UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
                     if (utilisateurDAL.Modification(Utilisateur.Id, mdp) == 1)
                     {
-                        ViewBag.Modification = true;
+                        TempData["message"] = new Message("La modification de votre mot de passe a bien été prise en compte", TypeMessage.Ok);
                     }
                 }
                 else
                 {
-                    ViewBag.MdpIncorrect = true;
+                    TempData["message"] = new Message("Mauvais choix de mots de passe.\nVeuillez réessayer (minimum 8 caractères et identiques)", TypeMessage.Erreur);
                     return View();
                 }
 
@@ -338,7 +352,7 @@ namespace FoodTruck.Controllers
                 {
                     string mdp = "rtbhthbr1489"; //TODO faire aléatoire
                     mdp = mdp.GetHash();
-                    string telephone = "0600000000";
+                    string telephone = "";
                     Utilisateur = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }
                 utilisateurDAL.DonnerDroitAdmin(Utilisateur.Id);
@@ -352,13 +366,13 @@ namespace FoodTruck.Controllers
                 Session["UtilisateurId"] = Utilisateur.Id;
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                TempData["lienOk"] = "Félicitation ! Vous êtes maintenant administrateur du site. Vous pouvez accéder au menu Administration";
-                return View();
+                TempData["message"] = new Message("Félicitation ! Vous êtes maintenant administrateur du site.\nVous pouvez accéder au menu Administration", TypeMessage.Info);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                TempData["lienKo"] = "Le lien de droit administration n'est plus valable. Refaite une demande";
-                return View();
+                TempData["message"] = new Message("Le lien d'obtention des droits d'administration n'est plus valable.\nMerci de refaire une demande", TypeMessage.Interdit);
+                return RedirectToAction("Index", "Home");
             }
         }
 

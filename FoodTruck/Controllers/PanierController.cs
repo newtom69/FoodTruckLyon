@@ -36,6 +36,8 @@ namespace FoodTruck.Controllers
                 }
             }
             ViewBag.PanierLatteralDesactive = true;
+            if (Utilisateur.Id == 0)
+                TempData["message"] = new Message("Vous n'êtes pas connecté à votre compte.\nVous pouvez commander mais\n- vous ne bénéficierez pas du programme de fidélité\n- votre commande ne sera pas dans votre historique\n- vous ne recevrez pas de confirmation de votre commande", TypeMessage.Info);
             return View(PanierViewModel);
         }
 

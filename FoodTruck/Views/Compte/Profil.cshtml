@@ -7,132 +7,120 @@
     ListeCommandesViewModel listeCommandesEnCours = ViewBag.ListeCommandesEnCours as ListeCommandesViewModel;
 }
 @model Utilisateur
-    <div class="compte">
-        <h2>Votre profil</h2>
-        <div>
-            <dl class="dl-horizontal">
-            </dl>
-        </div>
-        @if (Model.Id == 0)
+<div class="compte">
+    <h2>Votre profil</h2>
+    <div>
+        <dl class="dl-horizontal">
+        </dl>
+    </div>
+    @if (Model.Id == 0)
+    {
+        <div class="messageErreur">Vous n'êtes pas connecté à votre compte. Merci de vous connecter pour gérer vos informations</div>
+    }
+    else
+    {
+        string email = @Model.Email.Trim();
+        string nom = @Model.Nom.Trim();
+        string prenom = @Model.Prenom.Trim();
+        string prenomNom = prenom + " " + nom + ".";
+        string telephone = @Model.Telephone.Trim();
+        <div class="messageInfo">Bienvenue @prenomNom Vous avez @Model.Cagnotte € sur votre cagnotte fidélité</div>
+        <div class="messageInfo">Depuis votre inscription, vous avez eu @ViewBag.RemiseTotalUtilisateur.ToString("C2", new CultureInfo("fr-FR")) de remises sur vos commandes </div>
+        <h3>Vos coordonnées</h3>
+        using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
         {
-            <div class="messageErreur">Vous n'êtes pas connecté à votre compte. Merci de vous connecter pour gérer vos informations</div>
+            if (ViewBag.Email != null) { email = ViewBag.Email; }
+            if (ViewBag.Nom != null) { nom = ViewBag.Nom; }
+            if (ViewBag.Prenom != null) { prenom = ViewBag.Prenom; }
+            if (ViewBag.Telephone != null) { telephone = ViewBag.Telephone; }
+
+            <input name="ancienEmail" type="hidden" value="@Model.Email">
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required value="@email">
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="ancienMdp" type="password" placeholder="Ancien mot de passe" maxlength='20' required>
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required value="@nom">
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="prenom" type="text" placeholder="Prénom" maxlength='30' required value="@prenom">
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="telephone" type="tel" placeholder="Téléphone" maxlength='10' required value="@telephone">
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="mdp" type="password" placeholder="Nouveau mot de passe (si souhaité)" maxlength='20'>
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccformfield" name="mdp2" type="password" placeholder="Confirmer le mot de passe" maxlength='20'>
+            </div>
+            <div class="ccfield-prepend">
+                <input class="ccbtn" type="submit" value="Modifier">
+            </div>
         }
-        else
+
+        if (listeCommandesEnCours != null)
         {
-            string email = @Model.Email.Trim();
-            string nom = @Model.Nom.Trim();
-            string prenom = @Model.Prenom.Trim();
-            string prenomNom = prenom + " " + nom + ".";
-            string telephone = @Model.Telephone.Trim();
-            <div class="messageInfo">Bienvenue @prenomNom Vous avez @Model.Cagnotte € sur votre cagnotte fidélité</div>
-            <div class="messageInfo">Depuis votre inscription, vous avez eu @ViewBag.RemiseTotalUtilisateur.ToString("C2", new CultureInfo("fr-FR")) de remises sur vos commandes </div>
-            <h3>Vos coordonnées</h3>
-            if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
-            {
-                <div class="messageErreur">Mauvais choix de mot de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
-            }
-            if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
-            {
-                <div class="messageErreur">L'ancien mot de passe n'est pas correct.</div>
-            }
-            if (ViewBag.Modification != null && ViewBag.Modification)
-            {
-                <div class="messageInfo">La modification du profil a bien été prise en compte.</div>
-            }
-            using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
-            {
-                if (ViewBag.Email != null) { email = ViewBag.Email; }
-                if (ViewBag.Nom != null) { nom = ViewBag.Nom; }
-                if (ViewBag.Prenom != null) { prenom = ViewBag.Prenom; }
-                if (ViewBag.Telephone != null) { telephone = ViewBag.Telephone; }
-
-                <input name="ancienEmail" type="hidden" value="@Model.Email">
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="email" type="email" placeholder="Email" maxlength='80' required value="@email">
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="ancienMdp" type="password" placeholder="Ancien mot de passe" maxlength='20' required>
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="nom" type="text" placeholder="Nom" maxlength='30' required value="@nom">
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="prenom" type="text" placeholder="Prénom" maxlength='30' required value="@prenom">
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="telephone" type="tel" placeholder="Téléphone" maxlength='10' required value="@telephone">
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="mdp" type="password" placeholder="Nouveau mot de passe (si souhaité)" maxlength='20'>
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccformfield" name="mdp2" type="password" placeholder="Confirmer le mot de passe" maxlength='20'>
-                </div>
-                <div class="ccfield-prepend">
-                    <input class="ccbtn" type="submit" value="Modifier">
-                </div>
-            }
-
-            if (listeCommandesEnCours != null)
-            {
-                <h3>Vos commandes en cours</h3>
-                <div id="panierValide">
-                    <div>
-                        @if (listeCommandesEnCours.Commandes.Count == 0)
+            <h3>Vos commandes en cours</h3>
+            <div id="panierValide">
+                <div>
+                    @if (listeCommandesEnCours.Commandes.Count == 0)
+                    {
+                        <div class="messageInfo">Vous n'avez pas de commande en cours</div>
+                    }
+                    @foreach (var c in listeCommandesEnCours.Commandes)
+                    {
+                        string classDate = "class=commandeAnnulee";
+                        string preDate = "";
+                        bool enCours = false;
+                        if (@c.Commande.Annulation)
                         {
-                            <div class="messageInfo">Vous n'avez pas de commande en cours</div>
+                            preDate = "Commande annulée. Le retrait été prévu le ";
+                            classDate = "class=commandeAnnulee";
                         }
-                        @foreach (var c in listeCommandesEnCours.Commandes)
+                        else if (c.Commande.Retrait)
                         {
-                            string classDate = "class=commandeAnnulee";
-                            string preDate = "";
-                            bool enCours = false;
-                            if (@c.Commande.Annulation)
+                            preDate = "Retirée le ";
+                            classDate = "class=commandeRetiree";
+                        }
+                        else
+                        {
+                            preDate = "A retirer le ";
+                            classDate = "class=commandeARetirer";
+                            enCours = true;
+                        }
+                        <div class="gestionCommandeArticle">
+                            <h4>Commande n° : @c.Commande.Id</h4>
+                            @if (enCours)
                             {
-                                preDate = "Commande annulée. Le retrait été prévu le ";
-                                classDate = "class=commandeAnnulee";
-                            }
-                            else if (c.Commande.Retrait)
-                            {
-                                preDate = "Retirée le ";
-                                classDate = "class=commandeRetiree";
-                            }
-                            else
-                            {
-                                preDate = "A retirer le ";
-                                classDate = "class=commandeARetirer";
-                                enCours = true;
-                            }
-                            <div class="gestionCommandeArticle">
-                                <h4>Commande n° : @c.Commande.Id</h4>
-                                @if (enCours)
+                                using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
-                                    using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                    {
-                                        <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                                        <div class="ccfield-prepend">
-                                            <button class="annulerCommande" type="submit">Annuler cette commande</button>
-                                        </div>
-                                    }
+                                    <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                                    <div class="ccfield-prepend">
+                                        <button class="annulerCommande" type="submit">Annuler cette commande</button>
+                                    </div>
                                 }
-                                <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                                <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-                                <div class="imagesGestionCommande">
-                                    @foreach (var a in c.ListArticlesVM)
-                                    {
-                                        <div>
-                                            <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                                            <p>@a.Quantite x @a.Article.Nom</p>
-                                        </div>
-                                    }
-                                </div>
-                                <hr />
+                            }
+                            <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                            <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                            <div class="imagesGestionCommande">
+                                @foreach (var a in c.ListArticlesVM)
+                                {
+                                    <div>
+                                        <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                        <p>@a.Quantite x @a.Article.Nom</p>
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
+                            <hr />
+                        </div>
+                    }
                 </div>
-            }
-
-            <h3>@Html.ActionLink("Voir toutes vos commandes", "Commandes", "Compte")</h3>
+            </div>
         }
+
+        <h3>@Html.ActionLink("Voir toutes vos commandes", "Commandes", "Compte")</h3>
+    }
 </div>

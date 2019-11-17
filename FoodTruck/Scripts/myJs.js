@@ -51,6 +51,10 @@ function MiseAJourHeureDebut(heure, heureDebut, dateDebut, dateFin)
     }
 }
 
+$('#popup1').popup();
+
+
+
 //Use keyup to capture user input & mouse up to catch when user is changing the value with the arrows
 $('.trailing-decimal-input').on('keyup mouseup', function (e) {
 

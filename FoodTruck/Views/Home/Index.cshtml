@@ -1,10 +1,10 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration;
-@{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model HomeViewModel
 @{
     ViewBag.Title = "FoodTruckLyon";
+    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
 }
 <div class="imageAccueil">
     <img src="@dossierImagesArticles/food-truck.jpg" alt="Notre Foodtruck">

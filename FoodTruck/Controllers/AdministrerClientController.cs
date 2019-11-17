@@ -24,17 +24,16 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult DonnerDroitsAdmin(string email, string nom, string prenom, string telephone)
+        public ActionResult DonnerDroitsAdmin(string email, string nom, string prenom)
         {
             int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienDroitsAdmin"]);
             string codeVerification = Guid.NewGuid().ToString("n");
-            string url = $"www.foodtrucklyon.fr/Compte/ObtenirDroitsAdmin/{codeVerification}"; //TODO plus propre
+            string url = $"www.foodtrucklyon.fr/Compte/ObtenirDroitsAdmin/{codeVerification}"; //TODO faire url plus generique
             Utilisateur utilisateur = new Utilisateur
             {
                 Email = email,
                 Nom = nom,
                 Prenom = prenom,
-                Telephone = telephone,
             };
             new CreerAdminDAL().Ajouter(utilisateur, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
 

@@ -1,5 +1,4 @@
-﻿@using FoodTruck.Models
-@using FoodTruck.DAL
+﻿@using FoodTruck.DAL
 @using System.Globalization;
 @using System.Configuration;
 @{
@@ -7,8 +6,6 @@
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
 }
 @model List<Article>
-
-<script src="~/Scripts/myJs.js"></script>
 
 <div class="admin">
     <h2>Modifier un article</h2>

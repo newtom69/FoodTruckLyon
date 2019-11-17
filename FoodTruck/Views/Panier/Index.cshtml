@@ -1,7 +1,6 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration;
-@using FoodTruck.Models
 @model PanierViewModel
 @{
     ViewBag.Title = "FoodTruckLyon - Panier";
@@ -24,7 +23,7 @@
     }
     double prixRemiseCommercialeDeduite = Model.PrixTotal - remiseCommercialeMontant;
 }
-<script src="~/Scripts/myJs.js"></script>
+
 <script>
     function MiseAJourPrixTotal(prix, remise) {
         var nouveauPrix = prix.replace(",", ".") - remise;
@@ -152,12 +151,6 @@
                         }
                     </select>
                 </div>
-
-                @if (utilisateur.Id == 0)
-                {
-                    <div class="messageInfo">Vous n'êtes pas connecté à votre compte. Vous pouvez commander mais vous ne bénéficierez pas du programme de fidélité, votre commande ne sera pas dans votre historique et vous ne recevrez pas de mail de confirmation.</div>
-                }
-
                 <h3 class="total">
                     <button class="validerPanier" type="submit" onclick="MajCodePromo()">Commander</button>
                 </h3>

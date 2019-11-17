@@ -1,19 +1,14 @@
-﻿@using FoodTruck.Models
-@{
+﻿@{
     ViewBag.Title = "FoodTruckLyon - Connexion";
-    Utilisateur utilisateur = ViewBag.Utilisateur;
 }
+
 <div class="compte">
     <h2>Connexion</h2>
     <dl class="dl-horizontal"></dl>
-    <p>Connectez-vous à votre compte pour profiter de tous les servives de votre foodtruck.</p>
+    <p>Connectez-vous à votre compte pour profiter de tous les services de votre foodtruck.</p>
     <p>Si vous n'avez pas de compte, pour pouvez en créer un en <a href="/Compte/Creation">suivant ce lien</a>.</p>
     <dl class="dl-horizontal"></dl>
 
-    @if (ViewBag.MauvaisEmailMdp != null && ViewBag.MauvaisEmailMdp)
-    {
-        <div class="messageErreur">Mauvais Email ou mot de passe. Veuillez réessayer s'il vous plait.</div>
-    }
     <h4>Saisissez vos identifiants :</h4>
     @using (Html.BeginForm("Connexion", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
     {
@@ -38,26 +33,6 @@
         </div>
     }
     <h4>Mot de passe oublié ?</h4>
-    @if (TempData["mailEnvoyeLienGenerationMdpOk"] != null)
-    {
-        string mailEnvoyeLienGenerationMdpOk = TempData["mailEnvoyeLienGenerationMdpOk"] as string;
-        <div class="messageInfo">@mailEnvoyeLienGenerationMdpOk</div>
-    }
-    else if (TempData["mailEnvoyeLienGenerationMdpKo"] != null)
-    {
-        string mailEnvoyeLienGenerationMdpKo = TempData["mailEnvoyeLienGenerationMdpKo"] as string;
-        <div class="messageErreur">@mailEnvoyeLienGenerationMdpKo</div>
-    }
-    else if (TempData["mailEnvoyeNouveauMdpOk"] != null)
-    {
-        string mailEnvoyeNouveauMdpOk = TempData["mailEnvoyeNouveauMdpOk"] as string;
-        <div class="messageInfo">@mailEnvoyeNouveauMdpOk</div>
-    }
-    else if (TempData["mailEnvoyeNouveauMdpKo"] != null)
-    {
-        string mailEnvoyeNouveauMdpKo = TempData["mailEnvoyeNouveauMdpKo"] as string;
-        <div class="messageErreur">@mailEnvoyeNouveauMdpKo</div>
-    }
     @using (Html.BeginForm("OubliMotDePasse", "Compte", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion" }))
     {
         <input name="action" type="hidden" value="generationMail">

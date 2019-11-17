@@ -1,13 +1,10 @@
-﻿@model Utilisateur
+﻿@using FoodTruck.ViewModels;
+@model Utilisateur
 @{
     ViewBag.Title = "FoodTruckLyon - Récupération de votre compte";
 }
 <div class="compte">
     <h2>Réinitialisez votre mot de passe</h2>
-    @if (ViewBag.MdpIncorrect != null && ViewBag.MdpIncorrect)
-    {
-        <div class="messageErreur">Mauvais choix de mot de passe. Veuillez réessayer s'il vous plait (minimum 8 caractères et identiques).</div>
-    }
     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
     {
         <input name="action" type="hidden" value="changementMotDePasse">

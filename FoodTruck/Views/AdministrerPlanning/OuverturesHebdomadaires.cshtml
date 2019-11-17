@@ -1,11 +1,9 @@
-﻿@using FoodTruck.Models;
-@using System.Globalization;
+﻿@using System.Globalization;
 
 @model List<OuvertureHebdomadaire>
 @{
     ViewBag.Title = "FoodTruckLyon - Gérer les ouvertures hebdomadaires";
 }
-<script src="~/Scripts/myJs.js"></script>
 
 <div class="adminPlanning">
     @if (ViewBag.DatesIncompatibles != null)
@@ -67,9 +65,7 @@
         }
     }
 
-
     <h2>Gestion des ouvertures hebdomadaires</h2>
-
     <h3>Saisir une ouverture hebdomadaire</h3>
     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {

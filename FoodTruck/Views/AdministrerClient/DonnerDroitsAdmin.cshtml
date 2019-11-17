@@ -1,14 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CreationCompteAdminTemporaire";
 }
-
-@if (TempData["lienKo"] != null)
-{
-    <div class="messageErreur">le lien n'est pas bon !</div>
-}
-@* TODO METTRE DANS LA BONNE VUE *@
-
 
 <div class="compte">
     <h2>Donner les droits administration</h2>
@@ -22,7 +14,6 @@
     {
         <div class="messageInfo">@TempData["mailEnvoyeKo"]</div>
     }
-
     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
     {
         <div class="ccfield-prepend">
@@ -33,9 +24,6 @@
         </div>
         <div class="ccfield-prepend">
             <input class="ccformfield" name="prenom" type="text" placeholder="Prénom" maxlength='30' value="@if(ViewBag.Prenom != null) {@ViewBag.Prenom}">
-        </div>
-        <div class="ccfield-prepend">
-            <input class="ccformfield" name="telephone" type="tel" placeholder="Téléphone" maxlength='10' value="@if(ViewBag.Telephone != null) {@ViewBag.Telephone}">
         </div>
         <div class="ccfield-prepend">
             <input class="ccbtn" type="submit" value="Valider">
