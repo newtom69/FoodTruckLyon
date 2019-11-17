@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -350,8 +352,12 @@ namespace FoodTruck.Controllers
                 Utilisateur = utilisateurDAL.Details(creerAdmin.Email);
                 if (Utilisateur == null)
                 {
-                    string mdp = "rtbhthbr1489"; //TODO faire aléatoire
-                    mdp = mdp.GetHash();
+                    byte[] data = new byte[10];
+                    using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+                    {
+                        rng.GetBytes(data);
+                    }
+                    string mdp = (Encoding.UTF8.GetString(data)).GetHash();
                     string telephone = "";
                     Utilisateur = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }

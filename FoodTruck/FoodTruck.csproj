@@ -377,7 +377,6 @@
     <Content Include="Views\AdministrerClient\Client.cshtml" />
     <Content Include="Views\Compte\OubliMotDePasse.cshtml" />
     <Content Include="Views\AdministrerClient\DonnerDroitsAdmin.cshtml" />
-    <Content Include="Views\Compte\ObtenirDroitsAdmin.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
