@@ -283,6 +283,7 @@
     <Content Include="Content\Images\Systeme\AjouterUneImage.png" />
     <Content Include="Content\Images\Systeme\IconeErreur.png" />
     <Content Include="Content\Images\Systeme\IconeInfo.png" />
+    <Content Include="Content\Images\Systeme\iconeInterdit.png" />
     <Content Include="Content\Images\Systeme\logo-only.png" />
     <Content Include="Content\Images\Systeme\logo-text.png" />
     <Content Include="Content\Images\Systeme\logo.png" />
