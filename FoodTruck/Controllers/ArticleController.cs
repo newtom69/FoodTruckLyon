@@ -25,17 +25,12 @@ namespace FoodTruck.Controllers
             articleCourant = lArticleDAL.Details(nom);
             if (articleCourant == null)
             {
-                TempData["ArticleOk"] = false;
+                TempData["message"] = new Message("L'article que vous demandez n'existe pas !", TypeMessage.Erreur);
+                return RedirectToAction("Index", "Article");
             }
             else if (!articleCourant.DansCarte)
             {
-                TempData["ArticleOk"] = true;
-                TempData["ArticleDansCarte"] = false;
-            }
-            else
-            {
-                TempData["ArticleDansCarte"] = true;
-                TempData["ArticleOk"] = true;
+                TempData["message"] = new Message("L'article choisi n'est plus disponible dans votre foodtruck", TypeMessage.Avertissement);
             }
             return View(new ArticleViewModel(articleCourant));
         }

@@ -55,7 +55,22 @@ namespace FoodTruck.Controllers
                 Mail(Utilisateur, commande, PanierViewModel);
                 new PanierDAL(Utilisateur.Id).Supprimer();
                 ViewBag.Panier = null; //todo
-                return View(commande);
+                string stringDateRetrait = commande.DateRetrait.ToString("dddd dd MMMM yyyy pour HH:mm");
+
+                string message = $"Commande numéro {commande.Id} confirmée\nVeuillez venir la chercher le {stringDateRetrait}.";
+                TypeMessage typeMessage;
+                if (Utilisateur.Id == 0)
+                {
+                    message += $"\nAttention : Vous n'avez pas utilisé de compte client.\nMerci de bien noter votre numéro de commande.";
+                    typeMessage = TypeMessage.Avertissement;
+                }
+                else
+                {
+                    message += "\nMerci";
+                    typeMessage = TypeMessage.Ok;
+                }
+                TempData["message"] = new Message(message, typeMessage);
+                return RedirectToAction("Index", "Home");
             }
         }
 

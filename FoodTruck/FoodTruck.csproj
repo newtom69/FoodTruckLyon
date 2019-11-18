@@ -281,6 +281,7 @@
     <Content Include="Content\Images\Blog\avant-après.png" />
     <Content Include="Content\Images\Blog\page linkedIn FoodTruckLyon.png" />
     <Content Include="Content\Images\Systeme\AjouterUneImage.png" />
+    <Content Include="Content\Images\Systeme\iconeAvertissement.png" />
     <Content Include="Content\Images\Systeme\IconeErreur.png" />
     <Content Include="Content\Images\Systeme\IconeInfo.png" />
     <Content Include="Content\Images\Systeme\iconeInterdit.png" />
@@ -355,7 +356,6 @@
     <Content Include="Views\Home\APropos.cshtml" />
     <Content Include="Views\Article\Details.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
-    <Content Include="Views\Commande\Index.cshtml" />
     <Content Include="Views\Panier\Index.cshtml" />
     <Content Include="Views\AdministrerArticle\Ajouter.cshtml" />
     <Content Include="Views\AdministrerArticle\Modifier.cshtml" />

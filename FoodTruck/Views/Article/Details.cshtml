@@ -7,21 +7,11 @@
     bool affichageArticle = Model.Article != null ? true : false;
 }
 <div class="principalQuandPanierLateralPresent">
-    @if (!affichageArticle)
-    {
-        ViewBag.Title = "FoodTruckLyon - Erreur";
-        <div class="messageErreur">Article non trouvé !</div>
-    }
-    else
+    @if (affichageArticle)
     {
         <div class="detailArticle">
             @{
                 ViewBag.Title = "FoodTruckLyon - " + Model.Article.Nom;
-                if (!Model.Article.DansCarte)
-                {
-                    <div class="messageErreur">L'article choisi n'est plus disponible dans votre foodtruck</div>
-                    ViewBag.Title += "- indisponible";
-                }
             }
             <div>
                 <img src="@dossierImagesArticles/@Model.Article.Image" alt="@Model.Article.Nom" />
