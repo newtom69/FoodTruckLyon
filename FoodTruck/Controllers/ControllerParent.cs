@@ -14,7 +14,7 @@ namespace FoodTruck.Controllers
         protected string ControllerNom { get; set; }
         protected Utilisateur Utilisateur { get; set; }
         protected string ProspectGuid { get; set; }
-        protected PanierViewModel PanierViewModel { get; set; } 
+        protected PanierViewModel PanierViewModel { get; set; }
         protected bool AdminArticle { get; set; }
         protected bool AdminCommande { get; set; }
         protected bool AdminUtilisateur { get; set; }
@@ -149,9 +149,9 @@ namespace FoodTruck.Controllers
             AdminArticle = AdminCommande = AdminUtilisateur = AdminPlanning = false;
         }
         private void MettrelUrlEnSession()
-        {
+        { 
             if (ControllerNom != "Compte" && Request.HttpMethod == "GET")
-                Session["Url"] = Request.Url.LocalPath;
+                Session["Url"] = Request.Url.LocalPath; // = Request.RawUrl
             if (Session["Url"] == null)
                 Session["Url"] = "~/";
         }

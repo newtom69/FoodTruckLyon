@@ -4,6 +4,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -198,7 +199,11 @@ namespace FoodTruck.Controllers
                 }
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                return RedirectToAction("Profil", "Compte");
+                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\n"+
+                                 $"Vous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\n" +
+                                 $"Depuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
+                TempData["message"] = new Message(message, TypeMessage.Ok);
+                return RedirectPermanent(Session["Url"] as string);
             }
             else
             {
@@ -221,7 +226,8 @@ namespace FoodTruck.Controllers
                 InitialiserSession();
                 ViewBag.Panier = null; // todo
             }
-            return Redirect(Session["Url"] as string);
+            TempData["message"] = new Message("Vous êtes maintenant déconnecté.\nMerci de votre visite.\nA bientôt.", TypeMessage.Info);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
