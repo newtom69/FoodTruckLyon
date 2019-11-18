@@ -71,17 +71,15 @@ namespace FoodTruck.Controllers
                     message.To.Add("info@foodtrucklyon.fr");
                     message.Subject = "Message à partir du formulaire de contact";
                     message.ReplyToList.Add(email);
-                    StringBuilder mastringbuilder = new StringBuilder();
-                    mastringbuilder.Append(
-                        "<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-                    mastringbuilder.Append(
-                        "<meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"><title>Mail du site</title></head><body><h3>De : ");
-                    mastringbuilder.Append(prenomOk + " " + nomOk);
-                    mastringbuilder.Append("</h3><h3>Message : </h3><p>");
-                    mastringbuilder.Append(commentsOk);
-                    mastringbuilder.Append("<br/>");
-                    mastringbuilder.Append("</p></body></html>");
-                    message.Body = mastringbuilder.ToString();
+                    StringBuilder stringbuilder = new StringBuilder();
+                    stringbuilder.Append("<html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+                    stringbuilder.Append("<meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"><title>Mail du site</title></head><body><h3>De : ");
+                    stringbuilder.Append($"{prenomOk} {nomOk}");
+                    stringbuilder.Append("</h3><h3>Message : </h3><p>");
+                    stringbuilder.Append(commentsOk);
+                    stringbuilder.Append("<br/>");
+                    stringbuilder.Append("</p></body></html>");
+                    message.Body = stringbuilder.ToString();
                     message.IsBodyHtml = true;
                     using (SmtpClient client = new SmtpClient())
                     {
@@ -89,15 +87,12 @@ namespace FoodTruck.Controllers
                         client.Send(message);
                     }
                 }
-                ViewBag.MailEnvoye = "Votre message a bien été envoyé.";
-                ViewBag.MailErreur = "";
-                ViewBag.Message = "";
+                TempData["message"] = new Message("Votre message a bien été envoyé.\nNous vous répondrons dès que possible.", TypeMessage.Info);
             }
             catch (Exception)
             {
                 Response.StatusCode = 400;
-                ViewBag.MailErreur = "Erreur dans l'envoi du mail, veuillez rééssayer s'il vous plait";
-                ViewBag.MailEnvoye = "";
+                TempData["message"] = new Message("Erreur dans l'envoi du mail.\nMerci de réessayer plus tard.", TypeMessage.Info);
             }
             return View();
         }

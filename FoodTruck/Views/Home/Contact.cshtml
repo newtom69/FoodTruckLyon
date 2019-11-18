@@ -15,8 +15,6 @@
     <h2>Contactez-nous !</h2>
     <dl class="dl-horizontal"></dl>
     <h4>Vous avez des questions sur nos produits ? Vous souhaitez prendre contact avec nous ? Remplissez le formulaire ci-dessous et un membre de notre équipe vous répondra dans les plus brefs délais.</h4>
-    <div class="messageInfo">@ViewBag.MailEnvoye</div>
-    <div class="messageErreur">@ViewBag.MailErreur</div>
     @using (Html.BeginForm("Contact", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
