@@ -6,20 +6,15 @@
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     Utilisateur utilisateur = ViewBag.Utilisateur;
-
     double remiseCommercialeMontant = 0;
     string afficheRemiseCommerciale = "";
     string codePromo = "";
-    string remiseCommercialeInfo = "";
-    string remiseCommercialeClasse = "";
     if (TempData["CodePromo"] != null)
     {
         codePromo = TempData["CodePromo"] as string;
-        remiseCommercialeInfo = @TempData["RemiseCommercialeInfo"] as string;
-        remiseCommercialeClasse = (bool)TempData["RemiseCommercialeValide"] ? "remiseCommercialeValide" : "remiseCommercialeNonValide";
         remiseCommercialeMontant = (double)TempData["RemiseCommercialeMontant"];
         if (remiseCommercialeMontant != 0)
-            afficheRemiseCommerciale = "- " + remiseCommercialeMontant.ToString("C2", new CultureInfo("fr-FR"));
+        { afficheRemiseCommerciale = "- " + remiseCommercialeMontant.ToString("C2", new CultureInfo("fr-FR")); }
     }
     double prixRemiseCommercialeDeduite = Model.PrixTotal - remiseCommercialeMontant;
 }
@@ -94,7 +89,6 @@
                     <input id="codePromoUtilisateur" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="@codePromo" size="1">
                     <div class="verifierAfficherValiditeRemise">
                         <button class="verifierCodeRemise" type="submit">Vérifier</button>
-                        <div class="@remiseCommercialeClasse">@remiseCommercialeInfo</div>
                         <input hidden id="hiddenRemiseCommerciale" value="@remiseCommercialeMontant">
                     </div>
                 }
@@ -156,6 +150,5 @@
                 </h3>
             </div>
         }
-
     }
 </div>

@@ -5,6 +5,7 @@ using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -36,8 +37,13 @@ namespace FoodTruck.Controllers
                 }
             }
             ViewBag.PanierLatteralDesactive = true;
-            if (Utilisateur.Id == 0)
+
+            int index = ((List<string>)Session["Url"]).Count - 2;
+            if (index < 0)
+                index = 0;
+            if (Utilisateur.Id == 0 && PanierViewModel.ArticlesDetailsViewModel.Count > 0 && ((List<string>)Session["Url"])[index] != "/Panier/Index")
                 TempData["message"] = new Message("Vous n'êtes pas connecté à votre compte.\nVous pouvez commander mais\n- vous ne bénéficierez pas du programme de fidélité\n- votre commande ne sera pas dans votre historique\n- vous ne recevrez pas de confirmation de votre commande", TypeMessage.Info);
+
             return View(PanierViewModel);
         }
 
@@ -52,22 +58,24 @@ namespace FoodTruck.Controllers
             {
                 case ValiditeCodePromo.Valide:
                     TempData["RemiseCommercialeValide"] = true;
-                    TempData["RemiseCommercialeInfo"] = "code valide";
                     TempData["RemiseCommercialeMontant"] = montantRemise;
+                    TempData["message"] = new Message($"Le code saisi est bien valide.\nIl vous donne droit à {montantRemise.ToString("C2", new CultureInfo("fr-FR"))}  de réduction sur votre commande", TypeMessage.Ok);
                     break;
                 case ValiditeCodePromo.Inconnu:
-                    TempData["RemiseCommercialeInfo"] = "code inconnu";
+                    TempData["message"] = new Message("Le code saisi est inconnu", TypeMessage.Erreur);
                     break;
                 case ValiditeCodePromo.DateDepassee:
-                    TempData["RemiseCommercialeInfo"] = "ce code n'est plus valable";
+                    TempData["message"] = new Message("Le code saisi n'est plus valable", TypeMessage.Erreur);
                     break;
                 case ValiditeCodePromo.DateFuture:
-                    TempData["RemiseCommercialeInfo"] = "ce code n'est pas encore valable";
+                    TempData["message"] = new Message("Le code saisi n'est pas encore valable", TypeMessage.Erreur);
                     break;
                 case ValiditeCodePromo.MontantInsuffisant:
-                    TempData["RemiseCommercialeInfo"] = "le montant de la commande est insuffisant";
+                    TempData["message"] = new Message("Le code saisi est valide mais le montant de la commande est insuffisant", TypeMessage.Erreur);
                     break;
             }
+
+
             return Redirect("~/Panier/Index#codePromoUtilisateur");
         }
 

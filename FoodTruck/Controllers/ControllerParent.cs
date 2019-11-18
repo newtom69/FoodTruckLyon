@@ -149,11 +149,17 @@ namespace FoodTruck.Controllers
             AdminArticle = AdminCommande = AdminUtilisateur = AdminPlanning = false;
         }
         private void MettrelUrlEnSession()
-        { 
-            if (ControllerNom != "Compte" && Request.HttpMethod == "GET")
-                Session["Url"] = Request.Url.LocalPath; // = Request.RawUrl
+        {
             if (Session["Url"] == null)
-                Session["Url"] = "~/";
+                Session["Url"] = new List<string>(2);
+            if (ControllerNom != "Compte" && Request.HttpMethod == "GET")
+            {
+                if((Session["Url"] as List<string>).Count==2)
+                    (Session["Url"] as List<string>).RemoveAt(0);
+                (Session["Url"] as List<string>).Add(Request.Url.LocalPath); // = Request.RawUrl
+            }
+            if ((Session["Url"] as List<string>).Count == 0)
+                (Session["Url"] as List<string>).Add("~/");
         }
     }
 }

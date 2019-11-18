@@ -32,25 +32,6 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            if (TempData["PanierViewModelSauv"] != null)
-            {
-                int utilisateurId = (int)Session["UtilisateurId"];
-                if (utilisateurId != 0)
-                {
-                    PanierDAL lePanierDal = new PanierDAL(utilisateurId);
-                    foreach (ArticleViewModel article in (TempData["PanierViewModelSauv"] as PanierViewModel).ArticlesDetailsViewModel)
-                    {
-                        Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
-                        if (panier == null)
-                            lePanierDal.Ajouter(article.Article, article.Quantite);
-                        else
-                            lePanierDal.ModifierQuantite(article.Article, article.Quantite);
-                    }
-                }
-                TempData["PanierViewModelSauv"] = null;
-                return RedirectToAction(ActionNom, ControllerNom);
-            }
-
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
@@ -165,6 +146,10 @@ namespace FoodTruck.Controllers
                     "</div>";
                     TempData["message"] = new Message(message, TypeMessage.Info); // TODO faire plus propre et ailleurs (formatage html propre à la vue)
                 }
+                else
+                {
+                    TempData["message"] = new Message($"La reprise des {articles.Count} articles de votre commande s'est correctement réalisée", TypeMessage.Ok);
+                }
             }
             RecupererPanierEnBase();
             ViewBag.Panier = PanierViewModel;
@@ -199,11 +184,12 @@ namespace FoodTruck.Controllers
                 }
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\n"+
+                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\n" +
                                  $"Vous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\n" +
                                  $"Depuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
                 TempData["message"] = new Message(message, TypeMessage.Ok);
-                return RedirectPermanent(Session["Url"] as string);
+                int index = ((List<string>)Session["Url"]).Count - 1;
+                return RedirectPermanent(((List<string>)Session["Url"])[index]);
             }
             else
             {
@@ -408,7 +394,19 @@ namespace FoodTruck.Controllers
         private void RecupererPanierProspectPuisSupprimer()
         {
             PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
-            TempData["PanierViewModelSauv"] = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
+            PanierViewModel panierViewModelSauv = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
+            if (panierViewModelSauv != null && Utilisateur.Id != 0)
+            {
+                PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
+                foreach (ArticleViewModel article in (panierViewModelSauv).ArticlesDetailsViewModel)
+                {
+                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
+                    if (panier == null)
+                        lePanierDal.Ajouter(article.Article, article.Quantite);
+                    else
+                        lePanierDal.ModifierQuantite(article.Article, article.Quantite);
+                }
+            }
             panierProspectDAL.Supprimer();
         }
     }
