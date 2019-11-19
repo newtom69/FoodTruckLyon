@@ -15,36 +15,43 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            DateTime maintenant = DateTime.Now;
-            List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
-
-            // obtention nombre de commandes à retirer dans chaque creneaux ouvert et desactivation si = nombre max
-            int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
-            CommandeDAL commandeDAL = new CommandeDAL();
-
-            PanierViewModel.Creneaux = new List<Creneau>();
-            foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
+            if (PanierViewModel.ArticlesDetailsViewModel.Count != 0)
             {
-                int maxCommandesCreneau = (int)Math.Ceiling(maxCommandesHeure * plage.Pas.TotalMinutes / 60);
-                foreach (DateTime date in plage.Dates)
+                DateTime maintenant = DateTime.Now;
+                List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
+
+                // obtention nombre de commandes à retirer dans chaque creneaux ouvert et desactivation si = nombre max
+                int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
+                CommandeDAL commandeDAL = new CommandeDAL();
+
+                PanierViewModel.Creneaux = new List<Creneau>();
+                foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
                 {
-                    Creneau creneau = new Creneau
+                    int maxCommandesCreneau = (int)Math.Ceiling(maxCommandesHeure * plage.Pas.TotalMinutes / 60);
+                    foreach (DateTime date in plage.Dates)
                     {
-                        DateRetrait = date,
-                        CommandesPossiblesRestantes = maxCommandesCreneau - commandeDAL.NombreCommandes(date)
-                    };
-                    PanierViewModel.Creneaux.Add(creneau);
+                        Creneau creneau = new Creneau
+                        {
+                            DateRetrait = date,
+                            CommandesPossiblesRestantes = maxCommandesCreneau - commandeDAL.NombreCommandes(date)
+                        };
+                        PanierViewModel.Creneaux.Add(creneau);
+                    }
                 }
+                ViewBag.PanierLatteralDesactive = true;
+
+                int index = ((List<string>)Session["Url"]).Count - 2;
+                if (index < 0)
+                    index = 0;
+                if (Utilisateur.Id == 0 && PanierViewModel.ArticlesDetailsViewModel.Count > 0 && ((List<string>)Session["Url"])[index] != "/Panier/Index")
+                    TempData["message"] = new Message("Vous n'êtes pas connecté à votre compte.\nVous pouvez commander mais\n- vous ne bénéficierez pas du programme de fidélité\n- votre commande ne sera pas dans votre historique\n- vous ne recevrez pas de confirmation de votre commande", TypeMessage.Info);
+                return View(PanierViewModel);
             }
-            ViewBag.PanierLatteralDesactive = true;
-
-            int index = ((List<string>)Session["Url"]).Count - 2;
-            if (index < 0)
-                index = 0;
-            if (Utilisateur.Id == 0 && PanierViewModel.ArticlesDetailsViewModel.Count > 0 && ((List<string>)Session["Url"])[index] != "/Panier/Index")
-                TempData["message"] = new Message("Vous n'êtes pas connecté à votre compte.\nVous pouvez commander mais\n- vous ne bénéficierez pas du programme de fidélité\n- votre commande ne sera pas dans votre historique\n- vous ne recevrez pas de confirmation de votre commande", TypeMessage.Info);
-
-            return View(PanierViewModel);
+            else
+            {
+                TempData["message"] = new Message("Vous n'avez pas d'article dans votre panier\nVoyez notre carte pour faire votre choix.", TypeMessage.Info);
+                return RedirectToAction("Index", "Article");
+            }
         }
 
         [HttpPost]
