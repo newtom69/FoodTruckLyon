@@ -133,11 +133,11 @@ namespace FoodTruck.Controllers
         {
             if (AdminCommande)
             {
-                var commandes = new CommandeDAL().CommandesPendantFermetures();
+                List<Commande> commandes = new CommandeDAL().CommandesPendantFermetures();
                 if (commandes.Count == 0)
                     TempData["message"] = new Message("Vous n'avez aucune commande pendant des fermetures", TypeMessage.Ok);
                 else
-                    TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermeture.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
+                    TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermetures.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
                 return View(new ListeCommandesViewModel(commandes));
             }
             else
