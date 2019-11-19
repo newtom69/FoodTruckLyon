@@ -13,7 +13,7 @@
             <input name="dateId" type="hidden" value="@DateTime.MinValue">
             <div>
                 <div class="libelleDate">date de début</div>
-                <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+                <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateFin(this.value, dateFin.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
             </div>
             <div>
                 <div class="libelleDate">heure de début</div>
@@ -21,7 +21,7 @@
             </div>
             <div>
                 <div class="libelleDate">date de fin</div>
-                <input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+                <input class="ccformfield" id="dateFin" name="dateFin" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" onblur="MiseAJourDateDebut(this.value, dateDebut.id)" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
             </div>
             <div>
                 <div class="libelleDate">heure de fin</div>

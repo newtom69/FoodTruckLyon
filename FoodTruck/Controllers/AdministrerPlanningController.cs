@@ -92,7 +92,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult OuverturesExceptionnelles(string valider, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, TimeSpan heureFin)
+        public ActionResult OuverturesExceptionnelles(string action, DateTime dateId, DateTime dateDebut, TimeSpan heureDebut, TimeSpan heureFin)
         {
             if (AdminPlanning)
             {
@@ -102,35 +102,53 @@ namespace FoodTruck.Controllers
                 JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
                 if (heureFin <= heureDebut || dateDebutComplete < maintenant)
                 {
-                    ViewBag.DatesIncompatibles = true;
+                    TempData["message"] = new Message("Impossible de valider votre demande. Les dates sont incorrectes.\nMerci de corriger votre saisie", TypeMessage.Erreur);
+
                 }
                 else
                 {
-                    JourExceptionnel chevauchement = null;
-                    if (valider == "Ajouter")
+                    JourExceptionnel chevauchement;
+                    if (action == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterOuverture(dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
-                            ViewBag.AjouterOuverture = true;
+                        {
+                            TempData["message"] = new Message("L'ouverture a bien été ajoutée", TypeMessage.Ok);
+                        }
                         else
-                            ViewBag.AjouterOuverture = false;
+                        {
+                            string ouvertureFermeture;
+                            if (chevauchement.Ouvert)
+                                ouvertureFermeture = "ouverture";
+                            else
+                                ouvertureFermeture = "fermeture";
+                            TempData["message"] = new Message($"Impossible d'ajouter l'ouverture.\nElle se chevauche avec une autre {ouvertureFermeture} :\n{chevauchement.DateDebut.ToString()} - {chevauchement.DateFin.TimeOfDay.ToString()}", TypeMessage.Erreur);
+                        }
                     }
-                    else if (valider == "Modifier")
+                    else if (action == "Modifier")
                     {
                         chevauchement = ouvertureDAL.ModifierOuverture(dateId, dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
-                            ViewBag.ModifierOuverture = true;
+                        {
+                            TempData["message"] = new Message("L'ouverture a bien été modifiée", TypeMessage.Ok);
+                        }
                         else
-                            ViewBag.ModifierOuverture = false;
+                        {
+                            string ouvertureFermeture;
+                            if (chevauchement.Ouvert)
+                                ouvertureFermeture = "ouverture";
+                            else
+                                ouvertureFermeture = "fermeture";
+                            TempData["message"] = new Message($"Impossible de modifier l'ouverture.\nElle se chevauche avec une autre {ouvertureFermeture} :\n{chevauchement.DateDebut.ToString()} - {chevauchement.DateFin.ToString()}", TypeMessage.Erreur);
+                        }
                     }
-                    else if (valider == "Supprimer")
+                    else if (action == "Supprimer")
                     {
                         if (ouvertureDAL.SupprimerOuverture(dateId))
-                            ViewBag.SupprimerOuverture = true;
+                            TempData["message"] = new Message("La suppression de l'ouverture a bien été prise en compte", TypeMessage.Ok);
                         else
-                            ViewBag.SupprimerOuverture = false;
+                            TempData["message"] = new Message("Une erreur est survenue lors de la supression de l'ouverture.\nVeuillez réessayer plus tard", TypeMessage.Erreur);
                     }
-                    ViewBag.Chevauchement = chevauchement;
                 }
                 return View(ouvertureDAL.FutursOuverturesExceptionnelles());
             }
@@ -156,35 +174,35 @@ namespace FoodTruck.Controllers
                 OuvertureHebdomadaireDAL ouvertureDAL = new OuvertureHebdomadaireDAL();
                 if (heureFin <= heureDebut)
                 {
-                    ViewBag.HeureIncompatibles = true;
+                    TempData["message"] = new Message("Impossible de valider votre demande. L'heure de fin est avant l'heure de début.\nMerci de corriger votre saisie", TypeMessage.Erreur);
                 }
                 else
                 {
-                    OuvertureHebdomadaire chevauchement = null;
+                    OuvertureHebdomadaire chevauchement;
                     if (action == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin, pas);
                         if (chevauchement == null)
-                            ViewBag.AjouterOuverture = true;
+                            TempData["message"] = new Message("L'ouverture a bien été ajoutée", TypeMessage.Ok);
                         else
-                            ViewBag.AjouterOuverture = false;
+                            TempData["message"] = new Message($"Impossible d'ajouter l'ouverture.\nElle se chevauche avec une autre ouverture :\n{chevauchement.Debut.ToString()} - {chevauchement.Fin.ToString()}", TypeMessage.Erreur);
                     }
                     else if (action == "Modifier")
                     {
                         chevauchement = ouvertureDAL.ModifierOuverture(id, jourId, heureDebut, heureFin, pas);
                         if (chevauchement == null)
-                            ViewBag.ModifierOuverture = true;
+                            TempData["message"] = new Message("L'ouverture a bien été modifiée", TypeMessage.Ok);
                         else
-                            ViewBag.ModifierOuverture = false;
+                            TempData["message"] = new Message($"Impossible de modifier l'ouverture.\nElle se chevauche avec une autre ouverture :\n{chevauchement.Debut.ToString()} - {chevauchement.Fin.ToString()}", TypeMessage.Erreur);
+
                     }
                     else if (action == "Supprimer")
                     {
                         if (ouvertureDAL.SupprimerOuverture(id))
-                            ViewBag.SupprimerOuverture = true;
+                            TempData["message"] = new Message("La suppression de l'ouverture a bien été prise en compte", TypeMessage.Ok);
                         else
-                            ViewBag.SupprimerOuverture = false;
+                            TempData["message"] = new Message("Une erreur est survenue lors de la supression de l'ouverture.\nVeuillez réessayer plus tard", TypeMessage.Erreur);
                     }
-                    ViewBag.Chevauchement = chevauchement;
                 }
                 return View(ouvertureDAL.OuverturesHebdomadaires());
             }

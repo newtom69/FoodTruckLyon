@@ -6,65 +6,6 @@
 }
 
 <div class="adminPlanning">
-    @if (ViewBag.DatesIncompatibles != null)
-    {
-        <div class="messageErreur">Impossible de valider votre demande. Les dates sont incorrectes. Merci de corriger votre saisie</div>
-    }
-    @if (ViewBag.AjouterOuverture != null)
-    {
-        if (ViewBag.AjouterOuverture)
-        {
-            <div class="messageInfo">La plage d'ouverture a bien été ajoutée</div>
-        }
-        else
-        {
-            <div class="messageErreur">
-                @if (ViewBag.Chevauchement != null)
-                {
-                    <p>Impossible d'ajouter votre ouverture. Elle se chevauche avec une autre plage du même jour :</p>
-                    <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
-                }
-                else
-                {
-                    <p>Une erreur est survenue lors de l'ajout de la plage d'ouverture. Veuillez réessayer plus tard</p>
-                }
-            </div>
-
-        }
-    }
-    @if (ViewBag.ModifierOuverture != null)
-    {
-        if (ViewBag.ModifierOuverture)
-        {
-            <div class="messageInfo">La plage d'ouverture a bien été modifiée</div>
-        }
-        else
-        {
-            <div class="messageErreur">
-                @if (ViewBag.Chevauchement != null)
-                {
-                    <p>Impossible de modifier votre plage d'ouverture. Elle se chevauche avec une autre plage du même jour :</p>
-                    <p>@ViewBag.Chevauchement.Debut.ToString() - @ViewBag.Chevauchement.Fin.ToString()</p>
-                }
-                else
-                {
-                    <p>Une erreur est survenue lors de la modification de la plage d'ouverture. Veuillez réessayer plus tard</p>
-                }
-            </div>
-        }
-    }
-    @if (ViewBag.SupprimerOuverture != null)
-    {
-        if (ViewBag.SupprimerOuverture)
-        {
-            <div class="messageInfo">La plage d'ouverture a bien été supprimée</div>
-        }
-        else
-        {
-            <div class="messageErreur">Une erreur est survenue lors de la suppression de la plage d'ouverture. Veuillez réessayer plus tard</div>
-        }
-    }
-
     <h2>Gestion des ouvertures hebdomadaires</h2>
     <h3>Saisir une ouverture hebdomadaire</h3>
     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -73,7 +14,7 @@
         <div class="gestionFermetureOuverture">
             <div class="ccfield-prepend">
                 <select class="ccformfield" name="jourId" required>
-                    <option selected disabled>Sélection du jour</option>
+                    <option selected disabled>Jour</option>
                     @foreach (DayOfWeek jour in Enum.GetValues(typeof(DayOfWeek)))
                     {
                         int ceJourId = (int)jour;
