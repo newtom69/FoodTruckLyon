@@ -1,5 +1,6 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Outils;
+using FoodTruck.ViewModels;
 using System;
 using System.Configuration;
 using System.Drawing;
@@ -67,11 +68,11 @@ namespace FoodTruck.Controllers
                     image.Dispose();
                     article.Image = fileName;
                     new ArticleDAL().Ajouter(article);
-                    TempData["AjoutOK"] = "Votre article a bien été ajouté";
+                    TempData["message"] = new Message("Votre article a bien été ajouté", TypeMessage.Ok);
                 }
                 catch (Exception ex)
                 {
-                    TempData["Erreur"] = ex.Message;
+                    TempData["message"] = new Message(ex.Message, TypeMessage.Erreur);
                 }
                 return View();
             }
@@ -96,7 +97,7 @@ namespace FoodTruck.Controllers
             if (AdminArticle)
             {
                 ArticleDAL articleDAL = new ArticleDAL();
-                ViewBag.ArticleAModifier = articleDAL.Details(id);
+                TempData["articleAModifier"] = articleDAL.Details(id);
                 return View(articleDAL.Tous());
             }
             else
@@ -118,7 +119,8 @@ namespace FoodTruck.Controllers
                 ArticleDAL articleDAL = new ArticleDAL();
                 if (articleDAL.NomExiste(article.Nom, article.Id))
                 {
-                    TempData["Erreur"] = "Le nom de l'article existe déjà. Merci de choisir un autre nom ou bien de renommer d'abord l'article en doublon.";
+                    TempData["message"] = new Message("Ce nom d'article existe déjà.\nMerci de choisir un autre nom ou bien de renommer d'abord l'article en doublon.", TypeMessage.Erreur);
+                    TempData["articleAModifier"] = articleDAL.Details(article.Id);
                 }
                 else
                 {
@@ -143,15 +145,15 @@ namespace FoodTruck.Controllers
                             article.Image = ancienArticle.Image;
                         }
                         articleDAL.Modifier(article);
-                        TempData["ModifOK"] = "Votre article a bien été modifié";
+                        TempData["message"] = new Message("Votre article a bien été modifié", TypeMessage.Erreur);
 
                     }
                     catch (Exception ex)
                     {
-                        TempData["Erreur"] = ex.Message;
+                        TempData["message"] = new Message(ex.Message, TypeMessage.Ok);
                     }
                 }
-                return View();
+                return RedirectToAction("Modifier", "AdministrerArticle");
             }
             else
             {

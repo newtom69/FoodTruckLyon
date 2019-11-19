@@ -359,7 +359,6 @@
     <Content Include="Views\Panier\Index.cshtml" />
     <Content Include="Views\AdministrerArticle\Ajouter.cshtml" />
     <Content Include="Views\AdministrerArticle\Modifier.cshtml" />
-    <Content Include="Views\AdministrerArticle\ModifierEtape2.cshtml" />
     <Content Include="Views\Compte\Connexion.cshtml" />
     <Content Include="Views\Compte\Creation.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />

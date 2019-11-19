@@ -38,7 +38,6 @@ namespace FoodTruck.Controllers
                 Prenom = prenom,
             };
             new CreerAdminDAL().Ajouter(utilisateur, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
-
             string sujetMail = "Vous avez les droits d'administration";
             string message = $"Bonjour {prenom} {nom}\n\n" +
                 "Un administrateur de foodtrucklyon vous a donné les droits d'accès administrateur au site.\n" +
@@ -47,7 +46,6 @@ namespace FoodTruck.Controllers
                 url +
                 "\n\n" +
                 $"Attention, ce lien expirera dans {dureeValidite / 60} heures et n'est valable que pour l'adresse {email}";
-
             if (Utilitaire.EnvoieMail(email, sujetMail, message))
                 TempData["message"] = new Message($"Un email de confirmation vient d'être envoyé à l'adresse {email}.\nIl expirera dans {dureeValidite / 60} heures", TypeMessage.Info);
             else

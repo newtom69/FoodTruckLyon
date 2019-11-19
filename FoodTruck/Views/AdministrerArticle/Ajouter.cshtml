@@ -9,14 +9,6 @@
 <div class="admin">
     <h2>Ajouter un article</h2>
     <dl class="dl-horizontal"></dl>
-    @if ((string)TempData["Erreur"] != "")
-    {
-        <div class="messageErreur">@TempData["Erreur"]</div>
-    }
-    @if ((string)TempData["AjoutOK"] != "")
-    {
-        <div class="messageInfo">@TempData["AjoutOK"]</div>
-    }
     <div>
         @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
