@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.ViewModels;
 using System;
 using System.Net;
 using System.Web.Mvc;
@@ -26,35 +27,52 @@ namespace FoodTruck.Controllers
                 JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
                 if (action != "Supprimer" && (dateFinComplete <= dateDebutComplete || dateDebutComplete < maintenant))
                 {
-                    ViewBag.DatesIncompatibles = true;
+                    TempData["message"] = new Message("Impossible de valider votre demande. Les dates sont incorrectes.\nMerci de corriger votre saisie", TypeMessage.Erreur);
                 }
                 else
                 {
-                    JourExceptionnel chevauchement = null;
+                    JourExceptionnel chevauchement;
                     if (action == "Ajouter")
                     {
                         chevauchement = ouvertureDAL.AjouterFermeture(dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
-                            ViewBag.AjouterFermeture = true;
+                        {
+                            TempData["message"] = new Message("La fermeture a bien été ajoutée", TypeMessage.Ok);
+                        }
                         else
-                            ViewBag.AjouterFermeture = false;
+                        {
+                            string ouvertureFermeture;
+                            if (chevauchement.Ouvert)
+                                ouvertureFermeture = "ouverture";
+                            else
+                                ouvertureFermeture = "fermeture";
+                            TempData["message"] = new Message($"Impossible d'ajouter la fermeture.\nElle se chevauche avec une autre {ouvertureFermeture} :\n{chevauchement.DateDebut.ToString()} - {chevauchement.DateFin.ToString()}", TypeMessage.Erreur);
+                        }
                     }
                     else if (action == "Modifier")
                     {
                         chevauchement = ouvertureDAL.ModifierFermeture(dateId, dateDebutComplete, dateFinComplete);
                         if (chevauchement == null)
-                            ViewBag.ModifierFermeture = true;
+                        {
+                            TempData["message"] = new Message("La fermeture a bien été modifiée", TypeMessage.Ok);
+                        }
                         else
-                            ViewBag.ModifierFermeture = false;
+                        {
+                            string ouvertureFermeture;
+                            if (chevauchement.Ouvert)
+                                ouvertureFermeture = "ouverture";
+                            else
+                                ouvertureFermeture = "fermeture";
+                            TempData["message"] = new Message($"Impossible de modifier la fermeture.\nElle se chevauche avec une autre {ouvertureFermeture} :\n{chevauchement.DateDebut.ToString()} - {chevauchement.DateFin.ToString()}", TypeMessage.Erreur);
+                        }
                     }
                     else if (action == "Supprimer")
                     {
                         if (ouvertureDAL.SupprimerFermeture(dateId))
-                            ViewBag.SupprimerFermeture = true;
+                            TempData["message"] = new Message("La suppression de la fermeture a bien été prise en compte", TypeMessage.Ok);
                         else
-                            ViewBag.SupprimerFermeture = false;
+                            TempData["message"] = new Message("Une erreur est survenue lors de la supression de la fermeture.\nVeuillez réessayer plus tard", TypeMessage.Erreur);
                     }
-                    ViewBag.Chevauchement = chevauchement;
                 }
                 return View(ouvertureDAL.FutursFermeturesExceptionnelles());
             }
