@@ -6,14 +6,6 @@
     <h2>Donner les droits administration</h2>
     <dl class="dl-horizontal"></dl>
     <h4>Indiquer le mail au minimum.</h4>
-    @if (TempData["mailEnvoyeOk"] != null)
-    {
-        <div class="messageInfo">@TempData["mailEnvoyeOk"]</div>
-    }
-    @if (TempData["mailEnvoyeKo"] != null)
-    {
-        <div class="messageInfo">@TempData["mailEnvoyeKo"]</div>
-    }
     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "ccform connexion creationCompte" }))
     {
         <div class="ccfield-prepend">
@@ -28,6 +20,5 @@
         <div class="ccfield-prepend">
             <input class="ccbtn" type="submit" value="Valider">
         </div>
-
     }
 </div>

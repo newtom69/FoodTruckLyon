@@ -4,6 +4,7 @@ using System.Configuration;
 using FoodTruck.Outils;
 using System;
 using FoodTruck.DAL;
+using FoodTruck.ViewModels;
 
 namespace FoodTruck.Controllers
 {
@@ -48,9 +49,9 @@ namespace FoodTruck.Controllers
                 $"Attention, ce lien expirera dans {dureeValidite / 60} heures et n'est valable que pour l'adresse {email}";
 
             if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                TempData["mailEnvoyeOk"] = $"Un email de confirmation vient d'être envoyé au destinataire. Il expirera dans {dureeValidite / 60} heures";
+                TempData["message"] = new Message($"Un email de confirmation vient d'être envoyé à l'adresse {email}.\nIl expirera dans {dureeValidite / 60} heures", TypeMessage.Info);
             else
-                TempData["mailEnvoyeKo"] = "Erreur dans l'envoi du mail, veuillez rééssayer dans quelques instants";
+                TempData["message"] = new Message("Erreur dans l'envoi du mail.\nVeuillez rééssayer plus tard", TypeMessage.Erreur);
 
             return View();
         }
