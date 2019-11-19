@@ -103,11 +103,11 @@ namespace FoodTruck.Controllers
             {
                 string sujetMail2 = $"Nouvelle commande numéro {commande.Id} prise en compte";
                 string corpsMail2 = $"Bonjour {utilisateur.Prenom}\n" +
-                    $"Votre dernière commande a bien été prise en compte." +
-                    $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
-                    $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
-                    $"\nMerci de votre confiance\n\n" +
-                    "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
+                                    $"Votre dernière commande a bien été prise en compte." +
+                                    $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
+                                    $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
+                                    $"\nMerci de votre confiance\n\n" +
+                                    "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
                 Utilitaire.EnvoieMail(emailClient, sujetMail2, corpsMail2);
             }
         }

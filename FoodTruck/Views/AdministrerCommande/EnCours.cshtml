@@ -15,10 +15,6 @@
     </div>
     <div id="panierEnLigne">
         <div class="choixHoraire">
-            @if (Model.Commandes.Count == 0)
-            {
-                <div class="messageInfo">Aucune commande en cours</div>
-            }
             @foreach (var c in Model.Commandes)
             {
                 <div class="gestionCommandeArticle">

@@ -1,11 +1,11 @@
-﻿@* TODO Toutes.cshtml et Avenir.cshtml quasi même contenu -> DRY dette technique *@
+﻿@* TODO Toutes.cshtml et Futures.cshtml quasi même contenu -> DRY dette technique *@
 @using FoodTruck.ViewModels
 @using FoodTruck.Outils
 @using System.Configuration
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-    ViewBag.Title = "Toutes les commandes";
+    ViewBag.Title = "Recherche de commandes";
 }
 @model ListeCommandesViewModel
 
@@ -33,10 +33,6 @@
             </div>
         }
         <hr />
-        @if (Model.Commandes.Count == 0)
-        {
-            <div class="messageInfo">Aucune commande ne correspond à votre recherche</div>
-        }
     </div>
     foreach (var c in Model.Commandes)
     {

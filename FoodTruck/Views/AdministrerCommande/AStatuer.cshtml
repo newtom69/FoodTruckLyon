@@ -4,7 +4,7 @@
 @using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-    ViewBag.Title = "Commandes à marquer";
+    ViewBag.Title = "Commandes à statuer";
 }
 @model ListeCommandesViewModel
 
@@ -16,10 +16,6 @@
     </div>
     <div id="panierEnLigne">
         <div class="choixHoraire">
-            @if (Model.Commandes.Count == 0)
-            {
-                <div class="messageInfo">Aucune commande passée à statuer</div>
-            }
             @foreach (var c in Model.Commandes)
             {
                 <div class="gestionCommandeArticle">

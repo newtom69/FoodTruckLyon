@@ -17,7 +17,15 @@ namespace FoodTruck.Controllers
         {
             const int fouchetteHeures = 4;
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesEnCours(fouchetteHeures)));
+            {
+                List<Commande> commandes = new CommandeDAL().CommandesEnCours(fouchetteHeures);
+                if (commandes.Count == 0)
+                {
+                    TempData["message"] = new Message("Vous n'avez aucune commande en cours", TypeMessage.Info);
+                }
+                return View(new ListeCommandesViewModel(commandes));
+
+            }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -43,7 +51,14 @@ namespace FoodTruck.Controllers
         public ActionResult AStatuer()
         {
             if (AdminCommande)
+            {
+                List<Commande> commandes = new CommandeDAL().CommandesAStatuer();
+                if (commandes.Count == 0)
+                {
+                    TempData["message"] = new Message("Vous n'avez aucune commande à statuer", TypeMessage.Info);
+                }
                 return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer()));
+            }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -96,7 +111,8 @@ namespace FoodTruck.Controllers
                 List<Commande> commandes = tabCommandes[0];
                 for (int i = 1; i < tabCommandes.Length; i++)
                     commandes = commandes.Intersect(tabCommandes[i], new CommandeEqualityComparer()).ToList();
-
+                if (commandes.Count == 0)
+                    TempData["message"] = new Message("Aucune commande ne correspond à votre recherche.\nVeuillez élargir vos critères de recherche", TypeMessage.Avertissement);
                 return View(new ListeCommandesViewModel(commandes));
             }
             else
@@ -116,7 +132,14 @@ namespace FoodTruck.Controllers
         public ActionResult PendantFermetures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesPendantFermetures()));
+            {
+                var commandes = new CommandeDAL().CommandesPendantFermetures();
+                if (commandes.Count == 0)
+                    TempData["message"] = new Message("Vous n'avez aucune commande pendant des fermetures", TypeMessage.Ok);
+                else
+                    TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermeture.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
+                return View(new ListeCommandesViewModel(commandes));
+            }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }

@@ -8,7 +8,6 @@
 }
 @model ListeCommandesViewModel
 
-
 @if (Model != null)
 {
     <div class="adminCommandes">
@@ -17,11 +16,7 @@
     </div>
     <div id="panierEnLigne">
         <div class="choixHoraire">
-            @if (Model.Commandes.Count == 0)
-            {
-                <div class="messageInfo">Aucune commande</div>
-            }
-            else
+            @if (Model.Commandes.Count > 0)
             {
                 using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
