@@ -80,7 +80,7 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Ajouter(string nom, string ancre, bool? home)
+        public ActionResult Ajouter(string nom, string ancre, bool? retourPageArticleIndex)
         {
             Article article = new ArticleDAL().Details(nom);
             if (article != null && article.DansCarte)
@@ -88,11 +88,10 @@ namespace FoodTruck.Controllers
                 PanierViewModel.Ajouter(article, 1, Utilisateur.Id, ProspectGuid);
                 ViewBag.Panier = PanierViewModel;
             }
-            bool testHome = home ?? false;
-            if (!testHome)
-                return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
-            else
+            if (retourPageArticleIndex ?? false)
                 return Redirect("/Article" + ancre);
+            else
+                return Redirect(Request.UrlReferrer.AbsolutePath + ancre);
         }
 
         [HttpPost]

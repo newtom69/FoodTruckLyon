@@ -1,5 +1,4 @@
 ﻿using FoodTruck.DAL;
-using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
@@ -134,11 +133,14 @@ namespace FoodTruck.Controllers
             if (AdminCommande)
             {
                 List<Commande> commandes = new CommandeDAL().CommandesPendantFermetures();
-                if (commandes.Count == 0)
-                    TempData["message"] = new Message("Vous n'avez aucune commande pendant des fermetures", TypeMessage.Ok);
-                else
-                    TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermetures.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
-                return View(new ListeCommandesViewModel(commandes));
+                if (TempData["message"] == null)
+                {
+                    if (commandes.Count == 0)
+                        TempData["message"] = new Message("Vous n'avez aucune commande pendant des fermetures", TypeMessage.Ok);
+                    else
+                        TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermetures.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
+                }
+                    return View(new ListeCommandesViewModel(commandes));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -151,9 +153,11 @@ namespace FoodTruck.Controllers
             {
                 CommandeDAL commandeDAL = new CommandeDAL();
                 List<Commande> commandes = commandeDAL.CommandesPendantFermetures();
+                List<int> commandesIdMailInconnu = new List<int>();
                 foreach (Commande commande in commandes)
                 {
                     int commandeId = commande.Id;
+                    commandeDAL.Annuler(commandeId);
                     int clientId = commande.UtilisateurId;
                     if (clientId != 0)
                     {
@@ -168,9 +172,22 @@ namespace FoodTruck.Controllers
                             $"Votre équipe Foodtrucklyon";
                         string adresseMailClient = utilisateur.Email;
                         Utilitaire.EnvoieMail(adresseMailClient, objetMail, corpsMessage);
-                        commandeDAL.Annuler(commandeId);
+                    }
+                    else
+                    {
+                        commandesIdMailInconnu.Add(commandeId);
                     }
                 }
+                string message = $"Les {commandes.Count} commande(s) ont bien été annulées et les clients ont reçu un mail";
+                if (commandesIdMailInconnu.Count != 0)
+                {
+                    message += "\nAttention :\nLes clients des commandes qui suivent n'ont pas pu être prévenus car ils n'ont pas rensigné les adresses mail :\n";
+                    foreach (int commandeId in commandesIdMailInconnu)
+                    {
+                        message += $"-{commandeId}-  ";
+                    }
+                }
+                TempData["message"] = new Message(message, TypeMessage.Ok);
                 return RedirectToAction(ActionNom);
             }
             else
