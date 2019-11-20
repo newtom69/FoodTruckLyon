@@ -2,6 +2,7 @@
 using FoodTruck.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -84,13 +85,16 @@ namespace FoodTruck.Outils
                 return "Non";
         }
 
-        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA = "info@foodtrucklyon.fr")
+        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA = "")
         {
             try
             {
                 using (MailMessage message = new MailMessage())
                 {
-                    message.From = new MailAddress("info@foodtrucklyon.fr");
+                    string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
+                    if(reponseA == "")
+                        reponseA = mailFoodTruck;
+                    message.From = new MailAddress(mailFoodTruck);
                     message.To.Add(destinataire);
                     message.Subject = objet;
                     message.ReplyToList.Add(reponseA);

@@ -1,5 +1,6 @@
 ﻿using FoodTruck.ViewModels;
 using System;
+using System.Configuration;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
@@ -39,11 +40,12 @@ namespace FoodTruck.Controllers
             string nomOk = Server.HtmlEncode(nom);
             string prenomOk = Server.HtmlEncode(prenom);
             string commentsOk = Server.HtmlEncode(comments);
+            string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             try
             {
                 using (MailMessage message = new MailMessage())
                 {
-                    message.From = new MailAddress("info@foodtrucklyon.fr");
+                    message.From = new MailAddress(mailFoodTruck);
                     message.To.Add(email);
                     message.Subject = "Message à partir du formulaire de contact";
                     StringBuilder mastringbuilder = new StringBuilder();
@@ -67,8 +69,8 @@ namespace FoodTruck.Controllers
                 }
                 using (MailMessage message = new MailMessage())
                 {
-                    message.From = new MailAddress("info@foodtrucklyon.fr");
-                    message.To.Add("info@foodtrucklyon.fr");
+                    message.From = new MailAddress(mailFoodTruck);
+                    message.To.Add(mailFoodTruck);
                     message.Subject = "Message à partir du formulaire de contact";
                     message.ReplyToList.Add(email);
                     StringBuilder stringbuilder = new StringBuilder();

@@ -347,10 +347,10 @@ namespace FoodTruck.Controllers
                 }
                 utilisateurDAL.DonnerDroitAdmin(Utilisateur.Id);
                 {
-                    string emailFoodtruck = "info@foodtrucklyon.fr"; // todo passer dans config
+                    string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
                     string objet = $"{Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a abtenu les droit admin";
                     string message = $"l'utilisateur {Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a obtenu les droits admin";
-                    Utilitaire.EnvoieMail(emailFoodtruck, objet, message);
+                    Utilitaire.EnvoieMail(mailFoodTruck, objet, message);
                 }
                 ViewBag.Utilisateur = Utilisateur;
                 Session["UtilisateurId"] = Utilisateur.Id;

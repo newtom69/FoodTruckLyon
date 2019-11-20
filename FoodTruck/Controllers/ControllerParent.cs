@@ -31,9 +31,9 @@ namespace FoodTruck.Controllers
             if (Session["UtilisateurId"] == null || (int)Session["UtilisateurId"] == 0)
             {
                 HttpCookie cookie = Request.Cookies.Get("GuidClient");
-                if (cookie != null)
+                if (cookie != null && (Utilisateur = new UtilisateurDAL().ConnexionCookies(cookie.Value)) != null)
                 {
-                    ViewBag.Utilisateur = Utilisateur = new UtilisateurDAL().ConnexionCookies(cookie.Value);
+                    ViewBag.Utilisateur = Utilisateur;
                     Session["UtilisateurId"] = Utilisateur.Id;
                     PanierViewModel = new PanierViewModel(); //Todo effacer
                     AgregerPanierEnBase();

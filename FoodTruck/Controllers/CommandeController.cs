@@ -2,6 +2,7 @@
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
+using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
 
@@ -76,6 +77,7 @@ namespace FoodTruck.Controllers
 
         private void Mail(Utilisateur utilisateur, Commande commande, PanierViewModel panier)
         {
+            string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             string lesArticlesDansLeMail = "";
             foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " + (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
@@ -98,7 +100,7 @@ namespace FoodTruck.Controllers
             string sujet = $"Nouvelle commande numéro {commande.Id}";
             string corpsMail = $"Nouvelle commande {commande.Id}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
 
-            Utilitaire.EnvoieMail("info@foodtrucklyon.fr", sujet, corpsMail);
+            Utilitaire.EnvoieMail(mailFoodTruck, sujet, corpsMail);
             if (utilisateur.Id != 0)
             {
                 string sujetMail2 = $"Nouvelle commande numéro {commande.Id} prise en compte";
