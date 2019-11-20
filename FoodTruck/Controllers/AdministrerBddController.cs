@@ -25,14 +25,14 @@ namespace FoodTruck.Controllers
                 List<Article> tousArticles = new ArticleDAL().Tous();
 
                 var nomsImages = (from art in tousArticles
-                                  select art.Image).ToList();
+                                  select art.Image.Trim()).ToList();
 
-                var orphelins = fichiersPresents.Except(nomsImages).ToList();
-                foreach (string orphelin in orphelins)
+                fichiersPresents.RemoveAll(nom => nomsImages.Contains(nom));
+                foreach (string fichier in fichiersPresents)
                 {
-                    System.IO.File.Delete(Path.Combine(dossierImage, orphelin));
+                    System.IO.File.Delete(Path.Combine(dossierImage, fichier));
                 }
-                ViewBag.ImagesSupprimees = $"Nombre d'images supprimées : {orphelins.Count}";
+                ViewBag.ImagesSupprimees = $"Nombre d'images supprimées : {fichiersPresents.Count}";
             }
             return View();
         }
