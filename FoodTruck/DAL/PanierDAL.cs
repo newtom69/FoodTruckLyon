@@ -26,14 +26,14 @@ namespace FoodTruck.DAL
         }
 
         ///Ajouter un article non présent au panier en base d'un utilisateur
-        public void Ajouter(Article lArticle, int quantite = 1)
+        public void Ajouter(Article article, int quantite = 1)
         {
             Panier lePanier = new Panier
             {
-                ArticleId = lArticle.Id,
+                ArticleId = article.Id,
                 UtilisateurId = UtilisateurId,
                 Quantite = quantite,
-                PrixTotal = Math.Round(quantite * lArticle.Prix, 2)
+                PrixTotal = Math.Round(quantite * article.Prix, 2)
             };
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -43,26 +43,26 @@ namespace FoodTruck.DAL
         }
 
         ///Modifier la quantité d'un article du panier en base d'un utilisateur
-        public void ModifierQuantite(Article lArticle, int quantite)
+        public void ModifierQuantite(Article article, int quantite)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 Panier lePanier = (from panier in db.Panier
-                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
+                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == article.Id
                                    select panier).FirstOrDefault();
                 lePanier.Quantite += quantite;
-                lePanier.PrixTotal = Math.Round(lePanier.PrixTotal + quantite * lArticle.Prix, 2);
+                lePanier.PrixTotal = Math.Round(lePanier.PrixTotal + quantite * article.Prix, 2);
                 db.SaveChanges();
             }
         }
 
         /// Supprimer l'article du panier en base de l'utilisateur
-        public void Supprimer(Article lArticle)
+        public void Supprimer(Article article)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 Panier lePanier = (from panier in db.Panier
-                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == lArticle.Id
+                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == article.Id
                                    select panier).FirstOrDefault();
 
                 db.Panier.Remove(lePanier);
