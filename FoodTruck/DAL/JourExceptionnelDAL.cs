@@ -159,20 +159,21 @@ namespace FoodTruck.DAL
                 JourExceptionnel prochainOuvertExceptionnellement = ProchaineOuvertureExceptionnelle(date);
                 JourExceptionnel prochainFermeExceptionnellement = ProchaineFermetureExceptionnelle(date);
 
-                DateTime dateAMJ;
+                DateTime dateMinuit;
                 int jourOuvertHabituellement = prochainOuvertHabituellement.JourSemaineId;
                 int jourJ = (int)date.DayOfWeek;
                 if (jourOuvertHabituellement < jourJ)
                 {
-                    dateAMJ = date.AddDays(7 - jourJ + jourOuvertHabituellement);
+                    dateMinuit = date.AddDays(7 - jourJ + jourOuvertHabituellement).Date;
                 }
                 else
                 {
-                    dateAMJ = date.AddDays(jourOuvertHabituellement - jourJ);
+                    dateMinuit = date.AddDays(jourOuvertHabituellement - jourJ).Date;
                 }
-                dateAMJ = new DateTime(dateAMJ.Year, dateAMJ.Month, dateAMJ.Day);
+                if (date.Date == dateMinuit && prochainOuvertHabituellement.Debut < date.TimeOfDay)
+                    prochainOuvertHabituellement.Debut = RecalculHeureDebut(date);
 
-                plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin);
+                plageHoraireRetrait = new PlageHoraireRetrait(dateMinuit + prochainOuvertHabituellement.Debut, dateMinuit + prochainOuvertHabituellement.Fin);
 
                 // Test avec ouverture exceptionnelle
                 //
@@ -203,7 +204,7 @@ namespace FoodTruck.DAL
                     date = prochainFermeExceptionnellement.DateFin;
                 }
                 // fermeture à cheval sur ouverture
-                else if (!(prochainFermeExceptionnellement.DateFin <= plageHoraireRetrait.Dates.First() || prochainFermeExceptionnellement.DateDebut >= plageHoraireRetrait.Dates.Last()))
+                else if (prochainFermeExceptionnellement.DateDebut <= plageHoraireRetrait.Dates.Last() && prochainFermeExceptionnellement.DateFin >= plageHoraireRetrait.Dates.First())
                 {
                     DateTime debut;
                     DateTime fin;
@@ -228,12 +229,13 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 TimeSpan minuit = new TimeSpan(0, 0, 0);
-                int totalSecondes = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
+                int totalSecondesDate = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
 
-                OuvertureHebdomadaire plage = (from c in db.OuvertureHebdomadaire
-                                               where totalSecondes <= 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin)
-                                               orderby 24 * 60 * 60 * c.JourSemaineId + DbFunctions.DiffSeconds(minuit, c.Fin) // TODO voir as ?
-                                               select c).FirstOrDefault();
+                OuvertureHebdomadaire plage = (from ouverture in db.OuvertureHebdomadaire
+                                               let totalSecondesOuverture = 24 * 60 * 60 * ouverture.JourSemaineId + DbFunctions.DiffSeconds(minuit, ouverture.Fin)
+                                               where totalSecondesOuverture > totalSecondesDate
+                                               orderby totalSecondesOuverture
+                                               select ouverture).FirstOrDefault();
 
                 DateTime maintenant = DateTime.Now;
                 if (plage == null)

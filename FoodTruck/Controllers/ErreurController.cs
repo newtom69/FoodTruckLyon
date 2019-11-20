@@ -26,7 +26,7 @@ namespace FoodTruck.Controllers
 
         public ActionResult Erreur500()
         {
-            TempData["message"] = new Message("La ressource demandée par le serveur n'existe pas.\nVeuillez réessayer plus tard.\nSi le problème persiste, merci de contacter un administrateur.\nNous vous redirigeons sur la page d'accueil.", TypeMessage.Erreur);
+            TempData["message"] = new Message("La ressource demandée par le serveur n'existe pas.\nCela peut venir d'une inactivité trop longue.\nVeuillez réessayer.\nSi le problème persiste, merci de contacter un administrateur.\nNous vous redirigeons sur la page d'accueil.", TypeMessage.Erreur);
             return RedirectToAction("Index", "Home");
         }
     }
