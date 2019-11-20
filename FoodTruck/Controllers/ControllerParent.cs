@@ -47,7 +47,8 @@ namespace FoodTruck.Controllers
             }
             else
                 ViewBag.Utilisateur = Utilisateur = new UtilisateurDAL().Details((int)Session["UtilisateurId"]);
-
+            
+            new PanierDAL(Utilisateur.Id).SupprimerArticlesPasDansCarte();
             VisiteDAL.Enregistrer(Utilisateur.Id);
             if (Utilisateur.Id != 0)
             {
@@ -69,9 +70,7 @@ namespace FoodTruck.Controllers
                         Session["ProspectGuid"] = ProspectGuid = cookie.Value;
                         List<PanierProspect> paniers = new PanierProspectDAL(ProspectGuid).ListerPanierProspect();
                         if (paniers.Count > 0)
-                        {
                             RecupererPanierEnBase();
-                        }
                     }
                     else
                     {
@@ -85,6 +84,7 @@ namespace FoodTruck.Controllers
                         Response.Cookies.Add(cookie);
                     }
                 }
+                new PanierProspectDAL(ProspectGuid).SupprimerArticlesPasDansCarte();
                 PanierViewModel = new PanierViewModel(new PanierProspectDAL(ProspectGuid).ListerPanierProspect());
             }
             PanierViewModel.Trier();
@@ -137,7 +137,7 @@ namespace FoodTruck.Controllers
 
         private void DonnerLesDroitsdAcces()
         {
-            //TODO mettre dans Getter 
+            //todo mettre dans Getter ?
             if (Utilisateur.AdminArticle) AdminArticle = true;
             if (Utilisateur.AdminCommande) AdminCommande = true;
             if (Utilisateur.AdminUtilisateur) AdminUtilisateur = true;

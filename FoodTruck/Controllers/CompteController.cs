@@ -184,9 +184,7 @@ namespace FoodTruck.Controllers
                 }
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\n" +
-                                 $"Vous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\n" +
-                                 $"Depuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
+                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\nVous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
                 TempData["message"] = new Message(message, TypeMessage.Ok);
                 int index = ((List<string>)Session["Url"]).Count - 1;
                 return RedirectPermanent(((List<string>)Session["Url"])[index]);
@@ -397,14 +395,14 @@ namespace FoodTruck.Controllers
             PanierViewModel panierViewModelSauv = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
             if (panierViewModelSauv != null && Utilisateur.Id != 0)
             {
-                PanierDAL lePanierDal = new PanierDAL(Utilisateur.Id);
+                PanierDAL panierDal = new PanierDAL(Utilisateur.Id);
                 foreach (ArticleViewModel article in (panierViewModelSauv).ArticlesDetailsViewModel)
                 {
-                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
+                    Panier panier = panierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
                     if (panier == null)
-                        lePanierDal.Ajouter(article.Article, article.Quantite);
+                        panierDal.Ajouter(article.Article, article.Quantite);
                     else
-                        lePanierDal.ModifierQuantite(article.Article, article.Quantite);
+                        panierDal.ModifierQuantite(article.Article, article.Quantite);
                 }
             }
             panierProspectDAL.Supprimer();

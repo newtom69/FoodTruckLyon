@@ -119,5 +119,22 @@ namespace FoodTruck.DAL
                 return db.SaveChanges();
             }
         }
+        internal List<Article> SupprimerArticlesPasDansCarte()
+        {
+            List<Article> articles = ArticlesPanierProspect();
+            List<Article> articlesPasDansCarte = articles.FindAll(art => !art.DansCarte);
+
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                var paniersASupprimer = (from panier in db.PanierProspect
+                                         join article in db.Article on panier.ArticleId equals article.Id
+                                         where panier.ProspectGuid == ProspectGuid && !article.DansCarte
+                                         select panier).ToList();
+
+                db.PanierProspect.RemoveRange(paniersASupprimer);
+                db.SaveChanges();
+            }
+            return articlesPasDansCarte;
+        }
     }
 }

@@ -155,6 +155,7 @@
     <Compile Include="Controllers\CompteController.cs" />
     <Compile Include="Controllers\ControllerParent.cs" />
     <Compile Include="Controllers\ControllerParentAdministrer.cs" />
+    <Compile Include="Controllers\ErreurController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
     <Compile Include="DAL\CreerAdminDAL.cs" />
