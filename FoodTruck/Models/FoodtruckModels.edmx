@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nom" Type="char" MaxLength="30" Nullable="false" />
-          <Property Name="Image" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="Image" Type="char" MaxLength="40" Nullable="false" />
           <Property Name="Prix" Type="float" Nullable="false" />
           <Property Name="FamilleId" Type="int" Nullable="false" />
           <Property Name="NombreVendus" Type="int" Nullable="false" />
@@ -316,26 +316,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="omasvui147994fr33943_foodtruckModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Article">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Prix" Type="Double" Nullable="false" />
-          <Property Name="FamilleId" Type="Int32" Nullable="false" />
-          <Property Name="NombreVendus" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Allergenes" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Grammage" Type="Int32" Nullable="false" />
-          <Property Name="Litrage" Type="Int32" Nullable="false" />
-          <Property Name="DansCarte" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FamilleArticle" Relationship="Self.FK_Article_FamilleArticle" FromRole="Article" ToRole="FamilleArticle" />
-          <NavigationProperty Name="Commande_Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Article" ToRole="Commande_Article" />
-          <NavigationProperty Name="PanierProspect" Relationship="Self.FK_PanierProspect_Article" FromRole="Article" ToRole="PanierProspect" />
-          <NavigationProperty Name="Panier" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Article" ToRole="Panier" />
-        </EntityType>
         <EntityType Name="CodePromo">
           <Key>
             <PropertyRef Name="Id" />
@@ -372,8 +352,8 @@
           <Property Name="ArticleId" Type="Int32" Nullable="false" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Article" Relationship="Self.FK_Commande_Article_Article" FromRole="Commande_Article" ToRole="Article" />
           <NavigationProperty Name="Commande" Relationship="Self.FK_Commande_Article_Commande" FromRole="Commande_Article" ToRole="Commande" />
+          <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Article" FromRole="Commande_Article" ToRole="Article" />
         </EntityType>
         <EntityType Name="FamilleArticle">
           <Key>
@@ -381,7 +361,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nom" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Article" Relationship="Self.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
+          <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
         </EntityType>
         <EntityType Name="OuvertureHebdomadaire">
           <Key>
@@ -402,8 +382,8 @@
           <Property Name="ArticleId" Type="Int32" Nullable="false" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Article" Relationship="Self.FK_Utilisateur_Article_Article" FromRole="Panier" ToRole="Article" />
           <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Utilisateur" FromRole="Panier" ToRole="Utilisateur" />
+          <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Article" FromRole="Panier" ToRole="Article" />
         </EntityType>
         <EntityType Name="PanierProspect">
           <Key>
@@ -415,7 +395,7 @@
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <Property Name="DateAjout" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Article" Relationship="Self.FK_PanierProspect_Article" FromRole="PanierProspect" ToRole="Article" />
+          <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_PanierProspect_Article" FromRole="PanierProspect" ToRole="Article" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -431,54 +411,6 @@
           <Property Name="UrlOrigine" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Utilisateur" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Visite" ToRole="Utilisateur" />
         </EntityType>
-        <Association Name="FK_Article_FamilleArticle">
-          <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="1" />
-          <End Role="Article" Type="Self.Article" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FamilleArticle">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Article">
-              <PropertyRef Name="FamilleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Commande_Article_Article">
-          <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Commande_Article">
-              <PropertyRef Name="ArticleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PanierProspect_Article">
-          <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="PanierProspect" Type="Self.PanierProspect" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PanierProspect">
-              <PropertyRef Name="ArticleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Utilisateur_Article_Article">
-          <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Panier">
-              <PropertyRef Name="ArticleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Commande_Article_Commande">
           <End Role="Commande" Type="Self.Commande" Multiplicity="1" />
           <End Role="Commande_Article" Type="Self.Commande_Article" Multiplicity="*" />
@@ -492,7 +424,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="foodtruckEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Article" EntityType="Self.Article" />
           <EntitySet Name="CodePromo" EntityType="Self.CodePromo" />
           <EntitySet Name="Commande" EntityType="Self.Commande" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" />
@@ -501,22 +432,6 @@
           <EntitySet Name="Panier" EntityType="Self.Panier" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
           <EntitySet Name="Visite" EntityType="Self.Visite" />
-          <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
-            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
-            <End Role="Article" EntitySet="Article" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Commande_Article_Article" Association="Self.FK_Commande_Article_Article">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="Commande_Article" EntitySet="Commande_Article" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PanierProspect_Article" Association="Self.FK_PanierProspect_Article">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="PanierProspect" EntitySet="PanierProspect" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Utilisateur_Article_Article" Association="Self.FK_Utilisateur_Article_Article">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="Panier" EntitySet="Panier" />
-          </AssociationSet>
           <AssociationSet Name="FK_Commande_Article_Commande" Association="Self.FK_Commande_Article_Commande">
             <End Role="Commande" EntitySet="Commande" />
             <End Role="Commande_Article" EntitySet="Commande_Article" />
@@ -541,6 +456,23 @@
             <End Role="OubliMotDePasse" EntitySet="OubliMotDePasse" />
           </AssociationSet>
           <EntitySet Name="CreerAdmin" EntityType="omasvui147994fr33943_foodtruckModel.CreerAdmin" />
+          <EntitySet Name="Article" EntityType="omasvui147994fr33943_foodtruckModel.Article" />
+          <AssociationSet Name="FK_Article_FamilleArticle" Association="omasvui147994fr33943_foodtruckModel.FK_Article_FamilleArticle">
+            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Commande_Article_Article" Association="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Commande_Article" EntitySet="Commande_Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierProspect_Article" Association="omasvui147994fr33943_foodtruckModel.FK_PanierProspect_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="PanierProspect" EntitySet="PanierProspect" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Utilisateur_Article_Article" Association="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Article">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Panier" EntitySet="Panier" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -641,29 +573,80 @@
           <Property Name="CodeVerification" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
           <Property Name="DateFinValidite" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="false" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="40" FixedLength="true" Unicode="false" />
+          <Property Name="Prix" Type="Double" Nullable="false" />
+          <Property Name="FamilleId" Type="Int32" Nullable="false" />
+          <Property Name="NombreVendus" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="90" FixedLength="false" Unicode="false" />
+          <Property Name="Allergenes" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Grammage" Type="Int32" Nullable="false" />
+          <Property Name="Litrage" Type="Int32" Nullable="false" />
+          <Property Name="DansCarte" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FamilleArticle" Relationship="omasvui147994fr33943_foodtruckModel.FK_Article_FamilleArticle" FromRole="Article" ToRole="FamilleArticle" />
+          <NavigationProperty Name="Commande_Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Article" FromRole="Article" ToRole="Commande_Article" />
+          <NavigationProperty Name="PanierProspect" Relationship="omasvui147994fr33943_foodtruckModel.FK_PanierProspect_Article" FromRole="Article" ToRole="PanierProspect" />
+          <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Utilisateur_Article_Article" FromRole="Article" ToRole="Panier" />
+        </EntityType>
+        <Association Name="FK_Article_FamilleArticle">
+          <End Type="omasvui147994fr33943_foodtruckModel.FamilleArticle" Role="FamilleArticle" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilleArticle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="FamilleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Commande_Article_Article">
+          <End Type="omasvui147994fr33943_foodtruckModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Commande_Article" Role="Commande_Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Commande_Article">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierProspect_Article">
+          <End Type="omasvui147994fr33943_foodtruckModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.PanierProspect" Role="PanierProspect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PanierProspect">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Utilisateur_Article_Article">
+          <End Type="omasvui147994fr33943_foodtruckModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.Panier" Role="Panier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Panier">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="omasvui147994fr33943_foodtruckModelStoreContainer" CdmEntityContainer="foodtruckEntities">
-          <EntitySetMapping Name="Article">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Article">
-              <MappingFragment StoreEntitySet="Article">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nom" ColumnName="Nom" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="Prix" ColumnName="Prix" />
-                <ScalarProperty Name="FamilleId" ColumnName="FamilleId" />
-                <ScalarProperty Name="NombreVendus" ColumnName="NombreVendus" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Allergenes" ColumnName="Allergenes" />
-                <ScalarProperty Name="Grammage" ColumnName="Grammage" />
-                <ScalarProperty Name="Litrage" ColumnName="Litrage" />
-                <ScalarProperty Name="DansCarte" ColumnName="DansCarte" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CodePromo">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.CodePromo">
               <MappingFragment StoreEntitySet="CodePromo">
@@ -802,6 +785,23 @@
                 <ScalarProperty Name="Prenom" ColumnName="Prenom" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="DansCarte" ColumnName="DansCarte" />
+                <ScalarProperty Name="Litrage" ColumnName="Litrage" />
+                <ScalarProperty Name="Grammage" ColumnName="Grammage" />
+                <ScalarProperty Name="Allergenes" ColumnName="Allergenes" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="NombreVendus" ColumnName="NombreVendus" />
+                <ScalarProperty Name="FamilleId" ColumnName="FamilleId" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -33,7 +33,7 @@ namespace FoodTruck.DAL
                     throw new DatabaseAccessException(dbUpdateEx.Message, dbUpdateEx.InnerException);
                 }
             }
-            return "Erreur. Merci de réessayer. Si le problème persiste, contactez un administrateur.";
+            return "Erreur. Merci de réessayer\nSi le problème persiste, contactez un administrateur.";
         }
     }
 }

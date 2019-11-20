@@ -49,7 +49,7 @@ namespace FoodTruck.Controllers
                 try
                 {
                     string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
-                    string fileName = nomOk.ToUrl() + Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString("n") + Path.GetExtension(file.FileName);
                     string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                     Image image = Image.FromStream(file.InputStream);
                     int tailleImage = int.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
@@ -129,7 +129,7 @@ namespace FoodTruck.Controllers
                         if (file != null)
                         {
                             string dossierImage = ConfigurationManager.AppSettings["PathImagesArticles"];
-                            string fileName = article.Nom.ToUrl() + Path.GetExtension(file.FileName);
+                            string fileName = Guid.NewGuid().ToString("n") + Path.GetExtension(file.FileName);
                             string chemin = Path.Combine(Server.MapPath(dossierImage), fileName);
                             Image image = Image.FromStream(file.InputStream);
                             int tailleImage = int.Parse(ConfigurationManager.AppSettings["ImagesArticlesSize"]);
@@ -145,12 +145,12 @@ namespace FoodTruck.Controllers
                             article.Image = ancienArticle.Image;
                         }
                         articleDAL.Modifier(article);
-                        TempData["message"] = new Message("Votre article a bien été modifié", TypeMessage.Erreur);
+                        TempData["message"] = new Message("Votre article a bien été modifié", TypeMessage.Ok);
 
                     }
                     catch (Exception ex)
                     {
-                        TempData["message"] = new Message(ex.Message, TypeMessage.Ok);
+                        TempData["message"] = new Message(ex.Message, TypeMessage.Erreur);
                     }
                 }
                 return RedirectToAction("Modifier", "AdministrerArticle");

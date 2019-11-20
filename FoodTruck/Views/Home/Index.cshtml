@@ -5,9 +5,10 @@
 @{
     ViewBag.Title = "FoodTruckLyon";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
 }
 <div class="imageAccueil">
-    <img src="@dossierImagesArticles/food-truck.jpg" alt="Notre Foodtruck">
+    <img src="@dossierImagesSysteme/food-truck.jpg" alt="Notre Foodtruck">
 </div>
 <div class="titreAccueil">
     <h3><a href="../Article">Voir notre carte</a></h3>

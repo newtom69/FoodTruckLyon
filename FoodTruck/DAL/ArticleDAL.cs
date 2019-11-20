@@ -118,7 +118,7 @@ namespace FoodTruck.DAL
             return lArticle != null ? true : false;
         }
 
-        public List<Article> Tous(int nombreMax = 200)
+        public List<Article> Tous(int nombreMax = 1000)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -131,23 +131,23 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal void Modifier(Article lArticle)
+        internal void Modifier(Article article)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Article articleAModifier = (from article in db.Article
-                                            where article.Id == lArticle.Id
-                                            select article).FirstOrDefault();
+                Article articleAModifier = (from art in db.Article
+                                            where art.Id == article.Id
+                                            select art).FirstOrDefault();
 
-                articleAModifier.Nom = lArticle.Nom;
-                articleAModifier.Description = lArticle.Description;
-                articleAModifier.Prix = lArticle.Prix;
-                articleAModifier.Allergenes = lArticle.Allergenes;
-                articleAModifier.DansCarte = lArticle.DansCarte;
-                articleAModifier.FamilleId = lArticle.FamilleId;
-                articleAModifier.Grammage = lArticle.Grammage;
-                articleAModifier.Litrage = lArticle.Litrage;
-                articleAModifier.Image = lArticle.Image;
+                articleAModifier.Nom = article.Nom;
+                articleAModifier.Description = article.Description;
+                articleAModifier.Prix = article.Prix;
+                articleAModifier.Allergenes = article.Allergenes;
+                articleAModifier.DansCarte = article.DansCarte;
+                articleAModifier.FamilleId = article.FamilleId;
+                articleAModifier.Grammage = article.Grammage;
+                articleAModifier.Litrage = article.Litrage;
+                articleAModifier.Image = article.Image;
                 try
                 {
                     db.SaveChanges();

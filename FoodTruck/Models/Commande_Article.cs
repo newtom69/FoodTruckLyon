@@ -19,7 +19,7 @@ namespace FoodTruck
         public int Quantite { get; set; }
         public double PrixTotal { get; set; }
     
-        public virtual Article Article { get; set; }
         public virtual Commande Commande { get; set; }
+        public virtual Article Article { get; set; }
     }
 }

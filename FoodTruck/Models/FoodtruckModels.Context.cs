@@ -25,7 +25,6 @@ namespace FoodTruck
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Article> Article { get; set; }
         public virtual DbSet<CodePromo> CodePromo { get; set; }
         public virtual DbSet<Commande> Commande { get; set; }
         public virtual DbSet<Commande_Article> Commande_Article { get; set; }
@@ -38,5 +37,6 @@ namespace FoodTruck
         public virtual DbSet<JourExceptionnel> JourExceptionnel { get; set; }
         public virtual DbSet<OubliMotDePasse> OubliMotDePasse { get; set; }
         public virtual DbSet<CreerAdmin> CreerAdmin { get; set; }
+        public virtual DbSet<Article> Article { get; set; }
     }
 }
