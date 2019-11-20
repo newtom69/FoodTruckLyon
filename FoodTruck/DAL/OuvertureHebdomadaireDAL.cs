@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal OuvertureHebdomadaire AjouterOuverture(int jourId, TimeSpan debut, TimeSpan fin, TimeSpan pas)
+        internal OuvertureHebdomadaire AjouterOuverture(int jourId, TimeSpan debut, TimeSpan fin)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -33,7 +34,6 @@ namespace FoodTruck.DAL
                         JourSemaineId = jourId,
                         Debut = debut,
                         Fin = fin,
-                        Pas = pas
                     };
                     db.OuvertureHebdomadaire.Add(ouverture);
                     db.SaveChanges();
@@ -42,7 +42,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal OuvertureHebdomadaire ModifierOuverture(int id, int jourId, TimeSpan debut, TimeSpan fin, TimeSpan pas)
+        internal OuvertureHebdomadaire ModifierOuverture(int id, int jourId, TimeSpan debut, TimeSpan fin)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -59,7 +59,6 @@ namespace FoodTruck.DAL
                     ouverture.JourSemaineId = jourId;
                     ouverture.Debut = debut;
                     ouverture.Fin = fin;
-                    ouverture.Pas = pas;
                     db.SaveChanges();
                 }
                 return chevauchement;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace FoodTruck.Models
@@ -9,9 +10,10 @@ namespace FoodTruck.Models
         internal TimeSpan Pas { get; private set; }
         public List<DateTime> Dates { get; private set; }
 
-        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau, TimeSpan pas)
+        public PlageHoraireRetrait(DateTime premierCreneau, DateTime dernierCreneau)
         {
-            Pas = pas;
+            int pasMinutes = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
+            Pas = new TimeSpan(0, pasMinutes, 0);
             DateTime creneauCourant = premierCreneau;
             Dates = new List<DateTime>();
             while (creneauCourant <= dernierCreneau)

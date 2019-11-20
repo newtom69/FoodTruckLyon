@@ -100,7 +100,6 @@
           <Property Name="JourSemaineId" Type="int" Nullable="false" />
           <Property Name="Debut" Type="time" Precision="7" Nullable="false" />
           <Property Name="Fin" Type="time" Precision="7" Nullable="false" />
-          <Property Name="Pas" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Panier">
           <Key>
@@ -363,16 +362,6 @@
           <Property Name="Nom" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
         </EntityType>
-        <EntityType Name="OuvertureHebdomadaire">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="JourSemaineId" Type="Int32" Nullable="false" />
-          <Property Name="Debut" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="Fin" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="Pas" Type="Time" Nullable="false" Precision="7" />
-        </EntityType>
         <EntityType Name="Panier">
           <Key>
             <PropertyRef Name="UtilisateurId" />
@@ -428,7 +417,6 @@
           <EntitySet Name="Commande" EntityType="Self.Commande" />
           <EntitySet Name="Commande_Article" EntityType="Self.Commande_Article" />
           <EntitySet Name="FamilleArticle" EntityType="Self.FamilleArticle" />
-          <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" />
           <EntitySet Name="Panier" EntityType="Self.Panier" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" />
           <EntitySet Name="Visite" EntityType="Self.Visite" />
@@ -473,6 +461,7 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
+          <EntitySet Name="OuvertureHebdomadaire" EntityType="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire" />
           </EntityContainer>
         <EntityType Name="Utilisateur">
           <Key>
@@ -641,6 +630,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="OuvertureHebdomadaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JourSemaineId" Type="Int32" Nullable="false" />
+          <Property Name="Debut" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Fin" Type="Time" Nullable="false" Precision="7" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -689,17 +687,6 @@
               <MappingFragment StoreEntitySet="FamilleArticle">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OuvertureHebdomadaire">
-            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire">
-              <MappingFragment StoreEntitySet="OuvertureHebdomadaire">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="JourSemaineId" ColumnName="JourSemaineId" />
-                <ScalarProperty Name="Debut" ColumnName="Debut" />
-                <ScalarProperty Name="Fin" ColumnName="Fin" />
-                <ScalarProperty Name="Pas" ColumnName="Pas" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -802,6 +789,16 @@
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OuvertureHebdomadaire">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.OuvertureHebdomadaire">
+              <MappingFragment StoreEntitySet="OuvertureHebdomadaire">
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Debut" ColumnName="Debut" />
+                <ScalarProperty Name="JourSemaineId" ColumnName="JourSemaineId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

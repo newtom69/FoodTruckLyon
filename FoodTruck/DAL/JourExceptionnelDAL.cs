@@ -172,26 +172,26 @@ namespace FoodTruck.DAL
                 }
                 dateAMJ = new DateTime(dateAMJ.Year, dateAMJ.Month, dateAMJ.Day);
 
-                plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin, prochainOuvertHabituellement.Pas);
+                plageHoraireRetrait = new PlageHoraireRetrait(dateAMJ + prochainOuvertHabituellement.Debut, dateAMJ + prochainOuvertHabituellement.Fin);
 
                 // Test avec ouverture exceptionnelle
                 //
                 //cas plage ouverture exceptionnelle complètement avant plage ouverture habituelle
                 if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First() && prochainOuvertExceptionnellement.DateFin < plageHoraireRetrait.Dates.First())
                 {
-                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
+                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, prochainOuvertExceptionnellement.DateFin);
                 }
                 // cas ouverture exceptionnelle commence avant plage
                 else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First())
                 {
                     DateTime fin = prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Dates.Last() ? prochainOuvertExceptionnellement.DateFin : plageHoraireRetrait.Dates.Last();
-                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, fin, prochainOuvertHabituellement.Pas);
+                    plageHoraireRetrait = new PlageHoraireRetrait(prochainOuvertExceptionnellement.DateDebut, fin);
                 }
                 // cas ouverture exceptionnelle fini après plage
                 else if (prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.Last() && prochainOuvertExceptionnellement.DateFin > plageHoraireRetrait.Dates.Last())
                 {
                     DateTime debut = prochainOuvertExceptionnellement.DateDebut < plageHoraireRetrait.Dates.First() ? prochainOuvertExceptionnellement.DateDebut : plageHoraireRetrait.Dates.First();
-                    plageHoraireRetrait = new PlageHoraireRetrait(debut, prochainOuvertExceptionnellement.DateFin, prochainOuvertHabituellement.Pas);
+                    plageHoraireRetrait = new PlageHoraireRetrait(debut, prochainOuvertExceptionnellement.DateFin);
                 }
 
                 //Test avec fermeture exceptionnelle
@@ -217,7 +217,7 @@ namespace FoodTruck.DAL
                         debut = plageHoraireRetrait.Dates.First();
                         fin = prochainFermeExceptionnellement.DateDebut;
                     }
-                    plageHoraireRetrait = new PlageHoraireRetrait(debut, fin, prochainOuvertHabituellement.Pas);
+                    plageHoraireRetrait = new PlageHoraireRetrait(debut, fin);
                 }
             } while (faireRecherche);
             return plageHoraireRetrait;
@@ -244,7 +244,7 @@ namespace FoodTruck.DAL
                 }
                 else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay)
                 {
-                    plage.Debut = RecalculHeureDebut(date, (int)plage.Pas.TotalMinutes);
+                    plage.Debut = RecalculHeureDebut(date);
                 }
                 return plage;
             }
@@ -262,8 +262,9 @@ namespace FoodTruck.DAL
             }
         }
 
-        private TimeSpan RecalculHeureDebut(DateTime date, int pasMinutes = 15) //todo valeur du pas à indiquer dans les ouvertures exceptionnelles
+        private TimeSpan RecalculHeureDebut(DateTime date)
         {
+            int pasMinutes = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
             int minutes = (int)Math.Ceiling(date.TimeOfDay.TotalMinutes / pasMinutes) * pasMinutes;
             int heures = minutes / 60;
             minutes -= heures * 60;

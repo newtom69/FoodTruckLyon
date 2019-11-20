@@ -167,7 +167,7 @@ namespace FoodTruck.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
         [HttpPost]
-        public ActionResult OuverturesHebdomadaires(int id, string action, int jourId, TimeSpan heureDebut, TimeSpan heureFin, TimeSpan pas)
+        public ActionResult OuverturesHebdomadaires(int id, string action, int jourId, TimeSpan heureDebut, TimeSpan heureFin)
         {
             if (AdminPlanning)
             {
@@ -181,7 +181,7 @@ namespace FoodTruck.Controllers
                     OuvertureHebdomadaire chevauchement;
                     if (action == "Ajouter")
                     {
-                        chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin, pas);
+                        chevauchement = ouvertureDAL.AjouterOuverture(jourId, heureDebut, heureFin);
                         if (chevauchement == null)
                             TempData["message"] = new Message("L'ouverture a bien été ajoutée", TypeMessage.Ok);
                         else
@@ -189,7 +189,7 @@ namespace FoodTruck.Controllers
                     }
                     else if (action == "Modifier")
                     {
-                        chevauchement = ouvertureDAL.ModifierOuverture(id, jourId, heureDebut, heureFin, pas);
+                        chevauchement = ouvertureDAL.ModifierOuverture(id, jourId, heureDebut, heureFin);
                         if (chevauchement == null)
                             TempData["message"] = new Message("L'ouverture a bien été modifiée", TypeMessage.Ok);
                         else

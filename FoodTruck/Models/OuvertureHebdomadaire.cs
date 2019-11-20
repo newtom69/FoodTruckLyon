@@ -18,6 +18,5 @@ namespace FoodTruck
         public int JourSemaineId { get; set; }
         public System.TimeSpan Debut { get; set; }
         public System.TimeSpan Fin { get; set; }
-        public System.TimeSpan Pas { get; set; }
     }
 }
