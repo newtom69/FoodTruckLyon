@@ -47,11 +47,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Panier lePanier = (from panier in db.Panier
-                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == article.Id
-                                   select panier).FirstOrDefault();
-                lePanier.Quantite += quantite;
-                lePanier.PrixTotal = Math.Round(lePanier.PrixTotal + quantite * article.Prix, 2);
+                Panier panier = (from p in db.Panier
+                                 where p.UtilisateurId == UtilisateurId && p.ArticleId == article.Id
+                                 select p).FirstOrDefault();
+                panier.Quantite += quantite;
+                panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.Prix, 2);
                 db.SaveChanges();
             }
         }
@@ -61,11 +61,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Panier lePanier = (from panier in db.Panier
-                                   where panier.UtilisateurId == UtilisateurId && panier.ArticleId == article.Id
-                                   select panier).FirstOrDefault();
+                Panier panier = (from p in db.Panier
+                                 where p.UtilisateurId == UtilisateurId && p.ArticleId == article.Id
+                                 select p).FirstOrDefault();
 
-                db.Panier.Remove(lePanier);
+                db.Panier.Remove(panier);
                 db.SaveChanges();
             }
         }
@@ -75,11 +75,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                var lePanier = from panier in db.Panier
-                               where panier.UtilisateurId == UtilisateurId
-                               select panier;
+                var panier = from p in db.Panier
+                             where p.UtilisateurId == UtilisateurId
+                             select p;
 
-                db.Panier.RemoveRange(lePanier);
+                db.Panier.RemoveRange(panier);
                 db.SaveChanges();
             }
         }
