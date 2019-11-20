@@ -23,5 +23,11 @@ namespace FoodTruck.Controllers
             TempData["message"] = new Message("La page que vous demandez n'existe pas.\nContactez un administrateur si vous pensez qu'il s'agit d'une erreur.\nNous vous redirigeons sur la page d'accueil.", TypeMessage.Erreur);
             return RedirectToAction("Index", "Home");
         }
+
+        public ActionResult Erreur500()
+        {
+            TempData["message"] = new Message("La ressource demandée par le serveur n'existe pas.\nVeuillez réessayer plus tard.\nSi le problème persiste, merci de contacter un administrateur.\nNous vous redirigeons sur la page d'accueil.", TypeMessage.Erreur);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

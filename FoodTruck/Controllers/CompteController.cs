@@ -174,14 +174,8 @@ namespace FoodTruck.Controllers
                 ViewBag.Utilisateur = Utilisateur;
                 Session["UtilisateurId"] = Utilisateur.Id;
                 if (connexionAuto)
-                {
-                    HttpCookie cookie = new HttpCookie("GuidClient")
-                    {
-                        Value = Utilisateur.Guid,
-                        Expires = DateTime.Now.AddDays(30)
-                    };
-                    Response.Cookies.Add(cookie);
-                }
+                    ConnexionAutomatique();
+
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
                 string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\nVous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
@@ -347,7 +341,7 @@ namespace FoodTruck.Controllers
                     {
                         rng.GetBytes(data);
                     }
-                    string mdp = (Encoding.UTF8.GetString(data)).GetHash();
+                    string mdp = Encoding.UTF8.GetString(data).GetHash();
                     string telephone = "";
                     Utilisateur = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }
@@ -362,7 +356,8 @@ namespace FoodTruck.Controllers
                 Session["UtilisateurId"] = Utilisateur.Id;
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                TempData["message"] = new Message("Félicitation ! Vous êtes maintenant administrateur du site.\nVous pouvez accéder au menu Administration", TypeMessage.Info);
+                ConnexionAutomatique();
+                TempData["message"] = new Message("Félicitation ! Vous êtes maintenant administrateur du site.\nVous pouvez accéder au menu Administration\nVous serez connecté automatiquement à partir de cet appareil/navigateur\nSi vous changez de poste/navigateur, merci d'utiliser la fonctionnalité \"Oubli de mot de passe\" afin de définir votre propre mot de passe", TypeMessage.Info);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -406,6 +401,16 @@ namespace FoodTruck.Controllers
                 }
             }
             panierProspectDAL.Supprimer();
+        }
+
+        private void ConnexionAutomatique()
+        {
+            HttpCookie cookie = new HttpCookie("GuidClient")
+            {
+                Value = Utilisateur.Guid,
+                Expires = DateTime.Now.AddDays(30)
+            };
+            Response.Cookies.Add(cookie);
         }
     }
 }
