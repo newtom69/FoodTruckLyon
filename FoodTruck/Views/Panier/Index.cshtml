@@ -1,10 +1,11 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
-@using System.Configuration;
+@using System.Configuration
 @model PanierViewModel
 @{
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
+    int pasCreneauxHoraire = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
     Utilisateur utilisateur = ViewBag.Utilisateur;
     double remiseCommercialeMontant = 0;
     string afficheRemiseCommerciale = "";
@@ -129,7 +130,7 @@
                         @{ DateTime dateAvant = DateTime.MinValue; }
                         @foreach (Creneau creneau in Model.Creneaux)
                         {
-                            if (creneau.DateRetrait > dateAvant.AddHours(1))
+                            if (creneau.DateRetrait > dateAvant.AddMinutes(pasCreneauxHoraire))
                             {
                                 <optgroup label="@creneau.DateRetrait.ToString("dddd dd MMMM")"></optgroup>
                             }
