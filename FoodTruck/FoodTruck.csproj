@@ -251,6 +251,7 @@
     <Content Include="Content\Images\Articles\000d34f36cf043ea8d30ba40b60ee5ae.jpg" />
     <Content Include="Content\Images\Articles\039b120cc8f44751b3555ee764072fa7.jpg" />
     <Content Include="Content\Images\Articles\055f787a2a1449f9be7d625de32186dc.jpg" />
+    <Content Include="Content\Images\Articles\06c5605ef71443eb9160b05218c2232e.jpg" />
     <Content Include="Content\Images\Articles\1056fc353cde4293a3ad113b49ed0700.jpg" />
     <Content Include="Content\Images\Articles\1285e3c16323439aa3a630c0e78da54b.jpg" />
     <Content Include="Content\Images\Articles\169acb90f1614af4aebb61070bf867eb.jpg" />
@@ -268,12 +269,14 @@
     <Content Include="Content\Images\Articles\718badc3e82c49579b460fb5d99adb7d.jpg" />
     <Content Include="Content\Images\Articles\7d1af90d72cc485ba3e7a63041861e2d.jpg" />
     <Content Include="Content\Images\Articles\8d343a1b4a794b9f89bd9df8d6c62aa0.jpg" />
+    <Content Include="Content\Images\Articles\928068b8acd841519c2cd1da17d2ba51.jpg" />
     <Content Include="Content\Images\Articles\a3e0eb7edc134fb98b699e046654c241.jpg" />
     <Content Include="Content\Images\Articles\b5e0d23604ba4d28b4ba508b323416bd.jpg" />
     <Content Include="Content\Images\Articles\bf71d3eacafd4f038c8918d4271dad8f.jpg" />
     <Content Include="Content\Images\Articles\c08b15f5a608493b836b30e9c86c21a2.jpg" />
     <Content Include="Content\Images\Articles\df2637e3ecf7432d854339b7f4a2726b.jpg" />
     <Content Include="Content\Images\Articles\e2d9c15669334ef190666fb57802e372.jpg" />
+    <Content Include="Content\Images\Articles\eae22232fc7f455fa79ffe23b87a0630.jpg" />
     <Content Include="Content\Images\Articles\ec984423224048e095194f205dafe56c.jpg" />
     <Content Include="Content\Images\Articles\f102e1b695724c9ea247e382eefef2b6.jpg" />
     <Content Include="Content\Images\Articles\f598275519664951b0bd92ddab1bd0b3.jpg" />
