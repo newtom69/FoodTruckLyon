@@ -17,13 +17,13 @@ namespace FoodTruck.Controllers
         {
             if (PanierViewModel.ArticlesDetailsViewModel.Count != 0)
             {
+                ViewBag.PanierLatteralDesactive = true;
                 DateTime maintenant = DateTime.Now;
                 List<PlageHoraireRetrait> plagesHorairesRetrait = maintenant.PlageHoraireRetrait();
 
                 // obtention nombre de commandes à retirer dans chaque creneaux ouvert et desactivation si = nombre max
                 int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
                 CommandeDAL commandeDAL = new CommandeDAL();
-
                 PanierViewModel.Creneaux = new List<Creneau>();
                 foreach (PlageHoraireRetrait plage in plagesHorairesRetrait)
                 {
@@ -38,7 +38,6 @@ namespace FoodTruck.Controllers
                         PanierViewModel.Creneaux.Add(creneau);
                     }
                 }
-                ViewBag.PanierLatteralDesactive = true;
 
                 int index = ((List<string>)Session["Url"]).Count - 2;
                 if (index < 0)

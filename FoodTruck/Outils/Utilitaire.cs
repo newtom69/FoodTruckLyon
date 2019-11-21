@@ -38,11 +38,13 @@ namespace FoodTruck.Outils
         {
             JourExceptionnelDAL ouvertureDAL = new JourExceptionnelDAL();
             List<PlageHoraireRetrait> plagesHorairesRetrait = new List<PlageHoraireRetrait> { ouvertureDAL.ProchainOuvert(date) };
-            bool memeJour = true;
-            while (memeJour)
+            bool autreCreneau = true;
+            while (autreCreneau)
             {
                 plagesHorairesRetrait.Add(ouvertureDAL.ProchainOuvert(plagesHorairesRetrait.Last().Dates.Last().AddMinutes(1)));
-                memeJour = plagesHorairesRetrait.First().Dates.First().Date == plagesHorairesRetrait.Last().Dates.First().Date;
+                TimeSpan diff = plagesHorairesRetrait.Last().Dates.First() - plagesHorairesRetrait.First().Dates.First();
+                if (plagesHorairesRetrait.Count >= 4 && diff.Days > 1)
+                    autreCreneau = false;
             }
             return plagesHorairesRetrait;
         }
@@ -92,7 +94,7 @@ namespace FoodTruck.Outils
                 using (MailMessage message = new MailMessage())
                 {
                     string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
-                    if(reponseA == "")
+                    if (reponseA == "")
                         reponseA = mailFoodTruck;
                     message.From = new MailAddress(mailFoodTruck);
                     message.To.Add(destinataire);
@@ -125,7 +127,7 @@ namespace FoodTruck.Outils
                 }
                 return sBuilder.ToString();
             }
-            
+
         }
     }
 }
