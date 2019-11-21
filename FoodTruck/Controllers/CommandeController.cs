@@ -13,15 +13,21 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Index(string codePromo, DateTime dateRetrait, int? remiseFidelite)
         {
-            int montantRemiseFidelite = remiseFidelite ?? 0;
-            new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemiseCommerciale);
-
             if (PanierViewModel.ArticlesDetailsViewModel.Count == 0)
             {
                 return View(new Commande());
             }
             else
             {
+                #region commandes restantes
+                //int maxCommandesHeure = int.Parse(ConfigurationManager.AppSettings["NombreDeCommandesMaxParHeure"]);
+                //int pasCreneauxHoraire = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
+                //int maxCommandesCreneau = (int)Math.Ceiling((double)maxCommandesHeure * pasCreneauxHoraire / 60);
+                //int commandesPossiblesRestantes = maxCommandesCreneau - new CommandeDAL().NombreCommandes(dateRetrait);
+                #endregion
+                int montantRemiseFidelite = remiseFidelite ?? 0;
+                new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemiseCommerciale);
+
                 if (montantRemiseFidelite != 0 && Utilisateur.Id != 0)
                 {
                     int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Utilisateur.Id, montantRemiseFidelite);
@@ -53,11 +59,11 @@ namespace FoodTruck.Controllers
                 }
 
                 new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
-                Mail(Utilisateur, commande, PanierViewModel);
+                MailCommande(Utilisateur, commande, PanierViewModel);
                 new PanierDAL(Utilisateur.Id).Supprimer();
                 ViewBag.Panier = null; //todo
-                string stringDateRetrait = commande.DateRetrait.ToString("dddd dd MMMM yyyy pour HH:mm");
 
+                string stringDateRetrait = commande.DateRetrait.ToString("dddd dd MMMM yyyy pour HH:mm");
                 string message = $"Commande numéro {commande.Id} confirmée\nVeuillez venir la chercher le {stringDateRetrait}.";
                 TypeMessage typeMessage;
                 if (Utilisateur.Id == 0)
@@ -75,7 +81,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void Mail(Utilisateur utilisateur, Commande commande, PanierViewModel panier)
+        private void MailCommande(Utilisateur utilisateur, Commande commande, PanierViewModel panier)
         {
             string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             string lesArticlesDansLeMail = "";
