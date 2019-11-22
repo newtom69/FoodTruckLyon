@@ -21,4 +21,24 @@ namespace FoodTruck.Outils
             return hCode.GetHashCode();
         }
     }
+
+    class UtilisateurEqualityComparer : IEqualityComparer<Client>
+    {
+        public bool Equals(Client u1, Client u2)
+        {
+            if (u2 == null && u1 == null)
+                return true;
+            else if (u1 == null || u2 == null)
+                return false;
+            else if (u1.Id == u2.Id)
+                return true;
+            else
+                return false;
+        }
+        public int GetHashCode(Client u)
+        {
+            int hCode = u.Id;
+            return hCode.GetHashCode();
+        }
+    }
 }

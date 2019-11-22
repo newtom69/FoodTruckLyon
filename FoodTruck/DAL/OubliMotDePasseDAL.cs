@@ -25,7 +25,7 @@ namespace FoodTruck.DAL
             {
                 OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
                 {
-                    UtilisateurId = utilisateurId,
+                    ClientId = utilisateurId,
                     CodeVerification = codeVerification,
                     DateFinValidite = dateFinValidite
                 };
@@ -40,7 +40,7 @@ namespace FoodTruck.DAL
             {
                 List<OubliMotDePasse> listeOubliMotDePasse =
                     (from u in db.OubliMotDePasse
-                     where u.UtilisateurId == utilisateurId
+                     where u.ClientId == utilisateurId
                      select u).ToList();
                 db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
                 db.SaveChanges();
@@ -52,8 +52,8 @@ namespace FoodTruck.DAL
             OubliMotDePasse oubliMotDePasse = Details(identifiant);
             if (oubliMotDePasse != null)
             {
-                Supprimer(oubliMotDePasse.UtilisateurId);
-                return oubliMotDePasse.UtilisateurId;
+                Supprimer(oubliMotDePasse.ClientId);
+                return oubliMotDePasse.ClientId;
             }
             else
             {

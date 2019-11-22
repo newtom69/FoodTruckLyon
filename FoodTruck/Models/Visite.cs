@@ -18,11 +18,11 @@ namespace FoodTruck
         public string AdresseIp { get; set; }
         public System.DateTime Date { get; set; }
         public string Url { get; set; }
-        public int UtilisateurId { get; set; }
+        public int ClientId { get; set; }
         public string Navigateur { get; set; }
         public bool NavigateurMobile { get; set; }
         public string UrlOrigine { get; set; }
     
-        public virtual Utilisateur Utilisateur { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

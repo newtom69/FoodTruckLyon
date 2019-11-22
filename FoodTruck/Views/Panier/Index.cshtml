@@ -6,7 +6,7 @@
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     int pasCreneauxHoraire = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
-    Utilisateur utilisateur = ViewBag.Utilisateur;
+    Client utilisateur = ViewBag.Client;
     double remiseCommercialeMontant = 0;
     string afficheRemiseCommerciale = "";
     string codePromo = "";

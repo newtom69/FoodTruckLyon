@@ -23,7 +23,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (Utilisateur.Id == 0)
+            if (Client.Id == 0)
                 return RedirectToAction("Connexion", "Compte");
             else
                 return RedirectToAction("Profil");
@@ -33,17 +33,17 @@ namespace FoodTruck.Controllers
         public ActionResult Profil()
         {
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
-            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
-            return View(Utilisateur);
+            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
+            return View(Client);
         }
 
         [HttpPost]
         public ActionResult Profil(string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
         {
             UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
-            Utilisateur utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
+            Client utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
             if (utilisateur == null)
             {
                 TempData["message"] = new Message("L'ancien mot de passe n'est pas correct.\nAucune modification n'a été prise en compte.", TypeMessage.Erreur);
@@ -63,7 +63,7 @@ namespace FoodTruck.Controllers
                     if (utilisateurDAL.Modification(utilisateur.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
                     {
                         TempData["message"] = new Message("La modification du profil a bien été prise en compte.", TypeMessage.Ok);
-                        Utilisateur = utilisateurDAL.Connexion(email, nouveauMdp);
+                        Client = utilisateurDAL.Connexion(email, nouveauMdp);
                     }
                 }
                 else
@@ -76,18 +76,18 @@ namespace FoodTruck.Controllers
                 }
             }
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
+            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
             ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
-            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
-            return View(Utilisateur);
+            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
+            return View(Client);
         }
 
         [HttpGet]
         public ActionResult Commandes()
         {
-            if (Utilisateur.Id != 0)
+            if (Client.Id != 0)
             {
-                List<Commande> commandes = new CommandeDAL().CommandesUtilisateur(Utilisateur.Id);
+                List<Commande> commandes = new CommandeDAL().CommandesUtilisateur(Client.Id);
                 ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
                 return View(listeCommandesViewModel);
             }
@@ -100,7 +100,7 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == Utilisateur.Id)
+            if (commande != null && commande.ClientId == Client.Id)
             {
                 commandeDAL.Annuler(commandeId);
             }
@@ -112,19 +112,19 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.UtilisateurId == Utilisateur.Id)
+            if (commande != null && commande.ClientId == Client.Id)
             {
                 List<ArticleViewModel> articles = commandeDAL.Articles(commandeId);
                 if (viderPanier)
                 {
-                    new PanierDAL(Utilisateur.Id).Supprimer();
+                    new PanierDAL(Client.Id).Supprimer();
                     PanierViewModel.Initialiser();
                     ViewBag.Panier = null; //todo
                 }
                 List<Article> articlesKo = new List<Article>();
                 foreach (var a in articles)
                 {
-                    if (!PanierViewModel.Ajouter(a.Article, a.Quantite, Utilisateur.Id, ProspectGuid))
+                    if (!PanierViewModel.Ajouter(a.Article, a.Quantite, Client.Id, ProspectGuid))
                         articlesKo.Add(a.Article);
                 }
                 ViewBag.Panier = PanierViewModel;
@@ -159,7 +159,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Connexion()
         {
-            if (Utilisateur.Id == 0)
+            if (Client.Id == 0)
                 return View();
             else
                 return RedirectToAction("Profil");
@@ -168,24 +168,24 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string email, string mdp, bool connexionAuto)
         {
-            Utilisateur = new UtilisateurDAL().Connexion(email, mdp);
-            if (Utilisateur != null)
+            Client = new UtilisateurDAL().Connexion(email, mdp);
+            if (Client != null)
             {
-                ViewBag.Utilisateur = Utilisateur;
-                Session["UtilisateurId"] = Utilisateur.Id;
+                ViewBag.Client = Client;
+                Session["ClientId"] = Client.Id;
                 if (connexionAuto)
                     ConnexionAutomatique();
 
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                string message = $"Bienvenue {Utilisateur.Prenom} {Utilisateur.Nom}\nVous avez {Utilisateur.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Utilisateur.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
+                string message = $"Bienvenue {Client.Prenom} {Client.Nom}\nVous avez {Client.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Client.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
                 TempData["message"] = new Message(message, TypeMessage.Ok);
                 int index = ((List<string>)Session["Url"]).Count - 1;
                 return RedirectPermanent(((List<string>)Session["Url"])[index]);
             }
             else
             {
-                ViewBag.Utilisateur = new Utilisateur();
+                ViewBag.Client = new Client();
                 TempData["message"] = new Message("Email ou mot de passe incorrect.\nVeuillez réessayer.", TypeMessage.Erreur);
                 return View();
             }
@@ -194,7 +194,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            if (Utilisateur.Id != 0)
+            if (Client.Id != 0)
             {
                 HttpCookie newCookie = new HttpCookie("GuidClient")
                 {
@@ -217,8 +217,8 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Creation(string email, string mdp, string mdp2, string nom, string prenom, string telephone, bool connexionAuto)
         {
-            Utilisateur utilisateur = Utilisateur;
-            if (Utilisateur.Id == 0)
+            Client utilisateur = Client;
+            if (Client.Id == 0)
             {
                 if (VerifMdp(mdp, mdp2))
                 {
@@ -242,7 +242,7 @@ namespace FoodTruck.Controllers
             }
             else
             {
-                ViewBag.Utilisateur = new Utilisateur();
+                ViewBag.Client = new Client();
                 TempData["message"] = new Message("Compte déjà existant.\nVeuillez saisir une autre adresse mail ou vous <a href=\"/Compte/Connexion\">connecter</a>", TypeMessage.Erreur);
                 return View();
             }
@@ -255,9 +255,9 @@ namespace FoodTruck.Controllers
             int utilisateurId = new OubliMotDePasseDAL().Verifier(codeVerification);
             if (utilisateurId != 0)
             {
-                Utilisateur = utilisateurDAL.Details(utilisateurId);
-                ViewBag.Utilisateur = Utilisateur;
-                Session["UtilisateurId"] = Utilisateur.Id;
+                Client = utilisateurDAL.Details(utilisateurId);
+                ViewBag.Client = Client;
+                Session["ClientId"] = Client.Id;
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
                 return View();
@@ -277,7 +277,7 @@ namespace FoodTruck.Controllers
                 int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienReinitialisationMotDePasse"]);
                 string codeVerification = Guid.NewGuid().ToString("n") + email.GetHash();
                 string url = HttpContext.Request.Url.ToString() + '/' + codeVerification;
-                Utilisateur utilisateur = new UtilisateurDAL().Details(email);
+                Client utilisateur = new UtilisateurDAL().Details(email);
                 if (utilisateur != null)
                 {
                     new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
@@ -305,7 +305,7 @@ namespace FoodTruck.Controllers
                 if (VerifMdp(mdp, mdp2))
                 {
                     UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
-                    if (utilisateurDAL.Modification(Utilisateur.Id, mdp) == 1)
+                    if (utilisateurDAL.Modification(Client.Id, mdp) == 1)
                     {
                         TempData["message"] = new Message("La modification de votre mot de passe a bien été prise en compte", TypeMessage.Ok);
                     }
@@ -317,9 +317,9 @@ namespace FoodTruck.Controllers
                 }
 
                 CommandeDAL commandeDAL = new CommandeDAL();
-                List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Utilisateur.Id);
+                List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
                 ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
-                ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Utilisateur.Id);
+                ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
                 return RedirectToAction("Connexion", "Compte");
             }
             else
@@ -333,8 +333,8 @@ namespace FoodTruck.Controllers
             CreerAdmin creerAdmin = new CreerAdminDAL().Verifier(codeVerification);
             if (creerAdmin != null)
             {
-                Utilisateur = utilisateurDAL.Details(creerAdmin.Email);
-                if (Utilisateur == null)
+                Client = utilisateurDAL.Details(creerAdmin.Email);
+                if (Client == null)
                 {
                     byte[] data = new byte[10];
                     using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
@@ -343,17 +343,17 @@ namespace FoodTruck.Controllers
                     }
                     string mdp = Encoding.UTF8.GetString(data).GetHash();
                     string telephone = "";
-                    Utilisateur = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
+                    Client = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }
-                utilisateurDAL.DonnerDroitAdmin(Utilisateur.Id);
+                utilisateurDAL.DonnerDroitAdmin(Client.Id);
                 {
                     string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
-                    string objet = $"{Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a abtenu les droit admin";
-                    string message = $"l'utilisateur {Utilisateur.Prenom.Trim()} {Utilisateur.Nom.Trim()} a obtenu les droits admin";
+                    string objet = $"{Client.Prenom.Trim()} {Client.Nom.Trim()} a abtenu les droit admin";
+                    string message = $"l'utilisateur {Client.Prenom.Trim()} {Client.Nom.Trim()} a obtenu les droits admin";
                     Utilitaire.EnvoieMail(mailFoodTruck, objet, message);
                 }
-                ViewBag.Utilisateur = Utilisateur;
-                Session["UtilisateurId"] = Utilisateur.Id;
+                ViewBag.Client = Client;
+                Session["ClientId"] = Client.Id;
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
                 ConnexionAutomatique();
@@ -388,9 +388,9 @@ namespace FoodTruck.Controllers
         {
             PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
             PanierViewModel panierViewModelSauv = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
-            if (panierViewModelSauv != null && Utilisateur.Id != 0)
+            if (panierViewModelSauv != null && Client.Id != 0)
             {
-                PanierDAL panierDal = new PanierDAL(Utilisateur.Id);
+                PanierDAL panierDal = new PanierDAL(Client.Id);
                 foreach (ArticleViewModel article in (panierViewModelSauv).ArticlesDetailsViewModel)
                 {
                     Panier panier = panierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
@@ -407,7 +407,7 @@ namespace FoodTruck.Controllers
         {
             HttpCookie cookie = new HttpCookie("GuidClient")
             {
-                Value = Utilisateur.Guid,
+                Value = Client.Guid,
                 Expires = DateTime.Now.AddDays(30)
             };
             Response.Cookies.Add(cookie);

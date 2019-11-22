@@ -15,10 +15,10 @@ namespace FoodTruck
     public partial class OubliMotDePasse
     {
         public int Id { get; set; }
-        public int UtilisateurId { get; set; }
+        public int ClientId { get; set; }
         public string CodeVerification { get; set; }
         public System.DateTime DateFinValidite { get; set; }
     
-        public virtual Utilisateur Utilisateur { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

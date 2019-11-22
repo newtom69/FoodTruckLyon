@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodTruck.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,11 +7,11 @@ namespace FoodTruck.DAL
 {
     class PanierDAL
     {
-        public int UtilisateurId { get; set; }
+        public int ClientId { get; set; }
 
         public PanierDAL(int utilisateurId)
         {
-            UtilisateurId = utilisateurId;
+            ClientId = utilisateurId;
         }
 
         public List<Panier> ListerPanierUtilisateur()
@@ -19,7 +20,7 @@ namespace FoodTruck.DAL
             {
                 List<Panier> paniers = (from panier in db.Panier
                                         join article in db.Article on panier.ArticleId equals article.Id
-                                        where panier.UtilisateurId == UtilisateurId
+                                        where panier.ClientId == ClientId
                                         select panier).ToList();
                 return paniers;
             }
@@ -31,7 +32,7 @@ namespace FoodTruck.DAL
             Panier lePanier = new Panier
             {
                 ArticleId = article.Id,
-                UtilisateurId = UtilisateurId,
+                ClientId = ClientId,
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * article.Prix, 2)
             };
@@ -48,7 +49,7 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 Panier panier = (from p in db.Panier
-                                 where p.UtilisateurId == UtilisateurId && p.ArticleId == article.Id
+                                 where p.ClientId == ClientId && p.ArticleId == article.Id
                                  select p).FirstOrDefault();
                 panier.Quantite += quantite;
                 panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.Prix, 2);
@@ -62,7 +63,7 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 Panier panier = (from p in db.Panier
-                                 where p.UtilisateurId == UtilisateurId && p.ArticleId == article.Id
+                                 where p.ClientId == ClientId && p.ArticleId == article.Id
                                  select p).FirstOrDefault();
 
                 db.Panier.Remove(panier);
@@ -76,7 +77,7 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 var panier = from p in db.Panier
-                             where p.UtilisateurId == UtilisateurId
+                             where p.ClientId == ClientId
                              select p;
 
                 db.Panier.RemoveRange(panier);
@@ -90,7 +91,7 @@ namespace FoodTruck.DAL
             {
                 List<Article> articles = (from panier in db.Panier
                                           join article in db.Article on panier.ArticleId equals article.Id
-                                          where panier.UtilisateurId == UtilisateurId
+                                          where panier.ClientId == ClientId
                                           select article).ToList();
                 return articles;
             }
@@ -105,7 +106,7 @@ namespace FoodTruck.DAL
             {
                 var paniersASupprimer = (from panier in db.Panier
                                          join article in db.Article on panier.ArticleId equals article.Id
-                                         where panier.UtilisateurId == UtilisateurId && !article.DansCarte
+                                         where panier.ClientId == ClientId && !article.DansCarte
                                          select panier).ToList();
 
                 db.Panier.RemoveRange(paniersASupprimer);

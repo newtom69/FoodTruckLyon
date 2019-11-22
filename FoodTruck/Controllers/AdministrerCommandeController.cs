@@ -86,7 +86,7 @@ namespace FoodTruck.Controllers
             {
                 ViewBag.DateDebut = DateTime.Today;
                 ViewBag.DateFin = DateTime.Today;
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesToutes("", DateTime.Today, DateTime.Today.AddDays(3))));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesRecherche("", DateTime.Today, DateTime.Today.AddDays(3))));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -105,7 +105,7 @@ namespace FoodTruck.Controllers
                 List<Commande>[] tabCommandes = new List<Commande>[tabRecherche.Length];
 
                 for (int i = 0; i < tabRecherche.Length; i++)
-                    tabCommandes[i] = new CommandeDAL().CommandesToutes(tabRecherche[i], dateDebut, dateFin);
+                    tabCommandes[i] = new CommandeDAL().CommandesRecherche(tabRecherche[i], dateDebut, dateFin);
 
                 List<Commande> commandes = tabCommandes[0];
                 for (int i = 1; i < tabCommandes.Length; i++)
@@ -158,10 +158,10 @@ namespace FoodTruck.Controllers
                 {
                     int commandeId = commande.Id;
                     commandeDAL.Annuler(commandeId);
-                    int clientId = commande.UtilisateurId;
+                    int clientId = commande.ClientId;
                     if (clientId != 0)
                     {
-                        Utilisateur utilisateur = new UtilisateurDAL().Details(clientId);
+                        Client utilisateur = new UtilisateurDAL().Details(clientId);
                         string objetMail = $"Problème commande {commandeId} : Fermeture de votre foodtruck";
                         string corpsMessage = $"Bonjour {utilisateur.Prenom}\n\n" +
                             $"Vous avez passé la commande numéro {commandeId} pour le {commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")} et nous vous en remercions.\n\n" +

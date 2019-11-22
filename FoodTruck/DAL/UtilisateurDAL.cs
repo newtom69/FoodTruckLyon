@@ -1,5 +1,6 @@
 ﻿using FoodTruck.Outils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,48 +9,59 @@ namespace FoodTruck.DAL
 {
     class UtilisateurDAL
     {
-        public Utilisateur Details(int id)
+        public Client Details(int id)
         {
-            Utilisateur utilisateur;
+            Client utilisateur;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from u in db.Utilisateur
+                utilisateur = (from u in db.Client
                                where u.Id == id
                                select u).FirstOrDefault();
             }
             return utilisateur;
         }
 
-        public Utilisateur Details(string email)
+        public Client Details(string email)
         {
-            Utilisateur utilisateur;
+            Client utilisateur;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from u in db.Utilisateur
+                utilisateur = (from u in db.Client
                                where u.Email == email
                                select u).FirstOrDefault();
             }
             return utilisateur;
         }
 
-        public Utilisateur Connexion(string email, string mdp)
+        public List<Client> Recherche(string recherche)
         {
-            string mdpHash = mdp.GetHash();
-            Utilisateur utilisateur = new Utilisateur();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from user in db.Utilisateur
+                List<Client> utilisateurs = (from u in db.Client
+                                                  where u.Id != 0 && (u.Nom.Contains(recherche) || u.Prenom.Contains(recherche) || u.Email.Contains(recherche) || u.Telephone.Contains(recherche))
+                                                  select u).ToList();
+                return utilisateurs;
+            }
+        }
+
+        public Client Connexion(string email, string mdp)
+        {
+            string mdpHash = mdp.GetHash();
+            Client utilisateur = new Client();
+            using (foodtruckEntities db = new foodtruckEntities())
+            {
+                utilisateur = (from user in db.Client
                                where user.Email == email && user.Mdp == mdpHash
                                select user).FirstOrDefault();
             }
             return utilisateur;
         }
-        public Utilisateur ConnexionCookies(string guid)
+        public Client ConnexionCookies(string guid)
         {
-            Utilisateur utilisateur = new Utilisateur();
+            Client utilisateur = new Client();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from user in db.Utilisateur
+                utilisateur = (from user in db.Client
                                where user.Guid == guid
                                select user).FirstOrDefault();
             }
@@ -67,7 +79,7 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                var utilisateur = (from user in db.Utilisateur
+                var utilisateur = (from user in db.Client
                                    where user.Id == id
                                    select user).FirstOrDefault();
                 if (montant <= utilisateur.Cagnotte)
@@ -83,18 +95,18 @@ namespace FoodTruck.DAL
             }
         }
 
-        public Utilisateur Creation(string email, string mdp, string nom, string prenom, string telephone)
+        public Client Creation(string email, string mdp, string nom, string prenom, string telephone)
         {
             string mdpHash = mdp.GetHash();
             string guid = Guid.NewGuid().ToString();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                int id = (from user in db.Utilisateur
+                int id = (from user in db.Client
                           where user.Email == email || user.Guid == guid
                           select user.Id).FirstOrDefault();
                 if (id == 0)
                 {
-                    Utilisateur utilisateur = new Utilisateur
+                    Client utilisateur = new Client
                     {
                         Guid = guid,
                         Email = email,
@@ -104,7 +116,7 @@ namespace FoodTruck.DAL
                         Telephone = telephone,
                         Cagnotte = 0
                     };
-                    db.Utilisateur.Add(utilisateur);
+                    db.Client.Add(utilisateur);
                     db.SaveChanges();
                     return Connexion(email, mdp);
                 }
@@ -119,7 +131,7 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Utilisateur utilisateur = (from user in db.Utilisateur
+                Client utilisateur = (from user in db.Client
                                            where user.Id == id
                                            select user).FirstOrDefault();
 
@@ -140,7 +152,7 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Utilisateur utilisateur = (from user in db.Utilisateur
+                Client utilisateur = (from user in db.Client
                                            where user.Id == id
                                            select user).FirstOrDefault();
 

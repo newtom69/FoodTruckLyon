@@ -28,15 +28,15 @@ namespace FoodTruck.Controllers
                 int montantRemiseFidelite = remiseFidelite ?? 0;
                 new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemiseCommerciale);
 
-                if (montantRemiseFidelite != 0 && Utilisateur.Id != 0)
+                if (montantRemiseFidelite != 0 && Client.Id != 0)
                 {
-                    int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Utilisateur.Id, montantRemiseFidelite);
+                    int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Client.Id, montantRemiseFidelite);
                     if (soldeCagnotte == -1)
                         montantRemiseFidelite = 0;
                 }
                 Commande commande = new Commande
                 {
-                    UtilisateurId = Utilisateur.Id,
+                    ClientId = Client.Id,
                     DateCommande = DateTime.Now,
                     DateRetrait = dateRetrait,
                     PrixTotal = 0,
@@ -59,14 +59,14 @@ namespace FoodTruck.Controllers
                 }
 
                 new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
-                MailCommande(Utilisateur, commande, PanierViewModel);
-                new PanierDAL(Utilisateur.Id).Supprimer();
+                MailCommande(Client, commande, PanierViewModel);
+                new PanierDAL(Client.Id).Supprimer();
                 ViewBag.Panier = null; //todo
 
                 string stringDateRetrait = commande.DateRetrait.ToString("dddd dd MMMM yyyy pour HH:mm");
                 string message = $"Commande numéro {commande.Id} confirmée\nVeuillez venir la chercher le {stringDateRetrait}.";
                 TypeMessage typeMessage;
-                if (Utilisateur.Id == 0)
+                if (Client.Id == 0)
                 {
                     message += $"\nAttention : Vous n'avez pas utilisé de compte client.\nMerci de bien noter votre numéro de commande.";
                     typeMessage = TypeMessage.Avertissement;
@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void MailCommande(Utilisateur utilisateur, Commande commande, PanierViewModel panier)
+        private void MailCommande(Client utilisateur, Commande commande, PanierViewModel panier)
         {
             string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             string lesArticlesDansLeMail = "";

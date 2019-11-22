@@ -42,7 +42,7 @@ namespace FoodTruck.Controllers
                 int index = ((List<string>)Session["Url"]).Count - 2;
                 if (index < 0)
                     index = 0;
-                if (Utilisateur.Id == 0 && PanierViewModel.ArticlesDetailsViewModel.Count > 0 && ((List<string>)Session["Url"])[index] != "/Panier/Index")
+                if (Client.Id == 0 && PanierViewModel.ArticlesDetailsViewModel.Count > 0 && ((List<string>)Session["Url"])[index] != "/Panier/Index")
                     TempData["message"] = new Message("Vous n'êtes pas connecté à votre compte.\nVous pouvez commander mais\n- vous ne bénéficierez pas du programme de fidélité\n- votre commande ne sera pas dans votre historique\n- vous ne recevrez pas de confirmation de votre commande", TypeMessage.Info);
                 return View(PanierViewModel);
             }
@@ -91,7 +91,7 @@ namespace FoodTruck.Controllers
             Article article = new ArticleDAL().Details(nom);
             if (article != null && article.DansCarte)
             {
-                PanierViewModel.Ajouter(article, 1, Utilisateur.Id, ProspectGuid);
+                PanierViewModel.Ajouter(article, 1, Client.Id, ProspectGuid);
                 ViewBag.Panier = PanierViewModel;
             }
             if (retourPageArticleIndex ?? false)
@@ -103,7 +103,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Retirer(int id)
         {
-            bool sauvPanierClient = Utilisateur.Id != 0 ? true : false;
+            bool sauvPanierClient = Client.Id != 0 ? true : false;
             if (id < PanierViewModel.ArticlesDetailsViewModel.Count)
             {
                 Article article = new ArticleDAL().Details(PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
@@ -117,7 +117,7 @@ namespace FoodTruck.Controllers
                     PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal = Math.Round(PanierViewModel.ArticlesDetailsViewModel[id].PrixTotal - PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
                     if (sauvPanierClient)
                     {
-                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL = new PanierDAL(Client.Id);
                         panierDAL.ModifierQuantite(article, -1);
                     }
                     else
@@ -131,7 +131,7 @@ namespace FoodTruck.Controllers
                     PanierViewModel.ArticlesDetailsViewModel.RemoveAt(id);
                     if (sauvPanierClient)
                     {
-                        panierDAL = new PanierDAL(Utilisateur.Id);
+                        panierDAL = new PanierDAL(Client.Id);
                         panierDAL.Supprimer(article);
                     }
                     else

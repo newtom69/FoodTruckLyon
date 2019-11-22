@@ -34,7 +34,7 @@ namespace FoodTruck.DAL
                     Url = url,
                     Date = DateTime.Now,
                     AdresseIp = adresseIP,
-                    UtilisateurId = lUtilisateurId,
+                    ClientId = lUtilisateurId,
                     Navigateur = navigateur,
                     UrlOrigine = UrlOrigine,
                     NavigateurMobile = Utilitaire.NavigateurMobile(),

@@ -14,12 +14,12 @@ namespace FoodTruck
     
     public partial class Panier
     {
-        public int UtilisateurId { get; set; }
+        public int ClientId { get; set; }
         public int ArticleId { get; set; }
         public int Quantite { get; set; }
         public double PrixTotal { get; set; }
     
-        public virtual Utilisateur Utilisateur { get; set; }
         public virtual Article Article { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FoodTruck.Outils;
+﻿using FoodTruck.Models;
+using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace FoodTruck.DAL
                 db.Commande.Add(commande);
                 db.SaveChanges();
                 int idCommande = (from cmd in db.Commande
-                                  where cmd.UtilisateurId == commande.UtilisateurId
+                                  where cmd.ClientId == commande.ClientId
                                   orderby cmd.Id descending
                                   select cmd.Id).FirstOrDefault();
 
@@ -67,8 +68,8 @@ namespace FoodTruck.DAL
                 {
                     commande.Annulation = annule;
                     commande.Retrait = retrait;
-                    Utilisateur utilisateur = (from u in db.Utilisateur
-                                               where u.Id == commande.UtilisateurId
+                    Client utilisateur = (from u in db.Client
+                                               where u.Id == commande.ClientId
                                                select u).FirstOrDefault();
                     if (commande.Retrait)
                         utilisateur.Cagnotte += (int)commande.PrixTotal / 10;
@@ -112,7 +113,7 @@ namespace FoodTruck.DAL
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where cmd.UtilisateurId == id
+                                            where cmd.ClientId == id
                                             orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
                                             select cmd).ToList();
                 return commandes;
@@ -148,14 +149,14 @@ namespace FoodTruck.DAL
             {
                 DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
-                                            where cmd.UtilisateurId == id && !cmd.Annulation && !cmd.Retrait && DbFunctions.DiffHours(now, cmd.DateRetrait) > -1
+                                            where cmd.ClientId == id && !cmd.Annulation && !cmd.Retrait && DbFunctions.DiffHours(now, cmd.DateRetrait) > -1
                                             orderby Math.Abs((int)DbFunctions.DiffMinutes(now, cmd.DateRetrait))
                                             select cmd).ToList();
                 return commandes;
             }
         }
 
-        internal List<Commande> CommandesToutes(string recherche = "", DateTime? dateDebut = null, DateTime? dateFin = null)
+        internal List<Commande> CommandesRecherche(string recherche = "", DateTime? dateDebut = null, DateTime? dateFin = null)
         {
             DateTime debut = dateDebut ?? DateTime.MinValue;
             DateTime fin = dateFin ?? DateTime.MaxValue;
@@ -166,7 +167,7 @@ namespace FoodTruck.DAL
             {
                 List<Commande> commandes =
                     (from cmd in db.Commande
-                     join u in db.Utilisateur on cmd.UtilisateurId equals u.Id
+                     join u in db.Client on cmd.ClientId equals u.Id
                      where DbFunctions.DiffDays(debut, cmd.DateRetrait) >= 0 && DbFunctions.DiffDays(cmd.DateRetrait, fin) >= 0 &&
                      (cmd.Id.ToString().Contains(recherche) || u.Nom.Contains(recherche) || u.Prenom.Contains(recherche) || u.Email.Contains(recherche))
                      orderby cmd.Id descending

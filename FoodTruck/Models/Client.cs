@@ -12,15 +12,15 @@ namespace FoodTruck
     using System;
     using System.Collections.Generic;
     
-    public partial class Utilisateur
+    public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Utilisateur()
+        public Client()
         {
             this.Commande = new HashSet<Commande>();
+            this.OubliMotDePasse = new HashSet<OubliMotDePasse>();
             this.Panier = new HashSet<Panier>();
             this.Visite = new HashSet<Visite>();
-            this.OubliMotDePasse = new HashSet<OubliMotDePasse>();
         }
     
         public int Id { get; set; }
@@ -39,10 +39,10 @@ namespace FoodTruck
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande> Commande { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OubliMotDePasse> OubliMotDePasse { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Panier> Panier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Visite> Visite { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OubliMotDePasse> OubliMotDePasse { get; set; }
     }
 }
