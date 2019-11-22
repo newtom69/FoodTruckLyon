@@ -161,7 +161,7 @@ namespace FoodTruck.Controllers
                     int clientId = commande.ClientId;
                     if (clientId != 0)
                     {
-                        Client utilisateur = new UtilisateurDAL().Details(clientId);
+                        Client utilisateur = new ClientDAL().Details(clientId);
                         string objetMail = $"Problème commande {commandeId} : Fermeture de votre foodtruck";
                         string corpsMessage = $"Bonjour {utilisateur.Prenom}\n\n" +
                             $"Vous avez passé la commande numéro {commandeId} pour le {commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")} et nous vous en remercions.\n\n" +

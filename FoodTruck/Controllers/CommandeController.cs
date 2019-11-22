@@ -30,7 +30,7 @@ namespace FoodTruck.Controllers
 
                 if (montantRemiseFidelite != 0 && Client.Id != 0)
                 {
-                    int soldeCagnotte = new UtilisateurDAL().RetirerCagnotte(Client.Id, montantRemiseFidelite);
+                    int soldeCagnotte = new ClientDAL().RetirerCagnotte(Client.Id, montantRemiseFidelite);
                     if (soldeCagnotte == -1)
                         montantRemiseFidelite = 0;
                 }

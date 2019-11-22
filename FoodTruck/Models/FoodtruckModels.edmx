@@ -37,6 +37,7 @@
           <Property Name="AdminUtilisateur" Type="bit" Nullable="false" />
           <Property Name="AdminArticle" Type="bit" Nullable="false" />
           <Property Name="AdminPlanning" Type="bit" Nullable="false" />
+          <Property Name="Inscription" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="CodePromo">
           <Key>
@@ -224,18 +225,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Panier_Utilisateur">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="Panier" Type="Self.Panier" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Panier">
-              <PropertyRef Name="ClientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PanierProspect_Article">
           <End Role="Article" Type="Self.Article" Multiplicity="1" />
           <End Role="PanierProspect" Type="Self.PanierProspect" Multiplicity="*" />
@@ -296,10 +285,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Panier_Article" Association="Self.FK_Panier_Article">
             <End Role="Article" EntitySet="Article" />
-            <End Role="Panier" EntitySet="Panier" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Panier_Utilisateur" Association="Self.FK_Panier_Utilisateur">
-            <End Role="Client" EntitySet="Client" />
             <End Role="Panier" EntitySet="Panier" />
           </AssociationSet>
           <AssociationSet Name="FK_PanierProspect_Article" Association="Self.FK_PanierProspect_Article">
@@ -406,6 +391,7 @@
           <NavigationProperty Name="OubliMotDePasse" Relationship="omasvui147994fr33943_foodtruckModel.FK_OubliMotDePasse_Utilisateur" FromRole="Client" ToRole="OubliMotDePasse" />
           <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Panier_Utilisateur" FromRole="Client" ToRole="Panier" />
           <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Client" ToRole="Visite" />
+          <Property Name="Inscription" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="CodePromo">
           <Key>
@@ -665,6 +651,7 @@
           <EntitySetMapping Name="Client">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Inscription" ColumnName="Inscription" />
                 <ScalarProperty Name="AdminPlanning" ColumnName="AdminPlanning" />
                 <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
                 <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />

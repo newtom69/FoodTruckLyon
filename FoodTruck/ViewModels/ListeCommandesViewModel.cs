@@ -12,7 +12,7 @@ namespace FoodTruck.ViewModels
             Commandes = new List<CommandeViewModel>();
             foreach (Commande commande in commandes)
             {
-                Client utilisateur = new UtilisateurDAL().Details(commande.ClientId);
+                Client utilisateur = new ClientDAL().Details(commande.ClientId);
                 CommandeViewModel commandeVM = new CommandeViewModel()
                 {
                     Commande = commande,

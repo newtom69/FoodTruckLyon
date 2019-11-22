@@ -7,39 +7,39 @@ using System.Text;
 
 namespace FoodTruck.DAL
 {
-    class UtilisateurDAL
+    class ClientDAL
     {
         public Client Details(int id)
         {
-            Client utilisateur;
+            Client client;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from u in db.Client
-                               where u.Id == id
-                               select u).FirstOrDefault();
+                client = (from c in db.Client
+                               where c.Id == id
+                               select c).FirstOrDefault();
             }
-            return utilisateur;
+            return client;
         }
 
         public Client Details(string email)
         {
-            Client utilisateur;
+            Client client;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from u in db.Client
-                               where u.Email == email
-                               select u).FirstOrDefault();
+                client = (from c in db.Client
+                               where c.Email == email
+                               select c).FirstOrDefault();
             }
-            return utilisateur;
+            return client;
         }
 
         public List<Client> Recherche(string recherche)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                List<Client> utilisateurs = (from u in db.Client
-                                                  where u.Id != 0 && (u.Nom.Contains(recherche) || u.Prenom.Contains(recherche) || u.Email.Contains(recherche) || u.Telephone.Contains(recherche))
-                                                  select u).ToList();
+                List<Client> utilisateurs = (from c in db.Client
+                                                  where c.Id != 0 && (c.Nom.Contains(recherche) || c.Prenom.Contains(recherche) || c.Email.Contains(recherche) || c.Telephone.Contains(recherche))
+                                                  select c).ToList();
                 return utilisateurs;
             }
         }
@@ -47,29 +47,29 @@ namespace FoodTruck.DAL
         public Client Connexion(string email, string mdp)
         {
             string mdpHash = mdp.GetHash();
-            Client utilisateur = new Client();
+            Client client = new Client();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from user in db.Client
+                client = (from user in db.Client
                                where user.Email == email && user.Mdp == mdpHash
                                select user).FirstOrDefault();
             }
-            return utilisateur;
+            return client;
         }
         public Client ConnexionCookies(string guid)
         {
-            Client utilisateur = new Client();
+            Client client = new Client();
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                utilisateur = (from user in db.Client
+                client = (from user in db.Client
                                where user.Guid == guid
                                select user).FirstOrDefault();
             }
-            return utilisateur;
+            return client;
         }
 
         /// <summary>
-        /// Si le solde est suffisant, retire "montant" euros de la cagnotte à l'utilisateur d'id "id" et retourne le solde restant
+        /// Si le solde est suffisant, retire "montant" euros de la cagnotte à l'client d'id "id" et retourne le solde restant
         /// Si le solde de la cagnotte est insuffisant retourne -1 sans rien modifier
         /// </summary>
         /// <param name="id"></param>
@@ -79,14 +79,14 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                var utilisateur = (from user in db.Client
+                var client = (from user in db.Client
                                    where user.Id == id
                                    select user).FirstOrDefault();
-                if (montant <= utilisateur.Cagnotte)
+                if (montant <= client.Cagnotte)
                 {
-                    utilisateur.Cagnotte -= montant;
+                    client.Cagnotte -= montant;
                     db.SaveChanges();
-                    return utilisateur.Cagnotte;
+                    return client.Cagnotte;
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace FoodTruck.DAL
                           select user.Id).FirstOrDefault();
                 if (id == 0)
                 {
-                    Client utilisateur = new Client
+                    Client client = new Client
                     {
                         Guid = guid,
                         Email = email,
@@ -114,9 +114,10 @@ namespace FoodTruck.DAL
                         Nom = nom,
                         Prenom = prenom,
                         Telephone = telephone,
-                        Cagnotte = 0
+                        Cagnotte = 0,
+                        Inscription = DateTime.Today
                     };
-                    db.Client.Add(utilisateur);
+                    db.Client.Add(client);
                     db.SaveChanges();
                     return Connexion(email, mdp);
                 }
@@ -131,19 +132,19 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Client utilisateur = (from user in db.Client
+                Client client = (from user in db.Client
                                            where user.Id == id
                                            select user).FirstOrDefault();
 
-                utilisateur.Mdp = mdp.GetHash();
+                client.Mdp = mdp.GetHash();
                 if (email != null)
-                    utilisateur.Email = email;
+                    client.Email = email;
                 if (nom != null)
-                    utilisateur.Nom = nom;
+                    client.Nom = nom;
                 if (prenom != null)
-                    utilisateur.Prenom = prenom;
+                    client.Prenom = prenom;
                 if (telephone != null)
-                    utilisateur.Telephone = telephone;
+                    client.Telephone = telephone;
                 return db.SaveChanges();
             }
         }
@@ -152,11 +153,11 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Client utilisateur = (from user in db.Client
+                Client client = (from user in db.Client
                                            where user.Id == id
                                            select user).FirstOrDefault();
 
-                utilisateur.AdminArticle = utilisateur.AdminCommande = utilisateur.AdminPlanning = true;
+                client.AdminArticle = client.AdminCommande = client.AdminPlanning = true;
                 return db.SaveChanges();
             }
         }

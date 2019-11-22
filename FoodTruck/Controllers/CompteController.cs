@@ -42,7 +42,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Profil(string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
         {
-            UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            ClientDAL utilisateurDAL = new ClientDAL();
             Client utilisateur = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
             if (utilisateur == null)
             {
@@ -168,7 +168,7 @@ namespace FoodTruck.Controllers
         [HttpPost]
         public ActionResult Connexion(string email, string mdp, bool connexionAuto)
         {
-            Client = new UtilisateurDAL().Connexion(email, mdp);
+            Client = new ClientDAL().Connexion(email, mdp);
             if (Client != null)
             {
                 ViewBag.Client = Client;
@@ -178,7 +178,7 @@ namespace FoodTruck.Controllers
 
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                string message = $"Bienvenue {Client.Prenom} {Client.Nom}\nVous avez {Client.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Client.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
+                string message = $"Bienvenue {Client.Prenom} {Client.Nom}\nVous avez {Client.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription du {Client.Inscription.ToString("dd MMMM yyyy")}, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Client.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
                 TempData["message"] = new Message(message, TypeMessage.Ok);
                 int index = ((List<string>)Session["Url"]).Count - 1;
                 return RedirectPermanent(((List<string>)Session["Url"])[index]);
@@ -222,7 +222,7 @@ namespace FoodTruck.Controllers
             {
                 if (VerifMdp(mdp, mdp2))
                 {
-                    utilisateur = new UtilisateurDAL().Creation(email, mdp, nom, prenom, telephone);
+                    utilisateur = new ClientDAL().Creation(email, mdp, nom, prenom, telephone);
                 }
                 else
                 {
@@ -251,7 +251,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult OubliMotDePasse(string codeVerification)
         {
-            UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            ClientDAL utilisateurDAL = new ClientDAL();
             int utilisateurId = new OubliMotDePasseDAL().Verifier(codeVerification);
             if (utilisateurId != 0)
             {
@@ -277,7 +277,7 @@ namespace FoodTruck.Controllers
                 int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienReinitialisationMotDePasse"]);
                 string codeVerification = Guid.NewGuid().ToString("n") + email.GetHash();
                 string url = HttpContext.Request.Url.ToString() + '/' + codeVerification;
-                Client utilisateur = new UtilisateurDAL().Details(email);
+                Client utilisateur = new ClientDAL().Details(email);
                 if (utilisateur != null)
                 {
                     new OubliMotDePasseDAL().Ajouter(utilisateur.Id, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
@@ -304,7 +304,7 @@ namespace FoodTruck.Controllers
             {
                 if (VerifMdp(mdp, mdp2))
                 {
-                    UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+                    ClientDAL utilisateurDAL = new ClientDAL();
                     if (utilisateurDAL.Modification(Client.Id, mdp) == 1)
                     {
                         TempData["message"] = new Message("La modification de votre mot de passe a bien été prise en compte", TypeMessage.Ok);
@@ -329,7 +329,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult ObtenirDroitsAdmin(string codeVerification)
         {
-            UtilisateurDAL utilisateurDAL = new UtilisateurDAL();
+            ClientDAL utilisateurDAL = new ClientDAL();
             CreerAdmin creerAdmin = new CreerAdminDAL().Verifier(codeVerification);
             if (creerAdmin != null)
             {

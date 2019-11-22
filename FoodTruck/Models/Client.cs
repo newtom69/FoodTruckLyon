@@ -35,6 +35,7 @@ namespace FoodTruck
         public bool AdminUtilisateur { get; set; }
         public bool AdminArticle { get; set; }
         public bool AdminPlanning { get; set; }
+        public System.DateTime Inscription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande> Commande { get; set; }

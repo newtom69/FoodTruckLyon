@@ -31,7 +31,7 @@ namespace FoodTruck.Controllers
             if (Session["ClientId"] == null || (int)Session["ClientId"] == 0)
             {
                 HttpCookie cookie = Request.Cookies.Get("GuidClient");
-                if (cookie != null && (Client = new UtilisateurDAL().ConnexionCookies(cookie.Value)) != null)
+                if (cookie != null && (Client = new ClientDAL().ConnexionCookies(cookie.Value)) != null)
                 {
                     ViewBag.Client = Client;
                     Session["ClientId"] = Client.Id;
@@ -46,7 +46,7 @@ namespace FoodTruck.Controllers
                 }
             }
             else
-                ViewBag.Client = Client = new UtilisateurDAL().Details((int)Session["ClientId"]);
+                ViewBag.Client = Client = new ClientDAL().Details((int)Session["ClientId"]);
             
             new PanierDAL(Client.Id).SupprimerArticlesPasDansCarte();
             VisiteDAL.Enregistrer(Client.Id);

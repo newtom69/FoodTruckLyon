@@ -1,8 +1,4 @@
-﻿@using FoodTruck.ViewModels
-@using FoodTruck.Outils
-@using System.Configuration
-@using System.Globalization
-@{
+﻿@{
     ViewBag.Title = "Recherche de clients";
 }
 @model List<Client>
@@ -24,13 +20,14 @@
         }
         <hr />
     </div>
-    foreach (Client u in Model)
+    foreach (Client c in Model)
     {
         <div id="panierEnLigne">
             <div class="gestionCommandeArticle">
-                <div>Client @u.Id : @u.Prenom @u.Nom</div>
-                <div> Mail : @u.Email - Téléphone : @u.Telephone</div>
-                <div>Cagnotte : @u.Cagnotte</div>
+                <div>Client @c.Id : @c.Prenom @c.Nom</div>
+                <div>Inscription : @c.Inscription.ToString("dd/MM/yyyy")</div>
+                <div> Mail : @c.Email - Téléphone : @c.Telephone</div>
+                <div>Cagnotte : @c.Cagnotte</div>
                 <hr />
             </div>
         </div>

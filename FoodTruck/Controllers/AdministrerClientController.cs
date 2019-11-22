@@ -32,7 +32,7 @@ namespace FoodTruck.Controllers
                 List<Client>[] tabUtilisateurs = new List<Client>[tabRecherche.Length];
 
                 for (int i = 0; i < tabRecherche.Length; i++)
-                    tabUtilisateurs[i] = new UtilisateurDAL().Recherche(tabRecherche[i]);
+                    tabUtilisateurs[i] = new ClientDAL().Recherche(tabRecherche[i]);
 
                 List<Client> utilisateurs = tabUtilisateurs[0];
                 for (int i = 1; i < tabUtilisateurs.Length; i++)

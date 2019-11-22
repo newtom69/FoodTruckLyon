@@ -169,7 +169,7 @@
     <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
-    <Compile Include="DAL\UtilisateurDAL.cs" />
+    <Compile Include="DAL\ClientDAL.cs" />
     <Compile Include="DAL\OubliMotDePasseDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="Models\Article.cs">
