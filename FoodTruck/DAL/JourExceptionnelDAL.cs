@@ -252,7 +252,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal int Purger()
+        public int Purger()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

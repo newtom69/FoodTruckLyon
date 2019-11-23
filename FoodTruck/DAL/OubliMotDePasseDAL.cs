@@ -60,7 +60,7 @@ namespace FoodTruck.DAL
                 return 0;
             }
         }
-        internal int Purger()
+        public int Purger()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

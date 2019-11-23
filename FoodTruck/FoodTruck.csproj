@@ -144,7 +144,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AdministrerBddController.cs" />
+    <Compile Include="Controllers\AdministrerDonneeController.cs" />
     <Compile Include="Controllers\AdministrerController.cs" />
     <Compile Include="Controllers\AdministrerArticleController.cs" />
     <Compile Include="Controllers\AdministrerClientController.cs" />
@@ -165,6 +165,7 @@
     <Compile Include="DAL\ConcurrencyException.cs" />
     <Compile Include="DAL\DatabaseAccessException.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
+    <Compile Include="DAL\ImageDAL.cs" />
     <Compile Include="DAL\JourExceptionnelDAL.cs" />
     <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
@@ -376,7 +377,7 @@
     <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
     <Content Include="Views\AdministrerCommande\Futures.cshtml" />
     <Content Include="Views\AdministrerCommande\PendantFermetures.cshtml" />
-    <Content Include="Views\AdministrerBdd\PurgerBdd.cshtml" />
+    <Content Include="Views\AdministrerDonnee\Purger.cshtml" />
     <Content Include="Views\AdministrerClient\Recherche.cshtml" />
     <Content Include="Views\Compte\OubliMotDePasse.cshtml" />
     <Content Include="Views\AdministrerClient\DonnerDroitsAdmin.cshtml" />
