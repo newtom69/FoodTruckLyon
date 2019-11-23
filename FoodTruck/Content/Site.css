@@ -917,3 +917,18 @@ select.ccformfield option.red {
     .popup_content p {
         text-align: center;
     }
+
+@supports (-ms-ime-align:auto) {
+    section.bestsellers {
+        justify-content: space-between;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .bandeauClient {
+        justify-content: space-between;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
