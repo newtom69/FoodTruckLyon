@@ -177,6 +177,7 @@
     <Compile Include="DAL\PanierProspectDAL.cs" />
     <Compile Include="DAL\ClientDAL.cs" />
     <Compile Include="DAL\OubliMotDePasseDAL.cs" />
+    <Compile Include="DAL\TvaDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="Models\Article.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
@@ -230,6 +231,9 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PanierProspect.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tva.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Visite.cs">

@@ -114,7 +114,7 @@ namespace FoodTruck.Controllers
                 //int commandesPossiblesRestantes = maxCommandesCreneau - new CommandeDAL().NombreCommandes(dateRetrait);
                 #endregion
                 int montantRemiseFidelite = remiseFidelite ?? 0;
-                new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotal, out double montantRemiseCommerciale);
+                new CodePromoDAL().Validite(codePromo, PanierViewModel.PrixTotalTTC, out double montantRemiseCommerciale);
 
                 if (montantRemiseFidelite != 0 && Client.Id != 0)
                 {
@@ -127,23 +127,23 @@ namespace FoodTruck.Controllers
                     ClientId = Client.Id,
                     DateCommande = DateTime.Now,
                     DateRetrait = dateRetrait,
-                    PrixTotal = 0,
+                    PrixTotalTTC = 0,
                     RemiseFidelite = montantRemiseFidelite,
                     RemiseCommerciale = montantRemiseCommerciale
                 };
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
-                    commande.PrixTotal = Math.Round(commande.PrixTotal + article.Article.Prix * article.Quantite, 2);
+                    commande.PrixTotalTTC = Math.Round(commande.PrixTotalTTC + article.Article.Prix * article.Quantite, 2);
                     new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
                 }
-                if (commande.PrixTotal > montantRemiseFidelite + montantRemiseCommerciale)
+                if (commande.PrixTotalTTC > montantRemiseFidelite + montantRemiseCommerciale)
                 {
-                    commande.PrixTotal = Math.Round(commande.PrixTotal - montantRemiseFidelite - montantRemiseCommerciale, 2);
+                    commande.PrixTotalTTC = Math.Round(commande.PrixTotalTTC - montantRemiseFidelite - montantRemiseCommerciale, 2);
                 }
                 else
                 {
-                    commande.RemiseCommerciale = Math.Round(commande.PrixTotal - montantRemiseFidelite, 2);
-                    commande.PrixTotal = 0;
+                    commande.RemiseCommerciale = Math.Round(commande.PrixTotalTTC - montantRemiseFidelite, 2);
+                    commande.PrixTotalTTC = 0;
                 }
 
                 new CommandeDAL().Ajouter(commande, PanierViewModel.ArticlesDetailsViewModel);
@@ -185,7 +185,7 @@ namespace FoodTruck.Controllers
                 $"Prénom : {prenomClient}\n" +
                 $"Email : {emailClient}\n\n" +
                 $"Articles :{lesArticlesDansLeMail}\n" +
-                $"Total de la commande : {commande.PrixTotal.ToString("C2", cultureinfoFr)}\n";
+                $"Total de la commande : {commande.PrixTotalTTC.ToString("C2", cultureinfoFr)}\n";
             if (commande.RemiseFidelite > 0)
                 corpsDuMailEnCommunClientFoodtruck += $"\nRemise fidélité : {commande.RemiseFidelite.ToString("C2", cultureinfoFr)}";
             if (commande.RemiseCommerciale > 0)

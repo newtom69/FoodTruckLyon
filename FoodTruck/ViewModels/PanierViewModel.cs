@@ -8,7 +8,7 @@ namespace FoodTruck.ViewModels
     public class PanierViewModel
     {
         public List<ArticleViewModel> ArticlesDetailsViewModel { get; set; }
-        public double PrixTotal { get; set; }
+        public double PrixTotalTTC { get; set; }
         public List<Creneau> Creneaux { get; set; }
 
         internal PanierViewModel()
@@ -21,7 +21,7 @@ namespace FoodTruck.ViewModels
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
             foreach (Panier panier in panierUtilisateur)
             {
-                PrixTotal += panier.PrixTotal;
+                PrixTotalTTC += panier.PrixTotal;
                 ArticlesDetailsViewModel.Add(new ArticleViewModel(new ArticleDAL().Details(panier.ArticleId), panier.Quantite));
             }
         }
@@ -31,7 +31,7 @@ namespace FoodTruck.ViewModels
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
             foreach (PanierProspect panier in panierProspect)
             {
-                PrixTotal += panier.PrixTotal;
+                PrixTotalTTC += panier.PrixTotal;
                 ArticlesDetailsViewModel.Add(new ArticleViewModel(new ArticleDAL().Details(panier.ArticleId), panier.Quantite));
             }
         }
@@ -40,7 +40,7 @@ namespace FoodTruck.ViewModels
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
             Creneaux = new List<Creneau>();
-            PrixTotal = 0;
+            PrixTotalTTC = 0;
         }
 
         internal void Trier()
@@ -67,13 +67,13 @@ namespace FoodTruck.ViewModels
                 else
                 {
                     artcl.Quantite += quantite;
-                    artcl.PrixTotal = Math.Round(artcl.PrixTotal + quantite * artcl.Article.Prix, 2);
+                    artcl.PrixTotalTTC = Math.Round(artcl.PrixTotalTTC + quantite * artcl.Article.Prix, 2);
                     if (sauvPanierClient)
                         new PanierDAL(utilisateurId).ModifierQuantite(article, quantite);
                     else
                         new PanierProspectDAL(prospectGuid).ModifierQuantite(article, quantite);
                 }
-                PrixTotal += quantite * article.Prix;
+                PrixTotalTTC += quantite * article.Prix;
             }
             return ajout;
         }

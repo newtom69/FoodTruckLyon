@@ -58,7 +58,8 @@
           <Property Name="ClientId" Type="int" Nullable="false" />
           <Property Name="DateCommande" Type="datetime" Nullable="false" />
           <Property Name="DateRetrait" Type="datetime" Nullable="false" />
-          <Property Name="PrixTotal" Type="float" Nullable="false" />
+          <Property Name="PrixTotalTTC" Type="float" Nullable="false" />
+          <Property Name="PrixTotalHT" Type="float" Nullable="false" />
           <Property Name="RemiseFidelite" Type="float" Nullable="false" />
           <Property Name="RemiseCommerciale" Type="float" Nullable="false" />
           <Property Name="Retrait" Type="bit" Nullable="false" />
@@ -72,7 +73,8 @@
           <Property Name="CommandeId" Type="int" Nullable="false" />
           <Property Name="ArticleId" Type="int" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
-          <Property Name="PrixTotal" Type="float" Nullable="false" />
+          <Property Name="PrixTotalTTC" Type="float" Nullable="false" />
+          <Property Name="PrixTotalHT" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="CreerAdmin">
           <Key>
@@ -99,6 +101,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nom" Type="char" MaxLength="25" Nullable="false" />
+          <Property Name="TvaId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="JourExceptionnel">
           <Key>
@@ -147,6 +150,14 @@
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="PrixTotal" Type="float" Nullable="false" />
           <Property Name="DateAjout" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tva">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Taux" Type="float" Nullable="false" />
+          <Property Name="Libelle" Type="char" MaxLength="20" />
         </EntityType>
         <EntityType Name="Visite">
           <Key>
@@ -221,6 +232,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FamilleArticle_Tva">
+          <End Role="Tva" Type="Self.Tva" Multiplicity="1" />
+          <End Role="FamilleArticle" Type="Self.FamilleArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tva">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FamilleArticle">
+              <PropertyRef Name="TvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OubliMotDePasse_Utilisateur">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="OubliMotDePasse" Type="Self.OubliMotDePasse" Multiplicity="*" />
@@ -283,6 +306,7 @@
           <EntitySet Name="OuvertureHebdomadaire" EntityType="Self.OuvertureHebdomadaire" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Panier" EntityType="Self.Panier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PanierProspect" EntityType="Self.PanierProspect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tva" EntityType="Self.Tva" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visite" EntityType="Self.Visite" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Article_FamilleArticle" Association="Self.FK_Article_FamilleArticle">
             <End Role="FamilleArticle" EntitySet="FamilleArticle" />
@@ -303,6 +327,10 @@
           <AssociationSet Name="FK_Facture_Commande" Association="Self.FK_Facture_Commande">
             <End Role="Commande" EntitySet="Commande" />
             <End Role="Facture" EntitySet="Facture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FamilleArticle_Tva" Association="Self.FK_FamilleArticle_Tva">
+            <End Role="Tva" EntitySet="Tva" />
+            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
           </AssociationSet>
           <AssociationSet Name="FK_OubliMotDePasse_Utilisateur" Association="Self.FK_OubliMotDePasse_Utilisateur">
             <End Role="Client" EntitySet="Client" />
@@ -380,6 +408,11 @@
             <End Role="Commande" EntitySet="Commande" />
             <End Role="Facture" EntitySet="Facture" />
           </AssociationSet>
+          <EntitySet Name="Tva" EntityType="omasvui147994fr33943_foodtruckModel.Tva" />
+          <AssociationSet Name="FK_FamilleArticle_Tva" Association="omasvui147994fr33943_foodtruckModel.FK_FamilleArticle_Tva">
+            <End Role="Tva" EntitySet="Tva" />
+            <End Role="FamilleArticle" EntitySet="FamilleArticle" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -442,7 +475,6 @@
           <Property Name="ClientId" Type="Int32" Nullable="false" />
           <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DateRetrait" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <Property Name="RemiseFidelite" Type="Double" Nullable="false" />
           <Property Name="RemiseCommerciale" Type="Double" Nullable="false" />
           <Property Name="Retrait" Type="Boolean" Nullable="false" />
@@ -450,6 +482,8 @@
           <NavigationProperty Name="Client" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Commande" ToRole="Client" />
           <NavigationProperty Name="Commande_Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Commande" FromRole="Commande" ToRole="Commande_Article" />
           <NavigationProperty Name="Facture" Relationship="omasvui147994fr33943_foodtruckModel.FK_Facture_Commande" FromRole="Commande" ToRole="Facture" />
+          <Property Name="PrixTotalHT" Type="Double" Nullable="false" />
+          <Property Name="PrixTotalTTC" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Commande_Article">
           <Key>
@@ -459,9 +493,10 @@
           <Property Name="CommandeId" Type="Int32" Nullable="false" />
           <Property Name="ArticleId" Type="Int32" Nullable="false" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
-          <Property Name="PrixTotal" Type="Double" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Article" FromRole="Commande_Article" ToRole="Article" />
           <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Article_Commande" FromRole="Commande_Article" ToRole="Commande" />
+          <Property Name="PrixTotalHT" Type="Double" Nullable="false" />
+          <Property Name="PrixTotalTTC" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="CreerAdmin">
           <Key>
@@ -481,6 +516,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nom" Type="String" Nullable="false" MaxLength="25" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Article" Relationship="omasvui147994fr33943_foodtruckModel.FK_Article_FamilleArticle" FromRole="FamilleArticle" ToRole="Article" />
+          <Property Name="TvaId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tva" Relationship="omasvui147994fr33943_foodtruckModel.FK_FamilleArticle_Tva" FromRole="FamilleArticle" ToRole="Tva" />
         </EntityType>
         <EntityType Name="JourExceptionnel">
           <Key>
@@ -677,6 +714,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Tva">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Taux" Type="Double" Nullable="false" />
+          <Property Name="Libelle" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="FamilleArticle" Relationship="omasvui147994fr33943_foodtruckModel.FK_FamilleArticle_Tva" FromRole="Tva" ToRole="FamilleArticle" />
+        </EntityType>
+        <Association Name="FK_FamilleArticle_Tva">
+          <End Type="omasvui147994fr33943_foodtruckModel.Tva" Role="Tva" Multiplicity="1" />
+          <End Type="omasvui147994fr33943_foodtruckModel.FamilleArticle" Role="FamilleArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tva">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FamilleArticle">
+              <PropertyRef Name="TvaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -734,11 +792,12 @@
           <EntitySetMapping Name="Commande">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Commande">
               <MappingFragment StoreEntitySet="Commande">
+                <ScalarProperty Name="PrixTotalTTC" ColumnName="PrixTotalTTC" />
+                <ScalarProperty Name="PrixTotalHT" ColumnName="PrixTotalHT" />
                 <ScalarProperty Name="Annulation" ColumnName="Annulation" />
                 <ScalarProperty Name="Retrait" ColumnName="Retrait" />
                 <ScalarProperty Name="RemiseCommerciale" ColumnName="RemiseCommerciale" />
                 <ScalarProperty Name="RemiseFidelite" ColumnName="RemiseFidelite" />
-                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
                 <ScalarProperty Name="DateRetrait" ColumnName="DateRetrait" />
                 <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
@@ -749,7 +808,8 @@
           <EntitySetMapping Name="Commande_Article">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Commande_Article">
               <MappingFragment StoreEntitySet="Commande_Article">
-                <ScalarProperty Name="PrixTotal" ColumnName="PrixTotal" />
+                <ScalarProperty Name="PrixTotalTTC" ColumnName="PrixTotalTTC" />
+                <ScalarProperty Name="PrixTotalHT" ColumnName="PrixTotalHT" />
                 <ScalarProperty Name="Quantite" ColumnName="Quantite" />
                 <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
                 <ScalarProperty Name="CommandeId" ColumnName="CommandeId" />
@@ -771,6 +831,7 @@
           <EntitySetMapping Name="FamilleArticle">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.FamilleArticle">
               <MappingFragment StoreEntitySet="FamilleArticle">
+                <ScalarProperty Name="TvaId" ColumnName="TvaId" />
                 <ScalarProperty Name="Nom" ColumnName="Nom" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -847,6 +908,15 @@
               <MappingFragment StoreEntitySet="Facture">
                 <ScalarProperty Name="Guid" ColumnName="Guid" />
                 <ScalarProperty Name="CommandeId" ColumnName="CommandeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tva">
+            <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Tva">
+              <MappingFragment StoreEntitySet="Tva">
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+                <ScalarProperty Name="Taux" ColumnName="Taux" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

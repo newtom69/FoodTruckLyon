@@ -37,7 +37,7 @@
                     <div>Client : @c.Client.Prenom @c.Client.Nom</div>
                     <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
                     <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
                     <section class="imagesGestionCommande">
                         @foreach (var a in c.ListArticlesVM)
                         {

@@ -25,11 +25,12 @@ namespace FoodTruck
         public int ClientId { get; set; }
         public System.DateTime DateCommande { get; set; }
         public System.DateTime DateRetrait { get; set; }
-        public double PrixTotal { get; set; }
         public double RemiseFidelite { get; set; }
         public double RemiseCommerciale { get; set; }
         public bool Retrait { get; set; }
         public bool Annulation { get; set; }
+        public double PrixTotalHT { get; set; }
+        public double PrixTotalTTC { get; set; }
     
         public virtual Client Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

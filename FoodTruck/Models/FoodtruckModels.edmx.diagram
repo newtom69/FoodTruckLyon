@@ -29,6 +29,8 @@
         <AssociationConnector Association="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" />
         <EntityTypeShape EntityType="omasvui147994fr33943_foodtruckModel.Facture" Width="1.5" PointX="5.25" PointY="13" />
         <AssociationConnector Association="omasvui147994fr33943_foodtruckModel.FK_Facture_Commande" />
+        <EntityTypeShape EntityType="omasvui147994fr33943_foodtruckModel.Tva" Width="1.5" PointX="0.75" PointY="10.125" />
+        <AssociationConnector Association="omasvui147994fr33943_foodtruckModel.FK_FamilleArticle_Tva" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

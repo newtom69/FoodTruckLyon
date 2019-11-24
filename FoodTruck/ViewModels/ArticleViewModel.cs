@@ -7,7 +7,7 @@ namespace FoodTruck.ViewModels
     public class ArticleViewModel
     {
         public int Quantite { get; set; }
-        public double PrixTotal { get; set; }
+        public double PrixTotalTTC { get; set; }
         public string NomPourUrl { get; set; }
         public Article Article { get; set; }
 
@@ -16,7 +16,7 @@ namespace FoodTruck.ViewModels
             if (article != null)
             {
                 Quantite = quantite;
-                PrixTotal = Math.Round(quantite * article.Prix, 2);
+                PrixTotalTTC = Math.Round(quantite * article.Prix, 2);
                 Article = article;
                 NomPourUrl = Article.Nom.ToUrl();
             }

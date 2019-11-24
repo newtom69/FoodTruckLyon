@@ -12,20 +12,19 @@ namespace FoodTruck
     using System;
     using System.Collections.Generic;
     
-    public partial class FamilleArticle
+    public partial class Tva
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FamilleArticle()
+        public Tva()
         {
-            this.Article = new HashSet<Article>();
+            this.FamilleArticle = new HashSet<FamilleArticle>();
         }
     
         public int Id { get; set; }
-        public string Nom { get; set; }
-        public int TvaId { get; set; }
+        public double Taux { get; set; }
+        public string Libelle { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Article> Article { get; set; }
-        public virtual Tva Tva { get; set; }
+        public virtual ICollection<FamilleArticle> FamilleArticle { get; set; }
     }
 }

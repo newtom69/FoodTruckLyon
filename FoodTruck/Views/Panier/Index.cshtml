@@ -17,7 +17,7 @@
         if (remiseCommercialeMontant != 0)
         { afficheRemiseCommerciale = "- " + remiseCommercialeMontant.ToString("C2", new CultureInfo("fr-FR")); }
     }
-    double prixRemiseCommercialeDeduite = Model.PrixTotal - remiseCommercialeMontant;
+    double prixRemiseCommercialeDeduite = Model.PrixTotalTTC - remiseCommercialeMontant;
 }
 
 <script>
@@ -69,7 +69,7 @@
                     <input hidden name="nom" value="@articleDetailViewModel.Article.Nom">
                     <button class="ajoutSupprPanierTexte" type="submit">ajouter</button>
                 }
-                <p class="sousTotal">@articleDetailViewModel.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</p>
+                <p class="sousTotal">@articleDetailViewModel.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</p>
                 <hr />
                 i++;
             }
@@ -83,7 +83,7 @@
     else
     {
         <div id="panierValide2">
-            <div id="prixTotalAvantRemise" class="sousTotal">Total : @Model.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
+            <div id="prixTotalAvantRemise" class="sousTotal">Total : @Model.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
             <div class="listePanier">
                 @using (Html.BeginForm("Index", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
                 {
@@ -101,11 +101,11 @@
             <div id="panierValide2">
                 <input hidden id="codePromo" name="codePromo">
                 <div class="listePanier">
-                    @if (client.Cagnotte >= 10 && Model.PrixTotal >= 10)
+                    @if (client.Cagnotte >= 10 && Model.PrixTotalTTC >= 10)
                     {
                         <select id="remiseFidelite" class="ccformfield" name="remiseFidelite" size="1" onchange="MajMontantRemise(this.value, montantRemiseFidelite.id)">
                             <option selected value="0">cagnotte fidélité</option>
-                            @for (int iRemise = 10; iRemise <= (client.Cagnotte <= Model.PrixTotal ? client.Cagnotte : Model.PrixTotal); iRemise++)
+                            @for (int iRemise = 10; iRemise <= (client.Cagnotte <= Model.PrixTotalTTC ? client.Cagnotte : Model.PrixTotalTTC); iRemise++)
                             {
                                 <option value="@iRemise">cagnotte fidélité de @iRemise €</option>
                             }
@@ -115,9 +115,9 @@
                     <input hidden id="prixRemiseCommercialeDeduite" value="@prixRemiseCommercialeDeduite">
                 </div>
             </div>
-            if (client.Cagnotte >= 10 && Model.PrixTotal < 10)
+            if (client.Cagnotte >= 10 && Model.PrixTotalTTC < 10)
             {
-                string reste = (10 - @Model.PrixTotal).ToString("C2", new CultureInfo("fr-FR"));
+                string reste = (10 - @Model.PrixTotalTTC).ToString("C2", new CultureInfo("fr-FR"));
                 <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser votre cagnotte fidélité</div>
             }
             <div id="panierValide">

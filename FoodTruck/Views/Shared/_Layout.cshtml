@@ -79,7 +79,7 @@
             }
         </div>
 
-        @if (panier != null && panier.PrixTotal != 0 && ViewBag.PanierLatteralDesactive == null)
+        @if (panier != null && panier.PrixTotalTTC != 0 && ViewBag.PanierLatteralDesactive == null)
         {
             <div id="lateral">
                 <div id="lateralEnTete"></div>
@@ -113,7 +113,7 @@
                         }
                     </div>
                     <hr />
-                    <div class="total">Total : @panier.PrixTotal.ToString("F2") &nbsp;&euro;</div>
+                    <div class="total">Total : @panier.PrixTotalTTC.ToString("F2") &nbsp;&euro;</div>
                     <a class="validerPanier" href="/Panier">Valider votre panier</a>
                 </div>
             </div>

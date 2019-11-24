@@ -31,20 +31,30 @@ namespace FoodTruck.DAL
                                   where cmd.ClientId == commande.ClientId
                                   orderby cmd.Id descending
                                   select cmd.Id).FirstOrDefault();
-
+                double remiseTotalCommandeHT = 0;
+                double totalCommandeHT = 0;
                 foreach (var article in articles)
                 {
+                    float tauxTva = new TvaDAL().TauxArticle(article.Article.Id);
                     int quantite = article.Quantite;
-                    double prixTotal = Math.Round(article.Article.Prix * quantite, 2);
+                    double prixTotalTTC = article.Article.Prix * quantite;
+                    double prixTotalHT = prixTotalTTC * 100 / (100 + tauxTva);
+                    double fractionPrixArticle = prixTotalTTC / (commande.PrixTotalTTC + commande.RemiseCommerciale + commande.RemiseFidelite);
+                    double remiseArticleTTC = fractionPrixArticle * (commande.RemiseCommerciale + commande.RemiseFidelite);
+                    double remiseArticleHT = remiseArticleTTC * prixTotalHT / prixTotalTTC;
+                    remiseTotalCommandeHT += remiseArticleHT;
+                    totalCommandeHT += prixTotalHT;
                     Commande_Article cmdArt = new Commande_Article
                     {
                         CommandeId = idCommande,
                         ArticleId = article.Article.Id,
                         Quantite = quantite,
-                        PrixTotal = prixTotal
+                        PrixTotalTTC = Math.Round(prixTotalTTC, 2),
+                        PrixTotalHT = Math.Round(prixTotalHT, 2)
                     };
                     db.Commande_Article.Add(cmdArt);
                 }
+                commande.PrixTotalHT = Math.Round(totalCommandeHT - remiseTotalCommandeHT, 2);
                 db.SaveChanges();
             }
         }
@@ -69,10 +79,10 @@ namespace FoodTruck.DAL
                     commande.Annulation = annule;
                     commande.Retrait = retrait;
                     Client client = (from u in db.Client
-                                               where u.Id == commande.ClientId
-                                               select u).FirstOrDefault();
+                                     where u.Id == commande.ClientId
+                                     select u).FirstOrDefault();
                     if (commande.Retrait)
-                        client.Cagnotte += (int)commande.PrixTotal / 10;
+                        client.Cagnotte += (int)commande.PrixTotalTTC / 10;
                     if (commande.Annulation)
                         client.Cagnotte += (int)commande.RemiseFidelite;
                     db.SaveChanges();
@@ -106,7 +116,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal List<Commande> CommandesUtilisateur(int id, int max=int.MaxValue)
+        internal List<Commande> CommandesUtilisateur(int id, int max = int.MaxValue)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
