@@ -1,10 +1,9 @@
 ﻿@using System.Globalization
 @using FoodTruck.DAL
 @using FoodTruck.ViewModels
-@using FoodTruck.Models
 @using System.Configuration
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
-@model ArticleIndexViewModel
+@model List<ArticleViewModel>
 @{
     ViewBag.Title = "FoodTruckLyon - Notre carte";
     List<FamilleArticle> familles = new ArticleDAL().FamillesArticle();
@@ -13,19 +12,19 @@
     int i = 0;
 }
 <div class="principalQuandPanierLateralPresent">
-    @while (i < Model.Articles.Count)
+    @while (i < Model.Count)
     {
         <hr />
         <div><h2 class="familleNotreCarte">@familles[indexId].Nom</h2></div>
         List<ArticleViewModel> articles = new List<ArticleViewModel>();
-        while (i < Model.Articles.Count && Model.Articles[i].Article.FamilleId == familleId)
+        while (i < Model.Count && Model[i].Article.FamilleId == familleId)
         {
-            articles.Add(Model.Articles[i]);
+            articles.Add(Model[i]);
             i++;
         }
-        if (i != Model.Articles.Count)
+        if (i != Model.Count)
         {
-            familleId = Model.Articles[i].Article.FamilleId;
+            familleId = Model[i].Article.FamilleId;
             indexId = familles.FindIndex(f => f.Id == familleId);
         }
         <section class="notreCarte">

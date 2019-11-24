@@ -45,7 +45,6 @@ namespace FoodTruck.ViewModels
         }
     }
 
-
     public enum TypeMessage
     {
         Ok,

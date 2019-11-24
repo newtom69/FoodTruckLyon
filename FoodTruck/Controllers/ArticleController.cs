@@ -1,6 +1,7 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace FoodTruck.Controllers
@@ -10,10 +11,23 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            List<ArticleViewModel> articlesVM = new List<ArticleViewModel>();
             if (AdminArticle)
-                return View(new ArticleIndexViewModel(false));
+            {
+                foreach (Article article in new ArticleDAL().Articles(false))
+                {
+                    articlesVM.Add(new ArticleViewModel(article));
+                }
+                return View(articlesVM);
+            }
             else
-                return View(new ArticleIndexViewModel(true));
+            {
+                foreach (Article article in new ArticleDAL().Articles(true))
+                {
+                    articlesVM.Add(new ArticleViewModel(article));
+                }
+                return View(articlesVM);
+            }
         }
 
         [HttpGet]
