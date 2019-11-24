@@ -22,7 +22,7 @@ namespace FoodTruck.Controllers
                 {
                     TempData["message"] = new Message("Vous n'avez aucune commande en cours", TypeMessage.Info);
                 }
-                return View(new ListeCommandesViewModel(commandes, Request.Url));
+                return View(new ListeCommandesViewModel(commandes));
 
             }
             else
@@ -56,7 +56,7 @@ namespace FoodTruck.Controllers
                 {
                     TempData["message"] = new Message("Vous n'avez aucune commande à statuer", TypeMessage.Info);
                 }
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer(), Request.Url));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer()));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -86,7 +86,7 @@ namespace FoodTruck.Controllers
             {
                 ViewBag.DateDebut = DateTime.Today;
                 ViewBag.DateFin = DateTime.Today;
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesRecherche("", DateTime.Today, DateTime.Today.AddDays(3)), Request.Url));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesRecherche("", DateTime.Today, DateTime.Today.AddDays(3))));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -112,7 +112,7 @@ namespace FoodTruck.Controllers
                     commandes = commandes.Intersect(tabCommandes[i], new CommandeEqualityComparer()).ToList();
                 if (commandes.Count == 0)
                     TempData["message"] = new Message("Aucune commande ne correspond à votre recherche.\nVeuillez élargir vos critères de recherche", TypeMessage.Avertissement);
-                return View(new ListeCommandesViewModel(commandes, Request.Url));
+                return View(new ListeCommandesViewModel(commandes));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -122,7 +122,7 @@ namespace FoodTruck.Controllers
         public ActionResult Futures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesFutures(), Request.Url));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesFutures()));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -140,7 +140,7 @@ namespace FoodTruck.Controllers
                     else
                         TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermetures.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
                 }
-                    return View(new ListeCommandesViewModel(commandes, Request.Url));
+                    return View(new ListeCommandesViewModel(commandes));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);

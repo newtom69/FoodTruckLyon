@@ -34,10 +34,10 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandesEnCours = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
-            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandesEnCours, Request.Url);
+            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandesEnCours);
             const int nombreDernieresCommandes = 3;
             List<Commande> dernieresCommandes = commandeDAL.CommandesUtilisateur(Client.Id, nombreDernieresCommandes);
-            ViewBag.ListeDernieresCommandes = new ListeCommandesViewModel(dernieresCommandes, Request.Url);
+            ViewBag.ListeDernieresCommandes = new ListeCommandesViewModel(dernieresCommandes);
             ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
             return View(Client);
         }
@@ -80,7 +80,7 @@ namespace FoodTruck.Controllers
             }
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
-            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes, Request.Url);
+            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
             ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
             return View(Client);
         }
@@ -91,7 +91,7 @@ namespace FoodTruck.Controllers
             if (Client.Id != 0)
             {
                 List<Commande> commandes = new CommandeDAL().CommandesUtilisateur(Client.Id);
-                ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes, Request.Url);
+                ListeCommandesViewModel listeCommandesViewModel = new ListeCommandesViewModel(commandes);
                 return View(listeCommandesViewModel);
             }
             else
@@ -320,7 +320,7 @@ namespace FoodTruck.Controllers
 
                 CommandeDAL commandeDAL = new CommandeDAL();
                 List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
-                ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes, Request.Url);
+                ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes);
                 ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
                 return RedirectToAction("Connexion", "Compte");
             }

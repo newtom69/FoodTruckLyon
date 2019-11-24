@@ -8,13 +8,13 @@ namespace FoodTruck.ViewModels
     {
         public List<CommandeViewModel> Commandes { get; private set; }
 
-        public ListeCommandesViewModel(List<Commande> commandes, Uri uri)
+        public ListeCommandesViewModel(List<Commande> commandes)
         {
             Commandes = new List<CommandeViewModel>();
             foreach (Commande commande in commandes)
             {
                 Client client = new ClientDAL().Details(commande.ClientId);
-                CommandeViewModel commandeVM = new CommandeViewModel(commande, client, uri);
+                CommandeViewModel commandeVM = new CommandeViewModel(commande, client);
                 Commandes.Add(commandeVM);
             }
         }

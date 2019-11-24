@@ -37,7 +37,7 @@ namespace FoodTruck.Controllers
                     break;
             }
             if (commandes != null && commandes.Count != 0)
-                return PartialView(new ListeCommandesViewModel(commandes, Request.Url));
+                return PartialView(new ListeCommandesViewModel(commandes));
             else
                 return null;
         }
