@@ -58,7 +58,7 @@
                 }
                 <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
                 <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-                <div class="imagesGestionCommande">
+                <section class="imagesGestionCommande">
                     @foreach (var a in c.ListArticlesVM)
                     {
                         string effet = "";
@@ -73,8 +73,8 @@
                             <p>@a.Quantite x @a.Article.Nom</p>
                         </div>
                     }
-                </div>
-                @using (Html.BeginForm("ReprendreArticlesCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                </section>
+                @using (Html.BeginForm("ReprendreArticles", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div>
                         <input name="viderPanier" type="checkbox" value="true">

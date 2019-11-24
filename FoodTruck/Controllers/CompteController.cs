@@ -2,7 +2,6 @@
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Net;
@@ -95,55 +94,6 @@ namespace FoodTruck.Controllers
             {
                 commandeDAL.Annuler(commandeId);
             }
-            return RedirectToAction("Commandes", "Compte");
-        }
-
-        [HttpPost]
-        public ActionResult ReprendreArticlesCommande(int commandeId, bool viderPanier)
-        {
-            CommandeDAL commandeDAL = new CommandeDAL();
-            Commande commande = commandeDAL.Detail(commandeId);
-            if (commande != null && commande.ClientId == Client.Id)
-            {
-                List<ArticleViewModel> articles = commandeDAL.Articles(commandeId);
-                if (viderPanier)
-                {
-                    new PanierDAL(Client.Id).Supprimer();
-                    PanierViewModel.Initialiser();
-                    ViewBag.Panier = null; //todo
-                }
-                List<Article> articlesKo = new List<Article>();
-                foreach (var a in articles)
-                {
-                    if (!PanierViewModel.Ajouter(a.Article, a.Quantite, Client.Id, ProspectGuid))
-                        articlesKo.Add(a.Article);
-                }
-                ViewBag.Panier = PanierViewModel;
-                TempData["ArticlesNonAjoutes"] = articlesKo;
-                if (articlesKo.Count > 0)
-                {
-                    string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
-                    string message = "Les articles suivants ne peuvent pas être repris car ils ne sont plus disponibles :" +
-                    "<div class=\"gestionCommandeArticle\">" +
-                    "<section class=\"imagesGestionCommande\">";
-                    foreach (Article article in articlesKo)
-                    {
-                        message += "<div class=\"indexArticle\">" +
-                        $"<img src=\"{dossierImagesArticles}/{article.Image}\" alt=\"{article.Nom}\" /> " +
-                        $"<p>{article.Nom}</p>" +
-                        $"</div>";
-                    }
-                    message += "</section>" +
-                    "</div>";
-                    TempData["message"] = new Message(message, TypeMessage.Info); // TODO faire plus propre et ailleurs (formatage html propre à la vue)
-                }
-                else
-                {
-                    TempData["message"] = new Message($"La reprise des {articles.Count} articles de votre commande s'est correctement réalisée", TypeMessage.Ok);
-                }
-            }
-            RecupererPanierEnBase();
-            ViewBag.Panier = PanierViewModel;
             return RedirectToAction("Commandes", "Compte");
         }
 

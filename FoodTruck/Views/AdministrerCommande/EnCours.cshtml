@@ -38,7 +38,7 @@
                     <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
                     <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
                     <div class="total">Prix Total : @c.Commande.PrixTotal.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="imagesGestionCommande">
+                    <section class="imagesGestionCommande">
                         @foreach (var a in c.ListArticlesVM)
                         {
                             <div>
@@ -46,7 +46,7 @@
                                 <p>@a.Quantite x @a.Article.Nom</p>
                             </div>
                         }
-                    </div>
+                    </section>
 
                     @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
