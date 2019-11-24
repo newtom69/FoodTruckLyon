@@ -95,7 +95,7 @@ namespace FoodTruck.Controllers
             }
             RecupererPanierEnBase();
             ViewBag.Panier = PanierViewModel;
-            return RedirectToAction("Commandes", "Compte");
+            return RedirectToAction("Index", "Panier");
         }
 
         [HttpPost]

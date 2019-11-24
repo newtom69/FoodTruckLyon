@@ -564,8 +564,8 @@ input, textarea, img, select, option {
 }
 
 .articleDescription p {
-    margin: 0 0 0.3rem;
-    font-size: 1.7rem;
+    margin: 0 0 0.2rem;
+    font-size: 1.55rem;
 }
 
     .articleDescription p:last-child {
