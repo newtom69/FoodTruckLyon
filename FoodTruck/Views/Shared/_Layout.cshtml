@@ -32,7 +32,7 @@
     @RenderSection("scripts", required: false)
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/vast-engineering/jquery-popup-overlay@2/jquery.popupoverlay.min.js"></script>
-    <script src="/Scripts/myJs.js"></script>
+    <script src="/Scripts/foodTruck.js"></script>
 
     <div id="page">
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -131,11 +131,6 @@
 
 @if (message != null)
 {
-    <div id="messagePopup">
-        <img src="@message.CheminImage" alt="@message.Type.ToString()" />
-        @Html.Raw(message.ToHtml())
-    </div>
-
     <script>
         $(document).ready(function () {
             $('#messagePopup').popup({
@@ -146,4 +141,9 @@
             $.fn.popup.defaults.pagecontainer = '#page'
         });
     </script>
+
+    <div id="messagePopup">
+        <img src="@message.CheminImage" alt="@message.Type.ToString()" />
+        @Html.Raw(message.ToHtml())
+    </div>
 }

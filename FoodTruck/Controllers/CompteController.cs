@@ -33,8 +33,11 @@ namespace FoodTruck.Controllers
         public ActionResult Profil()
         {
             CommandeDAL commandeDAL = new CommandeDAL();
-            List<Commande> commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
-            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandes, Request.Url);
+            List<Commande> commandesEnCours = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
+            ViewBag.ListeCommandesEnCours = new ListeCommandesViewModel(commandesEnCours, Request.Url);
+            const int nombreDernieresCommandes = 3;
+            List<Commande> dernieresCommandes = commandeDAL.CommandesUtilisateur(Client.Id, nombreDernieresCommandes);
+            ViewBag.ListeDernieresCommandes = new ListeCommandesViewModel(dernieresCommandes, Request.Url);
             ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
             return View(Client);
         }

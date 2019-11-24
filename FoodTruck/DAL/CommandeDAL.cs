@@ -98,24 +98,22 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                DateTime now = DateTime.Now;
                 var commandes = (from cmd in db.Commande
-                                 where !cmd.Retrait && !cmd.Annulation && Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait)) < Math.Abs(fourchetteHeures)
+                                 where !cmd.Retrait && !cmd.Annulation && Math.Abs((int)DbFunctions.DiffHours(DateTime.Now, cmd.DateRetrait)) < Math.Abs(fourchetteHeures)
                                  orderby cmd.DateRetrait
                                  select cmd).ToList();
                 return commandes;
             }
         }
 
-        internal List<Commande> CommandesUtilisateur(int id)
+        internal List<Commande> CommandesUtilisateur(int id, int max=int.MaxValue)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                DateTime now = DateTime.Now;
                 List<Commande> commandes = (from cmd in db.Commande
                                             where cmd.ClientId == id
-                                            orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(now, cmd.DateRetrait))
-                                            select cmd).ToList();
+                                            orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(DateTime.Now, cmd.DateRetrait))
+                                            select cmd).Take(max).ToList();
                 return commandes;
             }
         }

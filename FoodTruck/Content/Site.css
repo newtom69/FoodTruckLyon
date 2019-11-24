@@ -305,6 +305,10 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     max-height: 150px;
 }
 
+.gestionCommandeArticle h4 {
+    margin-top: 20px;
+}
+
 .gestionCommandeArticle .commandeAnnulee {
     color: red;
 }

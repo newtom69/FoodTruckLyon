@@ -2,14 +2,46 @@
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace FoodTruck.Controllers
 {
     public class CommandeController : ControllerParent
     {
+        [ChildActionOnly]
+        public ActionResult Liste(string id)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            List<Commande> commandes = null;
+            switch (id)
+            {
+                case "dernieres":
+                    const int nombreDernieresCommandes = 3;
+                    List<Commande> commandesenCours = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
+                    ViewBag.MessageCommandes = "Vos dernières commandes";
+                    commandes = commandeDAL.CommandesUtilisateur(Client.Id).Except(commandesenCours, new CommandeEqualityComparer()).Take(nombreDernieresCommandes).ToList();
+                    break;
+
+                case "enCours":
+                    ViewBag.MessageCommandes = "Vos commandes en cours";
+                    commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
+                    break;
+
+                case "toutes":
+                    ViewBag.MessageCommandes = "Toutes vos commandes";
+                    commandes = commandeDAL.CommandesUtilisateur(Client.Id);
+                    break;
+            }
+            if (commandes != null && commandes.Count != 0)
+                return PartialView(new ListeCommandesViewModel(commandes, Request.Url));
+            else
+                return null;
+        }
+
         [HttpPost]
         public ActionResult Index(string codePromo, DateTime dateRetrait, int? remiseFidelite)
         {

@@ -35,7 +35,7 @@ namespace FoodTruck.Controllers
                 Facture facture = new FactureDAL().DetailsCommande(commandeId);
                 HtmlToPdf htmlToPdf = new HtmlToPdf();
                 PdfDocument facturePdf = htmlToPdf.ConvertUrl($"{Request.Url.Scheme}://{Request.Url.Authority}/{ControllerNom}/Guid/{facture.Guid}");
-                return File(facturePdf.Save(), "application/pdf", $"factureFoodTruckLyon{commandeId}.pdf");
+                return File(facturePdf.Save(), "application/pdf", $"factureFoodTruckLyon-commande{commandeId}.pdf");
             }
             else
             {
