@@ -26,7 +26,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        ///Ajouter un article non présent au panier en base d'un utilisateur
+        ///Ajouter un article non présent au panier en base d'un client
         public void Ajouter(Article article, int quantite = 1)
         {
             Panier lePanier = new Panier
@@ -43,7 +43,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        ///Modifier la quantité d'un article du panier en base d'un utilisateur
+        ///Modifier la quantité d'un article du panier en base d'un client
         public void ModifierQuantite(Article article, int quantite)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -57,7 +57,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        /// Supprimer l'article du panier en base de l'utilisateur
+        /// Supprimer l'article du panier en base de du client
         public void Supprimer(Article article)
         {
             using (foodtruckEntities db = new foodtruckEntities())
@@ -71,7 +71,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        /// Supprimer le panier en base de l'utilisateur
+        /// Supprimer le panier en base du client
         public void Supprimer()
         {
             using (foodtruckEntities db = new foodtruckEntities())

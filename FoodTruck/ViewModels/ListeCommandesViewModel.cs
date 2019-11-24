@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using System;
 using System.Collections.Generic;
 
 namespace FoodTruck.ViewModels
@@ -7,18 +8,13 @@ namespace FoodTruck.ViewModels
     {
         public List<CommandeViewModel> Commandes { get; private set; }
 
-        public ListeCommandesViewModel(List<Commande> commandes)
+        public ListeCommandesViewModel(List<Commande> commandes, Uri uri)
         {
             Commandes = new List<CommandeViewModel>();
             foreach (Commande commande in commandes)
             {
-                Client utilisateur = new ClientDAL().Details(commande.ClientId);
-                CommandeViewModel commandeVM = new CommandeViewModel()
-                {
-                    Commande = commande,
-                    Client = utilisateur,
-                    ListArticlesVM = new CommandeDAL().Articles(commande.Id),
-                };
+                Client client = new ClientDAL().Details(commande.ClientId);
+                CommandeViewModel commandeVM = new CommandeViewModel(commande, client, uri);
                 Commandes.Add(commandeVM);
             }
         }

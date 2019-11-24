@@ -4,7 +4,7 @@
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     string dossierImagesSysteme = ConfigurationManager.AppSettings["PathImagesSysteme"];
     Message message = TempData["message"] as Message;
-    Client utilisateur = ViewBag.Client;
+    Client client = ViewBag.Client;
     PanierViewModel panier = ViewBag.Panier;
 
     int nombreArticlesDansPanier = 0;
@@ -69,9 +69,9 @@
         <div class="bandeauClient">
             <div></div>
             <div></div>
-            @if (utilisateur.Id != 0)
+            @if (client.Id != 0)
             {
-                <div><a href="/Compte/Profil">Bienvenue @utilisateur.Prenom @utilisateur.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></div>
+                <div><a href="/Compte/Profil">Bienvenue @client.Prenom @client.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></div>
             }
             else
             {

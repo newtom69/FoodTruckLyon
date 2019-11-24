@@ -18,6 +18,7 @@ namespace FoodTruck
         public Commande()
         {
             this.Commande_Article = new HashSet<Commande_Article>();
+            this.Facture = new HashSet<Facture>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace FoodTruck
         public virtual Client Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande_Article> Commande_Article { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Facture> Facture { get; set; }
     }
 }

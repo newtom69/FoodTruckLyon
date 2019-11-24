@@ -68,13 +68,13 @@ namespace FoodTruck.DAL
                 {
                     commande.Annulation = annule;
                     commande.Retrait = retrait;
-                    Client utilisateur = (from u in db.Client
+                    Client client = (from u in db.Client
                                                where u.Id == commande.ClientId
                                                select u).FirstOrDefault();
                     if (commande.Retrait)
-                        utilisateur.Cagnotte += (int)commande.PrixTotal / 10;
+                        client.Cagnotte += (int)commande.PrixTotal / 10;
                     if (commande.Annulation)
-                        utilisateur.Cagnotte += (int)commande.RemiseFidelite;
+                        client.Cagnotte += (int)commande.RemiseFidelite;
                     db.SaveChanges();
                 }
             }

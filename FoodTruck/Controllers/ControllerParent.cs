@@ -47,7 +47,7 @@ namespace FoodTruck.Controllers
             }
             else
                 ViewBag.Client = Client = new ClientDAL().Details((int)Session["ClientId"]);
-            
+
             new PanierDAL(Client.Id).SupprimerArticlesPasDansCarte();
             VisiteDAL.Enregistrer(Client.Id);
             if (Client.Id != 0)
@@ -154,12 +154,23 @@ namespace FoodTruck.Controllers
                 Session["Url"] = new List<string>(2);
             if (ControllerNom != "Compte" && Request.HttpMethod == "GET")
             {
-                if((Session["Url"] as List<string>).Count==2)
+                if ((Session["Url"] as List<string>).Count == 2)
                     (Session["Url"] as List<string>).RemoveAt(0);
                 (Session["Url"] as List<string>).Add(Request.Url.LocalPath); // = Request.RawUrl
             }
             if ((Session["Url"] as List<string>).Count == 0)
                 (Session["Url"] as List<string>).Add("~/");
+        }
+
+        protected string UrlCourante()
+        {
+            int index = ((List<string>)Session["Url"]).Count - 1;
+            return ((List<string>)Session["Url"])[index];
+        }
+
+        protected string UrlPrecedente()
+        {
+            return ((List<string>)Session["Url"])[0];
         }
     }
 }

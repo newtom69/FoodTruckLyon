@@ -627,7 +627,7 @@ button.annulerCommande {
     border-radius: 1.5rem;
 }
 
-.reprendreCommande, .reprendreCommande button {
+.reprendreCommande, .reprendreCommande button, .telechargerFacture, .telechargerFacture button {
     background-color: #95BE27;
     padding: 0.6rem;
     border: solid 1px #95BE27;
@@ -932,3 +932,81 @@ select.ccformfield option.red {
         margin-right: auto;
     }
 }
+
+
+#facture {
+    margin: auto;
+    max-width: 900px;
+}
+
+    #facture table {
+        border: 1px solid;
+        margin: auto;
+        width: 100%;
+    }
+
+        #facture table img {
+            height: 50px;
+        }
+
+    #facture th {
+        text-align: center;
+    }
+
+        #facture th.image {
+            width: 10%;
+        }
+
+        #facture th.quantite {
+            width: 8%;
+        }
+
+        #facture th.nom {
+            width: 23%;
+        }
+
+        #facture th.description {
+            width: 35%;
+        }
+
+        #facture th.prixUnitaire {
+            width: 12%;
+        }
+
+        #facture th.prixTotal {
+            width: 12%;
+        }
+
+    #facture td {
+        padding: 1%;
+    }
+
+        #facture td.prixTotal {
+            padding: 1%;
+            text-align: right;
+        }
+
+        #facture td.libelle {
+            padding: 1%;
+            text-align: right;
+        }
+
+        #facture td.prixTotalFacture {
+            padding: 1%;
+            text-align: right;
+            font-weight: bold;
+        }
+
+    #facture .adresse {
+        margin: auto;
+        margin-left: 15px;
+        padding: 0px;
+    }
+
+    #facture h3 {
+        text-align: center;
+    }
+
+    #facture .adresse p {
+        margin-bottom: 0px;
+    }

@@ -69,7 +69,7 @@ namespace FoodTruck.DAL
         }
 
         /// <summary>
-        /// Si le solde est suffisant, retire "montant" euros de la cagnotte à l'client d'id "id" et retourne le solde restant
+        /// Si le solde est suffisant, retire "montant" euros de la cagnotte de client d'id "id" et retourne le solde restant
         /// Si le solde de la cagnotte est insuffisant retourne -1 sans rien modifier
         /// </summary>
         /// <param name="id"></param>

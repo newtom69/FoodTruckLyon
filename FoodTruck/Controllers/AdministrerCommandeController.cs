@@ -22,7 +22,7 @@ namespace FoodTruck.Controllers
                 {
                     TempData["message"] = new Message("Vous n'avez aucune commande en cours", TypeMessage.Info);
                 }
-                return View(new ListeCommandesViewModel(commandes));
+                return View(new ListeCommandesViewModel(commandes, Request.Url));
 
             }
             else
@@ -56,7 +56,7 @@ namespace FoodTruck.Controllers
                 {
                     TempData["message"] = new Message("Vous n'avez aucune commande à statuer", TypeMessage.Info);
                 }
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesAStatuer(), Request.Url));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -86,7 +86,7 @@ namespace FoodTruck.Controllers
             {
                 ViewBag.DateDebut = DateTime.Today;
                 ViewBag.DateFin = DateTime.Today;
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesRecherche("", DateTime.Today, DateTime.Today.AddDays(3))));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesRecherche("", DateTime.Today, DateTime.Today.AddDays(3)), Request.Url));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -112,7 +112,7 @@ namespace FoodTruck.Controllers
                     commandes = commandes.Intersect(tabCommandes[i], new CommandeEqualityComparer()).ToList();
                 if (commandes.Count == 0)
                     TempData["message"] = new Message("Aucune commande ne correspond à votre recherche.\nVeuillez élargir vos critères de recherche", TypeMessage.Avertissement);
-                return View(new ListeCommandesViewModel(commandes));
+                return View(new ListeCommandesViewModel(commandes, Request.Url));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -122,7 +122,7 @@ namespace FoodTruck.Controllers
         public ActionResult Futures()
         {
             if (AdminCommande)
-                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesFutures()));
+                return View(new ListeCommandesViewModel(new CommandeDAL().CommandesFutures(), Request.Url));
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
@@ -140,7 +140,7 @@ namespace FoodTruck.Controllers
                     else
                         TempData["message"] = new Message($"Il y a {commandes.Count} commande(s) pendant des fermetures.\nVous pouvez les annuler et prévenir les clients automatiquement par mail", TypeMessage.Ok);
                 }
-                    return View(new ListeCommandesViewModel(commandes));
+                    return View(new ListeCommandesViewModel(commandes, Request.Url));
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -161,16 +161,16 @@ namespace FoodTruck.Controllers
                     int clientId = commande.ClientId;
                     if (clientId != 0)
                     {
-                        Client utilisateur = new ClientDAL().Details(clientId);
+                        Client client = new ClientDAL().Details(clientId);
                         string objetMail = $"Problème commande {commandeId} : Fermeture de votre foodtruck";
-                        string corpsMessage = $"Bonjour {utilisateur.Prenom}\n\n" +
+                        string corpsMessage = $"Bonjour {client.Prenom}\n\n" +
                             $"Vous avez passé la commande numéro {commandeId} pour le {commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")} et nous vous en remercions.\n\n" +
                             $"Malheureusement nous ne sommes plus ouvert pendant votre horaire de retrait et nous avons été contraint de l'annuler.\n\n" +
                             $"Nous vous invitons à choisir un autre créneau de retrait (vous pouvez dupliquer votre commande annulée dans votre espace client).\n\n" +
                             $"Nous vous prions de nous excuser pour la gène occasionnée.\n\n" +
                             $"Bien cordialement\n" +
                             $"Votre équipe Foodtrucklyon";
-                        string adresseMailClient = utilisateur.Email;
+                        string adresseMailClient = client.Email;
                         Utilitaire.EnvoieMail(adresseMailClient, objetMail, corpsMessage);
                     }
                     else

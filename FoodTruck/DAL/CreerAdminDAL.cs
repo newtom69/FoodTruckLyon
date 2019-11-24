@@ -19,17 +19,17 @@ namespace FoodTruck.DAL
                 return creerAdmin;
             }
         }
-        internal void Ajouter(Client utilisateur, string codeVerification, DateTime dateFinValidite)
+        internal void Ajouter(Client client, string codeVerification, DateTime dateFinValidite)
         {
 
-            Supprimer(utilisateur.Email);
+            Supprimer(client.Email);
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 CreerAdmin creerAdmin = new CreerAdmin
                 {
-                    Email = utilisateur.Email,
-                    Nom = utilisateur.Nom,
-                    Prenom = utilisateur.Prenom,
+                    Email = client.Email,
+                    Nom = client.Nom,
+                    Prenom = client.Prenom,
                     CodeVerification = codeVerification,
                     DateFinValidite = dateFinValidite
                 };

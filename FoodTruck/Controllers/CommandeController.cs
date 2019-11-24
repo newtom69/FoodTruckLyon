@@ -81,7 +81,7 @@ namespace FoodTruck.Controllers
             }
         }
 
-        private void MailCommande(Client utilisateur, Commande commande, PanierViewModel panier)
+        private void MailCommande(Client client, Commande commande, PanierViewModel panier)
         {
             string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             string lesArticlesDansLeMail = "";
@@ -89,9 +89,9 @@ namespace FoodTruck.Controllers
                 lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " + (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
 
             CultureInfo cultureinfoFr = new CultureInfo("fr-FR");
-            string nomClient = utilisateur.Nom ?? "non renseigné";
-            string prenomClient = utilisateur.Prenom ?? "non renseigné";
-            string emailClient = utilisateur.Email ?? "non@renseigne";
+            string nomClient = client.Nom ?? "non renseigné";
+            string prenomClient = client.Prenom ?? "non renseigné";
+            string emailClient = client.Email ?? "non@renseigne";
             string corpsDuMailEnCommunClientFoodtruck =
                 $"Nom : {nomClient}\n" +
                 $"Prénom : {prenomClient}\n" +
@@ -107,10 +107,10 @@ namespace FoodTruck.Controllers
             string corpsMail = $"Nouvelle commande {commande.Id}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
 
             Utilitaire.EnvoieMail(mailFoodTruck, sujet, corpsMail);
-            if (utilisateur.Id != 0)
+            if (client.Id != 0)
             {
                 string sujetMail2 = $"Nouvelle commande numéro {commande.Id} prise en compte";
-                string corpsMail2 = $"Bonjour {utilisateur.Prenom}\n" +
+                string corpsMail2 = $"Bonjour {client.Prenom}\n" +
                                     $"Votre dernière commande a bien été prise en compte." +
                                     $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
                                     $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +

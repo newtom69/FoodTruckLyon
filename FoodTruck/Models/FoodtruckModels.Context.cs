@@ -38,5 +38,6 @@ namespace FoodTruck
         public virtual DbSet<Panier> Panier { get; set; }
         public virtual DbSet<PanierProspect> PanierProspect { get; set; }
         public virtual DbSet<Visite> Visite { get; set; }
+        public virtual DbSet<Facture> Facture { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     ViewBag.Title = "FoodTruckLyon - Panier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     int pasCreneauxHoraire = int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]);
-    Client utilisateur = ViewBag.Client;
+    Client client = ViewBag.Client;
     double remiseCommercialeMontant = 0;
     string afficheRemiseCommerciale = "";
     string codePromo = "";
@@ -101,11 +101,11 @@
             <div id="panierValide2">
                 <input hidden id="codePromo" name="codePromo">
                 <div class="listePanier">
-                    @if (utilisateur.Cagnotte >= 10 && Model.PrixTotal >= 10)
+                    @if (client.Cagnotte >= 10 && Model.PrixTotal >= 10)
                     {
                         <select id="remiseFidelite" class="ccformfield" name="remiseFidelite" size="1" onchange="MajMontantRemise(this.value, montantRemiseFidelite.id)">
                             <option selected value="0">cagnotte fidélité</option>
-                            @for (int iRemise = 10; iRemise <= (utilisateur.Cagnotte <= Model.PrixTotal ? utilisateur.Cagnotte : Model.PrixTotal); iRemise++)
+                            @for (int iRemise = 10; iRemise <= (client.Cagnotte <= Model.PrixTotal ? client.Cagnotte : Model.PrixTotal); iRemise++)
                             {
                                 <option value="@iRemise">cagnotte fidélité de @iRemise €</option>
                             }
@@ -115,7 +115,7 @@
                     <input hidden id="prixRemiseCommercialeDeduite" value="@prixRemiseCommercialeDeduite">
                 </div>
             </div>
-            if (utilisateur.Cagnotte >= 10 && Model.PrixTotal < 10)
+            if (client.Cagnotte >= 10 && Model.PrixTotal < 10)
             {
                 string reste = (10 - @Model.PrixTotal).ToString("C2", new CultureInfo("fr-FR"));
                 <div class=" messageInfo">Ajoutez pour @reste d'articles pour pouvoir utiliser votre cagnotte fidélité</div>

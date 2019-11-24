@@ -2,13 +2,13 @@
 
 @{
     ViewBag.Title = "FoodTruckLyon - Contactez-nous !";
-    Client utilisateur = ViewBag.Client;
+    Client client = ViewBag.Client;
     string valueNom = "", valuePrenom = "", valueEmail = "";
-    if (utilisateur.Id != 0)
+    if (client.Id != 0)
     {
-        valueNom = "value=" + utilisateur.Nom;
-        valuePrenom = "value=" + utilisateur.Prenom;
-        valueEmail = "value=" + utilisateur.Email;
+        valueNom = "value=" + client.Nom;
+        valuePrenom = "value=" + client.Prenom;
+        valueEmail = "value=" + client.Email;
     }
 }
 <div class="contact">

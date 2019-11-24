@@ -63,13 +63,13 @@ namespace FoodTruck.Controllers
                 string codeVerification = Guid.NewGuid().ToString("n");
                 string url = $"{Request.Url.Scheme}://{Request.Url.Authority}/Compte/ObtenirDroitsAdmin/{codeVerification}";
 
-                Client utilisateur = new Client
+                Client client = new Client
                 {
                     Email = email,
                     Nom = nom,
                     Prenom = prenom,
                 };
-                new CreerAdminDAL().Ajouter(utilisateur, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
+                new CreerAdminDAL().Ajouter(client, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
                 string sujetMail = "Vous avez les droits d'administration";
                 string message = $"Bonjour {prenom} {nom}\n\n" +
                     "Un administrateur de foodtrucklyon vous a donné les droits d'accès administrateur au site.\n" +

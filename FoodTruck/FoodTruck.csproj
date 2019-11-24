@@ -76,6 +76,9 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="Select.HtmlToPdf, Version=19.2.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.19.2.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -156,8 +159,10 @@
     <Compile Include="Controllers\ControllerParent.cs" />
     <Compile Include="Controllers\ControllerParentAdministrer.cs" />
     <Compile Include="Controllers\ErreurController.cs" />
+    <Compile Include="Controllers\FactureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
+    <Compile Include="DAL\FactureDAL.cs" />
     <Compile Include="DAL\CreerAdminDAL.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
     <Compile Include="DAL\CodePromoDAL.cs" />
@@ -189,6 +194,9 @@
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CreerAdmin.cs">
+      <DependentUpon>FoodTruckModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Facture.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FamilleArticle.cs">
@@ -227,6 +235,7 @@
     <Compile Include="Models\Visite.cs">
       <DependentUpon>FoodTruckModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FactureViewModel.cs" />
     <Compile Include="ViewModels\Message.cs" />
     <Compile Include="Outils\CommandeEqualityComparer.cs" />
     <Compile Include="Outils\Utilitaire.cs" />
@@ -381,6 +390,7 @@
     <Content Include="Views\AdministrerClient\Recherche.cshtml" />
     <Content Include="Views\Compte\OubliMotDePasse.cshtml" />
     <Content Include="Views\AdministrerClient\DonnerDroitsAdmin.cshtml" />
+    <Content Include="Views\Facture\Guid.cshtml" />
     <None Include="Views\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
