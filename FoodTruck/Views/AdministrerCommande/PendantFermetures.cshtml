@@ -6,7 +6,7 @@
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Commandes pendant fermetures";
 }
-@model ListeCommandesViewModel
+@model List<CommandeViewModel>
 
 @if (Model != null)
 {
@@ -16,7 +16,7 @@
     </div>
     <div id="panierEnLigne">
         <div class="choixHoraire">
-            @if (Model.Commandes.Count > 0)
+            @if (Model.Count > 0)
             {
                 using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
@@ -25,7 +25,7 @@
                         <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
                     </div>
                 }
-                foreach (var c in Model.Commandes)
+                foreach (var c in Model)
                 {
                     <div class="gestionCommandeArticle">
                         <h4>Commande n° : @c.Commande.Id</h4>

@@ -11,12 +11,12 @@ namespace FoodTruck.ViewModels
         public Client Client { get; set; }
         public List<ArticleViewModel> ListArticlesVM { get; set; }
 
-        public CommandeViewModel(Commande commande, Client client)
+        public CommandeViewModel(Commande commande)
         {
             Commande = commande;
-            Client = client;
             if (commande != null)
             {
+                Client = new ClientDAL().Details(commande.ClientId);
                 ListArticlesVM = new CommandeDAL().Articles(commande.Id);
             }
         }

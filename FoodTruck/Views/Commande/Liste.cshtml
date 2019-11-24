@@ -4,14 +4,14 @@
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
 }
-@model ListeCommandesViewModel
+@model List<CommandeViewModel>
 
 @if (Model != null)
 {
     <h3>@ViewBag.MessageCommandes</h3>
     <div id="panierValide">
         <div>
-            @foreach (var c in Model.Commandes)
+            @foreach (var c in Model)
             {
                 string classDate = "class=commandeAnnulee";
                 string preDate = "";

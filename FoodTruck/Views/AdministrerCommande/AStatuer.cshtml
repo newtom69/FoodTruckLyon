@@ -6,7 +6,7 @@
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Commandes à statuer";
 }
-@model ListeCommandesViewModel
+@model List<CommandeViewModel>
 
 @if (Model != null)
 {
@@ -16,7 +16,7 @@
     </div>
     <div id="panierEnLigne">
         <div class="choixHoraire">
-            @foreach (var c in Model.Commandes)
+            @foreach (var c in Model)
             {
                 <div class="gestionCommandeArticle">
                     <h4>Commande n° : @c.Commande.Id</h4>

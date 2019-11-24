@@ -37,7 +37,14 @@ namespace FoodTruck.Controllers
                     break;
             }
             if (commandes != null && commandes.Count != 0)
-                return PartialView(new ListeCommandesViewModel(commandes));
+            {
+                List<CommandeViewModel> listeCommandesViewModel = new List<CommandeViewModel>();
+                foreach (Commande commande in commandes)
+                {
+                    listeCommandesViewModel.Add(new CommandeViewModel(commande));
+                }
+                return PartialView(listeCommandesViewModel);
+            }
             else
                 return null;
         }

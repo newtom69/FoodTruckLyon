@@ -15,8 +15,7 @@ namespace FoodTruck.Controllers
             if (facture != null)
             {
                 Commande commande = new CommandeDAL().Detail(facture.CommandeId);
-                Client client = new ClientDAL().Details(commande.ClientId);
-                CommandeViewModel commandeVM = new CommandeViewModel(commande, client);
+                CommandeViewModel commandeVM = new CommandeViewModel(commande);
                 FactureViewModel factureVM = new FactureViewModel(commandeVM);
                 ViewBag.FactureId = facture.Id;
                 return View(factureVM);
