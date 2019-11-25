@@ -16,7 +16,7 @@ namespace FoodTruck.Controllers
         public ActionResult Recherche()
         {
             if (AdminUtilisateur)
-                return View(new List<Client>());
+                return View(null as List<Client>);
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }

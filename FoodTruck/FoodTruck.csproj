@@ -267,6 +267,8 @@
     <Content Include="Content\Images\Articles\1056fc353cde4293a3ad113b49ed0700.jpg" />
     <Content Include="Content\Images\Articles\1285e3c16323439aa3a630c0e78da54b.jpg" />
     <Content Include="Content\Images\Articles\169acb90f1614af4aebb61070bf867eb.jpg" />
+    <Content Include="Content\Images\Articles\175dbce6848a4598af052a3c2044ac32.jpg" />
+    <Content Include="Content\Images\Articles\18eccf223172489a879bc5c481ff0792.jpg" />
     <Content Include="Content\Images\Articles\2242a377bba34c19adc86d308564d7dc.jpg" />
     <Content Include="Content\Images\Articles\4165246387d54f908ccd9e9726037dfa.jpg" />
     <Content Include="Content\Images\Articles\45d55836c149483ea89720f6ca8030ce.jpg" />
@@ -280,12 +282,15 @@
     <Content Include="Content\Images\Articles\6ddba588ff6d492c9b482bd62fbf94ba.jpg" />
     <Content Include="Content\Images\Articles\718badc3e82c49579b460fb5d99adb7d.jpg" />
     <Content Include="Content\Images\Articles\7d1af90d72cc485ba3e7a63041861e2d.jpg" />
+    <Content Include="Content\Images\Articles\89b493d860814310adf4948ad87cfc1c.jpg" />
     <Content Include="Content\Images\Articles\8d343a1b4a794b9f89bd9df8d6c62aa0.jpg" />
     <Content Include="Content\Images\Articles\a3e0eb7edc134fb98b699e046654c241.jpg" />
     <Content Include="Content\Images\Articles\b41c7a85bf624bbb925f3e86618bc648.png" />
     <Content Include="Content\Images\Articles\b5e0d23604ba4d28b4ba508b323416bd.jpg" />
     <Content Include="Content\Images\Articles\bf71d3eacafd4f038c8918d4271dad8f.jpg" />
     <Content Include="Content\Images\Articles\c08b15f5a608493b836b30e9c86c21a2.jpg" />
+    <Content Include="Content\Images\Articles\cbb8e6d4240b4225a30a00a94677fe33.jpg" />
+    <Content Include="Content\Images\Articles\d8eb214a1d4a4d85a0a15f53521029a6.jpg" />
     <Content Include="Content\Images\Articles\df2637e3ecf7432d854339b7f4a2726b.jpg" />
     <Content Include="Content\Images\Articles\e2d9c15669334ef190666fb57802e372.jpg" />
     <Content Include="Content\Images\Articles\ec984423224048e095194f205dafe56c.jpg" />
