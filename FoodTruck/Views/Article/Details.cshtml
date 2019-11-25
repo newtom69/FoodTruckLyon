@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using FoodTruck.ViewModels
-@using System.Configuration;
+@using System.Configuration
 @{string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"]; }
 @model ArticleViewModel
 @{
@@ -32,7 +32,7 @@
                         </p>
                     }
                     <div class="prix_submit">
-                        <span class="prix">@Model.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</span>
+                        <span class="prix">@Model.Article.PrixTTC.ToString("C2", new CultureInfo("fr-FR"))</span>
                         <div id="ajoutPanier">
                             @if (Model.Article.DansCarte)
                             {

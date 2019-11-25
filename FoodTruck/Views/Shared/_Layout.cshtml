@@ -90,7 +90,7 @@
                         }
                         @foreach (var article in panier.ArticlesDetailsViewModel)
                         {
-                            double prixTotalArticle = article.Article.Prix * article.Quantite;
+                            double prixTotalArticle = article.Article.PrixTTC * article.Quantite;
                             <div>
                                 @article.Quantite
                                 <span>x </span><a href="/Article/@article.NomPourUrl">

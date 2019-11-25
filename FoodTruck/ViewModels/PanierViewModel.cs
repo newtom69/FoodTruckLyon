@@ -67,13 +67,13 @@ namespace FoodTruck.ViewModels
                 else
                 {
                     artcl.Quantite += quantite;
-                    artcl.PrixTotalTTC = Math.Round(artcl.PrixTotalTTC + quantite * artcl.Article.Prix, 2);
+                    artcl.PrixTotalTTC = Math.Round(artcl.PrixTotalTTC + quantite * artcl.Article.PrixTTC, 2);
                     if (sauvPanierClient)
                         new PanierDAL(utilisateurId).ModifierQuantite(article, quantite);
                     else
                         new PanierProspectDAL(prospectGuid).ModifierQuantite(article, quantite);
                 }
-                PrixTotalTTC += quantite * article.Prix;
+                PrixTotalTTC += quantite * article.PrixTTC;
             }
             return ajout;
         }

@@ -24,7 +24,7 @@
             </a>
             <div class="articleDescription">
                 <a href="/Article/@article.NomPourUrl">
-                    <p>@article.Article.Nom</p><p>@article.Article.Prix.ToString("C2", new CultureInfo("fr-FR"))</p>
+                    <p>@article.Article.Nom</p><p>@article.Article.PrixTTC.ToString("C2", new CultureInfo("fr-FR"))</p>
                 </a>
             </div>
             @using (Html.BeginForm("Ajouter", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "prix_submit" }))

@@ -954,38 +954,44 @@ select.ccformfield option.red {
         }
 
     #facture th {
-        text-align: center;
+        text-align: left;
     }
 
         #facture th.image {
-            width: 10%;
+            width: 7%;
         }
 
         #facture th.quantite {
-            width: 8%;
+            width: 2%;
         }
 
         #facture th.nom {
-            width: 23%;
+            width: 25%;
         }
 
         #facture th.description {
-            width: 35%;
+            width: 40%;
         }
 
         #facture th.prixUnitaire {
-            width: 12%;
+            width: 13%;
         }
 
         #facture th.prixTotal {
-            width: 12%;
+            width: 13%;
         }
 
     #facture td {
-        padding: 1%;
+        padding-right: 1%;
+        padding-bottom: 1%;
     }
 
         #facture td.prixTotal {
+            padding: 1%;
+            text-align: right;
+        }
+
+        #facture td.prixUnitaire {
             padding: 1%;
             text-align: right;
         }

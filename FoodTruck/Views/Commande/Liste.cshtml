@@ -34,58 +34,66 @@
                     classDate = "class=commandeARetirer";
                     enCours = true;
                 }
-            <div class="gestionCommandeArticle">
-                <h4>Commande n° : @c.Commande.Id</h4>
-                @if (enCours)
-                {
-                    using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                <div class="gestionCommandeArticle">
+                    <h4>Commande n° : @c.Commande.Id</h4>
+                    @if (enCours)
                     {
-                        <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                        <div class="ccfield-prepend">
-                            <button class="annulerCommande" type="submit">Annuler cette commande</button>
-                        </div>
-                    }
-                }
-                @if (boutonFacture)
-                {
-                    using (Html.BeginForm("CommandeVersPdf", "Facture", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                        <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                        <div class="ccfield-prepend">
-                            <button class="telechargerFacture" type="submit">Télécharger la facture</button>
-                        </div>
-                    }
-                }
-                <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
-                <section class="imagesGestionCommande">
-                    @foreach (var a in c.ListArticlesVM)
-                    {
-                        string effet = "";
-                        if (!a.Article.DansCarte)
+                        using (Html.BeginForm("AnnulerCommande", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
-                            effet = "class=pasDansCarte";
+                            <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                            <div class="ccfield-prepend">
+                                <button class="annulerCommande" type="submit">Annuler cette commande</button>
+                            </div>
                         }
-                        <div class="indexArticle">
-                            <a @effet href="/Article/@a.NomPourUrl">
-                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                            </a>
-                            <p>@a.Quantite x @a.Article.Nom</p>
-                        </div>
                     }
-                </section>
-                @using (Html.BeginForm("ReprendreArticles", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div>
-                        <input name="viderPanier" type="checkbox" value="true">
-                        <input name="viderPanier" type="hidden" value="false">
-                        Vider panier puis
-                    </div>
-                    <input name="commandeId" type="hidden" value="@c.Commande.Id">
-                    <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
-                }
-                <hr />
-            </div>
+                    @if (boutonFacture)
+                    {
+                        using (Html.BeginForm("CommandeVersPdf", "Facture", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                            <div class="ccfield-prepend">
+                                <button class="telechargerFacture" type="submit">Télécharger la facture</button>
+                            </div>
+                        }
+                    }
+                    <div @classDate>@preDate @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
+                    <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    @if (c.Commande.RemiseFidelite != 0)
+                    {
+                        <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    }
+                    @if (c.Commande.RemiseCommerciale != 0)
+                    {
+                        <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
+                    }
+                    <section class="imagesGestionCommande">
+                        @foreach (var a in c.ListArticlesVM)
+                        {
+                            string effet = "";
+                            if (!a.Article.DansCarte)
+                            {
+                                effet = "class=pasDansCarte";
+                            }
+                            <div class="indexArticle">
+                                <a @effet href="/Article/@a.NomPourUrl">
+                                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
+                                </a>
+                                <p>@a.Quantite x @a.Article.Nom</p>
+                            </div>
+                        }
+                    </section>
+                    @using (Html.BeginForm("ReprendreArticles", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div>
+                            <input name="viderPanier" type="checkbox" value="true">
+                            <input name="viderPanier" type="hidden" value="false">
+                            Vider panier puis
+                        </div>
+                        <input name="commandeId" type="hidden" value="@c.Commande.Id">
+                        <button class="reprendreCommande" type="submit">Reprendre cette commande</button>
+                    }
+                    <hr />
+                </div>
             }
         </div>
     </div>

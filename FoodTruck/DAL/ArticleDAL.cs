@@ -142,7 +142,7 @@ namespace FoodTruck.DAL
 
                 articleAModifier.Nom = article.Nom;
                 articleAModifier.Description = article.Description;
-                articleAModifier.Prix = article.Prix;
+                articleAModifier.PrixTTC = article.PrixTTC;
                 articleAModifier.Allergenes = article.Allergenes;
                 articleAModifier.DansCarte = article.DansCarte;
                 articleAModifier.FamilleId = article.FamilleId;

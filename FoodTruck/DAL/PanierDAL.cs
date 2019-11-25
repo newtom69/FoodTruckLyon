@@ -34,7 +34,7 @@ namespace FoodTruck.DAL
                 ArticleId = article.Id,
                 ClientId = ClientId,
                 Quantite = quantite,
-                PrixTotal = Math.Round(quantite * article.Prix, 2)
+                PrixTotal = Math.Round(quantite * article.PrixTTC, 2)
             };
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -52,7 +52,7 @@ namespace FoodTruck.DAL
                                  where p.ClientId == ClientId && p.ArticleId == article.Id
                                  select p).FirstOrDefault();
                 panier.Quantite += quantite;
-                panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.Prix, 2);
+                panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.PrixTTC, 2);
                 db.SaveChanges();
             }
         }

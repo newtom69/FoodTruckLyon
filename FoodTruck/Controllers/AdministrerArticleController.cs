@@ -39,7 +39,7 @@ namespace FoodTruck.Controllers
                 {
                     Nom = nomOk,
                     Description = descriptionOk,
-                    Prix = prixOk,
+                    PrixTTC = prixOk,
                     Grammage = grammageOk,
                     Litrage = litrageOk,
                     Allergenes = allergenesOk,
@@ -110,7 +110,7 @@ namespace FoodTruck.Controllers
             if (AdminArticle)
             {
                 double prixOk = Math.Abs(Math.Round(float.Parse(prix, CultureInfo.InvariantCulture.NumberFormat), 2));
-                article.Prix = prixOk;
+                article.PrixTTC = prixOk;
                 article.Nom = article.Nom.NomAdmis();
                 article.Grammage = Math.Abs(article.Grammage);
                 article.Litrage = Math.Abs(article.Litrage);

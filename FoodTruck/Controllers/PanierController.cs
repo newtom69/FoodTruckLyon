@@ -109,12 +109,12 @@ namespace FoodTruck.Controllers
                 Article article = new ArticleDAL().Details(PanierViewModel.ArticlesDetailsViewModel[id].Article.Id);
                 PanierDAL panierDAL;
                 PanierProspectDAL panierProspectDAL;
-                PanierViewModel.PrixTotalTTC = Math.Round(PanierViewModel.PrixTotalTTC - article.Prix, 2);
+                PanierViewModel.PrixTotalTTC = Math.Round(PanierViewModel.PrixTotalTTC - article.PrixTTC, 2);
 
                 if (PanierViewModel.ArticlesDetailsViewModel[id].Quantite > 1)
                 {
                     PanierViewModel.ArticlesDetailsViewModel[id].Quantite--;
-                    PanierViewModel.ArticlesDetailsViewModel[id].PrixTotalTTC = Math.Round(PanierViewModel.ArticlesDetailsViewModel[id].PrixTotalTTC - PanierViewModel.ArticlesDetailsViewModel[id].Article.Prix, 2);
+                    PanierViewModel.ArticlesDetailsViewModel[id].PrixTotalTTC = Math.Round(PanierViewModel.ArticlesDetailsViewModel[id].PrixTotalTTC - PanierViewModel.ArticlesDetailsViewModel[id].Article.PrixTTC, 2);
                     if (sauvPanierClient)
                     {
                         panierDAL = new PanierDAL(Client.Id);

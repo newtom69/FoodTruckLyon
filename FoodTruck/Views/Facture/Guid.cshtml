@@ -40,33 +40,38 @@
             <table>
                 <tr>
                     <th class="image"> </th>
-                    <th class="quantite">Quantité</th>
+                    <th class="quantite"> </th>
                     <th class="nom">Article</th>
                     <th class="description">Description</th>
-                    <th class="prixUnitaire">Prix unitaire</th>
-                    <th class="prixTotal">Prix total</th>
+                    <th class="prixUnitaire">Prix unit. (HT)</th>
+                    <th class="prixTotal">Prix total (TTC)</th>
                 </tr>
 
                 @foreach (var a in Model.CommandeViewModel.ListArticlesVM)
                 {
-                    double prixUnitaire = Math.Round(a.PrixTotalTTC / a.Quantite, 2);
                     <tr>
                         <td><img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" /></td>
                         <td>@a.Quantite</td>
                         <td>@a.Article.Nom</td>
                         <td>@a.Article.Description</td>
-                        <td class="prixUnitaire">@prixUnitaire.ToString("C2", new CultureInfo("fr-FR"))</td>
+                        <td class="prixUnitaire">@a.Article.PrixHT.ToString("C2", new CultureInfo("fr-FR"))</td>
                         <td class="prixTotal">@a.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</td>
                     </tr>
                 }
-                <tr>
-                    <td class="libelle" colspan="5">Remise fidélité</td>
-                    <td class="prixTotal">- @Model.CommandeViewModel.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</td>
-                </tr>
-                <tr>
-                    <td class="libelle" colspan="5">Remise commerciale</td>
-                    <td class="prixTotal">- @Model.CommandeViewModel.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</td>
-                </tr>
+                @if (Model.CommandeViewModel.Commande.RemiseFidelite != 0)
+                {
+                    <tr>
+                        <td class="libelle" colspan="5">Remise fidélité</td>
+                        <td class="prixTotal">- @Model.CommandeViewModel.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</td>
+                    </tr>
+                }
+                @if (Model.CommandeViewModel.Commande.RemiseCommerciale != 0)
+                {
+                    <tr>
+                        <td class="libelle" colspan="5">Remise commerciale</td>
+                        <td class="prixTotal">- @Model.CommandeViewModel.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</td>
+                    </tr>
+                }
                 <tr>
                     <td class="libelle" colspan="5">Prix total</td>
                     <td class="prixTotalFacture">@Model.CommandeViewModel.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</td>

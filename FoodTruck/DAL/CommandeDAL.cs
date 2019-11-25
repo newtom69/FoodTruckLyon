@@ -21,23 +21,23 @@ namespace FoodTruck.DAL
             }
         }
 
-        public void Ajouter(Commande commande, List<ArticleViewModel> articles)
+        public void Ajouter(Commande commande, List<ArticleViewModel> articlesVM)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 db.Commande.Add(commande);
                 db.SaveChanges();
-                int idCommande = (from cmd in db.Commande
+                int commandeId = (from cmd in db.Commande
                                   where cmd.ClientId == commande.ClientId
                                   orderby cmd.Id descending
                                   select cmd.Id).FirstOrDefault();
                 double remiseTotalCommandeHT = 0;
                 double totalCommandeHT = 0;
-                foreach (var article in articles)
+                foreach (var articleVM in articlesVM)
                 {
-                    float tauxTva = new TvaDAL().TauxArticle(article.Article.Id);
-                    int quantite = article.Quantite;
-                    double prixTotalTTC = article.Article.Prix * quantite;
+                    float tauxTva = new TvaDAL().TauxArticle(articleVM.Article.Id);
+                    int quantite = articleVM.Quantite;
+                    double prixTotalTTC = articleVM.Article.PrixTTC * quantite;
                     double prixTotalHT = prixTotalTTC * 100 / (100 + tauxTva);
                     double fractionPrixArticle = prixTotalTTC / (commande.PrixTotalTTC + commande.RemiseCommerciale + commande.RemiseFidelite);
                     double remiseArticleTTC = fractionPrixArticle * (commande.RemiseCommerciale + commande.RemiseFidelite);
@@ -46,8 +46,8 @@ namespace FoodTruck.DAL
                     totalCommandeHT += prixTotalHT;
                     Commande_Article cmdArt = new Commande_Article
                     {
-                        CommandeId = idCommande,
-                        ArticleId = article.Article.Id,
+                        CommandeId = commandeId,
+                        ArticleId = articleVM.Article.Id,
                         Quantite = quantite,
                         PrixTotalTTC = Math.Round(prixTotalTTC, 2),
                         PrixTotalHT = Math.Round(prixTotalHT, 2)
@@ -278,17 +278,19 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                var listArticlesQuantites = (from cmd in db.Commande
-                                             join ca in db.Commande_Article on cmd.Id equals ca.CommandeId
-                                             join article in db.Article on ca.ArticleId equals article.Id
-                                             where cmd.Id == commandeId
-                                             orderby article.FamilleId, article.Nom
-                                             select new { article, ca.Quantite }).ToList();
+                var donnees = (from cmd in db.Commande
+                               join ca in db.Commande_Article on cmd.Id equals ca.CommandeId
+                               join article in db.Article on ca.ArticleId equals article.Id
+                               where cmd.Id == commandeId
+                               orderby article.FamilleId, article.Nom
+                               select new { article, ca.Quantite, PrixTTC = Math.Round(ca.PrixTotalTTC/ ca.Quantite,2), PrixHT = Math.Round(ca.PrixTotalHT / ca.Quantite,2) }).ToList();
 
                 List<ArticleViewModel> listArticles = new List<ArticleViewModel>();
-                foreach (var articleQuantite in listArticlesQuantites)
+                foreach (var donnee in donnees)
                 {
-                    listArticles.Add(new ArticleViewModel(articleQuantite.article, articleQuantite.Quantite));
+                    donnee.article.PrixTTC = donnee.PrixTTC;
+                    donnee.article.PrixHT = donnee.PrixHT;
+                    listArticles.Add(new ArticleViewModel(donnee.article, donnee.Quantite));
                 }
                 return listArticles;
             }

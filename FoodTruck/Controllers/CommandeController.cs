@@ -133,7 +133,7 @@ namespace FoodTruck.Controllers
                 };
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
-                    commande.PrixTotalTTC = Math.Round(commande.PrixTotalTTC + article.Article.Prix * article.Quantite, 2);
+                    commande.PrixTotalTTC = Math.Round(commande.PrixTotalTTC + article.Article.PrixTTC * article.Quantite, 2);
                     new ArticleDAL().AugmenterQuantiteVendue(article.Article.Id, 1);
                 }
                 if (commande.PrixTotalTTC > montantRemiseFidelite + montantRemiseCommerciale)
@@ -174,7 +174,7 @@ namespace FoodTruck.Controllers
             string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
             string lesArticlesDansLeMail = "";
             foreach (ArticleViewModel article in panier.ArticlesDetailsViewModel)
-                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " + (article.Quantite * article.Article.Prix).ToString("C2", new CultureInfo("fr-FR"));
+                lesArticlesDansLeMail += "\n" + article.Quantite + " x " + article.Article.Nom + " = " + (article.Quantite * article.Article.PrixTTC).ToString("C2", new CultureInfo("fr-FR"));
 
             CultureInfo cultureinfoFr = new CultureInfo("fr-FR");
             string nomClient = client.Nom ?? "non renseigné";

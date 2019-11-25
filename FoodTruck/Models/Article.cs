@@ -25,7 +25,6 @@ namespace FoodTruck
         public int Id { get; set; }
         public string Nom { get; set; }
         public string Image { get; set; }
-        public double Prix { get; set; }
         public int FamilleId { get; set; }
         public int NombreVendus { get; set; }
         public string Description { get; set; }
@@ -33,6 +32,8 @@ namespace FoodTruck
         public int Grammage { get; set; }
         public int Litrage { get; set; }
         public bool DansCarte { get; set; }
+        public double PrixHT { get; set; }
+        public double PrixTTC { get; set; }
     
         public virtual FamilleArticle FamilleArticle { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
