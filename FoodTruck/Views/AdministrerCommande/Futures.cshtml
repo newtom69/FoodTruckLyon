@@ -1,6 +1,5 @@
 ﻿@using FoodTruck.ViewModels
 @using System.Configuration
-@using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Les commandes futures";
@@ -11,32 +10,10 @@
 {
     <div class="adminCommandes">
         <h2>Administration</h2>
-        <h3>Liste des commandes futures</h3>
-    </div>
-    <div id="panierEnLigne">
-        <div class="choixHoraire">
-            <hr />
-            @foreach (var c in Model)
-            {
-                <div class="gestionCommandeArticle">
-                    <h4>Commande n° : @c.Commande.Id</h4>
-                    <div>pour le : @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                    <div>Client : @c.Client.Prenom @c.Client.Nom</div>
-                    <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <section class="imagesGestionCommande">
-                        @foreach (var a in c.ListArticlesVM)
-                        {
-                            <div>
-                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                                <p>@a.Quantite x @a.Article.Nom</p>
-                            </div>
-                        }
-                    </section>
-                    <hr />
-                </div>
-            }
-        </div>
+        @{
+            ViewBag.ModeAdmin = true;
+            TempData["MessageCommandes"] = "Liste des commandes futures";
+        }
+        @Html.Partial("~/Views/Commande/Liste.cshtml", Model)
     </div>
 }

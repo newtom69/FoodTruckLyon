@@ -17,22 +17,24 @@ namespace FoodTruck.Controllers
         {
             CommandeDAL commandeDAL = new CommandeDAL();
             List<Commande> commandes = null;
+            ViewBag.ModeAdmin = false;
+            ViewBag.ModeClient = true;
             switch (id)
             {
                 case "dernieres":
                     const int nombreDernieresCommandes = 3;
                     List<Commande> commandesenCours = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
-                    ViewBag.MessageCommandes = "Vos dernières commandes";
+                    TempData["MessageCommandes"] = "Vos dernières commandes";
                     commandes = commandeDAL.CommandesUtilisateur(Client.Id).Except(commandesenCours, new CommandeEqualityComparer()).Take(nombreDernieresCommandes).ToList();
                     break;
 
                 case "enCours":
-                    ViewBag.MessageCommandes = "Vos commandes en cours";
+                    TempData["MessageCommandes"] = "Vos commandes en cours";
                     commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
                     break;
 
                 case "toutes":
-                    ViewBag.MessageCommandes = "Toutes vos commandes";
+                    TempData["MessageCommandes"] = "Toutes vos commandes";
                     commandes = commandeDAL.CommandesUtilisateur(Client.Id);
                     break;
             }
@@ -96,6 +98,30 @@ namespace FoodTruck.Controllers
             RecupererPanierEnBase();
             ViewBag.Panier = PanierViewModel;
             return RedirectToAction("Index", "Panier");
+        }
+
+        [HttpPost]
+        public ActionResult Annuler(int commandeId)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            Commande commande = commandeDAL.Detail(commandeId);
+            if (commande != null && (commande.ClientId == Client.Id || AdminCommande))
+            {
+                commandeDAL.Annuler(commandeId);
+            }
+            return Redirect(UrlCourante());
+        }
+
+        [HttpPost]
+        public ActionResult Retirer(int commandeId)
+        {
+            CommandeDAL commandeDAL = new CommandeDAL();
+            Commande commande = commandeDAL.Detail(commandeId);
+            if (commande != null && (commande.ClientId == Client.Id || AdminCommande))
+            {
+                commandeDAL.Retirer(commandeId);
+            }
+            return Redirect(UrlCourante());
         }
 
         [HttpPost]

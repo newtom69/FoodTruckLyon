@@ -314,7 +314,6 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
 }
 
 .gestionCommandeArticle .commandeRetiree {
-    color: black;
 }
 
 .gestionCommandeArticle .commandeARetirer {
@@ -358,7 +357,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     padding-left: 1%;
     padding-right: 1%;
     min-width: 335px;
-    max-width: 800px;
+    max-width: 1000px;
 }
 
 .adminPlanning {
@@ -377,7 +376,7 @@ section.imagesGestionCommande .indexArticle a.pasDansCarte {
     padding-left: 1%;
     padding-right: 1%;
     min-width: 335px;
-    max-width: 800px;
+    max-width: 1000px;
     width: auto;
     display: flex;
     flex-direction: column;
@@ -624,10 +623,23 @@ button.ajoutSupprPanierTexte {
     float: left;
 }
 
+#marquerCommande {
+    display: flex;
+    flex-flow: wrap;
+}
+
 button.annulerCommande {
     background-color: red;
     padding: 0.6rem;
     border: solid 1px red;
+    border-radius: 1.5rem;
+    margin-right: 10px;
+}
+
+button.retirerCommande {
+    background-color: #95BE27;
+    padding: 0.6rem;
+    border: solid 1px #95BE27;
     border-radius: 1.5rem;
 }
 
@@ -641,10 +653,8 @@ button.annulerCommande {
 #panierEnLigne {
     display: flex;
     justify-content: left;
-    margin: 0 auto;
     padding-left: 1%;
     padding-right: 1%;
-    max-width: 800px;
     min-width: 335px;
 }
 
@@ -883,9 +893,9 @@ select.ccformfield option.red {
         justify-content: center;
     }
 
-    .ccformfield {
+    /*.ccformfield {
         width: 335px;
-    }
+    }*/
 
     .gestionFermetureOuverture input, .gestionFermetureOuverture .boutonAjouter, .gestionFermetureOuverture .boutonModifier, .gestionFermetureOuverture .boutonSupprimer, .gestionFermetureOuverture .libelleDate {
         min-width: 335px;

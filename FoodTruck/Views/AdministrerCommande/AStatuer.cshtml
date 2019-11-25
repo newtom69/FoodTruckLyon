@@ -12,48 +12,10 @@
 {
     <div class="adminCommandes">
         <h2>Administration</h2>
-        <h3>Gérer le statut des commandes passées</h3>
-    </div>
-    <div id="panierEnLigne">
-        <div class="choixHoraire">
-            @foreach (var c in Model)
-            {
-                <div class="gestionCommandeArticle">
-                    <h4>Commande n° : @c.Commande.Id</h4>
-                    <div>pour le : @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                    <div>Client : @c.Client.Prenom @c.Client.Nom</div>
-                    <div>Retirée : @c.Commande.Retrait.OuiNon()</div>
-                    <div>Annulée : @c.Commande.Annulation.OuiNon()</div>
-                    <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
-                    <section class="imagesGestionCommande">
-                        @foreach (var a in c.ListArticlesVM)
-                        {
-                            <div>
-                                <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                                <p>@a.Quantite x @a.Article.Nom</p>
-                            </div>
-                        }
-                    </section>
-                    @using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                    {
-                        <input name="id" type="hidden" value="@c.Commande.Id">
-                        <div>
-                            <input name="statut" type="radio" value="retire" checked>
-                            Marquer la commande Retirée
-                        </div>
-                        <div>
-                            <input name="statut" type="radio" value="annule">
-                            Marquer la commande Annulée
-                        </div>
-                        <div class="ccfield-prepend">
-                            <input class="ccbtn" type="submit" value="Mettre à jour">
-                        </div>
-                    }
-                    <hr />
-                </div>
-            }
-        </div>
+        @{
+            ViewBag.ModeAdmin = true;
+            TempData["MessageCommandes"] = "Gérer le statut des commandes passées";
+        }
+        @Html.Partial("~/Views/Commande/Liste.cshtml", Model)
     </div>
 }

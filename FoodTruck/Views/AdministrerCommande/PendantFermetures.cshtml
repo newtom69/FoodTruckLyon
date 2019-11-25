@@ -1,7 +1,5 @@
 ﻿@using FoodTruck.ViewModels
-@using FoodTruck.Models
 @using System.Configuration
-@using System.Globalization
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
     ViewBag.Title = "Commandes pendant fermetures";
@@ -12,49 +10,28 @@
 {
     <div class="adminCommandes">
         <h2>Administration</h2>
-        <h3>Liste des commandes dont la date de retrait est pendant une fermeture</h3>
-    </div>
-    <div id="panierEnLigne">
-        <div class="choixHoraire">
-            @if (Model.Count > 0)
+        @{
+            ViewBag.ModeAdmin = true;
+            TempData["MessageCommandes"] = "Liste des commandes dont la date de retrait est pendant une fermeture";
+        }
+        @if (Model.Count > 0)
+        {
+            using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <input name="id" type="hidden" value="0">
-                    <div class="ccfield-prepend">
-                        <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
-                    </div>
-                }
-                foreach (var c in Model)
-                {
-                    <div class="gestionCommandeArticle">
-                        <h4>Commande n° : @c.Commande.Id</h4>
-                        <div>pour le : @c.Commande.DateRetrait.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h")</div>
-                        <div>Client : @c.Client.Prenom @c.Client.Nom</div>
-                        <div class="total">Remise fidélité : @c.Commande.RemiseFidelite.ToString("C2", new CultureInfo("fr-FR"))</div>
-                        <div class="total">Remise commerciale : @c.Commande.RemiseCommerciale.ToString("C2", new CultureInfo("fr-FR"))</div>
-                        <div class="total">Prix Total : @c.Commande.PrixTotalTTC.ToString("C2", new CultureInfo("fr-FR"))</div>
-                        <section class="imagesGestionCommande">
-                            @foreach (var a in c.ListArticlesVM)
-                            {
-                                <div>
-                                    <img src="@dossierImagesArticles/@a.Article.Image" alt="@a.Article.Nom" />
-                                    <p>@a.Quantite x @a.Article.Nom</p>
-                                </div>
-                            }
-                        </section>
-                        <hr />
-                    </div>
-                }
-                <br />
-                using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <input name="id" type="hidden" value="0">
-                    <div class="ccfield-prepend">
-                        <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
-                    </div>
-                }
+                <input name="id" type="hidden" value="0">
+                <div class="ccfield-prepend">
+                    <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
+                </div>
             }
-        </div>
+            @Html.Partial("~/Views/Commande/Liste.cshtml", Model)
+            <br />
+            using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input name="id" type="hidden" value="0">
+                <div class="ccfield-prepend">
+                    <input class="ccbtn" type="submit" value="Annuler ces commandes et alerter les clients">
+                </div>
+            }
+        }
     </div>
 }

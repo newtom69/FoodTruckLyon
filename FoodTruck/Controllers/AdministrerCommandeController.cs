@@ -72,23 +72,6 @@ namespace FoodTruck.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
         }
 
-        [HttpPost]
-        public ActionResult AStatuer(int id, string statut)
-        {
-            if (AdminCommande)
-            {
-                if (statut == "retire")
-                    new CommandeDAL().Retirer(id);
-                else if (statut == "annule")
-                    new CommandeDAL().Annuler(id);
-                return RedirectToAction(ActionNom);
-            }
-            else
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-            }
-        }
-
         [HttpGet]
         public ActionResult Recherche()
         {

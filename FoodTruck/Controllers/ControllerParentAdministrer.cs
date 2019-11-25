@@ -5,6 +5,8 @@
         public ControllerParentAdministrer()
         {
             ViewBag.PanierLatteralDesactive = true;
+            ViewBag.ModeAdmin = true;
+            ViewBag.ModeClient = false;
         }
     }
 }
