@@ -29,7 +29,7 @@ namespace FoodTruck.Controllers
         public ActionResult CommandeVersPdf(int commandeId)
         {
             Commande commande = new CommandeDAL().Detail(commandeId);
-            if (commande != null && commande.ClientId == Client.Id && !commande.Annulation && commande.Retrait)
+            if (commande != null && !commande.Annulation && commande.Retrait && (commande.ClientId == Client.Id || AdminCommande))
             {
                 Facture facture = new FactureDAL().DetailsCommande(commandeId);
                 HtmlToPdf htmlToPdf = new HtmlToPdf();
