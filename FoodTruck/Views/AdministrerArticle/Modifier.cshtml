@@ -1,6 +1,6 @@
 ﻿@using FoodTruck.DAL
-@using System.Globalization;
-@using System.Configuration;
+@using System.Globalization
+@using System.Configuration
 @{
     ViewBag.Title = "Modifier";
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
@@ -67,7 +67,7 @@
                         <textarea class="ccformfield" name="description" rows="1" placeholder="Description" maxlength='90' required>@articleAModifier.Description.Trim()</textarea>
                     </div>
                     <div class="ccfield-prepend">
-                        <input class="ccformfield" name="prix" type="number" min="0.05" step="0.05" placeholder="Prix" maxlength='8' value="@articleAModifier.Prix.ToString("0.00", CultureInfo.InvariantCulture)" required>
+                        <input class="ccformfield" name="prix" type="number" min="0.05" step="0.05" placeholder="Prix" maxlength='8' value="@articleAModifier.PrixTTC.ToString("0.00", CultureInfo.InvariantCulture)" required>
                     </div>
                     <div class="ccfield-prepend">
                         <input class="ccformfield" name="grammage" type="number" min="0" step="10" placeholder="Grammage" maxlength='8' value="@articleAModifier.Grammage">
