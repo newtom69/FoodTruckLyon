@@ -43,7 +43,7 @@ namespace FoodTruck
             defaults: new { controller = "Compte", action = "ObtenirDroitsAdmin", codeVerification = UrlParameter.Optional });
 
             routes.MapRoute("Github", "Github",
-            defaults: new { controller = "Home", action = "Github");
+            defaults: new { controller = "Home", action = "Github" });
 
             routes.MapRoute("Default", "{controller}/{action}/{id}",
             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
