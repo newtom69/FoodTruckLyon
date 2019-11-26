@@ -34,6 +34,12 @@ namespace FoodTruck.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult Github()
+        {
+            return Redirect("https://github.com/newtom69/FoodTruckLyon");
+        }
+
         [HttpPost, ValidateInput(false)]
         public ActionResult Contact(string nom, string prenom, string email, string comments)
         {
