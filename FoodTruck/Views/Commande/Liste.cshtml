@@ -60,7 +60,7 @@
                     </div>
                     @if (boutonFacture)
                     {
-                        using (Html.BeginForm("CommandeVersPdf", "Facture", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        using (Html.BeginForm("CommandeVersPdf", "Facture", new { area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
                             <input name="commandeId" type="hidden" value="@c.Commande.Id">
                             <div class="ccfield-prepend">

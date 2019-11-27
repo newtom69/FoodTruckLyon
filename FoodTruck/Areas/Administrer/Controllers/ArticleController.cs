@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
@@ -10,9 +11,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerArticleController : ControllerParentAdministrer
+    public class ArticleController : ControllerParent
     {
         [HttpGet]
         public ActionResult Ajouter()
@@ -153,7 +154,7 @@ namespace FoodTruck.Controllers
                         TempData["message"] = new Message(ex.Message, TypeMessage.Erreur);
                     }
                 }
-                return RedirectToAction("Modifier", "AdministrerArticle");
+                return RedirectToAction("Modifier", "Article", new { area = "Administrer" });
             }
             else
             {

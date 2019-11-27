@@ -1,8 +1,8 @@
-﻿namespace FoodTruck.Controllers
+﻿namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class ControllerParentAdministrer : ControllerParent
+    public class ControllerParent : FoodTruck.Controllers.ControllerParent
     {
-        public ControllerParentAdministrer()
+        public ControllerParent()
         {
             ViewBag.PanierLatteralDesactive = true;
             ViewBag.ModeAdmin = true;

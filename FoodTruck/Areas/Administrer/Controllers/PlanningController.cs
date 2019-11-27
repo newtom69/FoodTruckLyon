@@ -1,12 +1,13 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.ViewModels;
 using System;
 using System.Net;
 using System.Web.Mvc;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerPlanningController : ControllerParentAdministrer
+    public class PlanningController : ControllerParent
     {
         [HttpGet]
         public ActionResult FermeturesExceptionnelles()

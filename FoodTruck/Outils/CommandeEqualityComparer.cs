@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FoodTruck.Models;
+using System.Collections.Generic;
 
 namespace FoodTruck.Outils
 {

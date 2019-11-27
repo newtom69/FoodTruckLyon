@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
 using System.Linq;
+using FoodTruck.Models;
 
 namespace FoodTruck.Controllers
 {

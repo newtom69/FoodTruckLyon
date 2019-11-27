@@ -19,13 +19,12 @@ namespace FoodTruck
             defaults: new { controller = "Article", action = "AjouterEnBase", id = UrlParameter.Optional });
 
             routes.MapRoute("ArticleDirect", "Article/{nom}",
-            defaults: new { controller = "Article", action = "Details" });
+            defaults: new { controller = "Article", action = "Details" },
+            namespaces: new[] { "FoodTruck.Controllers" });
 
             routes.MapRoute("Article", "Article/{action}/{nom}",
-            defaults: new { controller = "Article", action = "Index", nom = UrlParameter.Optional });
-
-            routes.MapRoute("Articles", "Articles",
-            defaults: new { controller = "Article", action = "Index" });
+            defaults: new { controller = "Article", action = "Index", nom = UrlParameter.Optional },
+            namespaces: new[] { "FoodTruck.Controllers" });
 
             routes.MapRoute("PanierAjoutArticleDirect", "Panier/{nom}",
             defaults: new { controller = "Panier", action = "Ajouter" });
@@ -46,7 +45,8 @@ namespace FoodTruck
             defaults: new { controller = "Home", action = "Github" });
 
             routes.MapRoute("Default", "{controller}/{action}/{id}",
-            defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+            defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+            namespaces: new[] { "FoodTruck.Controllers" });
 
 
 

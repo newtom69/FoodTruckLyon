@@ -7,10 +7,11 @@ using FoodTruck.DAL;
 using FoodTruck.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using FoodTruck.Models;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerClientController : ControllerParentAdministrer
+    public class ClientController : ControllerParent
     {
         [HttpGet]
         public ActionResult Recherche()

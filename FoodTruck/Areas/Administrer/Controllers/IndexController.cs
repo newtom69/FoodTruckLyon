@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerController : ControllerParentAdministrer
+    public class IndexController : ControllerParent
     {
         [HttpGet]
         public ActionResult Index()

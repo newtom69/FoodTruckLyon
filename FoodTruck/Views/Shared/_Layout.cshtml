@@ -1,4 +1,5 @@
-﻿@using FoodTruck.ViewModels
+﻿@using FoodTruck.Models
+@using FoodTruck.ViewModels
 @using System.Configuration
 @{
     string dossierImagesArticles = ConfigurationManager.AppSettings["PathImagesArticles"];
@@ -50,19 +51,19 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
-                    <li>@Html.ActionLink("A propos", "APropos", "Home")</li>
-                    <li>@Html.ActionLink("Notre carte", "Index", "Article")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Accueil", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("A propos", "APropos", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Notre carte", "Index", "Article", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, null)</li>
                     @if (ViewBag.MenuAdmin != null)
                     {
-                        <li>@Html.ActionLink("Administration", "Index", "Administrer")</li>
+                        <li>@Html.ActionLink("Administration", "Index", "Index", new { area = "Administrer" }, null)</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Votre compte", "Index", "Compte")</li>
+                        <li>@Html.ActionLink("Votre compte", "Index", "Compte", new { area = "" }, null)</li>
                     }
-                    <li>@Html.ActionLink($"Panier ({nombreArticlesDansPanier})", "Index", "Panier")</li>
+                    <li>@Html.ActionLink($"Panier ({nombreArticlesDansPanier})", "Index", "Panier", new { area = "" }, null)</li>
                 </ul>
             </div>
         </div>

@@ -163,17 +163,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrer\AdministrerAreaRegistration.cs" />
-    <Compile Include="Controllers\AdministrerDonneeController.cs" />
-    <Compile Include="Controllers\AdministrerController.cs" />
-    <Compile Include="Controllers\AdministrerArticleController.cs" />
-    <Compile Include="Controllers\AdministrerClientController.cs" />
-    <Compile Include="Controllers\AdministrerCommandeController.cs" />
-    <Compile Include="Controllers\AdministrerPlanningController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\DonneeController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\IndexController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\ArticleController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\ClientController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\CommandeController.cs" />
+    <Compile Include="Areas\Administrer\Controllers\PlanningController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
     <Compile Include="Controllers\CompteController.cs" />
     <Compile Include="Controllers\ControllerParent.cs" />
-    <Compile Include="Controllers\ControllerParentAdministrer.cs" />
+    <Compile Include="Areas\Administrer\Controllers\ControllerParent.cs" />
     <Compile Include="Controllers\ErreurController.cs" />
     <Compile Include="Controllers\FactureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -355,6 +355,7 @@
       <DependentUpon>FoodTruckModels.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Administrer\Views\web.config" />
+    <Content Include="Areas\Administrer\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\ftp ikoula http2.pubxml" />
     <None Include="Properties\PublishProfiles\Ftp Ikoula.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -395,25 +396,25 @@
     <Content Include="Views\Article\Details.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Panier\Index.cshtml" />
-    <Content Include="Views\AdministrerArticle\Ajouter.cshtml" />
-    <Content Include="Views\AdministrerArticle\Modifier.cshtml" />
+    <Content Include="Areas\Administrer\Views\Article\Ajouter.cshtml" />
+    <Content Include="Areas\Administrer\Views\Article\Modifier.cshtml" />
     <Content Include="Views\Compte\Connexion.cshtml" />
     <Content Include="Views\Compte\Creation.cshtml" />
     <Content Include="Views\Compte\Profil.cshtml" />
-    <Content Include="Views\AdministrerCommande\EnCours.cshtml" />
-    <Content Include="Views\AdministrerCommande\Recherche.cshtml" />
+    <Content Include="Areas\Administrer\Views\Commande\EnCours.cshtml" />
+    <Content Include="Areas\Administrer\Views\Commande\Recherche.cshtml" />
     <Content Include="Views\Compte\Commandes.cshtml" />
-    <Content Include="Views\AdministrerCommande\AStatuer.cshtml" />
-    <Content Include="Views\Administrer\Index.cshtml" />
-    <Content Include="Views\AdministrerPlanning\FermeturesExceptionnelles.cshtml" />
-    <Content Include="Views\AdministrerPlanning\OuverturesExceptionnelles.cshtml" />
-    <Content Include="Views\AdministrerPlanning\OuverturesHebdomadaires.cshtml" />
-    <Content Include="Views\AdministrerCommande\Futures.cshtml" />
-    <Content Include="Views\AdministrerCommande\PendantFermetures.cshtml" />
-    <Content Include="Views\AdministrerDonnee\Purger.cshtml" />
-    <Content Include="Views\AdministrerClient\Recherche.cshtml" />
+    <Content Include="Areas\Administrer\Views\Commande\AStatuer.cshtml" />
+    <Content Include="Areas\Administrer\Views\Index\Index.cshtml" />
+    <Content Include="Areas\Administrer\Views\Planning\FermeturesExceptionnelles.cshtml" />
+    <Content Include="Areas\Administrer\Views\Planning\OuverturesExceptionnelles.cshtml" />
+    <Content Include="Areas\Administrer\Views\Planning\OuverturesHebdomadaires.cshtml" />
+    <Content Include="Areas\Administrer\Views\Commande\Futures.cshtml" />
+    <Content Include="Areas\Administrer\Views\Commande\PendantFermetures.cshtml" />
+    <Content Include="Areas\Administrer\Views\Donnee\Purger.cshtml" />
+    <Content Include="Areas\Administrer\Views\Client\Recherche.cshtml" />
     <Content Include="Views\Compte\OubliMotDePasse.cshtml" />
-    <Content Include="Views\AdministrerClient\DonnerDroitsAdmin.cshtml" />
+    <Content Include="Areas\Administrer\Views\Client\DonnerDroitsAdmin.cshtml" />
     <Content Include="Views\Facture\Guid.cshtml" />
     <Content Include="Views\Commande\Liste.cshtml" />
     <None Include="Views\Web.Debug.config">
@@ -426,9 +427,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
-    <Folder Include="Areas\Administrer\Controllers\" />
-    <Folder Include="Areas\Administrer\Models\" />
-    <Folder Include="Areas\Administrer\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

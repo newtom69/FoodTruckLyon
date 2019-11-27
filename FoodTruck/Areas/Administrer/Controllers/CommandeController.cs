@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
 using System;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerCommandeController : ControllerParentAdministrer
+    public class CommandeController : ControllerParent
     {
         [HttpGet]
         public ActionResult EnCours()
@@ -58,9 +59,7 @@ namespace FoodTruck.Controllers
             {
                 List<Commande> commandes = new CommandeDAL().CommandesAStatuer();
                 if (commandes.Count == 0)
-                {
                     TempData["message"] = new Message("Vous n'avez aucune commande à statuer", TypeMessage.Info);
-                }
                 List<CommandeViewModel> listeCommandesViewModel = new List<CommandeViewModel>();
                 foreach (Commande commande in commandes)
                 {
@@ -129,6 +128,8 @@ namespace FoodTruck.Controllers
             if (AdminCommande)
             {
                 List<Commande> commandes = new CommandeDAL().CommandesFutures();
+                if (commandes.Count == 0)
+                    TempData["message"] = new Message("Vous n'avez aucune commande à venir", TypeMessage.Info);
                 List<CommandeViewModel> listeCommandesViewModel = new List<CommandeViewModel>();
                 foreach (Commande commande in commandes)
                 {

@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace FoodTruck.Controllers
+namespace FoodTruck.Areas.Administrer.Controllers
 {
-    public class AdministrerDonneeController : ControllerParentAdministrer
+    public class DonneeController : ControllerParent
     {
         [HttpGet]
         public ActionResult Purger()
