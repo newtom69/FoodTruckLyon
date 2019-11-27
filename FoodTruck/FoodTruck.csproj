@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Administrer\AdministrerAreaRegistration.cs" />
     <Compile Include="Controllers\AdministrerDonneeController.cs" />
     <Compile Include="Controllers\AdministrerController.cs" />
     <Compile Include="Controllers\AdministrerArticleController.cs" />
@@ -353,6 +354,7 @@
     <Content Include="Models\FoodTruckModels.edmx.diagram">
       <DependentUpon>FoodTruckModels.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Administrer\Views\web.config" />
     <None Include="Properties\PublishProfiles\ftp ikoula http2.pubxml" />
     <None Include="Properties\PublishProfiles\Ftp Ikoula.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -424,6 +426,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="Areas\Administrer\Controllers\" />
+    <Folder Include="Areas\Administrer\Models\" />
+    <Folder Include="Areas\Administrer\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
