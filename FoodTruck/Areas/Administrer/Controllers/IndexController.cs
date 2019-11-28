@@ -8,7 +8,7 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (AdminCommande || AdminArticle || AdminPlanning || AdminUtilisateur)
+            if (AdminCommande || AdminArticle || AdminPlanning || AdminClient)
                 return View();
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);

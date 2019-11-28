@@ -16,7 +16,7 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpGet]
         public ActionResult Recherche()
         {
-            if (AdminUtilisateur)
+            if (AdminClient)
                 return View(null as List<Client>);
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -25,22 +25,22 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpPost]
         public ActionResult Recherche(string recherche)
         {
-            if (AdminUtilisateur)
+            if (AdminClient)
             {
                 ViewBag.Recherche = recherche;
 
                 string[] tabRecherche = recherche.Split(' ');
-                List<Client>[] tabUtilisateurs = new List<Client>[tabRecherche.Length];
+                List<Client>[] tabClients = new List<Client>[tabRecherche.Length];
 
                 for (int i = 0; i < tabRecherche.Length; i++)
-                    tabUtilisateurs[i] = new ClientDAL().Recherche(tabRecherche[i]);
+                    tabClients[i] = new ClientDAL().Recherche(tabRecherche[i]);
 
-                List<Client> utilisateurs = tabUtilisateurs[0];
-                for (int i = 1; i < tabUtilisateurs.Length; i++)
-                    utilisateurs = utilisateurs.Intersect(tabUtilisateurs[i], new UtilisateurEqualityComparer()).ToList();
-                if (utilisateurs.Count == 0)
+                List<Client> clients = tabClients[0];
+                for (int i = 1; i < tabClients.Length; i++)
+                    clients = clients.Intersect(tabClients[i], new ClientEqualityComparer()).ToList();
+                if (clients.Count == 0)
                     TempData["message"] = new Message("Aucun client ne correspond à votre recherche.\nVeuillez élargir vos critères de recherche", TypeMessage.Avertissement);
-                return View(utilisateurs);
+                return View(clients);
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -49,7 +49,7 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpGet]
         public ActionResult DonnerDroitsAdmin()
         {
-            if (AdminUtilisateur)
+            if (AdminClient)
                 return View();
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -58,11 +58,13 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpPost]
         public ActionResult DonnerDroitsAdmin(string email, string nom, string prenom)
         {
-            if (AdminUtilisateur)
+            if (AdminClient)
             {
                 int dureeValidite = int.Parse(ConfigurationManager.AppSettings["DureeValiditeLienDroitsAdmin"]);
                 string codeVerification = Guid.NewGuid().ToString("n");
                 string url = $"{Request.Url.Scheme}://{Request.Url.Authority}/Compte/ObtenirDroitsAdmin/{codeVerification}";
+                DateTime finValidite = DateTime.Now.AddMinutes(dureeValidite);
+                string stringFinValidite = finValidite.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h");
 
                 Client client = new Client
                 {
@@ -78,9 +80,9 @@ namespace FoodTruck.Areas.Administrer.Controllers
                     "\n" +
                     url +
                     "\n\n" +
-                    $"Attention, ce lien expirera dans {dureeValidite / 60} heures et n'est valable que pour l'adresse {email}";
+                    $"Attention, ce lien expirera le {stringFinValidite} et n'est valable que pour l'adresse {email}";
                 if (Utilitaire.EnvoieMail(email, sujetMail, message))
-                    TempData["message"] = new Message($"Un email de confirmation vient d'être envoyé à l'adresse {email}.\nIl expirera dans {dureeValidite / 60} heures", TypeMessage.Info);
+                    TempData["message"] = new Message($"Un email de confirmation vient d'être envoyé à l'adresse {email}.\nIl expirera le {stringFinValidite}", TypeMessage.Info);
                 else
                     TempData["message"] = new Message("Erreur dans l'envoi du mail.\nVeuillez rééssayer plus tard", TypeMessage.Erreur);
 

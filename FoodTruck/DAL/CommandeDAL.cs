@@ -116,7 +116,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal List<Commande> CommandesUtilisateur(int id, int max = int.MaxValue)
+        internal List<Commande> CommandesClient(int id, int max = int.MaxValue)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -128,10 +128,10 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal double RemiseTotaleUtilisateur(int id)
+        internal double RemiseTotaleClient(int id)
         {
             double remise = 0;
-            List<Commande> commandes = CommandesUtilisateur(id);
+            List<Commande> commandes = CommandesClient(id);
             foreach (Commande commande in commandes)
             {
                 remise += commande.RemiseCommerciale + commande.RemiseFidelite;
@@ -151,7 +151,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal List<Commande> CommandesEnCoursUtilisateur(int id)
+        internal List<Commande> CommandesEnCoursClient(int id)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {

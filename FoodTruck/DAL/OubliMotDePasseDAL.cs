@@ -19,14 +19,14 @@ namespace FoodTruck.DAL
                 return oubliMotDePasse;
             }
         }
-        internal void Ajouter(int utilisateurId, string codeVerification, DateTime dateFinValidite)
+        internal void Ajouter(int clientId, string codeVerification, DateTime dateFinValidite)
         {
-            Supprimer(utilisateurId);
+            Supprimer(clientId);
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
                 {
-                    ClientId = utilisateurId,
+                    ClientId = clientId,
                     CodeVerification = codeVerification,
                     DateFinValidite = dateFinValidite
                 };
@@ -35,13 +35,13 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal void Supprimer(int utilisateurId)
+        internal void Supprimer(int clientId)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<OubliMotDePasse> listeOubliMotDePasse =
                     (from u in db.OubliMotDePasse
-                     where u.ClientId == utilisateurId
+                     where u.ClientId == clientId
                      select u).ToList();
                 db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
                 db.SaveChanges();

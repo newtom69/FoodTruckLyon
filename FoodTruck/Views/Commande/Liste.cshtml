@@ -37,9 +37,9 @@
                 <div class="gestionCommandeArticle">
                     <h4>Commande n° : @c.Commande.Id</h4>
                     <div id="marquerCommande">
-                        @if (enCours)
+                        @if (enCours && (ViewBag.ModeAdmin || c.Commande.DateRetrait > DateTime.Now))
                         {
-                            using (Html.BeginForm("Annuler", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            using (Html.BeginForm("Annuler", "Commande", new { area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 <input name="commandeId" type="hidden" value="@c.Commande.Id">
                                 <div class="ccfield-prepend">
@@ -49,7 +49,7 @@
                         }
                         @if (ViewBag.ModeAdmin && !c.Commande.Retrait)
                         {
-                            using (Html.BeginForm("Retirer", "Commande", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            using (Html.BeginForm("Retirer", "Commande", new { area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 <input name="commandeId" type="hidden" value="@c.Commande.Id">
                                 <div class="ccfield-prepend">
@@ -100,7 +100,7 @@
                     </section>
                     @if (ViewBag.ModeClient)
                     {
-                        using (Html.BeginForm("ReprendreArticles", (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        using (Html.BeginForm("ReprendreArticles", "Commande", new { area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
                             <div>
                                 <input name="viderPanier" type="checkbox" value="true">

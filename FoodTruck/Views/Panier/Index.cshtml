@@ -1,4 +1,5 @@
-﻿@using System.Globalization
+﻿@using FoodTruck.Models
+@using System.Globalization
 @using FoodTruck.ViewModels
 @using System.Configuration
 @model PanierViewModel
@@ -40,7 +41,7 @@
     }
 
     function MajCodePromo() {
-        document.getElementById("codePromo").value = document.getElementById("codePromoUtilisateur").value;
+        document.getElementById("codePromo").value = document.getElementById("codePromoClient").value;
     }
 </script>
 
@@ -87,7 +88,7 @@
             <div class="listePanier">
                 @using (Html.BeginForm("Index", "Panier", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
                 {
-                    <input id="codePromoUtilisateur" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="@codePromo" size="1">
+                    <input id="codePromoClient" class="ccformfield" type="text" placeholder="bon d'achat ou code promo" maxlength='20' name="codePromo" value="@codePromo" size="1">
                     <div class="verifierAfficherValiditeRemise">
                         <button class="verifierCodeRemise" type="submit">Vérifier</button>
                         <input hidden id="hiddenRemiseCommerciale" value="@remiseCommercialeMontant">

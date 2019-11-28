@@ -23,7 +23,7 @@ namespace FoodTruck.Outils
         }
     }
 
-    class UtilisateurEqualityComparer : IEqualityComparer<Client>
+    class ClientEqualityComparer : IEqualityComparer<Client>
     {
         public bool Equals(Client u1, Client u2)
         {

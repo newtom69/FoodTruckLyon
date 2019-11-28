@@ -28,17 +28,18 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Guid" Type="char" MaxLength="36" Nullable="false" />
-          <Property Name="Email" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="Mdp" Type="nchar" MaxLength="64" Nullable="false" />
           <Property Name="Nom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Prenom" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Telephone" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="Cagnotte" Type="int" Nullable="false" />
+          <Property Name="Inscription" Type="date" Nullable="false" />
           <Property Name="AdminCommande" Type="bit" Nullable="false" />
-          <Property Name="AdminUtilisateur" Type="bit" Nullable="false" />
+          <Property Name="AdminClient" Type="bit" Nullable="false" />
           <Property Name="AdminArticle" Type="bit" Nullable="false" />
           <Property Name="AdminPlanning" Type="bit" Nullable="false" />
-          <Property Name="Inscription" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="CodePromo">
           <Key>
@@ -442,14 +443,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Guid" Type="String" Nullable="false" MaxLength="36" FixedLength="true" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="80" FixedLength="true" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Mdp" Type="String" Nullable="false" MaxLength="64" FixedLength="true" Unicode="true" />
           <Property Name="Nom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Prenom" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Telephone" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Cagnotte" Type="Int32" Nullable="false" />
           <Property Name="AdminCommande" Type="Boolean" Nullable="false" />
-          <Property Name="AdminUtilisateur" Type="Boolean" Nullable="false" />
           <Property Name="AdminArticle" Type="Boolean" Nullable="false" />
           <Property Name="AdminPlanning" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Commande" Relationship="omasvui147994fr33943_foodtruckModel.FK_Commande_Utilisateur" FromRole="Client" ToRole="Commande" />
@@ -457,6 +457,8 @@
           <NavigationProperty Name="Panier" Relationship="omasvui147994fr33943_foodtruckModel.FK_Panier_Utilisateur" FromRole="Client" ToRole="Panier" />
           <NavigationProperty Name="Visite" Relationship="omasvui147994fr33943_foodtruckModel.FK_Visite_Utilisateur" FromRole="Client" ToRole="Visite" />
           <Property Name="Inscription" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="AdminClient" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="CodePromo">
           <Key>
@@ -764,10 +766,11 @@
           <EntitySetMapping Name="Client">
             <EntityTypeMapping TypeName="omasvui147994fr33943_foodtruckModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="AdminClient" ColumnName="AdminClient" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Inscription" ColumnName="Inscription" />
                 <ScalarProperty Name="AdminPlanning" ColumnName="AdminPlanning" />
                 <ScalarProperty Name="AdminArticle" ColumnName="AdminArticle" />
-                <ScalarProperty Name="AdminUtilisateur" ColumnName="AdminUtilisateur" />
                 <ScalarProperty Name="AdminCommande" ColumnName="AdminCommande" />
                 <ScalarProperty Name="Cagnotte" ColumnName="Cagnotte" />
                 <ScalarProperty Name="Telephone" ColumnName="Telephone" />

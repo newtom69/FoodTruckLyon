@@ -9,12 +9,12 @@ namespace FoodTruck.DAL
     {
         public int ClientId { get; set; }
 
-        public PanierDAL(int utilisateurId)
+        public PanierDAL(int clientId)
         {
-            ClientId = utilisateurId;
+            ClientId = clientId;
         }
 
-        public List<Panier> ListerPanierUtilisateur()
+        public List<Panier> ListerPanierClient()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -85,7 +85,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        public List<Article> ArticlesPanierUtilisateur()
+        public List<Article> ArticlesPanierClient()
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -99,7 +99,7 @@ namespace FoodTruck.DAL
 
         internal List<Article> SupprimerArticlesPasDansCarte()
         {
-            List<Article> articles = ArticlesPanierUtilisateur();
+            List<Article> articles = ArticlesPanierClient();
             List<Article> articlesPasDansCarte = articles.FindAll(art => !art.DansCarte);
 
             using (foodtruckEntities db = new foodtruckEntities())

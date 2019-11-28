@@ -8,7 +8,7 @@ namespace FoodTruck.DAL
 {
     class VisiteDAL
     {
-        public static void Enregistrer(int lUtilisateurId)
+        public static void Enregistrer(int clientId)
         {
             string adresseIP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
             string ipsNonTracees = ConfigurationManager.AppSettings["ListIpDoNotTrack"];
@@ -20,19 +20,19 @@ namespace FoodTruck.DAL
                 string UrlOrigine = "";
                 if (System.Web.HttpContext.Current.Request.UrlReferrer != null)
                     UrlOrigine = System.Web.HttpContext.Current.Request.UrlReferrer.ToString();
-                Visite laVisite = new Visite
+                Visite visite = new Visite
                 {
                     Url = url,
                     Date = DateTime.Now,
                     AdresseIp = adresseIP,
-                    ClientId = lUtilisateurId,
+                    ClientId = clientId,
                     Navigateur = navigateur,
                     UrlOrigine = UrlOrigine,
                     NavigateurMobile = Utilitaire.NavigateurMobile(),
                 };
                 using (foodtruckEntities db = new foodtruckEntities())
                 {
-                    db.Visite.Add(laVisite);
+                    db.Visite.Add(visite);
                     db.SaveChanges();
                 }
             }

@@ -12,7 +12,7 @@ namespace FoodTruck.Areas.Administrer.Controllers
         [HttpGet]
         public ActionResult Purger()
         {
-            if (AdminUtilisateur)
+            if (AdminClient)
             {
                 ViewBag.PanierProspectSupprimes = $"Nombre d'enregistrements de PanierProspect supprimés :  {new PanierProspectDAL("").Purger(30)}";
                 ViewBag.OubliMotDePasseSupprimes = $"Nombre d'enregistrements de OubliMotDePasse supprimés : {new OubliMotDePasseDAL().Purger()}";

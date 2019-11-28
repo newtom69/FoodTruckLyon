@@ -18,7 +18,7 @@ namespace FoodTruck.Controllers
         protected PanierViewModel PanierViewModel { get; set; }
         protected bool AdminArticle { get; set; }
         protected bool AdminCommande { get; set; }
-        protected bool AdminUtilisateur { get; set; }
+        protected bool AdminClient { get; set; }
         protected bool AdminPlanning { get; set; }
 
         protected override void Initialize(RequestContext requestContext)
@@ -54,7 +54,7 @@ namespace FoodTruck.Controllers
             if (Client.Id != 0)
             {
                 DonnerLesDroitsdAcces();
-                PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierUtilisateur());
+                PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierClient());
             }
             else
             {
@@ -91,7 +91,7 @@ namespace FoodTruck.Controllers
             PanierViewModel.Trier();
             ViewBag.Panier = PanierViewModel;
 
-            if (Client.AdminArticle || Client.AdminCommande || Client.AdminUtilisateur || Client.AdminPlanning)
+            if (Client.AdminArticle || Client.AdminCommande || Client.AdminClient || Client.AdminPlanning)
                 ViewBag.MenuAdmin = true;
             if (Client.AdminArticle)
                 ViewBag.AdminArticle = true;
@@ -120,7 +120,7 @@ namespace FoodTruck.Controllers
                 PanierDAL lePanierDal = new PanierDAL(Client.Id);
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
                 {
-                    Panier panier = lePanierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
+                    Panier panier = lePanierDal.ListerPanierClient().Find(pan => pan.ArticleId == article.Article.Id);
                     if (panier == null)
                         lePanierDal.Ajouter(article.Article, article.Quantite);
                     else
@@ -131,7 +131,7 @@ namespace FoodTruck.Controllers
         protected void RecupererPanierEnBase()
         {
             if (Client.Id != 0)
-                PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierUtilisateur());
+                PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierClient());
             else
                 PanierViewModel = new PanierViewModel(new PanierProspectDAL(ProspectGuid).ListerPanierProspect());
         }
@@ -141,13 +141,13 @@ namespace FoodTruck.Controllers
             //todo mettre dans Getter ?
             if (Client.AdminArticle) AdminArticle = true;
             if (Client.AdminCommande) AdminCommande = true;
-            if (Client.AdminUtilisateur) AdminUtilisateur = true;
+            if (Client.AdminClient) AdminClient = true;
             if (Client.AdminPlanning) AdminPlanning = true;
         }
 
         private void RetirerLesDroitsdAcces()
         {
-            AdminArticle = AdminCommande = AdminUtilisateur = AdminPlanning = false;
+            AdminArticle = AdminCommande = AdminClient = AdminPlanning = false;
         }
         private void MettrelUrlEnSession()
         {

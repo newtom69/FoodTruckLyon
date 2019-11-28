@@ -32,15 +32,15 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Profil()
         {
-            ViewBag.RemiseTotalUtilisateur = new CommandeDAL().RemiseTotaleUtilisateur(Client.Id);
+            ViewBag.RemiseTotalClient = new CommandeDAL().RemiseTotaleClient(Client.Id);
             return View(Client);
         }
 
         [HttpPost]
         public ActionResult Profil(string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
         {
-            ClientDAL utilisateurDAL = new ClientDAL();
-            Client client = utilisateurDAL.Connexion(ancienEmail, ancienMdp);
+            ClientDAL clientDAL = new ClientDAL();
+            Client client = clientDAL.Connexion(ancienEmail, ancienMdp);
             if (client == null)
             {
                 TempData["message"] = new Message("L'ancien mot de passe n'est pas correct.\nAucune modification n'a été prise en compte.", TypeMessage.Erreur);
@@ -57,10 +57,10 @@ namespace FoodTruck.Controllers
 
                 if (nouveauMdp != "")
                 {
-                    if (utilisateurDAL.Modification(client.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
+                    if (clientDAL.Modification(client.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
                     {
                         TempData["message"] = new Message("La modification du profil a bien été prise en compte.", TypeMessage.Ok);
-                        Client = utilisateurDAL.Connexion(email, nouveauMdp);
+                        Client = clientDAL.Connexion(email, nouveauMdp);
                     }
                 }
                 else
@@ -73,7 +73,7 @@ namespace FoodTruck.Controllers
                 }
             }
             CommandeDAL commandeDAL = new CommandeDAL();
-            ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
+            ViewBag.RemiseTotalClient = commandeDAL.RemiseTotaleClient(Client.Id);
             return View(Client);
         }
 
@@ -108,9 +108,9 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Connexion(string email, string mdp, bool connexionAuto)
+        public ActionResult Connexion(string loginEmail, string mdp, bool connexionAuto)
         {
-            Client = new ClientDAL().Connexion(email, mdp);
+            Client = new ClientDAL().Connexion(loginEmail, mdp);
             if (Client != null)
             {
                 ViewBag.Client = Client;
@@ -120,7 +120,7 @@ namespace FoodTruck.Controllers
 
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
-                string message = $"Bienvenue {Client.Prenom} {Client.Nom}\nVous avez {Client.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription du {Client.Inscription.ToString("dd MMMM yyyy")}, vous avez eu {new CommandeDAL().RemiseTotaleUtilisateur(Client.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
+                string message = $"Bienvenue {Client.Prenom} {Client.Nom}\nVous avez {Client.Cagnotte} € sur votre cagnotte fidélité\nDepuis votre inscription du {Client.Inscription.ToString("dd MMMM yyyy")}, vous avez eu {new CommandeDAL().RemiseTotaleClient(Client.Id).ToString("C2", new CultureInfo("fr-FR"))} de remises sur vos commandes";
                 TempData["message"] = new Message(message, TypeMessage.Ok);
                 return Redirect(UrlCourante());
             }
@@ -156,24 +156,49 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Creation(string email, string mdp, string mdp2, string nom, string prenom, string telephone, bool connexionAuto)
+        public ActionResult Creation(string email, string login, string mdp, string mdp2, string nom, string prenom, string telephone, bool connexionAuto)
         {
+            ViewBag.Nom = nom;
+            ViewBag.Prenom = prenom;
+            ViewBag.Email = email;
+            ViewBag.Login = login;
+            ViewBag.Telephone = telephone;
+            ViewBag.Mdp = mdp;
+            ViewBag.Mdp2 = mdp2;
+
             Client client = Client;
             if (Client.Id == 0)
             {
-                if (VerifMdp(mdp, mdp2))
+                StringBuilder messageConstruction = new StringBuilder();
+                bool erreur = false;
+                ClientDAL clientDAL = new ClientDAL();
+                if (clientDAL.ExisteEmail(email))
                 {
-                    client = new ClientDAL().Creation(email, mdp, nom, prenom, telephone);
+                    erreur = true;
+                    ViewBag.ErreurEmail = true;
+                    messageConstruction.Append("- Un compte existe déjà avec cet Email.\n");
                 }
-                else
+                if (clientDAL.ExisteLogin(login))
                 {
-                    TempData["message"] = new Message("Mauvais choix de mots de passe.\nVeuillez réessayer (minimum 8 caractères et identiques)", TypeMessage.Erreur);
-                    ViewBag.Nom = nom;
-                    ViewBag.Prenom = prenom;
-                    ViewBag.Email = email;
-                    ViewBag.Telephone = telephone;
+                    erreur = true;
+                    ViewBag.ErreurLogin = true;
+                    messageConstruction.Append("- Un compte existe déjà avec ce nom d'utilisateur.\n");
+                }
+                if (!VerifMdp(mdp, mdp2))
+                {
+                    erreur = true;
+                    ViewBag.ErreurMdp = true;
+                    ViewBag.Mdp = "";
+                    ViewBag.Mdp2 = "";
+                    messageConstruction.Append("- Mauvais choix de mots de passe. (minimum 8 caractères et identiques)");
+                }
+                if(erreur)
+                {
+                    TempData["message"] = new Message(messageConstruction.ToString(), TypeMessage.Erreur);
                     return View();
                 }
+
+                client = new ClientDAL().Creation(email, login, mdp, nom, prenom, telephone);
             }
 
             if (client != null)
@@ -192,11 +217,11 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult OubliMotDePasse(string codeVerification)
         {
-            ClientDAL utilisateurDAL = new ClientDAL();
-            int utilisateurId = new OubliMotDePasseDAL().Verifier(codeVerification);
-            if (utilisateurId != 0)
+            ClientDAL clientDAL = new ClientDAL();
+            int clientId = new OubliMotDePasseDAL().Verifier(codeVerification);
+            if (clientId != 0)
             {
-                Client = utilisateurDAL.Details(utilisateurId);
+                Client = clientDAL.Details(clientId);
                 ViewBag.Client = Client;
                 Session["ClientId"] = Client.Id;
                 RecupererPanierProspectPuisSupprimer();
@@ -245,8 +270,8 @@ namespace FoodTruck.Controllers
             {
                 if (VerifMdp(mdp, mdp2))
                 {
-                    ClientDAL utilisateurDAL = new ClientDAL();
-                    if (utilisateurDAL.Modification(Client.Id, mdp) == 1)
+                    ClientDAL clientDAL = new ClientDAL();
+                    if (clientDAL.Modification(Client.Id, mdp) == 1)
                     {
                         TempData["message"] = new Message("La modification de votre mot de passe a bien été prise en compte", TypeMessage.Ok);
                     }
@@ -258,7 +283,7 @@ namespace FoodTruck.Controllers
                 }
 
                 CommandeDAL commandeDAL = new CommandeDAL();
-                ViewBag.RemiseTotalUtilisateur = commandeDAL.RemiseTotaleUtilisateur(Client.Id);
+                ViewBag.RemiseTotalClient = commandeDAL.RemiseTotaleClient(Client.Id);
                 return RedirectToAction("Connexion", "Compte");
             }
             else
@@ -268,35 +293,34 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult ObtenirDroitsAdmin(string codeVerification)
         {
-            ClientDAL utilisateurDAL = new ClientDAL();
+            ClientDAL clientDAL = new ClientDAL();
             CreerAdmin creerAdmin = new CreerAdminDAL().Verifier(codeVerification);
             if (creerAdmin != null)
             {
-                Client = utilisateurDAL.Details(creerAdmin.Email);
+                Client = clientDAL.Details(creerAdmin.Email);
+                string mdp = "";
                 if (Client == null)
                 {
-                    byte[] data = new byte[10];
-                    using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
-                    {
-                        rng.GetBytes(data);
-                    }
-                    string mdp = Encoding.UTF8.GetString(data).GetHash();
+                    mdp = Utilitaire.StringAleatoire(12);
                     string telephone = "";
-                    Client = utilisateurDAL.Creation(creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
+                    Client = clientDAL.Creation(creerAdmin.Email, creerAdmin.Email, mdp, creerAdmin.Nom, creerAdmin.Prenom, telephone);
                 }
-                utilisateurDAL.DonnerDroitAdmin(Client.Id);
+                clientDAL.DonnerDroitAdmin(Client.Id);
                 {
                     string mailFoodTruck = ConfigurationManager.AppSettings["MailFoodTruck"];
                     string objet = $"{Client.Prenom.Trim()} {Client.Nom.Trim()} a abtenu les droit admin";
-                    string message = $"le client {Client.Prenom.Trim()} {Client.Nom.Trim()} a obtenu les droits admin";
-                    Utilitaire.EnvoieMail(mailFoodTruck, objet, message);
+                    string messageMail = $"le client {Client.Prenom.Trim()} {Client.Nom.Trim()} a obtenu les droits admin";
+                    Utilitaire.EnvoieMail(mailFoodTruck, objet, messageMail);
                 }
                 ViewBag.Client = Client;
                 Session["ClientId"] = Client.Id;
                 RecupererPanierProspectPuisSupprimer();
                 SupprimerCookieProspect();
                 ConnexionAutomatique();
-                TempData["message"] = new Message("Félicitation ! Vous êtes maintenant administrateur du site.\nVous pouvez accéder au menu Administration\nVous serez connecté automatiquement à partir de cet appareil/navigateur\nSi vous changez de poste/navigateur, merci d'utiliser la fonctionnalité \"Oubli de mot de passe\" afin de définir votre propre mot de passe", TypeMessage.Info);
+                string message = "Félicitation ! Vous êtes maintenant administrateur du site.\nVous pouvez accéder au menu Administration";
+                if (mdp != "")
+                    message += $"\nVeuillez noter votre mot de passe ou bien le changer : {mdp}";
+                TempData["message"] = new Message(message, TypeMessage.Info);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -332,7 +356,7 @@ namespace FoodTruck.Controllers
                 PanierDAL panierDal = new PanierDAL(Client.Id);
                 foreach (ArticleViewModel article in (panierViewModelSauv).ArticlesDetailsViewModel)
                 {
-                    Panier panier = panierDal.ListerPanierUtilisateur().Find(pan => pan.ArticleId == article.Article.Id);
+                    Panier panier = panierDal.ListerPanierClient().Find(pan => pan.ArticleId == article.Article.Id);
                     if (panier == null)
                         panierDal.Ajouter(article.Article, article.Quantite);
                     else

@@ -22,7 +22,7 @@
         string prenomNom = prenom + " " + nom + ".";
         string telephone = @Model.Telephone.Trim();
         <div>Vous avez @Model.Cagnotte € sur votre cagnotte fidélité</div>
-        <div>Depuis votre inscription du @Model.Inscription.ToString("dd MMMM yyyy"), vous avez eu @ViewBag.RemiseTotalUtilisateur.ToString("C2", new CultureInfo("fr-FR")) de remises sur vos commandes </div>
+        <div>Depuis votre inscription du @Model.Inscription.ToString("dd MMMM yyyy"), vous avez eu @ViewBag.RemiseTotalClient.ToString("C2", new CultureInfo("fr-FR")) de remises sur vos commandes </div>
 
         @Html.Action("Liste", "Commande", new { id = "enCours" })
 

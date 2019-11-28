@@ -17,10 +17,10 @@ namespace FoodTruck.ViewModels
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
         }
 
-        internal PanierViewModel(List<Panier> panierUtilisateur)
+        internal PanierViewModel(List<Panier> panierClient)
         {
             ArticlesDetailsViewModel = new List<ArticleViewModel>();
-            foreach (Panier panier in panierUtilisateur)
+            foreach (Panier panier in panierClient)
             {
                 PrixTotalTTC += panier.PrixTotal;
                 ArticlesDetailsViewModel.Add(new ArticleViewModel(new ArticleDAL().Details(panier.ArticleId), panier.Quantite));
@@ -49,19 +49,19 @@ namespace FoodTruck.ViewModels
             ArticlesDetailsViewModel = ArticlesDetailsViewModel.OrderBy(x => x.Article.FamilleId).ThenBy(x => x.Article.Nom).ToList();
         }
 
-        internal bool Ajouter(Article article, int quantite = 1, int utilisateurId = 0, string prospectGuid = "")
+        internal bool Ajouter(Article article, int quantite = 1, int clientId = 0, string prospectGuid = "")
         {
             bool ajout = article.DansCarte ? true : false;
             if (ajout)
             {
-                bool sauvPanierClient = utilisateurId != 0 ? true : false;
+                bool sauvPanierClient = clientId != 0 ? true : false;
                 ArticleViewModel artcl = ArticlesDetailsViewModel.Find(art => art.Article.Id == article.Id);
                 if (artcl == null)
                 {
                     ArticleViewModel articleViewModel = new ArticleViewModel(article);
                     ArticlesDetailsViewModel.Add(articleViewModel);
                     if (sauvPanierClient)
-                        new PanierDAL(utilisateurId).Ajouter(article, quantite);
+                        new PanierDAL(clientId).Ajouter(article, quantite);
                     else
                         new PanierProspectDAL(prospectGuid).Ajouter(article, quantite);
                 }
@@ -70,7 +70,7 @@ namespace FoodTruck.ViewModels
                     artcl.Quantite += quantite;
                     artcl.PrixTotalTTC = Math.Round(artcl.PrixTotalTTC + quantite * artcl.Article.PrixTTC, 2);
                     if (sauvPanierClient)
-                        new PanierDAL(utilisateurId).ModifierQuantite(article, quantite);
+                        new PanierDAL(clientId).ModifierQuantite(article, quantite);
                     else
                         new PanierProspectDAL(prospectGuid).ModifierQuantite(article, quantite);
                 }

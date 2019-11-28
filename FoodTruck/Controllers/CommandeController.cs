@@ -24,19 +24,19 @@ namespace FoodTruck.Controllers
             {
                 case "dernieres":
                     const int nombreDernieresCommandes = 3;
-                    List<Commande> commandesenCours = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
+                    List<Commande> commandesenCours = commandeDAL.CommandesEnCoursClient(Client.Id);
                     TempData["MessageCommandes"] = "Vos dernières commandes";
-                    commandes = commandeDAL.CommandesUtilisateur(Client.Id).Except(commandesenCours, new CommandeEqualityComparer()).Take(nombreDernieresCommandes).ToList();
+                    commandes = commandeDAL.CommandesClient(Client.Id).Except(commandesenCours, new CommandeEqualityComparer()).Take(nombreDernieresCommandes).ToList();
                     break;
 
                 case "enCours":
                     TempData["MessageCommandes"] = "Vos commandes en cours";
-                    commandes = commandeDAL.CommandesEnCoursUtilisateur(Client.Id);
+                    commandes = commandeDAL.CommandesEnCoursClient(Client.Id);
                     break;
 
                 case "toutes":
                     TempData["MessageCommandes"] = "Toutes vos commandes";
-                    commandes = commandeDAL.CommandesUtilisateur(Client.Id);
+                    commandes = commandeDAL.CommandesClient(Client.Id);
                     break;
             }
             if (commandes != null && commandes.Count != 0)

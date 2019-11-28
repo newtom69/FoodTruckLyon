@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FoodTruck.Models
+namespace FoodTruck
 {
     using System;
     using System.Collections.Generic;

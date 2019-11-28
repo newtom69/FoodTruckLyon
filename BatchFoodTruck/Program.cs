@@ -1,4 +1,5 @@
 ﻿using FoodTruck.DAL;
+using FoodTruck.Outils;
 using System;
 using System.Configuration;
 

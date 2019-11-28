@@ -82,7 +82,7 @@ namespace FoodTruck.Controllers
             }
 
 
-            return Redirect("~/Panier/Index#codePromoUtilisateur");
+            return Redirect("~/Panier/Index#codePromoClient");
         }
 
         [HttpPost]
