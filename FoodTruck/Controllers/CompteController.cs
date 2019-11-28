@@ -37,43 +37,80 @@ namespace FoodTruck.Controllers
         }
 
         [HttpPost]
-        public ActionResult Profil(string ancienEmail, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
+        public ActionResult Profil(string ancienEmail, string login, string email, string ancienMdp, string nom, string prenom, string telephone, string mdp, string mdp2)
         {
+            ViewBag.Login = login;
+            ViewBag.Email = email;
+            ViewBag.Nom = nom;
+            ViewBag.Prenom = prenom;
+            ViewBag.Telephone = telephone;
+            ViewBag.Mdp = mdp;
+            ViewBag.AncienMdp = ancienMdp;
+
+            StringBuilder messageFabrique = new StringBuilder();
+
             ClientDAL clientDAL = new ClientDAL();
             Client client = clientDAL.Connexion(ancienEmail, ancienMdp);
+            bool erreur = false;
             if (client == null)
             {
-                TempData["message"] = new Message("L'ancien mot de passe n'est pas correct.\nAucune modification n'a été prise en compte.", TypeMessage.Erreur);
+                messageFabrique.Append("L'ancien mot de passe n'est pas correct.");
+                erreur = true;
+                ViewBag.AncienMdp = "";
             }
             else
             {
-                string nouveauMdp;
-                if (mdp == "" && mdp2 == "")
-                    nouveauMdp = ancienMdp;
-                else if (VerifMdp(mdp, mdp2))
-                    nouveauMdp = mdp;
-                else
-                    nouveauMdp = "";
-
-                if (nouveauMdp != "")
+                int verifClientId = clientDAL.ExisteLogin(login);
+                if (verifClientId !=0 && verifClientId != Client.Id)
                 {
-                    if (clientDAL.Modification(client.Id, nouveauMdp, email, nom, prenom, telephone) == 1)
+                    ViewBag.Login = "";
+                    messageFabrique.Append("Le nouveau nom d'utilisateur est déjà utilisé.\n");
+                    erreur = true;
+                }
+                verifClientId = clientDAL.ExisteEmail(email);
+                if (verifClientId != 0 && verifClientId != Client.Id)
+                {
+                    ViewBag.Email = "";
+                    messageFabrique.Append("Le nouvel Email est déjà utilisé.\n");
+                    erreur = true;
+                }
+                string nouveauMdp = "";
+                if (mdp == "" && mdp2 == "")
+                {
+                    nouveauMdp = ancienMdp;
+                }
+                else if (VerifMdp(mdp, mdp2))
+                {
+                    nouveauMdp = mdp;
+                }
+                else
+                {
+                    ViewBag.Mdp = "";
+                    messageFabrique.Append("Mauvais choix de mots de passe. (minimum 8 caractères et identiques)");
+                    erreur = true;
+                }
+                if (!erreur)
+                {
+                    if (clientDAL.Modification(client.Id, nouveauMdp, login, email, nom, prenom, telephone) == 1)
                     {
-                        TempData["message"] = new Message("La modification du profil a bien été prise en compte.", TypeMessage.Ok);
+                        messageFabrique.Append("La modification du profil a bien été prise en compte.");
                         Client = clientDAL.Connexion(email, nouveauMdp);
                     }
-                }
-                else
-                {
-                    TempData["message"] = new Message("Mauvais choix de mots de passe.\nVeuillez réessayer s'il vous plait (minimum 8 caractères et identiques)", TypeMessage.Erreur);
-                    ViewBag.Nom = nom;
-                    ViewBag.Prenom = prenom;
-                    ViewBag.Email = email;
-                    ViewBag.Telephone = telephone;
+                    else
+                    {
+                        messageFabrique.Append("Une erreur s'est produite lors de la mise à jour de vos données");
+                        erreur = true;
+                    }
                 }
             }
+            string message = messageFabrique.ToString();
+            if (erreur)
+                TempData["message"] = new Message(message, TypeMessage.Erreur);
+            else
+                TempData["message"] = new Message(message, TypeMessage.Ok);
+
             CommandeDAL commandeDAL = new CommandeDAL();
-            ViewBag.RemiseTotalClient = commandeDAL.RemiseTotaleClient(Client.Id);
+            ViewBag.RemiseTotalClient = commandeDAL.RemiseTotaleClient(Client.Id); //todo vérifier si code utile
             return View(Client);
         }
 
@@ -172,13 +209,13 @@ namespace FoodTruck.Controllers
                 StringBuilder messageConstruction = new StringBuilder();
                 bool erreur = false;
                 ClientDAL clientDAL = new ClientDAL();
-                if (clientDAL.ExisteEmail(email))
+                if (clientDAL.ExisteEmail(email) != 0)
                 {
                     erreur = true;
                     ViewBag.ErreurEmail = true;
                     messageConstruction.Append("- Un compte existe déjà avec cet Email.\n");
                 }
-                if (clientDAL.ExisteLogin(login))
+                if (clientDAL.ExisteLogin(login) != 0)
                 {
                     erreur = true;
                     ViewBag.ErreurLogin = true;
@@ -192,7 +229,7 @@ namespace FoodTruck.Controllers
                     ViewBag.Mdp2 = "";
                     messageConstruction.Append("- Mauvais choix de mots de passe. (minimum 8 caractères et identiques)");
                 }
-                if(erreur)
+                if (erreur)
                 {
                     TempData["message"] = new Message(messageConstruction.ToString(), TypeMessage.Erreur);
                     return View();
@@ -246,6 +283,8 @@ namespace FoodTruck.Controllers
                 Client client = new ClientDAL().Details(email);
                 if (client != null)
                 {
+                    DateTime finValidite = DateTime.Now.AddMinutes(dureeValidite);
+                    string stringFinValidite = finValidite.ToString("dddd dd MMMM yyyy à HH:mm").Replace(":", "h");
                     new OubliMotDePasseDAL().Ajouter(client.Id, codeVerification, DateTime.Now.AddMinutes(dureeValidite));
                     string sujetMail = "Procédure de réinitialisation de votre mot de passe";
                     string message = "Bonjour\n" +
@@ -254,7 +293,7 @@ namespace FoodTruck.Controllers
                         "\n" +
                         url +
                         "\n\nVous serez alors redirigé vers une page de réinitialisation de votre mot de passe.\n" +
-                        $"Attention, ce lien expirera dans {dureeValidite} minutes et n'est valable qu'une seule fois";
+                        $"Attention, ce lien expirera le {stringFinValidite} et n'est valable qu'une seule fois";
 
                     if (Utilitaire.EnvoieMail(email, sujetMail, message))
                         TempData["message"] = new Message($"Un email de réinitialisation de votre mot de passe vient de vous être envoyé.\nIl expirera dans {dureeValidite} minutes.", TypeMessage.Info);

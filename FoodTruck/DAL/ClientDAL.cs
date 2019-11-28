@@ -15,6 +15,7 @@ namespace FoodTruck.DAL
                 Client client = (from c in db.Client
                                  where c.Id == id
                                  select c).FirstOrDefault();
+                Trim(ref client);
                 return client;
             }
         }
@@ -26,11 +27,12 @@ namespace FoodTruck.DAL
                 Client client = (from c in db.Client
                                  where c.Email == email
                                  select c).FirstOrDefault();
+                Trim(ref client);
                 return client;
             }
         }
 
-        public bool ExisteEmail(string email)
+        public int ExisteEmail(string email)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -38,11 +40,10 @@ namespace FoodTruck.DAL
                                 where c.Email == email
                                 select c.Id).FirstOrDefault();
 
-                return clientId != 0 ? true : false;
-
+                return clientId;
             }
         }
-        public bool ExisteLogin(string login)
+        public int ExisteLogin(string login)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -50,8 +51,7 @@ namespace FoodTruck.DAL
                                 where c.Login == login
                                 select c.Id).FirstOrDefault();
 
-                return clientId != 0 ? true : false;
-
+                return clientId;
             }
         }
         public List<Client> Recherche(string recherche)
@@ -73,6 +73,7 @@ namespace FoodTruck.DAL
                 Client client = (from c in db.Client
                                  where (c.Email == loginEmail || c.Login == loginEmail) && c.Mdp == mdpHash
                                  select c).FirstOrDefault();
+                Trim(ref client);
                 return client;
             }
         }
@@ -83,6 +84,7 @@ namespace FoodTruck.DAL
                 Client client = (from c in db.Client
                                  where c.Guid == guid
                                  select c).FirstOrDefault();
+                Trim(ref client);
                 return client;
             }
 
@@ -129,12 +131,12 @@ namespace FoodTruck.DAL
                     Client client = new Client
                     {
                         Guid = guid,
-                        Email = email,
-                        Login = login,
+                        Email = email.Trim(),
+                        Login = login.Trim(),
                         Mdp = mdpHash,
-                        Nom = nom,
-                        Prenom = prenom,
-                        Telephone = telephone,
+                        Nom = nom.Trim(),
+                        Prenom = prenom.Trim(),
+                        Telephone = telephone.Trim(),
                         Cagnotte = 0,
                         Inscription = DateTime.Today
                     };
@@ -149,7 +151,7 @@ namespace FoodTruck.DAL
             }
         }
 
-        internal int Modification(int id, string mdp, string email = null, string nom = null, string prenom = null, string telephone = null)
+        internal int Modification(int id, string mdp, string login = null, string email = null, string nom = null, string prenom = null, string telephone = null)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
@@ -159,13 +161,15 @@ namespace FoodTruck.DAL
 
                 client.Mdp = mdp.GetHash();
                 if (email != null)
-                    client.Email = email;
+                    client.Email = email.Trim();
+                if (login != null)
+                    client.Login = login.Trim();
                 if (nom != null)
-                    client.Nom = nom;
+                    client.Nom = nom.Trim();
                 if (prenom != null)
-                    client.Prenom = prenom;
+                    client.Prenom = prenom.Trim();
                 if (telephone != null)
-                    client.Telephone = telephone;
+                    client.Telephone = telephone.Trim();
                 return db.SaveChanges();
             }
         }
@@ -180,6 +184,17 @@ namespace FoodTruck.DAL
 
                 client.AdminArticle = client.AdminCommande = client.AdminPlanning = true;
                 return db.SaveChanges();
+            }
+        }
+
+        private void Trim(ref Client client)
+        {
+            if (client != null)
+            {
+                client.Prenom = client.Prenom.Trim();
+                client.Nom = client.Nom.Trim();
+                client.Email = client.Email.Trim();
+                client.Login = client.Login.Trim();
             }
         }
     }

@@ -22,8 +22,8 @@
                     }
                 </select>
             </div>
-            <div><input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, 0, 0)" required></div>
-            <div><input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, 0, 0)" required></div>
+            <div><input class="ccformfield" id="heureDebut" title="heure de début" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, 0, 0)" required></div>
+            <div><input class="ccformfield" id="heureFin" title="heure de fin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, 0, 0)" required></div>
             <div><input class="boutonAjouter" type="submit" name="action" value="Ajouter"></div>
         </div>
     }
@@ -52,8 +52,8 @@
                         }
                     </select>
                 </div>
-                <div><input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, 0, 0" required></div>
-                <div><input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, 0, 0" required></div>
+                <div><input class="ccformfield" id="@heureDebutId" title="heure de début" name="heureDebut" type="time" value="@plage.Debut.ToString("hh\\:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, 0, 0" required></div>
+                <div><input class="ccformfield" id="@heureFinId" title="heure de fin" name="heureFin" type="time" value="@plage.Fin.ToString("hh\\:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, 0, 0" required></div>
                 <div><input class="boutonModifier" type="submit" name="action" value="Modifier"></div>
                 <div><input class="boutonSupprimer" type="submit" name="action" value="Supprimer"></div>
             </div>

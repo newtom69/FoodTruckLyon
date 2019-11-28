@@ -14,15 +14,15 @@
             <input name="dateId" type="hidden" value="@DateTime.MinValue">
             <div>
                 <div class="libelleDate">date de début</div>
-                <input class="ccformfield" id="dateDebut" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
+                <input class="ccformfield" id="dateDebut" title="date de début" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required>
             </div>
             <div>
                 <div class="libelleDate">heure de début</div>
-                <input class="ccformfield" id="heureDebut" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateDebut.value)" required>
+                <input class="ccformfield" id="heureDebut" title="heure de début" name="heureDebut" type="time" value="00:00" onblur="MiseAJourHeureFin(this.value, heureFin.id, dateDebut.value, dateDebut.value)" required>
             </div>
             <div>
                 <div class="libelleDate">heure de fin</div>
-                <input class="ccformfield" id="heureFin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateDebut.value)" required>
+                <input class="ccformfield" id="heureFin" title="heure de fin" name="heureFin" type="time" value="23:59" onblur="MiseAJourHeureDebut(this.value, heureDebut.id, dateDebut.value, dateDebut.value)" required>
             </div>
             <div>
                 <div>&#x2061;</div>
@@ -51,13 +51,13 @@
                 <input name="dateId" type="hidden" value="@periode.DateDebut">
                 <div class="gestionFermetureOuverture">
                     <div>
-                        <input class="ccformfield" id="@dateDebutId" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
+                        <input class="ccformfield" id="@dateDebutId" title="date de début" name="dateDebut" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.AddYears(1).ToString("yyyy-MM-dd")" value="@periode.DateDebut.ToString("yyyy-MM-dd")" required>
                     </div>
                     <div>
-                        <input class="ccformfield" id="@heureDebutId" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateDebutId@value)" required>
+                        <input class="ccformfield" id="@heureDebutId" title="heure de début" name="heureDebut" type="time" value="@periode.DateDebut.ToString("HH:mm")" onblur="MiseAJourHeureFin(this.value, @heureFinId@id, @dateDebutId@value, @dateDebutId@value)" required>
                     </div>
                     <div>
-                        <input class="ccformfield" id="@heureFinId" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateDebutId@value)" required>
+                        <input class="ccformfield" id="@heureFinId" title="heure de fin" name="heureFin" type="time" value="@periode.DateFin.ToString("HH:mm")" onblur="MiseAJourHeureDebut(this.value, @heureDebutId@id, @dateDebutId@value, @dateDebutId@value)" required>
                     </div>
                     <div>
                         <input class="boutonModifier" type="submit" name="action" value="Modifier">
