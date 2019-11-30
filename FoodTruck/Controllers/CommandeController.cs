@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Web.Mvc;
 using System.Linq;
 using FoodTruck.Models;
+using System.IO;
 
 namespace FoodTruck.Controllers
 {
@@ -221,17 +222,27 @@ namespace FoodTruck.Controllers
             string sujet = $"Nouvelle commande numéro {commande.Id}";
             string corpsMail = $"Nouvelle commande {commande.Id}. Merci de la préparer pour le {commande.DateRetrait.ToString("dddd dd MMMM HH:mm")}\n" + corpsDuMailEnCommunClientFoodtruck;
 
+
             Utilitaire.EnvoieMail(mailFoodTruck, sujet, corpsMail);
+
             if (client.Id != 0)
             {
-                string sujetMail2 = $"Nouvelle commande numéro {commande.Id} prise en compte";
-                string corpsMail2 = $"Bonjour {client.Prenom}\n" +
-                                    $"Votre dernière commande a bien été prise en compte." +
-                                    $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
-                                    $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
-                                    $"\nMerci de votre confiance\n\n" +
-                                    "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
-                Utilitaire.EnvoieMail(emailClient, sujetMail2, corpsMail2);
+                string sujetMailClient = $"Nouvelle commande numéro {commande.Id} prise en compte";
+                string corpsMailClient = $"Bonjour {client.Prenom}\n" +
+                                         $"Votre dernière commande a bien été prise en compte." +
+                                         $"\nVous pourrez venir la chercher le {commande.DateRetrait.ToString("dddd dd MMMM")}" +
+                                         $" à partir de {commande.DateRetrait.ToString("HH:mm").Replace(":", "h")}" +
+                                         $"\nMerci de votre confiance\n\n" +
+                                         "voici le récapitulatif : \n" + corpsDuMailEnCommunClientFoodtruck;
+                string objetEvenement = "FoodTruckLyon";
+                string descriptionEvenement = $"Chercher commande FoodTruckLyon {commande.Id}\n {corpsDuMailEnCommunClientFoodtruck}";
+                string adresseEvenement = "17 Rue des Gones 69007 Lyon";
+                DateTime dateDebutEvenement = commande.DateRetrait;
+                DateTime dateFinEvenement = commande.DateRetrait.AddMinutes(int.Parse(ConfigurationManager.AppSettings["PasCreneauxHoraire"]));
+                double lattitudeEvenement = 45.796386;
+                double longitudeEvenement = 5.0379093;
+                MemoryStream pieceJointe = Utilitaire.CreerEvenementCalendrier(objetEvenement, descriptionEvenement, adresseEvenement, dateDebutEvenement, dateFinEvenement, lattitudeEvenement, longitudeEvenement);
+                Utilitaire.EnvoieMail(emailClient, sujetMailClient, corpsMailClient, pieceJointe);
             }
         }
     }

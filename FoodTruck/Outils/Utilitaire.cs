@@ -1,11 +1,16 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
+using Ical.Net;
+using Ical.Net.CalendarComponents;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -96,15 +101,7 @@ namespace FoodTruck.Outils
             return orig;
         }
 
-        public static string OuiNon(this bool lebool)
-        {
-            if (lebool)
-                return "Oui";
-            else
-                return "Non";
-        }
-
-        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, string reponseA = "")
+        public static bool EnvoieMail(string destinataire, string objet, string corpsMessage, MemoryStream pieceJointe = null, string reponseA = "")
         {
             try
             {
@@ -119,6 +116,12 @@ namespace FoodTruck.Outils
                     message.ReplyToList.Add(reponseA);
                     message.Body = corpsMessage;
                     message.IsBodyHtml = false;
+                    if (pieceJointe != null)
+                    {
+                        pieceJointe.Position = 0;
+                        System.Net.Mail.Attachment data = new System.Net.Mail.Attachment(pieceJointe, "event.ics", "text/calendar");
+                        message.Attachments.Add(data);
+                    }
                     using (SmtpClient client = new SmtpClient())
                     {
                         client.EnableSsl = false;
@@ -132,6 +135,29 @@ namespace FoodTruck.Outils
                 return false;
             }
         }
+
+        public static MemoryStream CreerEvenementCalendrier(string objet, string description, string adresse, DateTime dateDebut, DateTime dateFin, double lattitude = 0, double longitude = 0)
+        {
+            GeographicLocation coordonneesGPS = null;
+            if (lattitude != 0 && longitude != 0)
+                coordonneesGPS = new GeographicLocation(45.756386, 4.8379093);
+            Calendar calendar = new Calendar();
+            CalendarEvent myEvent = new CalendarEvent
+            {
+                Start = new CalDateTime(dateDebut),
+                End = new CalDateTime(dateFin),
+                Summary = objet,
+                Description = description,
+                Location = adresse,
+                GeographicLocation = coordonneesGPS,
+            };
+            calendar.Events.Add(myEvent);
+            MemoryStream stream = new MemoryStream();
+            CalendarSerializer serializer = new CalendarSerializer();
+            serializer.Serialize(calendar, stream, Encoding.ASCII);
+            return stream;
+        }
+
         public static string GetHash(this string input)
         {
             using (SHA256 hash = SHA256.Create())
