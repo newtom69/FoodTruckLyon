@@ -16,14 +16,15 @@ namespace FoodTruck.DAL
 
         public List<Panier> ListerPanierClient()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                List<Panier> paniers = (from panier in db.Panier
-                                        join article in db.Article on panier.ArticleId equals article.Id
-                                        where panier.ClientId == ClientId
-                                        select panier).ToList();
-                return paniers;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    List<Panier> paniers = (from panier in db.Panier
+            //                            join article in db.Article on panier.ArticleId equals article.Id
+            //                            where panier.ClientId == ClientId
+            //                            select panier).ToList();
+            //    return paniers;
+            //}
+            throw new NotImplementedException();
         }
 
         ///Ajouter un article non présent au panier en base d'un client
@@ -36,65 +37,73 @@ namespace FoodTruck.DAL
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * article.PrixTTC, 2)
             };
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                db.Panier.Add(lePanier);
-                db.SaveChanges();
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    db.Panier.Add(lePanier);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         ///Modifier la quantité d'un article du panier en base d'un client
         public void ModifierQuantite(Article article, int quantite)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                Panier panier = (from p in db.Panier
-                                 where p.ClientId == ClientId && p.ArticleId == article.Id
-                                 select p).FirstOrDefault();
-                panier.Quantite += quantite;
-                panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.PrixTTC, 2);
-                db.SaveChanges();
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    Panier panier = (from p in db.Panier
+            //                     where p.ClientId == ClientId && p.ArticleId == article.Id
+            //                     select p).FirstOrDefault();
+            //    panier.Quantite += quantite;
+            //    panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.PrixTTC, 2);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         /// Supprimer l'article du panier en base de du client
         public void Supprimer(Article article)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                Panier panier = (from p in db.Panier
-                                 where p.ClientId == ClientId && p.ArticleId == article.Id
-                                 select p).FirstOrDefault();
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    Panier panier = (from p in db.Panier
+            //                     where p.ClientId == ClientId && p.ArticleId == article.Id
+            //                     select p).FirstOrDefault();
 
-                db.Panier.Remove(panier);
-                db.SaveChanges();
-            }
+            //    db.Panier.Remove(panier);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         /// Supprimer le panier en base du client
         public void Supprimer()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                var panier = from p in db.Panier
-                             where p.ClientId == ClientId
-                             select p;
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    var panier = from p in db.Panier
+            //                 where p.ClientId == ClientId
+            //                 select p;
 
-                db.Panier.RemoveRange(panier);
-                db.SaveChanges();
-            }
+            //    db.Panier.RemoveRange(panier);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         public List<Article> ArticlesPanierClient()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                List<Article> articles = (from panier in db.Panier
-                                          join article in db.Article on panier.ArticleId equals article.Id
-                                          where panier.ClientId == ClientId
-                                          select article).ToList();
-                return articles;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    List<Article> articles = (from panier in db.Panier
+            //                              join article in db.Article on panier.ArticleId equals article.Id
+            //                              where panier.ClientId == ClientId
+            //                              select article).ToList();
+            //    return articles;
+            //}
+
+            //TODO OMNIFW
+            List<Article> articles = new List<Article>();
+            return articles;
         }
 
         internal List<Article> SupprimerArticlesPasDansCarte()
@@ -102,17 +111,21 @@ namespace FoodTruck.DAL
             List<Article> articles = ArticlesPanierClient();
             List<Article> articlesPasDansCarte = articles.FindAll(art => !art.DansCarte);
 
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                var paniersASupprimer = (from panier in db.Panier
-                                         join article in db.Article on panier.ArticleId equals article.Id
-                                         where panier.ClientId == ClientId && !article.DansCarte
-                                         select panier).ToList();
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    var paniersASupprimer = (from panier in db.Panier
+            //                             join article in db.Article on panier.ArticleId equals article.Id
+            //                             where panier.ClientId == ClientId && !article.DansCarte
+            //                             select panier).ToList();
 
-                db.Panier.RemoveRange(paniersASupprimer);
-                db.SaveChanges();
-            }
-            return articlesPasDansCarte;
+            //    db.Panier.RemoveRange(paniersASupprimer);
+            //    db.SaveChanges();
+            //}
+            //return articlesPasDansCarte;
+
+
+            //TODO OMNIFW
+            return articles;
         }
     }
 }

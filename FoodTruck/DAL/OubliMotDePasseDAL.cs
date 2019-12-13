@@ -10,42 +10,45 @@ namespace FoodTruck.DAL
     {
         internal OubliMotDePasse Details(string identifiant)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                DateTime maintenant = DateTime.Now;
-                var oubliMotDePasse = (from u in db.OubliMotDePasse
-                                       where u.CodeVerification == identifiant && DbFunctions.DiffMinutes(maintenant, u.DateFinValidite) >= 0
-                                       select u).FirstOrDefault();
-                return oubliMotDePasse;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    DateTime maintenant = DateTime.Now;
+            //    var oubliMotDePasse = (from u in db.OubliMotDePasse
+            //                           where u.CodeVerification == identifiant && DbFunctions.DiffMinutes(maintenant, u.DateFinValidite) >= 0
+            //                           select u).FirstOrDefault();
+            //    return oubliMotDePasse;
+            //}
+            throw new NotImplementedException();
         }
         internal void Ajouter(int clientId, string codeVerification, DateTime dateFinValidite)
         {
             Supprimer(clientId);
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
-                {
-                    ClientId = clientId,
-                    CodeVerification = codeVerification,
-                    DateFinValidite = dateFinValidite
-                };
-                db.OubliMotDePasse.Add(oubliMotDePasse);
-                db.SaveChanges();
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    OubliMotDePasse oubliMotDePasse = new OubliMotDePasse
+            //    {
+            //        ClientId = clientId,
+            //        CodeVerification = codeVerification,
+            //        DateFinValidite = dateFinValidite
+            //    };
+            //    db.OubliMotDePasse.Add(oubliMotDePasse);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         internal void Supprimer(int clientId)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                List<OubliMotDePasse> listeOubliMotDePasse =
-                    (from u in db.OubliMotDePasse
-                     where u.ClientId == clientId
-                     select u).ToList();
-                db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
-                db.SaveChanges();
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    List<OubliMotDePasse> listeOubliMotDePasse =
+            //        (from u in db.OubliMotDePasse
+            //         where u.ClientId == clientId
+            //         select u).ToList();
+            //    db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
+            //    db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         internal int Verifier(string identifiant)
@@ -63,15 +66,16 @@ namespace FoodTruck.DAL
         }
         public int Purger()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                IQueryable<OubliMotDePasse> listeOubliMotDePasse = from u in db.OubliMotDePasse
-                                                                              where DbFunctions.DiffMinutes(u.DateFinValidite, DateTime.Now) > 0
-                                                                              select u;
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    IQueryable<OubliMotDePasse> listeOubliMotDePasse = from u in db.OubliMotDePasse
+            //                                                                  where DbFunctions.DiffMinutes(u.DateFinValidite, DateTime.Now) > 0
+            //                                                                  select u;
 
-                db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
-                return db.SaveChanges();
-            }
+            //    db.OubliMotDePasse.RemoveRange(listeOubliMotDePasse);
+            //    return db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
     }
 }

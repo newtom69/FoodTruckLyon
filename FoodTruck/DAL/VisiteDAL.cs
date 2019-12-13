@@ -30,11 +30,12 @@ namespace FoodTruck.DAL
                     UrlOrigine = UrlOrigine,
                     NavigateurMobile = Utilitaire.NavigateurMobile(),
                 };
-                using (foodtruckEntities db = new foodtruckEntities())
-                {
-                    db.Visite.Add(visite);
-                    db.SaveChanges();
-                }
+                //using (foodtruckEntities db = new foodtruckEntities())
+                //{
+                //    db.Visite.Add(visite);
+                //    db.SaveChanges();
+                //}
+                throw new NotImplementedException();
             }
         }
     }

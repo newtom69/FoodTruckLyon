@@ -1,8 +1,10 @@
 ﻿using FoodTruck.DAL;
 using FoodTruck.Models;
 using FoodTruck.ViewModels;
+using OmniFW.Data;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -24,6 +26,9 @@ namespace FoodTruck.Controllers
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
+
+            Data.CnxStringStatic = ConfigurationManager.AppSettings["ChaineCnx"];
+            Data.TypeCnxStatic = TypeConnexion.SqlServer;
 
             ActionNom = RouteData.Values["action"].ToString();
             ControllerNom = RouteData.Values["controller"].ToString();

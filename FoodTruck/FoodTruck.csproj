@@ -197,84 +197,39 @@
     <Compile Include="Controllers\FactureController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PanierController.cs" />
-    <Compile Include="DAL\FactureDAL.cs" />
-    <Compile Include="DAL\CreerAdminDAL.cs" />
     <Compile Include="DAL\ArticleDAL.cs" />
+    <Compile Include="DAL\ClientDAL.cs" />
     <Compile Include="DAL\CodePromoDAL.cs" />
     <Compile Include="DAL\CommandeDAL.cs" />
     <Compile Include="DAL\ConcurrencyException.cs" />
-    <Compile Include="DAL\DatabaseAccessException.cs" />
+    <Compile Include="DAL\CreerAdminDAL.cs" />
     <Compile Include="DAL\DALExceptions.cs" />
+    <Compile Include="DAL\DatabaseAccessException.cs" />
+    <Compile Include="DAL\FactureDAL.cs" />
     <Compile Include="DAL\ImageDAL.cs" />
     <Compile Include="DAL\JourExceptionnelDAL.cs" />
+    <Compile Include="DAL\OubliMotDePasseDAL.cs" />
     <Compile Include="DAL\OuvertureHebdomadaireDAL.cs" />
     <Compile Include="DAL\PanierDAL.cs" />
     <Compile Include="DAL\PanierProspectDAL.cs" />
-    <Compile Include="DAL\ClientDAL.cs" />
-    <Compile Include="DAL\OubliMotDePasseDAL.cs" />
     <Compile Include="DAL\TvaDAL.cs" />
     <Compile Include="DAL\VisiteDAL.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
-    <Compile Include="Models\Article.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Client.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CodePromo.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Commande.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Commande_Article.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CreerAdmin.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Facture.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FamilleArticle.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FoodTruckModels.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FoodTruckModels.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FoodTruckModels.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FoodTruckModels.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FoodTruckModels.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\JourExceptionnel.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OubliMotDePasse.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OuvertureHebdomadaire.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Panier.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PanierProspect.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Tva.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Visite.cs">
-      <DependentUpon>FoodTruckModels.tt</DependentUpon>
-    </Compile>
+    <Compile Include="JourExceptionnel.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\CodePromo.cs" />
+    <Compile Include="Models\Commande.cs" />
+    <Compile Include="Models\Commande_Article.cs" />
+    <Compile Include="Models\CreerAdmin.cs" />
+    <Compile Include="Models\Facture.cs" />
+    <Compile Include="Models\FamilleArticle.cs" />
+    <Compile Include="Models\OubliMotDePasse.cs" />
+    <Compile Include="Models\OuvertureHebdomadaire.cs" />
+    <Compile Include="Models\Panier.cs" />
+    <Compile Include="Models\PanierProspect.cs" />
+    <Compile Include="Models\Tva.cs" />
+    <Compile Include="Models\Visite.cs" />
     <Compile Include="ViewModels\FactureViewModel.cs" />
     <Compile Include="ViewModels\Message.cs" />
     <Compile Include="Outils\CommandeEqualityComparer.cs" />
@@ -348,16 +303,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\FoodTruckModels.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FoodTruckModels.edmx</DependentUpon>
-      <LastGenOutput>FoodTruckModels.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\FoodTruckModels.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FoodTruckModels.edmx</DependentUpon>
-      <LastGenOutput>FoodTruckModels.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -366,13 +311,6 @@
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />
-    <EntityDeploy Include="Models\FoodTruckModels.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FoodTruckModels.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\FoodTruckModels.edmx.diagram">
-      <DependentUpon>FoodTruckModels.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Administrer\Views\web.config" />
     <Content Include="Areas\Administrer\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\ftp ikoula http2.pubxml" />
@@ -460,6 +398,12 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LMN\omnilog\OmniFW\OmniFW\OmniFW.csproj">
+      <Project>{CE49EF00-B904-4A7D-B465-8C16515F7E5C}</Project>
+      <Name>OmniFW</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -19,15 +19,16 @@ namespace FoodTruck.DAL
         }
         private List<JourExceptionnel> FutursPeriodesExceptionnelles(bool ouvert)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                DateTime date = DateTime.Now;
-                List<JourExceptionnel> jours = (from j in db.JourExceptionnel
-                                                where DbFunctions.DiffMinutes(date, j.DateFin) >= 0 && j.Ouvert == ouvert
-                                                orderby j.DateDebut
-                                                select j).ToList();
-                return jours;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    DateTime date = DateTime.Now;
+            //    List<JourExceptionnel> jours = (from j in db.JourExceptionnel
+            //                                    where DbFunctions.DiffMinutes(date, j.DateFin) >= 0 && j.Ouvert == ouvert
+            //                                    orderby j.DateDebut
+            //                                    select j).ToList();
+            //    return jours;
+            //}
+            throw new NotImplementedException();
         }
 
         internal JourExceptionnel AjouterFermeture(DateTime dateDebut, DateTime dateFin)
@@ -40,24 +41,25 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel AjouterPeriodeExceptionnelle(DateTime dateDebut, DateTime dateFin, bool ouvert)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                JourExceptionnel chevauchement = (from j in db.JourExceptionnel
-                                                  where DbFunctions.DiffMinutes(j.DateDebut, dateFin) >= 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) >= 0
-                                                  select j).FirstOrDefault();
-                if (chevauchement == null)
-                {
-                    JourExceptionnel jour = new JourExceptionnel
-                    {
-                        DateDebut = dateDebut,
-                        DateFin = dateFin,
-                        Ouvert = ouvert,
-                    };
-                    db.JourExceptionnel.Add(jour);
-                    db.SaveChanges();
-                }
-                return chevauchement;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    JourExceptionnel chevauchement = (from j in db.JourExceptionnel
+            //                                      where DbFunctions.DiffMinutes(j.DateDebut, dateFin) >= 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) >= 0
+            //                                      select j).FirstOrDefault();
+            //    if (chevauchement == null)
+            //    {
+            //        JourExceptionnel jour = new JourExceptionnel
+            //        {
+            //            DateDebut = dateDebut,
+            //            DateFin = dateFin,
+            //            Ouvert = ouvert,
+            //        };
+            //        db.JourExceptionnel.Add(jour);
+            //        db.SaveChanges();
+            //    }
+            //    return chevauchement;
+            //}
+            throw new NotImplementedException();
         }
         internal JourExceptionnel ModifierFermeture(DateTime dateId, DateTime dateDebut, DateTime dateFin)
         {
@@ -69,25 +71,26 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel ModifierPeriodeExceptionnelle(DateTime dateId, DateTime dateDebut, DateTime dateFin, bool ouvert)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
-                                                    where j.DateDebut == dateId && j.Ouvert == ouvert
-                                                    select j).FirstOrDefault();
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
+            //                                        where j.DateDebut == dateId && j.Ouvert == ouvert
+            //                                        select j).FirstOrDefault();
 
-                JourExceptionnel chevauchement = (from j in db.JourExceptionnel
-                                                  where j.DateDebut != jourSelectionne.DateDebut && DbFunctions.DiffMinutes(j.DateDebut, dateFin) > 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) > 0
-                                                  select j).FirstOrDefault();
+            //    JourExceptionnel chevauchement = (from j in db.JourExceptionnel
+            //                                      where j.DateDebut != jourSelectionne.DateDebut && DbFunctions.DiffMinutes(j.DateDebut, dateFin) > 0 && DbFunctions.DiffMinutes(dateDebut, j.DateFin) > 0
+            //                                      select j).FirstOrDefault();
 
-                if (chevauchement == null && jourSelectionne != null)
-                {
-                    jourSelectionne.DateDebut = dateDebut;
-                    jourSelectionne.DateFin = dateFin;
-                    jourSelectionne.Ouvert = ouvert;
-                    db.SaveChanges();
-                }
-                return chevauchement;
-            }
+            //    if (chevauchement == null && jourSelectionne != null)
+            //    {
+            //        jourSelectionne.DateDebut = dateDebut;
+            //        jourSelectionne.DateFin = dateFin;
+            //        jourSelectionne.Ouvert = ouvert;
+            //        db.SaveChanges();
+            //    }
+            //    return chevauchement;
+            //}
+            throw new NotImplementedException();
         }
 
         internal bool SupprimerFermeture(DateTime dateId)
@@ -100,18 +103,19 @@ namespace FoodTruck.DAL
         }
         private bool SupprimerPeriodeExceptionnelle(DateTime dateId, bool ouvert)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
-                                                    where j.DateDebut == dateId && j.Ouvert == ouvert
-                                                    select j).FirstOrDefault();
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    JourExceptionnel jourSelectionne = (from j in db.JourExceptionnel
+            //                                        where j.DateDebut == dateId && j.Ouvert == ouvert
+            //                                        select j).FirstOrDefault();
 
-                db.JourExceptionnel.Remove(jourSelectionne);
-                if (db.SaveChanges() != 1)
-                    return false;
-                else
-                    return true;
-            }
+            //    db.JourExceptionnel.Remove(jourSelectionne);
+            //    if (db.SaveChanges() != 1)
+            //        return false;
+            //    else
+            //        return true;
+            //}
+            throw new NotImplementedException();
         }
 
         private JourExceptionnel ProchaineOuvertureExceptionnelle(DateTime date)
@@ -124,27 +128,28 @@ namespace FoodTruck.DAL
         }
         private JourExceptionnel ProchainePeriodeExceptionnelle(DateTime date, bool ouvert)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                JourExceptionnel jour = (from j in db.JourExceptionnel
-                                         where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
-                                         orderby j.DateDebut
-                                         select j).FirstOrDefault();
-                if (jour == null)
-                {
-                    jour = new JourExceptionnel
-                    {
-                        DateDebut = DateTime.MaxValue,
-                        DateFin = DateTime.MaxValue,
-                        Ouvert = ouvert
-                    };
-                }
-                else if (jour.DateDebut < DateTime.Now)
-                {
-                    jour.DateDebut = jour.DateDebut.Add(RecalculHeureDebut(date));
-                }
-                return jour;
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    JourExceptionnel jour = (from j in db.JourExceptionnel
+            //                             where DbFunctions.DiffSeconds(date, j.DateFin) > 0 && j.Ouvert == ouvert
+            //                             orderby j.DateDebut
+            //                             select j).FirstOrDefault();
+            //    if (jour == null)
+            //    {
+            //        jour = new JourExceptionnel
+            //        {
+            //            DateDebut = DateTime.MaxValue,
+            //            DateFin = DateTime.MaxValue,
+            //            Ouvert = ouvert
+            //        };
+            //    }
+            //    else if (jour.DateDebut < DateTime.Now)
+            //    {
+            //        jour.DateDebut = jour.DateDebut.Add(RecalculHeureDebut(date));
+            //    }
+            //    return jour;
+            //}
+            throw new NotImplementedException();
         }
 
         internal PlageHoraireRetrait ProchainOuvert(DateTime date)
@@ -226,42 +231,44 @@ namespace FoodTruck.DAL
 
         private OuvertureHebdomadaire ProchainOuvertHabituellement(DateTime date)
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                TimeSpan minuit = new TimeSpan(0, 0, 0);
-                int totalSecondesDate = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    TimeSpan minuit = new TimeSpan(0, 0, 0);
+            //    int totalSecondesDate = 24 * 60 * 60 * (int)date.DayOfWeek + (int)date.TimeOfDay.TotalSeconds;
 
-                OuvertureHebdomadaire plage = (from ouverture in db.OuvertureHebdomadaire
-                                               let totalSecondesOuverture = 24 * 60 * 60 * ouverture.JourSemaineId + DbFunctions.DiffSeconds(minuit, ouverture.Fin)
-                                               where totalSecondesOuverture > totalSecondesDate
-                                               orderby totalSecondesOuverture
-                                               select ouverture).FirstOrDefault();
+            //    OuvertureHebdomadaire plage = (from ouverture in db.OuvertureHebdomadaire
+            //                                   let totalSecondesOuverture = 24 * 60 * 60 * ouverture.JourSemaineId + DbFunctions.DiffSeconds(minuit, ouverture.Fin)
+            //                                   where totalSecondesOuverture > totalSecondesDate
+            //                                   orderby totalSecondesOuverture
+            //                                   select ouverture).FirstOrDefault();
 
-                DateTime maintenant = DateTime.Now;
-                if (plage == null)
-                {
-                    plage = (from c in db.OuvertureHebdomadaire
-                             orderby c.JourSemaineId, c.Debut
-                             select c).First();
-                }
-                else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay)
-                {
-                    plage.Debut = RecalculHeureDebut(date);
-                }
-                return plage;
-            }
+            //    DateTime maintenant = DateTime.Now;
+            //    if (plage == null)
+            //    {
+            //        plage = (from c in db.OuvertureHebdomadaire
+            //                 orderby c.JourSemaineId, c.Debut
+            //                 select c).First();
+            //    }
+            //    else if (date.Date == maintenant.Date && plage.JourSemaineId == (int)maintenant.DayOfWeek && plage.Debut < maintenant.TimeOfDay)
+            //    {
+            //        plage.Debut = RecalculHeureDebut(date);
+            //    }
+            //    return plage;
+            //}
+            throw new NotImplementedException();
         }
 
         public int Purger()
         {
-            using (foodtruckEntities db = new foodtruckEntities())
-            {
-                IQueryable<JourExceptionnel> joursExceptionnels = from j in db.JourExceptionnel
-                                                                  where DbFunctions.DiffMinutes(j.DateFin, DateTime.Now) > 0
-                                                                  select j;
-                db.JourExceptionnel.RemoveRange(joursExceptionnels);
-                return db.SaveChanges();
-            }
+            //using (foodtruckEntities db = new foodtruckEntities())
+            //{
+            //    IQueryable<JourExceptionnel> joursExceptionnels = from j in db.JourExceptionnel
+            //                                                      where DbFunctions.DiffMinutes(j.DateFin, DateTime.Now) > 0
+            //                                                      select j;
+            //    db.JourExceptionnel.RemoveRange(joursExceptionnels);
+            //    return db.SaveChanges();
+            //}
+            throw new NotImplementedException();
         }
 
         private TimeSpan RecalculHeureDebut(DateTime date)
