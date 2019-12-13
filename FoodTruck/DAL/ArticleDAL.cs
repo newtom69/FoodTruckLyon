@@ -98,7 +98,6 @@ namespace FoodTruck.DAL
             using (foodtruckEntities db = new foodtruckEntities())
             {
                 List<Article> articles = (from article in db.Article
-                                          join famille in db.FamilleArticle on article.FamilleId equals famille.Id
                                           where article.DansCarte || article.DansCarte == dansCarteSeulement
                                           orderby article.FamilleId, article.DansCarte descending, article.Nom
                                           select article)
