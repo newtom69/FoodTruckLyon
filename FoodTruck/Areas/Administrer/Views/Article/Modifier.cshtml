@@ -24,7 +24,9 @@
                         if (article.FamilleId != id)
                         {
                             id = article.FamilleId;
-                            string nomFamille = new foodtruckEntities().FamilleArticle.Single(f => f.Id == id).Nom;
+                            FamilleArticle familleArticle = new FamilleArticle(id);
+                            familleArticle.Lire();
+                            string nomFamille = familleArticle.Nom;
                             <optgroup label="@nomFamille"></optgroup>
                         }
                         string redOrNothing = "";

@@ -24,25 +24,21 @@ namespace FoodTruck.DAL
             //                            select panier).ToList();
             //    return paniers;
             //}
-            throw new NotImplementedException();
+            //TODO OMNIFW
+            return new List<Panier>();
         }
 
         ///Ajouter un article non présent au panier en base d'un client
         public void Ajouter(Article article, int quantite = 1)
         {
-            Panier lePanier = new Panier
+            Panier panier = new Panier
             {
                 ArticleId = article.Id,
                 ClientId = ClientId,
                 Quantite = quantite,
                 PrixTotal = Math.Round(quantite * article.PrixTTC, 2)
             };
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    db.Panier.Add(lePanier);
-            //    db.SaveChanges();
-            //}
-            throw new NotImplementedException();
+            panier.Enregistrer();
         }
 
         ///Modifier la quantité d'un article du panier en base d'un client

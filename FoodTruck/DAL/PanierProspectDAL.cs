@@ -89,16 +89,15 @@ namespace FoodTruck.DAL
         /// Supprimer le panier en base du client
         public void Supprimer()
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
+
             //    var panierProspect = from panier in db.PanierProspect
             //                         where panier.ProspectGuid == ProspectGuid
             //                         select panier;
 
             //    db.PanierProspect.RemoveRange(panierProspect);
-            //    db.SaveChanges();
-            //}
-            throw new NotImplementedException();
+
+
+            //TODO OMNIFW
         }
 
         public List<Article> ArticlesPanierProspect()

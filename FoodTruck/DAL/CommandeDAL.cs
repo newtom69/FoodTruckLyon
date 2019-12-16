@@ -1,8 +1,10 @@
 ﻿using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
+using OmniFW.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 
@@ -12,14 +14,9 @@ namespace FoodTruck.DAL
     {
         internal Commande Detail(int id)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    Commande commande = (from cmd in db.Commande
-            //                         where cmd.Id == id
-            //                         select cmd).FirstOrDefault();
-            //    return commande;
-            //}
-            throw new NotImplementedException();
+            Commande commande = new Commande(id);
+            commande.Lire();
+            return commande;
         }
 
         public void Ajouter(Commande commande, List<ArticleViewModel> articlesVM)
@@ -123,15 +120,12 @@ namespace FoodTruck.DAL
 
         internal List<Commande> CommandesClient(int id, int max = int.MaxValue)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    List<Commande> commandes = (from cmd in db.Commande
-            //                                where cmd.ClientId == id
-            //                                orderby cmd.Annulation, cmd.Retrait, Math.Abs((int)DbFunctions.DiffHours(DateTime.Now, cmd.DateRetrait))
-            //                                select cmd).Take(max).ToList();
-            //    return commandes;
-            //}
-            throw new NotImplementedException();
+            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
+            OmniFW.Data.Critere critereClient = new OmniFW.Data.Critere();
+            critereClient.Parametres.Add(new OmniFW.Data.ParametreSQL("ClientId", id, System.Data.DbType.Int32));
+            commandes.Rechercher(critereClient);
+            List<Commande> listCommandes = commandes.Liste.OrderBy(cmd => cmd.Annulation).ThenBy(cmd => cmd.Retrait).ThenBy(cmd => Math.Abs((cmd.DateRetrait - DateTime.Now).TotalMinutes)).Take(max).ToList();
+            return listCommandes;
         }
 
         internal double RemiseTotaleClient(int id)
@@ -148,28 +142,34 @@ namespace FoodTruck.DAL
 
         internal int NombreCommandes(DateTime date)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    int nbCommandes = (from cmd in db.Commande
-            //                       where cmd.DateRetrait == date && !cmd.Annulation && !cmd.Retrait
-            //                       select cmd.Id).Count();
-            //    return nbCommandes;
-            //}
-            throw new NotImplementedException();
+            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
+            Critere critereAnnulation = new Critere();
+            critereAnnulation.Parametres.Add(new ParametreSQL("Annulation", false, DbType.Boolean));
+            Critere critereRetrait = new Critere();
+            critereRetrait.Parametres.Add(new ParametreSQL("Retrait", false, DbType.Boolean));
+            Critere critereDateRetrait = new Critere();
+            critereDateRetrait.Parametres.Add(new ParametreSQL("DateRetrait", date, DbType.DateTime));
+            commandes.Rechercher(critereAnnulation, critereRetrait, critereDateRetrait);
+            return commandes.Liste.Count;
         }
 
         internal List<Commande> CommandesEnCoursClient(int id)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    DateTime now = DateTime.Now;
-            //    List<Commande> commandes = (from cmd in db.Commande
-            //                                where cmd.ClientId == id && !cmd.Annulation && !cmd.Retrait && DbFunctions.DiffHours(now, cmd.DateRetrait) > -1
-            //                                orderby Math.Abs((int)DbFunctions.DiffMinutes(now, cmd.DateRetrait))
-            //                                select cmd).ToList();
-            //    return commandes;
-            //}
-            throw new NotImplementedException();
+            DateTime now = DateTime.Now;
+            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", id, DbType.Int32));
+
+            Critere critereAnnulation = new Critere();
+            critereAnnulation.Parametres.Add(new ParametreSQL("Annulation", false, DbType.Boolean));
+
+            Critere critereRetrait = new Critere();
+            critereRetrait.Parametres.Add(new ParametreSQL("Retrait", false, DbType.Boolean));
+
+            commandes.Rechercher(critereClient, critereAnnulation, critereRetrait);
+            List<Commande> listCommandes = commandes.Liste.FindAll(cmd => (cmd.DateRetrait - now).TotalHours > -1);
+            listCommandes = listCommandes.OrderBy(cmd => Math.Abs((cmd.DateRetrait - now).TotalMinutes)).ToList();
+            return listCommandes;
         }
 
         internal List<Commande> CommandesRecherche(string recherche = "", DateTime? dateDebut = null, DateTime? dateFin = null)
@@ -307,7 +307,8 @@ namespace FoodTruck.DAL
             //    }
             //    return listArticles;
             //}
-            throw new NotImplementedException();
+            //TODO OMNIFW
+            return new List<ArticleViewModel>();
         }
     }
 }

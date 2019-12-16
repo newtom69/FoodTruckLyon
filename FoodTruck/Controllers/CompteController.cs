@@ -23,7 +23,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (Client.Id == 0)
+            if (Client.Id == -1)
                 return RedirectToAction("Connexion", "Compte");
             else
                 return RedirectToAction("Profil");
@@ -117,7 +117,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Commandes()
         {
-            if (Client.Id != 0)
+            if (Client.Id != -1)
                 return View();
             else
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -138,7 +138,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Connexion()
         {
-            if (Client.Id == 0)
+            if (Client.Id == -1)
                 return View();
             else
                 return RedirectToAction("Profil");
@@ -172,7 +172,7 @@ namespace FoodTruck.Controllers
         [HttpGet]
         public ActionResult Deconnexion()
         {
-            if (Client.Id != 0)
+            if (Client.Id != -1)
             {
                 HttpCookie newCookie = new HttpCookie("GuidClient")
                 {
@@ -204,7 +204,7 @@ namespace FoodTruck.Controllers
             ViewBag.Mdp2 = mdp2;
 
             Client client = Client;
-            if (Client.Id == 0)
+            if (Client.Id == -1)
             {
                 StringBuilder messageConstruction = new StringBuilder();
                 bool erreur = false;
@@ -390,7 +390,7 @@ namespace FoodTruck.Controllers
         {
             PanierProspectDAL panierProspectDAL = new PanierProspectDAL(ProspectGuid);
             PanierViewModel panierViewModelSauv = new PanierViewModel(panierProspectDAL.ListerPanierProspect());
-            if (panierViewModelSauv != null && Client.Id != 0)
+            if (panierViewModelSauv != null && Client.Id != -1)
             {
                 PanierDAL panierDal = new PanierDAL(Client.Id);
                 foreach (ArticleViewModel article in (panierViewModelSauv).ArticlesDetailsViewModel)

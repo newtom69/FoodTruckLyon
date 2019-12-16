@@ -5,7 +5,14 @@ namespace FoodTruck
 {
     public partial class Commande : Entite
     {
-        public int Id { get; set; }
+        public Commande() : base() { }
+        public Commande(int id) : base(id) { }
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
         public int ClientId { get; set; }
         public DateTime DateCommande { get; set; }
         public DateTime DateRetrait { get; set; }

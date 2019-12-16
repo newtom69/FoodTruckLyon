@@ -4,7 +4,7 @@
     ViewBag.Title = "FoodTruckLyon - Contactez-nous !";
     Client client = ViewBag.Client;
     string valueNom = "", valuePrenom = "", valueEmail = "";
-    if (client.Id != 0)
+    if (client.Id != -1)
     {
         valueNom = "value=" + client.Nom;
         valuePrenom = "value=" + client.Prenom;

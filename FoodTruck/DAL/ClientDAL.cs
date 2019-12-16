@@ -10,53 +10,31 @@ namespace FoodTruck.DAL
     {
         public Client Details(int id)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    Client client = (from c in db.Client
-            //                     where c.Id == id
-            //                     select c).FirstOrDefault();
-            //    Trim(ref client);
-            //    return client;
-            //}
-            return new Client();
+            Client client = new Client(id);
+            client.Lire();
+            Trim(ref client);
+            return client;
         }
 
         public Client Details(string email)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    Client client = (from c in db.Client
-            //                     where c.Email == email
-            //                     select c).FirstOrDefault();
-            //    Trim(ref client);
-            //    return client;
-            //}
-            return new Client();
+            Client client = new Client(email);
+            client.Lire();
+            Trim(ref client);
+            return client;
         }
 
         public int ExisteEmail(string email)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    int clientId = (from c in db.Client
-            //                    where c.Email == email
-            //                    select c.Id).FirstOrDefault();
-
-            //    return clientId;
-            //}
-            return -1;
+            Client client = new Client(email);
+            client.Lire();
+            return client.Id;
         }
         public int ExisteLogin(string login)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    int clientId = (from c in db.Client
-            //                    where c.Login == login
-            //                    select c.Id).FirstOrDefault();
-
-            //    return clientId;
-            //}
-            return -1;
+            Client client = new Client(login);
+            client.Lire();
+            return client.Id;
         }
         public List<Client> Recherche(string recherche)
         {
@@ -72,28 +50,37 @@ namespace FoodTruck.DAL
 
         public Client Connexion(string loginEmail, string mdp)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    string mdpHash = mdp.GetHash();
+
+            string mdpHash = mdp.GetHash();
             //    Client client = (from c in db.Client
             //                     where (c.Email == loginEmail || c.Login == loginEmail) && c.Mdp == mdpHash
             //                     select c).FirstOrDefault();
-            //    Trim(ref client);
-            //    return client;
-            //}
-            return new Client();
+
+            Client client = new Client(loginEmail);
+            client.Lire();
+            if (client.Mdp != mdpHash)
+                return null;
+            else
+            {
+                Trim(ref client);
+                return client;
+            }
+
         }
         public Client ConnexionCookies(string guid)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
             //    Client client = (from c in db.Client
             //                     where c.Guid == guid
             //                     select c).FirstOrDefault();
             //    Trim(ref client);
             //    return client;
-            //}
-            return new Client();
+            OmniFW.Business.CollectionEntite<Client> clients = new OmniFW.Business.CollectionEntite<Client>();
+            OmniFW.Data.Critere critere = new OmniFW.Data.Critere();
+            critere.Parametres.Add(new OmniFW.Data.ParametreSQL("Guid", guid, System.Data.DbType.String));
+            clients.Rechercher(critere);
+            Client client = clients.Liste.FirstOrDefault();
+            Trim(ref client);
+            return client;
         }
 
         /// <summary>

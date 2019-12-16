@@ -70,7 +70,7 @@
         <div class="bandeauClient">
             <div></div>
             <div></div>
-            @if (client.Id != 0)
+            @if (client.Id != -1)
             {
                 <div><a href="/Compte/Profil">Bienvenue @client.Prenom @client.Nom</a> - <a href="/Compte/Deconnexion/">Déconnexion</a></div>
             }

@@ -8,6 +8,10 @@ namespace FoodTruck
 
         public Article(int id) : base(id) { }
 
+        public Article(string nom) : base()
+        {
+            Id = OmniFW.Outils.Trans.NullToInt(GetIdByColonne("Nom", nom));
+        }
 
         [ID]
         public int Id
@@ -29,8 +33,9 @@ namespace FoodTruck
         public double PrixHT { get; set; }
         public double PrixTTC { get; set; }
 
-        [ChildId("ArticleId")]
-        public CollectionEntite<PanierProspect> PaniersProspect { get; set; }
+        //TODO VOIR AVEC NICO
+        //[ChildId("ArticleId")]
+        //public CollectionEntite<PanierProspect> PaniersProspect { get; set; }
 
     }
 }

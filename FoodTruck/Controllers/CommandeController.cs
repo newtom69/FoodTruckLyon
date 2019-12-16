@@ -182,7 +182,7 @@ namespace FoodTruck.Controllers
                 string stringDateRetrait = commande.DateRetrait.ToString("dddd dd MMMM yyyy pour HH:mm");
                 string message = $"Commande numéro {commande.Id} confirmée\nVeuillez venir la chercher le {stringDateRetrait}.";
                 TypeMessage typeMessage;
-                if (Client.Id == 0)
+                if (Client.Id == -1)
                 {
                     message += $"\nAttention : Vous n'avez pas utilisé de compte client.\nMerci de bien noter votre numéro de commande.";
                     typeMessage = TypeMessage.Avertissement;
@@ -225,7 +225,7 @@ namespace FoodTruck.Controllers
 
             Utilitaire.EnvoieMail(mailFoodTruck, sujet, corpsMail);
 
-            if (client.Id != 0)
+            if (client.Id != -1)
             {
                 string sujetMailClient = $"Nouvelle commande numéro {commande.Id} prise en compte";
                 string corpsMailClient = $"Bonjour {client.Prenom}\n" +

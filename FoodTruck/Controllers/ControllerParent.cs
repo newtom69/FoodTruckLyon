@@ -56,7 +56,7 @@ namespace FoodTruck.Controllers
 
             new PanierDAL(Client.Id).SupprimerArticlesPasDansCarte();
             VisiteDAL.Enregistrer(Client.Id);
-            if (Client.Id != 0)
+            if (Client.Id != -1)
             {
                 DonnerLesDroitsdAcces();
                 PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierClient());
@@ -120,7 +120,7 @@ namespace FoodTruck.Controllers
 
         private void AgregerPanierEnBase()
         {
-            if (Client != null && Client.Id != 0)
+            if (Client != null && Client.Id != -1)
             {
                 PanierDAL lePanierDal = new PanierDAL(Client.Id);
                 foreach (ArticleViewModel article in PanierViewModel.ArticlesDetailsViewModel)
@@ -135,7 +135,7 @@ namespace FoodTruck.Controllers
         }
         protected void RecupererPanierEnBase()
         {
-            if (Client.Id != 0)
+            if (Client.Id != -1)
                 PanierViewModel = new PanierViewModel(new PanierDAL(Client.Id).ListerPanierClient());
             else
                 PanierViewModel = new PanierViewModel(new PanierProspectDAL(ProspectGuid).ListerPanierProspect());
