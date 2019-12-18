@@ -13,6 +13,7 @@ namespace FoodTruck.DAL
         internal List<OuvertureHebdomadaire> OuverturesHebdomadaires()
         {
             CollectionEntite<OuvertureHebdomadaire> ouverturesHebdomadaire = new CollectionEntite<OuvertureHebdomadaire>();
+            ouverturesHebdomadaire.AddToCache = false;
             ouverturesHebdomadaire.Rechercher();
             List<OuvertureHebdomadaire> listeOuverturesHebdomadaire = ouverturesHebdomadaire.Liste.OrderBy(o => o.JourSemaineId).ThenBy(o => o.Debut).ToList();
             return listeOuverturesHebdomadaire;
@@ -62,18 +63,9 @@ namespace FoodTruck.DAL
 
         internal bool SupprimerOuverture(int id)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    OuvertureHebdomadaire ouverture = (from p in db.OuvertureHebdomadaire
-            //                                       where p.Id == id
-            //                                       select p).FirstOrDefault();
-            //    db.OuvertureHebdomadaire.Remove(ouverture);
-            //    if (db.SaveChanges() != 1)
-            //        return false;
-            //    else
-            //        return true;
-            //}
-            throw new NotImplementedException();
+            OuvertureHebdomadaire ouverture = new OuvertureHebdomadaire(id);
+            bool retour = ouverture.Supprimer();
+            return retour;
         }
     }
 }

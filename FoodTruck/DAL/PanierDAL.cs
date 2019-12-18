@@ -1,4 +1,6 @@
 ﻿using FoodTruck.Models;
+using OmniFW.Business;
+using OmniFW.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +18,12 @@ namespace FoodTruck.DAL
 
         public List<Panier> ListerPanierClient()
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    List<Panier> paniers = (from panier in db.Panier
-            //                            join article in db.Article on panier.ArticleId equals article.Id
-            //                            where panier.ClientId == ClientId
-            //                            select panier).ToList();
-            //    return paniers;
-            //}
-            //TODO OMNIFW
-            return new List<Panier>();
+            CollectionEntite<Panier> paniers = new CollectionEntite<Panier>();
+            paniers.ProcedureRechercher = "ListerPanierClient";
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", ClientId, System.Data.DbType.Int32));
+            paniers.Rechercher(critereClient);
+            return paniers.Liste;
         }
 
         ///Ajouter un article non présent au panier en base d'un client
@@ -44,31 +42,28 @@ namespace FoodTruck.DAL
         ///Modifier la quantité d'un article du panier en base d'un client
         public void ModifierQuantite(Article article, int quantite)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    Panier panier = (from p in db.Panier
-            //                     where p.ClientId == ClientId && p.ArticleId == article.Id
-            //                     select p).FirstOrDefault();
-            //    panier.Quantite += quantite;
-            //    panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.PrixTTC, 2);
-            //    db.SaveChanges();
-            //}
-            throw new NotImplementedException();
+            CollectionEntite<Panier> paniers = new CollectionEntite<Panier>();
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", ClientId, System.Data.DbType.Int32));
+            Critere critereArticle = new Critere();
+            critereArticle.Parametres.Add(new ParametreSQL("ArticleId", article.Id, System.Data.DbType.Int32));
+            paniers.Rechercher(critereClient, critereArticle);
+            Panier panier = paniers.Liste.FirstOrDefault();
+            panier.Quantite += quantite;
+            panier.PrixTotal = Math.Round(panier.PrixTotal + quantite * article.PrixTTC, 2);
+            panier.Enregistrer();
         }
 
-        /// Supprimer l'article du panier en base de du client
+        /// Supprimer l'article du panier en base du client
         public void Supprimer(Article article)
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    Panier panier = (from p in db.Panier
-            //                     where p.ClientId == ClientId && p.ArticleId == article.Id
-            //                     select p).FirstOrDefault();
-
-            //    db.Panier.Remove(panier);
-            //    db.SaveChanges();
-            //}
-            throw new NotImplementedException();
+            Panier panier = new Panier();
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", ClientId, System.Data.DbType.Int32));
+            Critere critereArticle = new Critere();
+            critereArticle.Parametres.Add(new ParametreSQL("ArticleId", article.Id, System.Data.DbType.Int32));
+            panier.ProcedureSupprimer = "PanierSupprimer";
+            panier.Supprimer(critereClient, critereArticle);
         }
 
         /// Supprimer le panier en base du client
@@ -88,18 +83,12 @@ namespace FoodTruck.DAL
 
         public List<Article> ArticlesPanierClient()
         {
-            //using (foodtruckEntities db = new foodtruckEntities())
-            //{
-            //    List<Article> articles = (from panier in db.Panier
-            //                              join article in db.Article on panier.ArticleId equals article.Id
-            //                              where panier.ClientId == ClientId
-            //                              select article).ToList();
-            //    return articles;
-            //}
-
-            //TODO OMNIFW
-            List<Article> articles = new List<Article>();
-            return articles;
+            CollectionEntite<Article> articles = new CollectionEntite<Article>();
+            articles.ProcedureRechercher = "ArticlesPanierClient";
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", ClientId, System.Data.DbType.Int32));
+            articles.Rechercher(critereClient);
+            return articles.Liste;
         }
 
         internal List<Article> SupprimerArticlesPasDansCarte()

@@ -13,7 +13,7 @@ namespace FoodTruck
         public Client(string loginEmail) : base()
         {
             Id = Trans.NullToInt(GetIdByColonne("Email", loginEmail));
-            if (Id == -1 )
+            if (Id == -1)
                 Id = Trans.NullToInt(GetIdByColonne("Login", loginEmail));
         }
 
@@ -36,5 +36,8 @@ namespace FoodTruck
         public DateTime Inscription { get; set; }
         public string Login { get; set; }
         public bool AdminClient { get; set; }
-        }
+
+        [ChildId("ClientId")]
+        public CollectionEntite<Panier> Paniers { get; set; }
+    }
 }

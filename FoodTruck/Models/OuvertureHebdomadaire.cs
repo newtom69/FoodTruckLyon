@@ -5,6 +5,9 @@ namespace FoodTruck
 {
     public partial class OuvertureHebdomadaire : Entite
     {
+        public OuvertureHebdomadaire() : base() { }
+        public OuvertureHebdomadaire(int id) : base(id) { }
+
         [ID]
         public int Id
         {

@@ -255,7 +255,7 @@ namespace FoodTruck.DAL
             //    }
             //    return plage;
             //}
-            throw new NotImplementedException();
+            return new OuvertureHebdomadaire();
         }
 
         public int Purger()

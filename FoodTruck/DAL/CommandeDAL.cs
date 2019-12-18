@@ -1,6 +1,7 @@
 ﻿using FoodTruck.Models;
 using FoodTruck.Outils;
 using FoodTruck.ViewModels;
+using OmniFW.Business;
 using OmniFW.Data;
 using System;
 using System.Collections.Generic;
@@ -120,9 +121,9 @@ namespace FoodTruck.DAL
 
         internal List<Commande> CommandesClient(int id, int max = int.MaxValue)
         {
-            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
-            OmniFW.Data.Critere critereClient = new OmniFW.Data.Critere();
-            critereClient.Parametres.Add(new OmniFW.Data.ParametreSQL("ClientId", id, System.Data.DbType.Int32));
+            CollectionEntite<Commande> commandes = new CollectionEntite<Commande>();
+            Critere critereClient = new Critere();
+            critereClient.Parametres.Add(new ParametreSQL("ClientId", id, DbType.Int32));
             commandes.Rechercher(critereClient);
             List<Commande> listCommandes = commandes.Liste.OrderBy(cmd => cmd.Annulation).ThenBy(cmd => cmd.Retrait).ThenBy(cmd => Math.Abs((cmd.DateRetrait - DateTime.Now).TotalMinutes)).Take(max).ToList();
             return listCommandes;
@@ -142,7 +143,7 @@ namespace FoodTruck.DAL
 
         internal int NombreCommandes(DateTime date)
         {
-            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
+            CollectionEntite<Commande> commandes = new CollectionEntite<Commande>();
             Critere critereAnnulation = new Critere();
             critereAnnulation.Parametres.Add(new ParametreSQL("Annulation", false, DbType.Boolean));
             Critere critereRetrait = new Critere();
@@ -156,17 +157,16 @@ namespace FoodTruck.DAL
         internal List<Commande> CommandesEnCoursClient(int id)
         {
             DateTime now = DateTime.Now;
-            OmniFW.Business.CollectionEntite<Commande> commandes = new OmniFW.Business.CollectionEntite<Commande>();
+            CollectionEntite<Commande> commandes = new CollectionEntite<Commande>();
             Critere critereClient = new Critere();
             critereClient.Parametres.Add(new ParametreSQL("ClientId", id, DbType.Int32));
-
             Critere critereAnnulation = new Critere();
             critereAnnulation.Parametres.Add(new ParametreSQL("Annulation", false, DbType.Boolean));
-
             Critere critereRetrait = new Critere();
             critereRetrait.Parametres.Add(new ParametreSQL("Retrait", false, DbType.Boolean));
 
             commandes.Rechercher(critereClient, critereAnnulation, critereRetrait);
+            
             List<Commande> listCommandes = commandes.Liste.FindAll(cmd => (cmd.DateRetrait - now).TotalHours > -1);
             listCommandes = listCommandes.OrderBy(cmd => Math.Abs((cmd.DateRetrait - now).TotalMinutes)).ToList();
             return listCommandes;
