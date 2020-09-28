@@ -49,22 +49,22 @@ namespace FoodTruck.DAL
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                Article lArticle = (from article in db.Article
-                                    where article.Id == id
-                                    select article).FirstOrDefault();
-                lArticle.NombreVendus += nbre;
+                Article article = (from a in db.Article
+                                   where a.Id == id
+                                   select a).FirstOrDefault();
+                article.NombreVendus += nbre;
                 db.SaveChanges();
             }
         }
         /// <summary>
         /// Ajoute l'article lArticle en base
         /// </summary>
-        /// <param name="lArticle"></param>
-        internal void Ajouter(Article lArticle)
+        /// <param name="article"></param>
+        internal void Ajouter(Article article)
         {
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                db.Article.Add(lArticle);
+                db.Article.Add(article);
                 try
                 {
                     db.SaveChanges();
@@ -109,14 +109,14 @@ namespace FoodTruck.DAL
 
         internal bool NomExiste(string nom, int id = 0)
         {
-            Article lArticle;
+            Article article;
             using (foodtruckEntities db = new foodtruckEntities())
             {
-                lArticle = (from article in db.Article
-                            where article.Nom == nom && article.Id != id
-                            select article).FirstOrDefault();
+                article = (from a in db.Article
+                           where a.Nom == nom && a.Id != id
+                           select a).FirstOrDefault();
             }
-            return lArticle != null ? true : false;
+            return article != null ? true : false;
         }
 
         public List<Article> Tous(int nombreMax = 1000)

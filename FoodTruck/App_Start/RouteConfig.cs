@@ -47,10 +47,6 @@ namespace FoodTruck
             routes.MapRoute("Default", "{controller}/{action}/{id}",
             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
             namespaces: new[] { "FoodTruck.Controllers" });
-
-
-
-
         }
     }
 }

@@ -80,8 +80,6 @@ namespace FoodTruck.Controllers
                     TempData["message"] = new Message("Le code saisi est valide mais le montant de la commande est insuffisant", TypeMessage.Erreur);
                     break;
             }
-
-
             return Redirect("~/Panier/Index#codePromoClient");
         }
 
